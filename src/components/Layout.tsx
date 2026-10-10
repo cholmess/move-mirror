@@ -11,6 +11,7 @@ const navRoutes = [
   { to: "/", key: "home" as const, end: true },
   { to: "/lesson", key: "lesson" as const },
   { to: "/train", key: "train" as const },
+  { to: "/sparring", key: "play" as const },
   { to: "/defense", key: "defense" as const },
   { to: "/games", key: "myGames" as const },
   { to: "/import", key: "import" as const },

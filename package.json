@@ -1,7 +1,7 @@
 {
   "name": "move-mirror",
   "private": true,
-  "version": "0.5.2",
+  "version": "0.6.0",
   "type": "module",
   "scripts": {
     "dev": "concurrently -n web,engine -c blue,green \"vite\" \"node server/index.mjs\"",
@@ -15,6 +15,7 @@
     "cache:clear-engine": "node scripts/clear-engine-cache.mjs",
     "test:e2e": "playwright test",
     "test:engine-integration": "node scripts/test-engine-integration.mjs",
+    "test:sparring-engine": "node scripts/test-sparring-engine.mjs",
     "transfer:validity-report": "node scripts/build-transfer-validity-report.mjs",
     "transfer:manifest": "node scripts/build-baseline-manifest.mjs",
     "transfer:baseline": "node scripts/run-transfer-baseline.mjs",

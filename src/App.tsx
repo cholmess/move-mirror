@@ -13,6 +13,7 @@ import { ManualImport } from "./components/ManualImport";
 import { ScoresheetImport } from "./components/ScoresheetImport";
 import { GamesLibrary } from "./components/GamesLibrary";
 import { GameDetail } from "./components/GameDetail";
+import { SparringView } from "./components/SparringView";
 
 export default function App() {
   return (
@@ -24,6 +25,7 @@ export default function App() {
             <Route index element={<Dashboard />} />
             <Route path="lesson" element={<MicroLesson />} />
             <Route path="train" element={<TrainingBoard />} />
+            <Route path="sparring" element={<SparringView />} />
             <Route path="profile" element={<ProfileView />} />
             <Route path="transfer" element={<TransferView />} />
             <Route path="defense" element={<DefenseLab />} />

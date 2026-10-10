@@ -12,7 +12,7 @@ export const PRODUCT_TAGLINE = "The chess coach that learns how you play.";
 
 export const PATTERN_ID = "cct-opponent-refutation" as const;
 
-export const APP_VERSION = "0.5.1";
+export const APP_VERSION = "0.6.0";
 export const APP_STATE_VERSION = 4 as const;
 export const LEGACY_STATE_VERSION = 1 as const;
 

@@ -1,0 +1,94 @@
+{
+  "title": "Sparring",
+  "integrity": "Your opponent uses a chess engine, but does not always pick the first line. Among several sound moves, it prefers lines that ask you to practice what you need most.",
+  "modes": {
+    "targeted": "Targeted position",
+    "full": "Full game"
+  },
+  "targetedLead": "Practice this position",
+  "targetedBody": "Play without assistance. Your opponent will look for the most challenging continuation that is still a sound move.",
+  "fullLead": "Full sparring game",
+  "style": {
+    "label": "Opponent style",
+    "instructional": "Instructional",
+    "balanced": "Balanced",
+    "strong": "Strong"
+  },
+  "color": {
+    "label": "Your color",
+    "white": "White",
+    "black": "Black",
+    "random": "Random"
+  },
+  "clock": {
+    "label": "Clock",
+    "untimed": "No clock",
+    "practice10": "10+0 practice"
+  },
+  "whySelected": "Today's focus",
+  "whySelectedBody": "Priority pattern: check forcing replies from your opponent before you commit.",
+  "start": "Start sparring",
+  "resume": "Resume session",
+  "activeSession": "You have an active sparring session.",
+  "opponentThinking": "Opponent is thinking…",
+  "yourTurn": "Your turn",
+  "opponentTurn": "Opponent to move",
+  "hint": "I need a hint",
+  "hintBody": "Review checks, captures, and threats first. Then imagine your opponent's strongest reply.",
+  "resign": "Resign",
+  "abandon": "Leave session",
+  "moveHistory": "Move list",
+  "noEval": "Engine evaluation is hidden during the game.",
+  "loadError": "Could not load sparring. Check that the engine service is running.",
+  "enginePaused": "Engine unavailable. You can retry when it is back.",
+  "retryEngine": "Retry opponent move",
+  "resultTitle": "Practice result",
+  "review": {
+    "title": "Post-game review",
+    "start": "Generate review",
+    "loading": "Analyzing your decisions…",
+    "moments": "Key moments",
+    "opportunities": "{{count}} relevant moments created",
+    "resolved": "{{count}} solid defenses",
+    "needsPractice": "{{count}} need more practice",
+    "missedForcingReply": "A forcing reply was possible here.",
+    "solidDefense": "You found a solid defense.",
+    "neutral": "Decision recorded.",
+    "unverified": "Engine could not verify this move.",
+    "recommend": {
+      "forcingReply": "Next sessions will prioritize defenses against forcing captures because this resource appeared often and evidence of mastery is still limited.",
+      "continue": "Keep sparring with balanced pressure on your priority pattern."
+    }
+  },
+  "exportPgn": "Export PGN",
+  "retryPosition": "Retry position",
+  "nextRecommended": "Recommended next session",
+  "technical": {
+    "title": "Technical details",
+    "policy": "Policy",
+    "qualityGate": "Quality gate",
+    "engineSha": "Engine SHA",
+    "budget": "Candidate budget",
+    "seed": "Session seed"
+  },
+  "termination": {
+    "checkmate": "Checkmate",
+    "stalemate": "Stalemate",
+    "resignation": "Resignation",
+    "timeout": "Time out",
+    "training_goal_reached": "Training goal reached",
+    "threefold_repetition": "Threefold repetition",
+    "fifty_move_rule": "Fifty-move rule",
+    "insufficient_material": "Insufficient material"
+  },
+  "errors": {
+    "illegal_move": "That move is not legal.",
+    "agent_turn": "Wait for the opponent's move.",
+    "session_finished": "This session is already finished.",
+    "engine_unavailable": "Engine unavailable. Try again shortly.",
+    "sparring_pattern_unknown": "That practice pattern is not available.",
+    "sparring_pattern_incompatible_mode": "That pattern cannot be used in this mode.",
+    "sparring_client_snapshot_forbidden": "Practice settings must be chosen in the app, not sent manually.",
+    "sparring_invalid_field": "Unexpected field in session request."
+  }
+}

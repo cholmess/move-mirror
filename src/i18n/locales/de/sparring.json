@@ -1,0 +1,94 @@
+{
+  "title": "Trainingsgegner",
+  "integrity": "Dein Gegner nutzt eine Schachengine, wählt aber nicht immer den ersten Zug. Unter mehreren soliden Zügen bevorzugt er die, die dich an das erinnern, was du am meisten üben musst.",
+  "modes": {
+    "targeted": "Gezielte Stellung",
+    "full": "Vollpartie"
+  },
+  "targetedLead": "Übe diese Stellung",
+  "targetedBody": "Spiele ohne Hilfe. Dein Gegner sucht nach der anspruchsvollsten Fortsetzung, die weiterhin ein guter Zug ist.",
+  "fullLead": "Sparring-Vollpartie",
+  "style": {
+    "label": "Stil des Gegners",
+    "instructional": "Lehrreich",
+    "balanced": "Ausgewogen",
+    "strong": "Stark"
+  },
+  "color": {
+    "label": "Deine Farbe",
+    "white": "Weiß",
+    "black": "Schwarz",
+    "random": "Zufällig"
+  },
+  "clock": {
+    "label": "Uhr",
+    "untimed": "Ohne Uhr",
+    "practice10": "10+0 Übung"
+  },
+  "whySelected": "Heutiger Fokus",
+  "whySelectedBody": "Prioritätsmuster: erzwungene Gegenantworten prüfen, bevor du spielst.",
+  "start": "Sparring starten",
+  "resume": "Sitzung fortsetzen",
+  "activeSession": "Du hast eine aktive Sparring-Sitzung.",
+  "opponentThinking": "Gegner denkt nach…",
+  "yourTurn": "Du bist am Zug",
+  "opponentTurn": "Gegner am Zug",
+  "hint": "Ich brauche einen Hinweis",
+  "hintBody": "Prüfe zuerst Schach, Schläge und Drohungen. Stell dir danach die stärkste Gegenantwort vor.",
+  "resign": "Aufgeben",
+  "abandon": "Sitzung verlassen",
+  "moveHistory": "Zugliste",
+  "noEval": "Engine-Bewertung ist während der Partie ausgeblendet.",
+  "loadError": "Sparring konnte nicht geladen werden. Prüfe, ob der Engine-Dienst läuft.",
+  "enginePaused": "Engine nicht verfügbar. Du kannst es erneut versuchen, wenn sie zurück ist.",
+  "retryEngine": "Gegenzug wiederholen",
+  "resultTitle": "Übungsergebnis",
+  "review": {
+    "title": "Nachbesprechung",
+    "start": "Review erzeugen",
+    "loading": "Deine Entscheidungen werden analysiert…",
+    "moments": "Schlüsselmomente",
+    "opportunities": "{{count}} relevante Momente erzeugt",
+    "resolved": "{{count}} solide Verteidigungen",
+    "needsPractice": "{{count}} brauchen mehr Übung",
+    "missedForcingReply": "Hier war eine erzwungene Antwort möglich.",
+    "solidDefense": "Du hast solide verteidigt.",
+    "neutral": "Entscheidung gespeichert.",
+    "unverified": "Engine konnte diesen Zug nicht verifizieren.",
+    "recommend": {
+      "forcingReply": "Die nächste Sitzung priorisiert Verteidigungen gegen erzwungene Schläge, weil diese Ressource oft auftauchte und noch wenig Meisterschaftsbelege vorliegen.",
+      "continue": "Sparringe weiter mit ausgewogenem Druck auf dein Prioritätsmuster."
+    }
+  },
+  "exportPgn": "PGN exportieren",
+  "retryPosition": "Stellung wiederholen",
+  "nextRecommended": "Empfohlene nächste Sitzung",
+  "technical": {
+    "title": "Technische Details",
+    "policy": "Richtlinie",
+    "qualityGate": "Quality Gate",
+    "engineSha": "Engine-SHA",
+    "budget": "Kandidaten-Budget",
+    "seed": "Sitzungs-Seed"
+  },
+  "termination": {
+    "checkmate": "Schachmatt",
+    "stalemate": "Patt",
+    "resignation": "Aufgabe",
+    "timeout": "Zeit abgelaufen",
+    "training_goal_reached": "Trainingsziel erreicht",
+    "threefold_repetition": "Dreifache Stellungswiederholung",
+    "fifty_move_rule": "50-Züge-Regel",
+    "insufficient_material": "Unzureichendes Material"
+  },
+  "errors": {
+    "illegal_move": "Dieser Zug ist nicht legal.",
+    "agent_turn": "Warte auf den Gegenzug.",
+    "session_finished": "Diese Sitzung ist bereits beendet.",
+    "engine_unavailable": "Engine nicht verfügbar. Bitte erneut versuchen.",
+    "sparring_pattern_unknown": "Dieses Übungsmuster ist nicht verfügbar.",
+    "sparring_pattern_incompatible_mode": "Dieses Muster passt nicht zu diesem Modus.",
+    "sparring_client_snapshot_forbidden": "Übungseinstellungen müssen in der App gewählt werden, nicht manuell gesendet.",
+    "sparring_invalid_field": "Unerwartetes Feld in der Sitzungsanfrage."
+  }
+}

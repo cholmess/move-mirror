@@ -14,6 +14,9 @@ import { createDefenseRouter } from "./defense/routes.mjs";
 import { createGamesStore } from "./games/store.mjs";
 import { createGamesRouter } from "./games/routes.mjs";
 import { createScoresheetRouter } from "./scoresheets/routes.mjs";
+import { createSparringStore } from "./sparring/store.mjs";
+import { createSparringService } from "./sparring/service.mjs";
+import { createSparringRouter } from "./sparring/routes.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
@@ -243,6 +246,28 @@ const handleDefense = createDefenseRouter({
   evaluate: handleEvaluate,
 });
 
+const sparringRoot = process.env.SPARRING_DATA_DIR
+  ? path.resolve(ROOT, process.env.SPARRING_DATA_DIR)
+  : path.join(ROOT, "data/sparring");
+const sparringStore = createSparringStore(sparringRoot);
+sparringStore.ensure();
+let sparringService = null;
+function getSparringService() {
+  if (!sparringService) {
+    sparringService = createSparringService({
+      store: sparringStore,
+      engine,
+      engineAvailable,
+      queue,
+      evaluate: handleEvaluate,
+      defenseDatasetFile: path.join(ROOT, "data/defense/defense-lab-v1.json"),
+      cacheRoot: sparringStore.dirs.cache,
+    });
+  }
+  return sparringService;
+}
+const handleSparring = createSparringRouter(() => getSparringService());
+
 const server = http.createServer(async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS");
@@ -270,6 +295,11 @@ const server = http.createServer(async (req, res) => {
 
   if (req.url?.startsWith("/api/defense")) {
     const handled = await handleDefense(req, res);
+    if (handled) return;
+  }
+
+  if (req.url?.startsWith("/api/sparring")) {
+    const handled = await handleSparring(req, res);
     if (handled) return;
   }
 

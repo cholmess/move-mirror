@@ -110,6 +110,63 @@ export class StockfishEngine {
     throw new Error("engine_timeout");
   }
 
+  async analyseMultiPv(
+    fen,
+    { multiPv = 6, nodes, threads = 1, hashMb = 128, signal, timeoutMs = 120_000 } = {},
+  ) {
+    if (this._dead) await this.restart();
+    await this.start();
+    await this._command(`setoption name MultiPV value ${multiPv}`, null, { signal, timeoutMs });
+    await this._command(`setoption name Threads value ${threads}`, null, { signal, timeoutMs });
+    await this._command(`setoption name Hash value ${hashMb}`, null, { signal, timeoutMs });
+    await this.clearHash(signal);
+    this.lines = [];
+    this.proc.stdin.write(`position fen ${fen}\ngo nodes ${nodes}\n`);
+
+    const byMultipv = new Map();
+    const start = Date.now();
+    while (Date.now() - start < timeoutMs) {
+      if (signal?.aborted) throw new Error("aborted");
+      if (this._dead) throw new Error("engine_died");
+
+      for (const l of this.lines) {
+        if (!l.startsWith("info ") || !l.includes(" multipv ") || !l.includes(" pv ")) continue;
+        const mpM = l.match(/multipv (\d+)/);
+        const multipv = mpM ? Number(mpM[1]) : 1;
+        const score = parseScore(l);
+        const pvUci = parsePv(l);
+        const depthM = l.match(/depth (\d+)/);
+        const nodesM = l.match(/nodes (\d+)/);
+        byMultipv.set(multipv, {
+          multipv,
+          score,
+          depth: depthM ? Number(depthM[1]) : undefined,
+          nodes: nodesM ? Number(nodesM[1]) : undefined,
+          pvUci,
+          firstMoveUci: pvUci[0] ?? null,
+        });
+      }
+
+      const bestmove = this.lines.find((line) => line.startsWith("bestmove "));
+      if (bestmove) {
+        const lines = [...byMultipv.values()].sort((a, b) => a.multipv - b.multipv);
+        if (!lines.length) {
+          const bm = bestmove.split(" ")[1];
+          lines.push({
+            multipv: 1,
+            score: { cp: 0, mate: null, numeric: 0 },
+            pvUci: bm && bm !== "(none)" ? [bm] : [],
+            firstMoveUci: bm && bm !== "(none)" ? bm : null,
+          });
+        }
+        await this._command("setoption name MultiPV value 1", null, { signal, timeoutMs: 20_000 });
+        return { lines, nodesRequested: nodes };
+      }
+      await new Promise((r) => setTimeout(r, 8));
+    }
+    throw new Error("analysis_timeout");
+  }
+
   async analyse(fen, { rootMoves = null, nodes, signal, timeoutMs = 90_000 } = {}) {
     if (this._dead) await this.restart();
     await this.start();

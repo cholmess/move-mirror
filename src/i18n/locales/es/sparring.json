@@ -1,0 +1,94 @@
+{
+  "title": "Rival de práctica",
+  "integrity": "Tu rival usa un motor de ajedrez, pero no elige siempre la primera opción. Entre varias jugadas buenas, prefiere las que te obligan a practicar lo que más necesitas.",
+  "modes": {
+    "targeted": "Posición dirigida",
+    "full": "Partida completa"
+  },
+  "targetedLead": "Practica esta posición",
+  "targetedBody": "Juega sin ayuda. Tu rival buscará la continuación más incómoda que siga siendo una buena jugada.",
+  "fullLead": "Partida de sparring",
+  "style": {
+    "label": "Estilo del rival",
+    "instructional": "Didáctico",
+    "balanced": "Equilibrado",
+    "strong": "Fuerte"
+  },
+  "color": {
+    "label": "Tu color",
+    "white": "Blancas",
+    "black": "Negras",
+    "random": "Aleatorio"
+  },
+  "clock": {
+    "label": "Reloj",
+    "untimed": "Sin reloj",
+    "practice10": "10+0 de práctica"
+  },
+  "whySelected": "Enfoque de hoy",
+  "whySelectedBody": "Patrón prioritario: comprobar la respuesta forzante del rival antes de jugar.",
+  "start": "Comenzar sparring",
+  "resume": "Reanudar sesión",
+  "activeSession": "Tienes una sesión de sparring activa.",
+  "opponentThinking": "El rival está pensando…",
+  "yourTurn": "Tu turno",
+  "opponentTurn": "Turno del rival",
+  "hint": "Necesito una pista",
+  "hintBody": "Revisa primero los jaques, las capturas y las amenazas. Después imagina la respuesta más fuerte del rival.",
+  "resign": "Abandonar partida",
+  "abandon": "Salir de la sesión",
+  "moveHistory": "Historial",
+  "noEval": "La evaluación del motor está oculta durante la partida.",
+  "loadError": "No se pudo cargar sparring. Comprueba que el servicio del motor esté activo.",
+  "enginePaused": "Motor no disponible. Puedes reintentar cuando vuelva.",
+  "retryEngine": "Reintentar jugada del rival",
+  "resultTitle": "Resultado de práctica",
+  "review": {
+    "title": "Revisión posterior",
+    "start": "Generar revisión",
+    "loading": "Analizando tus decisiones…",
+    "moments": "Momentos clave",
+    "opportunities": "{{count}} momentos relevantes creados",
+    "resolved": "{{count}} defensas sólidas",
+    "needsPractice": "{{count}} necesitan más práctica",
+    "missedForcingReply": "Aquí era posible una respuesta forzante.",
+    "solidDefense": "Encontraste una defensa sólida.",
+    "neutral": "Decisión registrada.",
+    "unverified": "El motor no pudo verificar esta jugada.",
+    "recommend": {
+      "forcingReply": "La próxima partida priorizará defensas contra capturas forzantes porque este recurso apareció varias veces y todavía hay poca evidencia de dominio.",
+      "continue": "Sigue practicando con presión equilibrada sobre tu patrón prioritario."
+    }
+  },
+  "exportPgn": "Exportar PGN",
+  "retryPosition": "Reintentar posición",
+  "nextRecommended": "Próxima sesión recomendada",
+  "technical": {
+    "title": "Detalles técnicos",
+    "policy": "Política",
+    "qualityGate": "Filtro de calidad",
+    "engineSha": "SHA del motor",
+    "budget": "Presupuesto de candidatas",
+    "seed": "Semilla de sesión"
+  },
+  "termination": {
+    "checkmate": "Jaque mate",
+    "stalemate": "Ahogado",
+    "resignation": "Abandono",
+    "timeout": "Tiempo agotado",
+    "training_goal_reached": "Objetivo pedagógico alcanzado",
+    "threefold_repetition": "Triple repetición",
+    "fifty_move_rule": "Regla de 50 movimientos",
+    "insufficient_material": "Material insuficiente"
+  },
+  "errors": {
+    "illegal_move": "Esa jugada no es legal.",
+    "agent_turn": "Espera la jugada del rival.",
+    "session_finished": "Esta sesión ya terminó.",
+    "engine_unavailable": "Motor no disponible. Inténtalo de nuevo.",
+    "sparring_pattern_unknown": "Ese patrón de práctica no está disponible.",
+    "sparring_pattern_incompatible_mode": "Ese patrón no puede usarse en este modo.",
+    "sparring_client_snapshot_forbidden": "La configuración de práctica debe elegirse en la app, no enviarse manualmente.",
+    "sparring_invalid_field": "Campo inesperado en la solicitud de sesión."
+  }
+}
