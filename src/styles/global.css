@@ -429,6 +429,21 @@ a {
   color: var(--accent);
 }
 
+.reason-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+}
+
+.reason-list li {
+  padding: 0.35rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.page-head {
+  margin-bottom: 1rem;
+}
+
 select {
   background: var(--surface2);
   color: var(--text);

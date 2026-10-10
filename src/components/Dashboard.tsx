@@ -1,4 +1,7 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { fetchTransferState } from "../api/transferClient";
+import type { TransferState } from "../types/transfer";
 import { primaryPattern } from "../data/pattern";
 import { visibleSkills } from "../data/skills";
 import { microLesson } from "../data/microlesson";
@@ -14,6 +17,11 @@ export function Dashboard() {
 
   const lessonDone = !!state.progress.lessonCompletedAt;
   const solvedCount = state.progress.exercisesCompleted.length;
+  const [transfer, setTransfer] = useState<TransferState | null>(null);
+
+  useEffect(() => {
+    fetchTransferState().then(setTransfer).catch(() => setTransfer(null));
+  }, []);
 
   return (
     <div className="page dashboard">
@@ -98,6 +106,36 @@ export function Dashboard() {
           </div>
         </section>
       </div>
+
+      <section className="card">
+        <h2>Transferencia a partidas nuevas</h2>
+        {transfer?.comparison ? (
+          <p>
+            {transfer.comparison.label}. En las partidas nuevas el patrón aparece{" "}
+            {transfer.comparison.transfer.eventsPer100?.toLocaleString("es", { maximumFractionDigits: 1 })}{" "}
+            veces por 100 decisiones, frente a{" "}
+            {transfer.comparison.baseline.eventsPer100?.toLocaleString("es", { maximumFractionDigits: 1 })}{" "}
+            en el baseline.
+          </p>
+        ) : (
+          <p>
+            {transfer?.sync.lastSyncedAt
+              ? "Hay una sincronización, pero la comparación todavía no está cerrada."
+              : "Todavía no hay una comparación entre el baseline y partidas nuevas."}
+          </p>
+        )}
+        <p className="muted small">
+          Última sincronización:{" "}
+          {transfer?.sync.lastSyncedAt
+            ? new Date(transfer.sync.lastSyncedAt).toLocaleString("es")
+            : "sin sincronizar"}
+          . Partidas nuevas válidas: {transfer?.includedCount ?? 0}. Excluidas: {transfer?.excludedCount ?? 0}.
+        </p>
+        {transfer?.pedagogy && <p>{transfer.pedagogy.explanation}</p>}
+        <Link className="btn" to="/transfer">
+          Ver transferencia
+        </Link>
+      </section>
 
       <section className="card">
         <h2>Habilidades visibles (máx. 3)</h2>

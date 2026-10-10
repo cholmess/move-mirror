@@ -1,11 +1,37 @@
+import { useEffect, useMemo, useState } from "react";
 import { visibleSkills } from "../data/skills";
 import { useApp } from "../context/AppContext";
 import { aggregateEvidence } from "../domain/profile";
 import { exportAttempts } from "../storage/persistence";
 import { FUTURE_MODULES } from "../contracts/future";
+import { PATTERN_ID } from "../data/constants";
+import { fetchTransferState } from "../api/transferClient";
+import type { TransferState } from "../types/transfer";
+import { summarizeTraining } from "@shared/transfer/pedagogy.js";
 
 export function ProfileView() {
   const { state, resetAll } = useApp();
+
+  const [transfer, setTransfer] = useState<TransferState | null>(null);
+  useEffect(() => {
+    fetchTransferState().then(setTransfer).catch(() => setTransfer(null));
+  }, []);
+  const training = useMemo(() => {
+    const related = state.attempts.filter(
+      (attempt) => attempt.patternId === PATTERN_ID || attempt.skillIds.includes(PATTERN_ID)
+    );
+    const count = (status: string) => related.filter((attempt) => attempt.evaluationStatus === status).length;
+    return summarizeTraining({
+      verified_best: count("verified_best"),
+      verified_acceptable: count("verified_acceptable"),
+      playable_inexact: count("playable_inexact"),
+      incorrect: count("incorrect"),
+      unverified: count("unverified"),
+      attempts: related.length,
+      mastery: state.skills[PATTERN_ID]?.masteryEstimate ?? null,
+      nextReviewAt: state.skills[PATTERN_ID]?.nextReviewAt ?? null,
+    });
+  }, [state.attempts, state.skills]);
 
   const downloadLog = () => {
     const blob = new Blob([exportAttempts(state)], {
@@ -83,6 +109,27 @@ export function ProfileView() {
           );
         })}
       </div>
+
+      <section className="card">
+        <h2>Dos canales</h2>
+        <p className="muted small">
+          El dominio de ejercicios (α/β) solo cambia con intentos verificados. Las partidas reales no lo modifican.
+        </p>
+        <ul className="stat-list">
+          <li>
+            Ejercicios: {training.verified_best} mejor jugada, {training.verified_acceptable} aceptables,{" "}
+            {training.playable_inexact} imprecisas, {training.incorrect} incorrectas.
+          </li>
+          <li>Partidas reales: {transfer?.comparison?.label ?? "Datos insuficientes"}.</li>
+          <li>
+            Última sincronización:{" "}
+            {transfer?.sync.lastSyncedAt
+              ? new Date(transfer.sync.lastSyncedAt).toLocaleString("es")
+              : "sin sincronizar"}
+            .
+          </li>
+        </ul>
+      </section>
 
       <section className="card">
         <h2>Registro de aprendizaje</h2>

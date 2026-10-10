@@ -29,6 +29,34 @@ Variable opcional: `POOL_LIMIT=100 npm run sync:fase2`
 - Node.js 18+
 - npm
 
+## MoveMirror v0.3 — Transfer Loop
+
+Ciclo: **entrenar → sincronizar partidas 10+0 nuevas → medir transferencia → actualizar el canal de partidas reales → adaptar la enseñanza**.
+
+- Vista `/transfer` y resumen en el Dashboard.
+- Baseline congelado: las 200 partidas de Fase 2. El corte sale de `data/transfer/baseline-manifest.json` (no se duplica en el código).
+- Detector `allowed-forcing-reply-transfer-v1`: decisión propia, pérdida ≥ 120 con el presupuesto fijo (80k, y 500k solo para confirmar la banda 105–135 u otras inestabilidades), y la respuesta principal del rival es captura, jaque o mate. El subgrupo de captura de pieza (valor ≥ 3) va aparte.
+- El baseline se recalcula con ese mismo presupuesto. No se comparan las 800 posiciones priorizadas del review.
+- Incertidumbre por bootstrap de partidas, no de jugadas sueltas.
+- Los ejercicios no reciben α/β desde las partidas.
+
+```bash
+npm run transfer:manifest    # corte desde games.csv, si el manifiesto no existe
+npm run transfer:baseline    # reanaliza el baseline; STOCKFISH_PATH si hace falta
+npm run transfer:sync        # partidas nuevas de cholmess21
+npm run dev                  # luego abre /transfer
+```
+
+Modo offline, sin red: en `/transfer`, «Modo offline (fixtures)».
+
+## MoveMirror v0.2.1 — Evaluation Hardening
+
+- Escalamiento automático 80k → 500k cerca de umbrales (35–65 cp, 105–135 cp), mates inestables e información incompleta.
+- Cache persistente en `data/engine-cache/` (invalidación por hash/presupuesto/criterio).
+- Cola FIFO Stockfish, timeout, cancelación al cerrar request, reinicio si el motor muere.
+- Limpiar cache: `npm run cache:clear-engine`
+- E2E no-spoiler: `npm run test:e2e` (UX; la solución puede seguir en el bundle JS).
+
 ## MoveMirror v0.2 — Pedagogical Integrity
 
 - Criterio de evaluación: **`engine-validated-v2`** (servicio Stockfish local, no WASM).
@@ -87,6 +115,7 @@ Exporta intentos desde **Perfil → Exportar intentos (JSON)**.
 | `/lesson` | Microlección CCT (5 pasos, FEN reales) |
 | `/train` | Tablero interactivo + registro CCT |
 | `/profile` | Perfil vivo + log |
+| `/transfer` | Cohortes, comparación y recomendación |
 
 | Código | Rol |
 |--------|-----|
@@ -100,16 +129,16 @@ Exporta intentos desde **Perfil → Exportar intentos (JSON)**.
 - Lección: `cct-refutation-v1`
 - Criterio de evaluación: `engine-validated-v2`
 
-## Limitaciones (MVP)
+## Limitaciones (v0.3)
 
-- Sin Stockfish en cliente; no se validan alternativas tácticas distintas de la solución del review.
-- Sin sync Chess.com ni generación automática de ejercicios.
-- Un solo jugador (`cholmess21`) y un patrón confirmado.
-- Ejercicios **ampliados** (CSV): mejor jugada UCI→SAN; sin línea de referencia completa en feedback.
-- Detección de “respuesta forzada del rival” en texto es heurística.
+- Un solo jugador (`cholmess21`) y un solo patrón. v0.3 no enseña una debilidad nueva; solo puede proponer revisarla.
+- La comparación no afirma que MoveMirror haya causado el cambio.
+- El modo offline usa análisis escrito en los fixtures, no Stockfish.
+- Hace falta Stockfish local para el baseline y para las partidas reales.
+- Sin Defense Lab, Sparring Agent, modelo nuevo, cuentas ni despliegue público.
 
 ## Siguiente incremento recomendado
 
-1. Enriquecer el pool con líneas SAN desde `data/fase-2/engine_output/deep_500k.jsonl`.
-2. Añadir evaluación ligera con motor WASM para alternativas legales.
-3. Backend opcional (SQLite) para multi-dispositivo y sync Chess.com según `GameSyncService`.
+1. Cuando la cohorte congelada tenga volumen, revisar a mano el subgrupo de captura de pieza antes de convertirlo en lección.
+2. Dejar que los ejercicios futuros aceptados entren al entrenador con el mismo criterio `engine-validated-v2`.
+3. Repetir el bucle con la siguiente cohorte, sin reabrir la anterior.

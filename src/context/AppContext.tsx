@@ -17,7 +17,7 @@ import {
 import { EVAL_CRITERION_VERSION, LESSON_VERSION } from "../data/constants";
 import { getExercise } from "../data/exercises";
 import { isLegalMove, userFoundForcedResponse } from "../domain/evaluation";
-import { evaluateMoveWithEngine } from "../api/engineClient";
+import { evaluateMoveWithEngine, type EvaluateResult } from "../api/engineClient";
 import {
   buildReflectionPrompt,
 } from "../domain/pedagogy";
@@ -69,22 +69,23 @@ export function AppProvider({ children }: { children: ReactNode }) {
       let engineVersion: string | null = null;
       let engineSha256: string | null = null;
       let opponentReplySan: string | null = null;
+      let evalMeta: EvaluateResult | null = null;
 
       if (!isLegalMove(exercise.fen, params.chosenMoveSan)) {
         evaluationStatus = "illegal";
         evalVerified = true;
       } else {
-        const engine = await evaluateMoveWithEngine({
+        evalMeta = await evaluateMoveWithEngine({
           fen: exercise.fen,
           moveSan: params.chosenMoveSan,
           referenceBestUci: exercise.referenceMoveUci,
         });
-        evaluationStatus = engine.status;
-        evalVerified = engine.verified;
-        evalLossCp = engine.cpLoss;
-        engineVersion = engine.engineVersion;
-        engineSha256 = engine.engineSha256;
-        opponentReplySan = engine.opponentReplySan;
+        evaluationStatus = evalMeta.status;
+        evalVerified = evalMeta.verified;
+        evalLossCp = evalMeta.cpLoss;
+        engineVersion = evalMeta.engineVersion;
+        engineSha256 = evalMeta.engineSha256;
+        opponentReplySan = evalMeta.opponentReplySan;
       }
 
       const foundOpponentForcedResponse = userFoundForcedResponse(
@@ -115,6 +116,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
         foundOpponentForcedResponse,
         lessonVersion: LESSON_VERSION,
         evalCriterionVersion: EVAL_CRITERION_VERSION,
+        evalPipelineVersion: evalMeta?.evalPipelineVersion,
+        evalInitialBudgetId: evalMeta?.evalInitialBudgetId,
+        evalFinalBudgetId: evalMeta?.evalFinalBudgetId,
+        evalEscalated: evalMeta?.evalEscalated,
+        evalEscalationReason: evalMeta?.evalEscalationReason ?? null,
+        evalInitialStatus: evalMeta?.evalInitialStatus ?? null,
+        evalFinalStatus: evalMeta?.evalFinalStatus,
+        cacheHit: evalMeta?.cacheHit,
       });
 
       persist(next);

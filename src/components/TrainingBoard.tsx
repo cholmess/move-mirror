@@ -98,7 +98,7 @@ export function TrainingBoard() {
   const nextSel = selectNextExercise(state);
 
   return (
-    <div className="page train">
+    <div className="page train" data-testid="train-root">
       <div className="train-toolbar">
         <label className="small">
           Ejercicio{" "}
@@ -155,7 +155,7 @@ export function TrainingBoard() {
           )}
         </div>
 
-        <div className="card flow-panel">
+        <div className="card flow-panel" data-testid="train-flow">
           {phase === "cct" && (
             <>
               <h2>CCT antes de mover</h2>
@@ -250,6 +250,7 @@ export function TrainingBoard() {
               <button
                 type="button"
                 className="btn primary"
+                data-testid="train-submit"
                 disabled={submitting}
                 onClick={() => void submit()}
               >
@@ -297,6 +298,7 @@ function Field({
       <textarea
         className="textarea"
         rows={2}
+        aria-label={label}
         value={value}
         onChange={(e) => onChange(e.target.value)}
       />
@@ -325,7 +327,7 @@ function FeedbackPanel({
     opponentStrongestReply(exercise, attempt.opponentReplySan);
 
   return (
-    <div className="feedback">
+    <div className="feedback" data-testid="train-feedback">
       <h2>Feedback</h2>
       <dl className="feedback-dl">
         <dt>Tu jugada</dt>

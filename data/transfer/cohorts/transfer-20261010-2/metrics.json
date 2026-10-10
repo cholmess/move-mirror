@@ -1,0 +1,378 @@
+{
+  "cohortId": "transfer-20261010-2",
+  "detectorId": "allowed-forcing-reply-transfer-v1",
+  "analysisFingerprint": "transfer-analysis-v1|allowed-forcing-reply-transfer-v1|fase1-filter-v1|phase-proxy-material-v1|transfer-confirm-v1|nodes-80k-v1|80000|nodes-500k-v1|500000|120|105-135|1|128|true|uci-searchmoves|100000|side-to-move",
+  "gamesAnalyzed": 55,
+  "gamesAffected": 46,
+  "decisions": 2091,
+  "events": 120,
+  "eventsPer100": 5.738880918220947,
+  "pieceCaptureEvents": 55,
+  "pieceCapturePer100": 2.6303204208512674,
+  "byPhase": {
+    "opening_proxy": {
+      "decisions": 550,
+      "events": 15,
+      "per100": 2.727272727272727
+    },
+    "middlegame_proxy": {
+      "decisions": 1216,
+      "events": 91,
+      "per100": 7.483552631578948
+    },
+    "endgame_proxy": {
+      "decisions": 325,
+      "events": 14,
+      "per100": 4.3076923076923075
+    }
+  },
+  "byColor": {
+    "white": {
+      "decisions": 982,
+      "events": 57,
+      "per100": 5.8044806517311605
+    },
+    "black": {
+      "decisions": 1109,
+      "events": 63,
+      "per100": 5.680793507664562
+    }
+  },
+  "severity": {
+    "notable": 51,
+    "marcada": 53,
+    "grave": 16
+  },
+  "gameClusters": [
+    {
+      "id": "9aa6d1ca-c026-11f1-9982-0d13da01000f",
+      "events": 5,
+      "decisions": 39,
+      "pieceCaptureEvents": 2
+    },
+    {
+      "id": "84d85e75-c038-11f1-94d8-40057201000f",
+      "events": 3,
+      "decisions": 19,
+      "pieceCaptureEvents": 1
+    },
+    {
+      "id": "4db6ae0b-c0b4-11f1-8dbb-feb0c301000f",
+      "events": 2,
+      "decisions": 25,
+      "pieceCaptureEvents": 2
+    },
+    {
+      "id": "7d916521-c0b5-11f1-94d8-40057201000f",
+      "events": 0,
+      "decisions": 16,
+      "pieceCaptureEvents": 0
+    },
+    {
+      "id": "d6f749da-c0b5-11f1-9982-0d13da01000f",
+      "events": 1,
+      "decisions": 34,
+      "pieceCaptureEvents": 0
+    },
+    {
+      "id": "4e1aad57-c0c4-11f1-b809-a9c32901000f",
+      "events": 1,
+      "decisions": 15,
+      "pieceCaptureEvents": 0
+    },
+    {
+      "id": "a26225c9-c0c4-11f1-983e-eed3f101000f",
+      "events": 0,
+      "decisions": 21,
+      "pieceCaptureEvents": 0
+    },
+    {
+      "id": "9b501316-c0f6-11f1-94d8-40057201000f",
+      "events": 3,
+      "decisions": 36,
+      "pieceCaptureEvents": 2
+    },
+    {
+      "id": "e49e388e-c0f9-11f1-a078-02a8b201000f",
+      "events": 2,
+      "decisions": 33,
+      "pieceCaptureEvents": 0
+    },
+    {
+      "id": "22f0c7bb-c0fd-11f1-9651-fbb1b701000f",
+      "events": 1,
+      "decisions": 43,
+      "pieceCaptureEvents": 0
+    },
+    {
+      "id": "e14f4d3a-c0ff-11f1-9651-fbb1b701000f",
+      "events": 0,
+      "decisions": 19,
+      "pieceCaptureEvents": 0
+    },
+    {
+      "id": "ae133397-c159-11f1-8bef-2a4af901000f",
+      "events": 0,
+      "decisions": 15,
+      "pieceCaptureEvents": 0
+    },
+    {
+      "id": "72791357-c15e-11f1-8dbb-feb0c301000f",
+      "events": 0,
+      "decisions": 42,
+      "pieceCaptureEvents": 0
+    },
+    {
+      "id": "96da03f4-c15f-11f1-8bef-2a4af901000f",
+      "events": 0,
+      "decisions": 65,
+      "pieceCaptureEvents": 0
+    },
+    {
+      "id": "59e7a245-c16b-11f1-8bef-2a4af901000f",
+      "events": 2,
+      "decisions": 71,
+      "pieceCaptureEvents": 1
+    },
+    {
+      "id": "a053d357-c16d-11f1-983e-eed3f101000f",
+      "events": 2,
+      "decisions": 62,
+      "pieceCaptureEvents": 1
+    },
+    {
+      "id": "b40430db-c16f-11f1-b809-a9c32901000f",
+      "events": 2,
+      "decisions": 51,
+      "pieceCaptureEvents": 0
+    },
+    {
+      "id": "e9a4e91b-c171-11f1-983e-eed3f101000f",
+      "events": 4,
+      "decisions": 34,
+      "pieceCaptureEvents": 2
+    },
+    {
+      "id": "23ab8a9a-c1b2-11f1-9982-0d13da01000f",
+      "events": 0,
+      "decisions": 19,
+      "pieceCaptureEvents": 0
+    },
+    {
+      "id": "b07ac0c5-c1b2-11f1-8bef-2a4af901000f",
+      "events": 4,
+      "decisions": 25,
+      "pieceCaptureEvents": 0
+    },
+    {
+      "id": "204f715e-c1b3-11f1-be75-03cfdc01000f",
+      "events": 3,
+      "decisions": 51,
+      "pieceCaptureEvents": 1
+    },
+    {
+      "id": "5b97447a-c1b4-11f1-983e-eed3f101000f",
+      "events": 3,
+      "decisions": 47,
+      "pieceCaptureEvents": 2
+    },
+    {
+      "id": "01b20b85-c1b6-11f1-8dbb-feb0c301000f",
+      "events": 4,
+      "decisions": 80,
+      "pieceCaptureEvents": 2
+    },
+    {
+      "id": "f252228e-c1bb-11f1-983e-eed3f101000f",
+      "events": 5,
+      "decisions": 66,
+      "pieceCaptureEvents": 4
+    },
+    {
+      "id": "751f964a-c1bd-11f1-8bef-2a4af901000f",
+      "events": 1,
+      "decisions": 40,
+      "pieceCaptureEvents": 1
+    },
+    {
+      "id": "b04c9346-c21b-11f1-94d8-40057201000f",
+      "events": 2,
+      "decisions": 45,
+      "pieceCaptureEvents": 0
+    },
+    {
+      "id": "3be79985-c21d-11f1-9982-0d13da01000f",
+      "events": 4,
+      "decisions": 15,
+      "pieceCaptureEvents": 0
+    },
+    {
+      "id": "cdc5ac5e-c21d-11f1-be75-03cfdc01000f",
+      "events": 3,
+      "decisions": 62,
+      "pieceCaptureEvents": 1
+    },
+    {
+      "id": "f5707a95-c21f-11f1-91e9-76c88101000f",
+      "events": 4,
+      "decisions": 26,
+      "pieceCaptureEvents": 4
+    },
+    {
+      "id": "34d7e670-c251-11f1-91e9-76c88101000f",
+      "events": 3,
+      "decisions": 60,
+      "pieceCaptureEvents": 2
+    },
+    {
+      "id": "985ee86c-c268-11f1-9651-fbb1b701000f",
+      "events": 0,
+      "decisions": 25,
+      "pieceCaptureEvents": 0
+    },
+    {
+      "id": "420d4a4f-c277-11f1-91e9-76c88101000f",
+      "events": 2,
+      "decisions": 31,
+      "pieceCaptureEvents": 1
+    },
+    {
+      "id": "64eaa328-c2f9-11f1-a987-563c1101000f",
+      "events": 0,
+      "decisions": 43,
+      "pieceCaptureEvents": 0
+    },
+    {
+      "id": "de93a0e3-c2fc-11f1-8c7a-e0caaf01000f",
+      "events": 3,
+      "decisions": 49,
+      "pieceCaptureEvents": 2
+    },
+    {
+      "id": "51aab6f1-c2fe-11f1-a987-563c1101000f",
+      "events": 1,
+      "decisions": 27,
+      "pieceCaptureEvents": 0
+    },
+    {
+      "id": "6bab866b-c302-11f1-94d8-40057201000f",
+      "events": 1,
+      "decisions": 25,
+      "pieceCaptureEvents": 1
+    },
+    {
+      "id": "3ba9f816-c30a-11f1-8dbb-feb0c301000f",
+      "events": 2,
+      "decisions": 30,
+      "pieceCaptureEvents": 1
+    },
+    {
+      "id": "1d9b8ab7-c30d-11f1-9982-0d13da01000f",
+      "events": 4,
+      "decisions": 63,
+      "pieceCaptureEvents": 2
+    },
+    {
+      "id": "654e2826-c31b-11f1-94d8-40057201000f",
+      "events": 1,
+      "decisions": 35,
+      "pieceCaptureEvents": 1
+    },
+    {
+      "id": "a3aab3d0-c31c-11f1-a078-02a8b201000f",
+      "events": 2,
+      "decisions": 13,
+      "pieceCaptureEvents": 1
+    },
+    {
+      "id": "32e0b0cd-c31d-11f1-a987-563c1101000f",
+      "events": 4,
+      "decisions": 48,
+      "pieceCaptureEvents": 3
+    },
+    {
+      "id": "cdca0897-c322-11f1-a987-563c1101000f",
+      "events": 1,
+      "decisions": 21,
+      "pieceCaptureEvents": 1
+    },
+    {
+      "id": "b7beeb0c-c323-11f1-a078-02a8b201000f",
+      "events": 3,
+      "decisions": 31,
+      "pieceCaptureEvents": 1
+    },
+    {
+      "id": "552c5204-c325-11f1-94d8-40057201000f",
+      "events": 3,
+      "decisions": 13,
+      "pieceCaptureEvents": 2
+    },
+    {
+      "id": "b0f81303-c325-11f1-9651-fbb1b701000f",
+      "events": 3,
+      "decisions": 53,
+      "pieceCaptureEvents": 3
+    },
+    {
+      "id": "4b661a27-c348-11f1-a696-76c0b701000f",
+      "events": 3,
+      "decisions": 72,
+      "pieceCaptureEvents": 0
+    },
+    {
+      "id": "d1acd204-c350-11f1-a987-563c1101000f",
+      "events": 1,
+      "decisions": 29,
+      "pieceCaptureEvents": 1
+    },
+    {
+      "id": "c56146d2-c351-11f1-94d8-40057201000f",
+      "events": 5,
+      "decisions": 42,
+      "pieceCaptureEvents": 2
+    },
+    {
+      "id": "017277d6-c3b2-11f1-b809-a9c32901000f",
+      "events": 1,
+      "decisions": 40,
+      "pieceCaptureEvents": 0
+    },
+    {
+      "id": "6ee1f3e3-c3b3-11f1-be75-03cfdc01000f",
+      "events": 1,
+      "decisions": 33,
+      "pieceCaptureEvents": 0
+    },
+    {
+      "id": "42938958-c3b8-11f1-8c7a-e0caaf01000f",
+      "events": 3,
+      "decisions": 18,
+      "pieceCaptureEvents": 1
+    },
+    {
+      "id": "b8c51afa-c3b8-11f1-8c7a-e0caaf01000f",
+      "events": 2,
+      "decisions": 55,
+      "pieceCaptureEvents": 1
+    },
+    {
+      "id": "b8878a75-c3c5-11f1-983e-eed3f101000f",
+      "events": 4,
+      "decisions": 70,
+      "pieceCaptureEvents": 1
+    },
+    {
+      "id": "dce2f15a-c464-11f1-983e-eed3f101000f",
+      "events": 2,
+      "decisions": 24,
+      "pieceCaptureEvents": 1
+    },
+    {
+      "id": "1a153960-c467-11f1-a987-563c1101000f",
+      "events": 4,
+      "decisions": 25,
+      "pieceCaptureEvents": 1
+    }
+  ]
+}

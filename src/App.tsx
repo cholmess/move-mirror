@@ -5,6 +5,7 @@ import { Dashboard } from "./components/Dashboard";
 import { MicroLesson } from "./components/MicroLesson";
 import { TrainingBoard } from "./components/TrainingBoard";
 import { ProfileView } from "./components/ProfileView";
+import { TransferView } from "./components/TransferView";
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
             <Route path="lesson" element={<MicroLesson />} />
             <Route path="train" element={<TrainingBoard />} />
             <Route path="profile" element={<ProfileView />} />
+            <Route path="transfer" element={<TransferView />} />
           </Route>
         </Routes>
       </BrowserRouter>

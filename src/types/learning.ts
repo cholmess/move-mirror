@@ -44,6 +44,14 @@ export interface AttemptRecord {
   recordedAt: string;
   lessonVersion: string;
   evalCriterionVersion: string;
+  evalPipelineVersion?: string;
+  evalInitialBudgetId?: string;
+  evalFinalBudgetId?: string;
+  evalEscalated?: boolean;
+  evalEscalationReason?: string | null;
+  evalInitialStatus?: EvaluationStatus | null;
+  evalFinalStatus?: EvaluationStatus;
+  cacheHit?: boolean;
 }
 
 export interface SkillState {

@@ -1,13 +1,7 @@
 import { spawn } from "node:child_process";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
-
-export const EVAL_BUDGET = Object.freeze({
-  id: "nodes-80k-v1",
-  nodes: 80_000,
-  threads: 1,
-  hashMb: 128,
-});
+import { BUDGET_SHALLOW } from "../shared/evaluation/budgets.js";
 
 function parseScore(line) {
   const mateM = line.match(/score mate (-?\d+)/);
@@ -26,13 +20,14 @@ function parsePv(line) {
   return m[1].trim().split(/\s+/);
 }
 
-export class StockfishPool {
+export class StockfishEngine {
   constructor(enginePath) {
     this.enginePath = enginePath;
     this.proc = null;
     this.lines = [];
     this.engineVersion = null;
     this.engineSha256 = null;
+    this.stopping = false;
     try {
       const buf = readFileSync(enginePath);
       this.engineSha256 = createHash("sha256").update(buf).digest("hex");
@@ -41,32 +36,11 @@ export class StockfishPool {
     }
   }
 
-  _send(cmd) {
-    this.proc.stdin.write(`${cmd}\n`);
+  get isAlive() {
+    return Boolean(this.proc && !this.proc.killed);
   }
 
-  _waitFor(fn, timeoutMs = 45_000) {
-    return new Promise((resolve, reject) => {
-      const start = Date.now();
-      const tick = () => {
-        const hit = this.lines.find(fn);
-        if (hit) {
-          resolve(hit);
-          return;
-        }
-        if (Date.now() - start > timeoutMs) {
-          reject(new Error("engine timeout"));
-          return;
-        }
-        setTimeout(tick, 8);
-      };
-      tick();
-    });
-  }
-
-  async start() {
-    if (this.proc) return;
-    this.proc = spawn(this.enginePath, [], { stdio: ["pipe", "pipe", "pipe"] });
+  _attachListeners() {
     this.proc.stdout.on("data", (chunk) => {
       for (const line of chunk.toString().split("\n")) {
         const t = line.trim();
@@ -75,22 +49,38 @@ export class StockfishPool {
       }
     });
     this.proc.stderr.on("data", () => {});
+    this.proc.on("close", () => {
+      this.proc = null;
+      if (!this.stopping) {
+        this._dead = true;
+      }
+    });
+  }
 
+  async start() {
+    if (this.isAlive) return;
+    this.stopping = false;
+    this._dead = false;
+    this.proc = spawn(this.enginePath, [], { stdio: ["pipe", "pipe", "pipe"] });
+    this._attachListeners();
     this.lines = [];
-    this._send("uci");
-    await this._waitFor((l) => l === "uciok");
-    this._send("isready");
-    await this._waitFor((l) => l === "readyok");
-    this._send(`setoption name Threads value ${EVAL_BUDGET.threads}`);
-    this._send(`setoption name Hash value ${EVAL_BUDGET.hashMb}`);
-    this._send("isready");
-    await this._waitFor((l) => l === "readyok");
+    await this._command("uci", /uciok/);
+    await this._command("isready", /readyok/);
+    await this._command(`setoption name Threads value ${BUDGET_SHALLOW.threads}`, null);
+    await this._command(`setoption name Hash value ${BUDGET_SHALLOW.hashMb}`, null);
+    await this._command("isready", /readyok/);
+  }
+
+  async restart() {
+    await this.stop();
+    await this.start();
   }
 
   async stop() {
+    this.stopping = true;
     if (!this.proc) return;
     try {
-      this._send("quit");
+      this.proc.stdin.write("quit\n");
     } catch {
       /* ignore */
     }
@@ -98,54 +88,147 @@ export class StockfishPool {
     this.proc = null;
   }
 
-  async _analyse(fen, rootMoves = null) {
+  async _command(cmd, waitPattern, { signal, timeoutMs = 45_000 } = {}) {
+    if (!this.isAlive) await this.start();
+    if (waitPattern) this.lines = [];
+    this.proc.stdin.write(`${cmd}\n`);
+    if (!waitPattern) return;
+
+    const start = Date.now();
+    while (Date.now() - start < timeoutMs) {
+      if (signal?.aborted) throw new Error("aborted");
+      if (this._dead) throw new Error("engine_died");
+      const hit = this.lines.find((l) => waitPattern.test(l));
+      if (hit) return hit;
+      await new Promise((r) => setTimeout(r, 8));
+    }
+    throw new Error("engine_timeout");
+  }
+
+  async analyse(fen, { rootMoves = null, nodes, signal, timeoutMs = 90_000 } = {}) {
+    if (this._dead) await this.restart();
+    await this.start();
+
     this.lines = [];
     const pos = rootMoves?.length
       ? `position fen ${fen} moves ${rootMoves.join(" ")}`
       : `position fen ${fen}`;
-    this._send(pos);
-    this._send(`go nodes ${EVAL_BUDGET.nodes}`);
+
+    await this._command(pos, null, { signal, timeoutMs });
+    await this._command(`go nodes ${nodes}`, null, { signal, timeoutMs });
 
     let lastInfo = null;
-    await this._waitFor((l) => {
-      if (l.startsWith("info ") && l.includes(" score ") && l.includes(" pv ")) {
-        lastInfo = l;
+    const start = Date.now();
+    while (Date.now() - start < timeoutMs) {
+      if (signal?.aborted) throw new Error("aborted");
+      if (this._dead) throw new Error("engine_died");
+
+      for (const l of this.lines) {
+        if (l.startsWith("info ") && l.includes(" score ") && l.includes(" pv ")) {
+          lastInfo = l;
+        }
       }
-      return l.startsWith("bestmove ");
-    });
-
-    const bestmoveLine = this.lines.find((l) => l.startsWith("bestmove "));
-    const bestmove = bestmoveLine?.split(" ")[1] ?? null;
-    if (!lastInfo) throw new Error("no analysis");
-
-    const score = parseScore(lastInfo);
-    const pvUci = parsePv(lastInfo);
-    const depthM = lastInfo.match(/depth (\d+)/);
-    const nodesM = lastInfo.match(/nodes (\d+)/);
-
-    return {
-      score,
-      depth: depthM ? Number(depthM[1]) : undefined,
-      nodes: nodesM ? Number(nodesM[1]) : undefined,
-      pvUci,
-      firstMoveUci: rootMoves?.[0] ?? pvUci[0] ?? bestmove,
-    };
+      const bestmove = this.lines.find((l) => l.startsWith("bestmove "));
+      if (bestmove) {
+        if (!lastInfo) throw new Error("no_analysis");
+        const score = parseScore(lastInfo);
+        const pvUci = parsePv(lastInfo);
+        const depthM = lastInfo.match(/depth (\d+)/);
+        const nodesM = lastInfo.match(/nodes (\d+)/);
+        const bm = bestmove.split(" ")[1] ?? null;
+        return {
+          score,
+          depth: depthM ? Number(depthM[1]) : undefined,
+          nodes: nodesM ? Number(nodesM[1]) : undefined,
+          pvUci,
+          firstMoveUci: rootMoves?.[0] ?? pvUci[0] ?? bm,
+        };
+      }
+      await new Promise((r) => setTimeout(r, 8));
+    }
+    throw new Error("analysis_timeout");
   }
 
-  async evaluatePosition(fen, playedUci, referenceBestUci) {
-    await this.start();
-    const best = await this._analyse(fen);
-    const played = await this._analyse(fen, [playedUci]);
+  async evaluatePair(fen, playedUci, budget, signal) {
+    const best = await this.analyse(fen, {
+      nodes: budget.nodes,
+      signal,
+    });
+    const played = await this.analyse(fen, {
+      rootMoves: [playedUci],
+      nodes: budget.nodes,
+      signal,
+    });
     const cpLoss = best.score.numeric - played.score.numeric;
     const opponentReplyUci = played.pvUci[1] ?? null;
+    return { best, played, cpLoss, opponentReplyUci };
+  }
+
+  /**
+   * Two searches from the position before the move.
+   * The played line uses UCI `searchmoves`, so the score stays in the
+   * mover's POV and pv[1] is the principal opponent reply.
+   */
+  async analyseDecision(fen, playedUci, nodes, signal) {
+    const best = await this._searchFen(fen, nodes, null, signal);
+    const played = await this._searchFen(fen, nodes, playedUci, signal);
+    const cpLoss =
+      best.score?.numeric === undefined || played.score?.numeric === undefined
+        ? null
+        : best.score.numeric - played.score.numeric;
     return {
       best,
       played,
       cpLoss,
-      referenceBestUci,
-      opponentReplyUci,
-      engineVersion: this.engineVersion,
-      engineSha256: this.engineSha256,
+      opponentReplyUci: played.pvUci[1] ?? null,
+      nodesRequested: nodes,
     };
+  }
+
+  async clearHash(signal) {
+    await this._command("setoption name Clear Hash", null, { signal, timeoutMs: 20_000 });
+    await this._command("isready", /readyok/, { signal, timeoutMs: 20_000 });
+  }
+
+  async _searchFen(fen, nodes, searchMove, signal) {
+    if (this._dead) await this.restart();
+    await this.start();
+    await this.clearHash(signal);
+    this.lines = [];
+    const go = searchMove
+      ? `go nodes ${nodes} searchmoves ${searchMove}`
+      : `go nodes ${nodes}`;
+    this.proc.stdin.write(`position fen ${fen}\n${go}\n`);
+    const timeoutMs = nodes >= 500_000 ? 300_000 : 120_000;
+    const start = Date.now();
+    let lastInfo = null;
+    while (Date.now() - start < timeoutMs) {
+      if (signal?.aborted) throw new Error("aborted");
+      if (this._dead) throw new Error("engine_died");
+      for (const l of this.lines) {
+        if (l.startsWith("info ") && l.includes(" score ") && l.includes(" pv ")) {
+          lastInfo = l;
+        }
+      }
+      const bestmove = this.lines.find((l) => l.startsWith("bestmove "));
+      if (bestmove) {
+        if (!lastInfo) throw new Error("no_analysis");
+        const score = parseScore(lastInfo);
+        const pvUci = parsePv(lastInfo);
+        const depthM = lastInfo.match(/depth (\d+)/);
+        const nodesM = lastInfo.match(/nodes (\d+)/);
+        const bm = bestmove.split(" ")[1] ?? null;
+        if (!bm || bm === "(none)") throw new Error("no_move");
+        return {
+          score,
+          depth: depthM ? Number(depthM[1]) : undefined,
+          nodes: nodesM ? Number(nodesM[1]) : undefined,
+          pvUci,
+          firstMoveUci: pvUci[0] ?? bm,
+        };
+      }
+      await new Promise((r) => setTimeout(r, 6));
+    }
+    throw new Error("analysis_timeout");
   }
 }

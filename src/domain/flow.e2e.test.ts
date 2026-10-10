@@ -38,6 +38,15 @@ describe("flow CCT → eval → profile → next", () => {
       engineVersion: "Test Engine",
       engineSha256: "abc",
       evalBudgetId: "nodes-80k-v1",
+      evalInitialBudgetId: "nodes-80k-v1",
+      evalFinalBudgetId: "nodes-80k-v1",
+      evalEscalated: false,
+      evalEscalationReason: null,
+      evalInitialStatus: "verified_best",
+      evalFinalStatus: "verified_best",
+      evalCriterionVersion: "engine-validated-v2",
+      evalPipelineVersion: "eval-pipeline-v0.2.1",
+      cacheHit: false,
       error: null,
     });
 

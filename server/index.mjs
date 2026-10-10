@@ -1,27 +1,38 @@
 import http from "node:http";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { Chess } from "chess.js";
-import { StockfishPool, EVAL_BUDGET } from "./stockfish.mjs";
-import { classifyEngineResult } from "../shared/evaluation/classify.js";
+import { StockfishEngine } from "./stockfish.mjs";
+import { EvalCache, sanitizeCacheDir } from "./cache.js";
+import { EvalMetrics } from "./metrics.js";
+import { EvaluationQueue } from "./queue.js";
+import { runEvaluation } from "./evaluator.mjs";
+import { BUDGET_SHALLOW } from "../shared/evaluation/budgets.js";
+import { createStore } from "./transfer/store.mjs";
+import { createTransferRouter } from "./transfer/routes.mjs";
+import { PLAYER_USERNAME } from "../shared/transfer/constants.js";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const ROOT = path.join(__dirname, "..");
+const CACHE_DIR = process.env.ENGINE_CACHE_DIR ?? path.join(ROOT, "data/engine-cache");
+const METRICS_FILE = path.join(CACHE_DIR, "metrics.json");
 
 const PORT = Number(process.env.ENGINE_PORT ?? 8787);
 const ENGINE_PATH = process.env.STOCKFISH_PATH ?? "stockfish";
+const MAX_QUEUE = Number(process.env.ENGINE_MAX_QUEUE ?? 32);
+const JOB_TIMEOUT_MS = Number(process.env.ENGINE_JOB_TIMEOUT_MS ?? 120_000);
 
-let pool = null;
+let engine = null;
 let engineAvailable = false;
+const cache = new EvalCache(CACHE_DIR);
+const metrics = new EvalMetrics(METRICS_FILE);
+const queue = new EvaluationQueue({ maxQueue: MAX_QUEUE, jobTimeoutMs: JOB_TIMEOUT_MS });
+
+sanitizeCacheDir(CACHE_DIR);
 
 function json(res, status, body) {
   res.writeHead(status, { "Content-Type": "application/json" });
   res.end(JSON.stringify(body));
-}
-
-function parseUci(fen, uci) {
-  const chess = new Chess(fen);
-  const move = chess.move({
-    from: uci.slice(0, 2),
-    to: uci.slice(2, 4),
-    promotion: uci.length > 4 ? uci[4] : undefined,
-  });
-  return move;
 }
 
 function uciFromSan(fen, san) {
@@ -31,9 +42,19 @@ function uciFromSan(fen, san) {
   return move.from + move.to + (move.promotion ?? "");
 }
 
-function sanFromUci(fen, uci) {
-  const move = parseUci(fen, uci);
-  return move?.san ?? null;
+function isLegalUci(fen, uci) {
+  try {
+    const chess = new Chess(fen);
+    return (
+      chess.move({
+        from: uci.slice(0, 2),
+        to: uci.slice(2, 4),
+        promotion: uci.length > 4 ? uci[4] : undefined,
+      }) !== null
+    );
+  } catch {
+    return false;
+  }
 }
 
 function opponentReplySan(fen, playedUci, replyUci) {
@@ -45,13 +66,20 @@ function opponentReplySan(fen, playedUci, replyUci) {
       to: playedUci.slice(2, 4),
       promotion: playedUci.length > 4 ? playedUci[4] : undefined,
     });
-    return sanFromUci(chess.fen(), replyUci);
+    const c2 = new Chess(chess.fen());
+    const m = c2.move({
+      from: replyUci.slice(0, 2),
+      to: replyUci.slice(2, 4),
+      promotion: replyUci.length > 4 ? replyUci[4] : undefined,
+    });
+    return m?.san ?? null;
   } catch {
     return null;
   }
 }
 
-function unverifiedPayload(error) {
+function unverifiedPayload(error, extra = {}) {
+  metrics.recordError();
   return {
     ok: true,
     status: "unverified",
@@ -61,23 +89,33 @@ function unverifiedPayload(error) {
     played: null,
     opponentReplyUci: null,
     opponentReplySan: null,
-    engineVersion: pool?.engineVersion ?? null,
-    engineSha256: pool?.engineSha256 ?? null,
-    evalBudgetId: EVAL_BUDGET.id,
+    engineVersion: engine?.engineVersion ?? null,
+    engineSha256: engine?.engineSha256 ?? null,
+    evalBudgetId: BUDGET_SHALLOW.id,
+    evalInitialBudgetId: BUDGET_SHALLOW.id,
+    evalFinalBudgetId: BUDGET_SHALLOW.id,
+    evalEscalated: false,
+    evalEscalationReason: null,
+    evalInitialStatus: null,
+    evalFinalStatus: "unverified",
+    evalCriterionVersion: "engine-validated-v2",
+    evalPipelineVersion: "eval-pipeline-v0.2.1",
     nodesUsed: 0,
+    cacheHit: false,
     error,
+    ...extra,
   };
 }
 
-async function handleEvaluate(body) {
+async function handleEvaluate(body, signal) {
   const { fen, moveSan, moveUci, referenceBestUci } = body;
   if (!fen || typeof fen !== "string") {
     return unverifiedPayload("invalid_fen");
   }
 
-  let chess;
   try {
-    chess = new Chess(fen);
+    // eslint-disable-next-line no-new
+    new Chess(fen);
   } catch {
     return unverifiedPayload("invalid_fen");
   }
@@ -85,6 +123,7 @@ async function handleEvaluate(body) {
   const uci =
     moveUci ??
     (moveSan && typeof moveSan === "string" ? uciFromSan(fen, moveSan) : null);
+
   if (!uci) {
     return {
       ok: true,
@@ -97,13 +136,22 @@ async function handleEvaluate(body) {
       opponentReplySan: null,
       engineVersion: null,
       engineSha256: null,
-      evalBudgetId: EVAL_BUDGET.id,
+      evalBudgetId: BUDGET_SHALLOW.id,
+      evalInitialBudgetId: BUDGET_SHALLOW.id,
+      evalFinalBudgetId: BUDGET_SHALLOW.id,
+      evalEscalated: false,
+      evalEscalationReason: null,
+      evalInitialStatus: "illegal",
+      evalFinalStatus: "illegal",
+      evalCriterionVersion: "engine-validated-v2",
+      evalPipelineVersion: "eval-pipeline-v0.2.1",
       nodesUsed: 0,
+      cacheHit: false,
       error: null,
     };
   }
 
-  if (!parseUci(fen, uci)) {
+  if (!isLegalUci(fen, uci)) {
     return {
       ok: true,
       status: "illegal",
@@ -115,58 +163,69 @@ async function handleEvaluate(body) {
       opponentReplySan: null,
       engineVersion: null,
       engineSha256: null,
-      evalBudgetId: EVAL_BUDGET.id,
+      evalBudgetId: BUDGET_SHALLOW.id,
+      evalInitialBudgetId: BUDGET_SHALLOW.id,
+      evalFinalBudgetId: BUDGET_SHALLOW.id,
+      evalEscalated: false,
+      evalEscalationReason: null,
+      evalInitialStatus: "illegal",
+      evalFinalStatus: "illegal",
+      evalCriterionVersion: "engine-validated-v2",
+      evalPipelineVersion: "eval-pipeline-v0.2.1",
       nodesUsed: 0,
+      cacheHit: false,
       error: null,
     };
   }
 
-  if (!engineAvailable || !pool) {
+  if (!engineAvailable || !engine) {
     return unverifiedPayload("engine_unavailable");
   }
 
   try {
-    const raw = await pool.evaluatePosition(
-      fen,
-      uci,
-      referenceBestUci ?? null
+    const result = await queue.enqueue(
+      async ({ signal: jobSignal }) => {
+        try {
+          return await runEvaluation({
+            fen,
+            playedUci: uci,
+            referenceBestUci: referenceBestUci ?? null,
+            engine,
+            cache,
+            metrics,
+            signal: jobSignal,
+          });
+        } catch (err) {
+          if (String(err.message).includes("engine_died")) {
+            await engine.restart();
+          }
+          throw err;
+        }
+      },
+      { signal }
     );
-    const status = classifyEngineResult({
-      fen,
-      playedUci: uci,
-      referenceBestUci: referenceBestUci ?? null,
-      best: {
-        score: raw.best.score,
-        pvUci: raw.best.pvUci,
-        firstMoveUci: raw.best.firstMoveUci,
-      },
-      played: {
-        score: raw.played.score,
-        pvUci: raw.played.pvUci,
-        firstMoveUci: uci,
-      },
-      cpLoss: raw.cpLoss,
-    });
 
     return {
-      ok: true,
-      status,
-      verified: status !== "unverified",
-      cpLoss: raw.cpLoss,
-      best: raw.best,
-      played: raw.played,
-      opponentReplyUci: raw.opponentReplyUci,
-      opponentReplySan: opponentReplySan(fen, uci, raw.opponentReplyUci),
-      engineVersion: raw.engineVersion,
-      engineSha256: raw.engineSha256,
-      evalBudgetId: EVAL_BUDGET.id,
-      nodesUsed: EVAL_BUDGET.nodes * 2,
-      error: null,
+      ...result,
+      opponentReplySan: opponentReplySan(fen, uci, result.opponentReplyUci),
     };
   } catch (err) {
-    return unverifiedPayload(String(err.message ?? err));
+    const msg = String(err.message ?? err);
+    if (msg === "queue_full" || msg === "aborted" || msg.includes("timeout")) {
+      return unverifiedPayload(msg);
+    }
+    return unverifiedPayload(msg);
   }
 }
+
+const transferStore = createStore(path.join(ROOT, "data/transfer"));
+transferStore.ensure();
+const handleTransfer = createTransferRouter({
+  store: transferStore,
+  fixturesDir: path.join(ROOT, "fixtures/chesscom"),
+  enginePath: ENGINE_PATH,
+  username: PLAYER_USERNAME,
+});
 
 const server = http.createServer(async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -178,17 +237,29 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+  if (req.url?.startsWith("/api/transfer")) {
+    const handled = await handleTransfer(req, res);
+    if (handled) return;
+  }
+
   if (req.url === "/health" && req.method === "GET") {
     json(res, 200, {
       ok: true,
       engineAvailable,
       enginePath: ENGINE_PATH,
-      evalBudget: EVAL_BUDGET,
+      queueSize: queue.size(),
+      metrics: metrics.snapshot(),
+      cacheDir: CACHE_DIR,
     });
     return;
   }
 
   if (req.url === "/api/evaluate" && req.method === "POST") {
+    const abort = new AbortController();
+    req.on("close", () => {
+      if (!res.writableEnded) abort.abort();
+    });
+
     const chunks = [];
     for await (const c of req) chunks.push(c);
     let body = {};
@@ -198,7 +269,7 @@ const server = http.createServer(async (req, res) => {
       json(res, 400, { ok: false, error: "invalid json" });
       return;
     }
-    const result = await handleEvaluate(body);
+    const result = await handleEvaluate(body, abort.signal);
     json(res, 200, result);
     return;
   }
@@ -207,11 +278,11 @@ const server = http.createServer(async (req, res) => {
 });
 
 async function boot() {
-  pool = new StockfishPool(ENGINE_PATH);
+  engine = new StockfishEngine(ENGINE_PATH);
   try {
-    await pool.start();
+    await engine.start();
     engineAvailable = true;
-    console.log(`Stockfish ready: ${pool.engineVersion} (${ENGINE_PATH})`);
+    console.log(`Stockfish ready: ${engine.engineVersion} (${ENGINE_PATH})`);
   } catch (err) {
     engineAvailable = false;
     console.warn(
@@ -226,7 +297,11 @@ async function boot() {
 
 boot();
 
-process.on("SIGINT", async () => {
-  await pool?.stop();
+async function shutdown() {
+  await engine?.stop();
+  server.close();
   process.exit(0);
-});
+}
+
+process.on("SIGINT", shutdown);
+process.on("SIGTERM", shutdown);

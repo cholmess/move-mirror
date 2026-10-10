@@ -20,7 +20,7 @@ export interface SparringAgentService {
   }): Promise<{ fen: string; narrative: string; expectedStress: number }>;
 }
 
-/** Sincronización periódica con Chess.com. */
+/** Implementado en v0.3 por el bucle de transferencia (`server/transfer`). */
 export interface GameSyncService {
   syncLatestGames(username: string, since?: string): Promise<{ imported: number }>;
 }
@@ -34,7 +34,7 @@ export interface ExerciseGenerationService {
   ): Promise<{ exerciseIds: string[] }>;
 }
 
-/** Evaluación de transferencia en partidas posteriores. */
+/** Implementado en v0.3: detector allowed-forcing-reply-transfer-v1. */
 export interface TransferEvaluationService {
   measurePatternRate(
     playerId: string,
@@ -55,8 +55,6 @@ export interface AdaptiveModelService {
 export const FUTURE_MODULES = {
   defenseLab: "Defense Lab",
   sparringAgent: "Sparring Agent",
-  gameSync: "Chess.com sync",
-  exerciseGen: "Exercise generation",
-  transferEval: "Transfer evaluation",
+  exerciseGen: "Exercise generation into the live trainer",
   adaptiveModel: "Learned adaptive ranking",
 } as const;

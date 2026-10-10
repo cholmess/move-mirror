@@ -1,0 +1,6 @@
+{
+  "engineVersion": "Stockfish 19",
+  "engineSha256": "3336d62e0ca4f5e1d0fdd892e03f19b8674611dd624b4b0afe454ae1e490fb51",
+  "analysisFingerprint": "transfer-analysis-v1|allowed-forcing-reply-transfer-v1|fase1-filter-v1|phase-proxy-material-v1|transfer-confirm-v1|nodes-80k-v1|80000|nodes-500k-v1|500000|120|105-135|1|128|true|uci-searchmoves|100000|side-to-move",
+  "usedFor": "transfer"
+}

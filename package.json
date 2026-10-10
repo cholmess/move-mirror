@@ -1,7 +1,7 @@
 {
   "name": "move-mirror",
   "private": true,
-  "version": "0.2.0",
+  "version": "0.3.0",
   "type": "module",
   "scripts": {
     "dev": "concurrently -n web,engine -c blue,green \"vite\" \"node server/index.mjs\"",
@@ -11,7 +11,12 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "sync:fase2": "node scripts/sync-fase2-data.mjs"
+    "sync:fase2": "node scripts/sync-fase2-data.mjs",
+    "cache:clear-engine": "node scripts/clear-engine-cache.mjs",
+    "test:e2e": "playwright test",
+    "transfer:manifest": "node scripts/build-baseline-manifest.mjs",
+    "transfer:baseline": "node scripts/run-transfer-baseline.mjs",
+    "transfer:sync": "node scripts/run-transfer-sync.mjs"
   },
   "dependencies": {
     "chess.js": "^1.0.0-beta.8",
@@ -27,6 +32,7 @@
     "typescript": "^5.6.3",
     "vite": "^5.4.10",
     "vitest": "^2.1.4",
-    "concurrently": "^9.1.0"
+    "concurrently": "^9.1.0",
+    "@playwright/test": "^1.49.0"
   }
 }

@@ -1,0 +1,52 @@
+[
+  {
+    "gameId": "fixture-valid-1",
+    "url": "https://www.chess.com/game/live/900001",
+    "reason": "duplicate_game_id",
+    "detail": "Mismo game id en la sincronización.",
+    "cohortId": "transfer-20261010-1",
+    "syncedAt": "2026-10-10T07:14:08.588Z",
+    "rulesVersion": "fase1-filter-v1",
+    "weaknessInference": null
+  },
+  {
+    "gameId": "fixture-blitz",
+    "url": "https://www.chess.com/game/live/900002",
+    "reason": "time_control_not_600",
+    "detail": "time_control=180",
+    "cohortId": "transfer-20261010-1",
+    "syncedAt": "2026-10-10T07:14:08.588Z",
+    "rulesVersion": "fase1-filter-v1",
+    "weaknessInference": null
+  },
+  {
+    "gameId": "fixture-960",
+    "url": "https://www.chess.com/game/live/900003",
+    "reason": "not_standard_chess",
+    "detail": "rules=chess960",
+    "cohortId": "transfer-20261010-1",
+    "syncedAt": "2026-10-10T07:14:08.588Z",
+    "rulesVersion": "fase1-filter-v1",
+    "weaknessInference": null
+  },
+  {
+    "gameId": "fixture-short",
+    "url": "https://www.chess.com/game/live/900004",
+    "reason": "too_few_plies",
+    "detail": "0–8 medias jugadas: partida de uno a cuatro movimientos.",
+    "cohortId": "transfer-20261010-1",
+    "syncedAt": "2026-10-10T07:14:08.588Z",
+    "rulesVersion": "fase1-filter-v1",
+    "weaknessInference": null
+  },
+  {
+    "gameId": "fixture-old",
+    "url": "https://www.chess.com/game/live/900005",
+    "reason": "not_after_baseline_cutoff",
+    "detail": "No es posterior al corte del baseline.",
+    "cohortId": "transfer-20261010-1",
+    "syncedAt": "2026-10-10T07:14:08.588Z",
+    "rulesVersion": "fase1-filter-v1",
+    "weaknessInference": null
+  }
+]

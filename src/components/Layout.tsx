@@ -7,6 +7,7 @@ const links = [
   { to: "/lesson", label: "Microlección" },
   { to: "/train", label: "Entrenar" },
   { to: "/profile", label: "Perfil" },
+  { to: "/transfer", label: "Transferencia" },
 ];
 
 export function Layout() {

@@ -1,0 +1,71 @@
+{
+  "version": "0.3.0",
+  "lastSyncedAt": "2026-10-10T08:15:32.041Z",
+  "lastError": null,
+  "lastSource": "live",
+  "pedagogy": {
+    "policyId": "pedagogy-adapt-v1",
+    "languagePolicyId": "transfer-language-v1",
+    "candidate": {
+      "id": "allowed-piece-capture-review",
+      "note": "Candidato para revisión futura: en varios eventos la respuesta del rival captura una pieza. v0.3 no abre esa lección.",
+      "teachAutomatically": false
+    },
+    "replacesLesson": false,
+    "teachNewPattern": false,
+    "updatesExerciseAlphaBeta": false,
+    "action": "continue_cct",
+    "title": "Continuar con CCT + refutación",
+    "explanation": "Es conveniente mantener esta lección y continuar con CCT + refutación."
+  },
+  "trainingSnapshot": {
+    "verified_best": 0,
+    "verified_acceptable": 0,
+    "playable_inexact": 0,
+    "incorrect": 0,
+    "unverified": 0,
+    "attempts": 0,
+    "mastery": 0.7333333333333334,
+    "nextReviewAt": null
+  },
+  "exerciseCandidates": [
+    {
+      "id": "cand-9aa6d1ca-c026-11f1-9982-0d13da01000f:28",
+      "key": "9aa6d1ca-c026-11f1-9982-0d13da01000f:28",
+      "gameId": "9aa6d1ca-c026-11f1-9982-0d13da01000f",
+      "url": "https://www.chess.com/game/live/184819637340",
+      "cohortId": "transfer-20261010-2",
+      "fen": "r2qk2r/p1p2p1p/Q1p2np1/3b4/1b1Pp3/1PB1P3/P4PPP/RN2K1NR b KQkq - 3 14",
+      "moveUci": "b4c3",
+      "moveSan": "Bxc3+",
+      "ply": 28,
+      "color": "black",
+      "severity": "notable",
+      "qualityId": "transfer-exercise-quality-v1",
+      "excludedFromCohortRemeasurement": true,
+      "autoAddedToTrainer": false,
+      "accepted": true
+    }
+  ],
+  "archives": [
+    {
+      "url": "https://api.chess.com/pub/player/cholmess21/games/2026/10",
+      "sha256": "bc6ee32fab13815f73a081718a2d0be6e018893cdcd2d4d697dd0c7831f5e22c",
+      "bytes": 3452,
+      "offline": true,
+      "fetchedAt": "2026-10-10T07:14:08.588Z"
+    },
+    {
+      "url": "https://api.chess.com/pub/player/cholmess21/games/archives",
+      "sha256": "a9079506f1972c16c3cdce6c562df0a8d365cbe1d6be82ff791bfc50a66697d7",
+      "bytes": 2594,
+      "fetchedAt": "2026-10-10T07:53:45.872Z"
+    },
+    {
+      "url": "https://api.chess.com/pub/player/cholmess21/games/2026/10",
+      "sha256": "2f481bc0f7555406d7572109a5ed4d320082bac4c30124c41795cddb59873546",
+      "bytes": 317838,
+      "fetchedAt": "2026-10-10T07:53:45.872Z"
+    }
+  ]
+}

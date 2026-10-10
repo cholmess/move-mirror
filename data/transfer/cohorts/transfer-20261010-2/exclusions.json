@@ -1,0 +1,322 @@
+[
+  {
+    "gameId": "ff7155be-bd65-11f1-8bef-2a4af901000f",
+    "url": "https://www.chess.com/game/live/184639979424",
+    "reason": "already_in_baseline",
+    "detail": "La partida ya está en el baseline congelado.",
+    "cohortId": "transfer-20261010-2",
+    "syncedAt": "2026-10-10T07:53:45.872Z",
+    "rulesVersion": "fase1-filter-v1",
+    "weaknessInference": null
+  },
+  {
+    "gameId": "9796b20d-bd68-11f1-a696-76c0b701000f",
+    "url": "https://www.chess.com/game/live/184640529156",
+    "reason": "already_in_baseline",
+    "detail": "La partida ya está en el baseline congelado.",
+    "cohortId": "transfer-20261010-2",
+    "syncedAt": "2026-10-10T07:53:45.872Z",
+    "rulesVersion": "fase1-filter-v1",
+    "weaknessInference": null
+  },
+  {
+    "gameId": "bdcdbd92-bd70-11f1-8bef-2a4af901000f",
+    "url": "https://www.chess.com/game/live/184642319430",
+    "reason": "already_in_baseline",
+    "detail": "La partida ya está en el baseline congelado.",
+    "cohortId": "transfer-20261010-2",
+    "syncedAt": "2026-10-10T07:53:45.872Z",
+    "rulesVersion": "fase1-filter-v1",
+    "weaknessInference": null
+  },
+  {
+    "gameId": "9e5e130e-bd73-11f1-a3d5-fa8da001000f",
+    "url": "https://www.chess.com/game/live/184642978282",
+    "reason": "already_in_baseline",
+    "detail": "La partida ya está en el baseline congelado.",
+    "cohortId": "transfer-20261010-2",
+    "syncedAt": "2026-10-10T07:53:45.872Z",
+    "rulesVersion": "fase1-filter-v1",
+    "weaknessInference": null
+  },
+  {
+    "gameId": "830e0cd6-bda7-11f1-9651-fbb1b701000f",
+    "url": "https://www.chess.com/game/live/184658027118",
+    "reason": "already_in_baseline",
+    "detail": "La partida ya está en el baseline congelado.",
+    "cohortId": "transfer-20261010-2",
+    "syncedAt": "2026-10-10T07:53:45.872Z",
+    "rulesVersion": "fase1-filter-v1",
+    "weaknessInference": null
+  },
+  {
+    "gameId": "9ce10922-bde5-11f1-a696-76c0b701000f",
+    "url": "https://www.chess.com/game/live/184677086942",
+    "reason": "already_in_baseline",
+    "detail": "La partida ya está en el baseline congelado.",
+    "cohortId": "transfer-20261010-2",
+    "syncedAt": "2026-10-10T07:53:45.872Z",
+    "rulesVersion": "fase1-filter-v1",
+    "weaknessInference": null
+  },
+  {
+    "gameId": "ec12f884-bde6-11f1-a696-76c0b701000f",
+    "url": "https://www.chess.com/game/live/184677358534",
+    "reason": "already_in_baseline",
+    "detail": "La partida ya está en el baseline congelado.",
+    "cohortId": "transfer-20261010-2",
+    "syncedAt": "2026-10-10T07:53:45.872Z",
+    "rulesVersion": "fase1-filter-v1",
+    "weaknessInference": null
+  },
+  {
+    "gameId": "4d9dc1a8-bde9-11f1-a3d5-fa8da001000f",
+    "url": "https://www.chess.com/game/live/184677834710",
+    "reason": "already_in_baseline",
+    "detail": "La partida ya está en el baseline congelado.",
+    "cohortId": "transfer-20261010-2",
+    "syncedAt": "2026-10-10T07:53:45.872Z",
+    "rulesVersion": "fase1-filter-v1",
+    "weaknessInference": null
+  },
+  {
+    "gameId": "b877dc13-be2b-11f1-8dbb-feb0c301000f",
+    "url": "https://www.chess.com/game/live/184689261746",
+    "reason": "already_in_baseline",
+    "detail": "La partida ya está en el baseline congelado.",
+    "cohortId": "transfer-20261010-2",
+    "syncedAt": "2026-10-10T07:53:45.872Z",
+    "rulesVersion": "fase1-filter-v1",
+    "weaknessInference": null
+  },
+  {
+    "gameId": "b859fe45-be2c-11f1-9982-0d13da01000f",
+    "url": "https://www.chess.com/game/live/184689482766",
+    "reason": "already_in_baseline",
+    "detail": "La partida ya está en el baseline congelado.",
+    "cohortId": "transfer-20261010-2",
+    "syncedAt": "2026-10-10T07:53:45.872Z",
+    "rulesVersion": "fase1-filter-v1",
+    "weaknessInference": null
+  },
+  {
+    "gameId": "79f07c8c-be84-11f1-8dbb-feb0c301000f",
+    "url": "https://www.chess.com/game/live/184715475136",
+    "reason": "already_in_baseline",
+    "detail": "La partida ya está en el baseline congelado.",
+    "cohortId": "transfer-20261010-2",
+    "syncedAt": "2026-10-10T07:53:45.872Z",
+    "rulesVersion": "fase1-filter-v1",
+    "weaknessInference": null
+  },
+  {
+    "gameId": "ac70d34e-be8c-11f1-9651-fbb1b701000f",
+    "url": "https://www.chess.com/game/live/184718188366",
+    "reason": "already_in_baseline",
+    "detail": "La partida ya está en el baseline congelado.",
+    "cohortId": "transfer-20261010-2",
+    "syncedAt": "2026-10-10T07:53:45.872Z",
+    "rulesVersion": "fase1-filter-v1",
+    "weaknessInference": null
+  },
+  {
+    "gameId": "147e70a4-be8e-11f1-a3d5-fa8da001000f",
+    "url": "https://www.chess.com/game/live/184718641776",
+    "reason": "already_in_baseline",
+    "detail": "La partida ya está en el baseline congelado.",
+    "cohortId": "transfer-20261010-2",
+    "syncedAt": "2026-10-10T07:53:45.872Z",
+    "rulesVersion": "fase1-filter-v1",
+    "weaknessInference": null
+  },
+  {
+    "gameId": "48306e01-be8f-11f1-a696-76c0b701000f",
+    "url": "https://www.chess.com/game/live/184719026960",
+    "reason": "already_in_baseline",
+    "detail": "La partida ya está en el baseline congelado.",
+    "cohortId": "transfer-20261010-2",
+    "syncedAt": "2026-10-10T07:53:45.872Z",
+    "rulesVersion": "fase1-filter-v1",
+    "weaknessInference": null
+  },
+  {
+    "gameId": "f30bc98d-be90-11f1-8c7a-e0caaf01000f",
+    "url": "https://www.chess.com/game/live/184719553924",
+    "reason": "already_in_baseline",
+    "detail": "La partida ya está en el baseline congelado.",
+    "cohortId": "transfer-20261010-2",
+    "syncedAt": "2026-10-10T07:53:45.872Z",
+    "rulesVersion": "fase1-filter-v1",
+    "weaknessInference": null
+  },
+  {
+    "gameId": "35938919-be92-11f1-be75-03cfdc01000f",
+    "url": "https://www.chess.com/game/live/184719941270",
+    "reason": "already_in_baseline",
+    "detail": "La partida ya está en el baseline congelado.",
+    "cohortId": "transfer-20261010-2",
+    "syncedAt": "2026-10-10T07:53:45.872Z",
+    "rulesVersion": "fase1-filter-v1",
+    "weaknessInference": null
+  },
+  {
+    "gameId": "ade2d52d-be93-11f1-8bef-2a4af901000f",
+    "url": "https://www.chess.com/game/live/184720381182",
+    "reason": "already_in_baseline",
+    "detail": "La partida ya está en el baseline congelado.",
+    "cohortId": "transfer-20261010-2",
+    "syncedAt": "2026-10-10T07:53:45.872Z",
+    "rulesVersion": "fase1-filter-v1",
+    "weaknessInference": null
+  },
+  {
+    "gameId": "2dfcf3ab-be96-11f1-94d8-40057201000f",
+    "url": "https://www.chess.com/game/live/184721117102",
+    "reason": "already_in_baseline",
+    "detail": "La partida ya está en el baseline congelado.",
+    "cohortId": "transfer-20261010-2",
+    "syncedAt": "2026-10-10T07:53:45.872Z",
+    "rulesVersion": "fase1-filter-v1",
+    "weaknessInference": null
+  },
+  {
+    "gameId": "dc1fcfa9-be96-11f1-9982-0d13da01000f",
+    "url": "https://www.chess.com/game/live/184721316230",
+    "reason": "already_in_baseline",
+    "detail": "La partida ya está en el baseline congelado.",
+    "cohortId": "transfer-20261010-2",
+    "syncedAt": "2026-10-10T07:53:45.872Z",
+    "rulesVersion": "fase1-filter-v1",
+    "weaknessInference": null
+  },
+  {
+    "gameId": "184a87b2-be98-11f1-b809-a9c32901000f",
+    "url": "https://www.chess.com/game/live/184721674368",
+    "reason": "already_in_baseline",
+    "detail": "La partida ya está en el baseline congelado.",
+    "cohortId": "transfer-20261010-2",
+    "syncedAt": "2026-10-10T07:53:45.872Z",
+    "rulesVersion": "fase1-filter-v1",
+    "weaknessInference": null
+  },
+  {
+    "gameId": "499690b9-beb8-11f1-9651-fbb1b701000f",
+    "url": "https://www.chess.com/game/live/184729369264",
+    "reason": "already_in_baseline",
+    "detail": "La partida ya está en el baseline congelado.",
+    "cohortId": "transfer-20261010-2",
+    "syncedAt": "2026-10-10T07:53:45.872Z",
+    "rulesVersion": "fase1-filter-v1",
+    "weaknessInference": null
+  },
+  {
+    "gameId": "bda0eaeb-beba-11f1-b809-a9c32901000f",
+    "url": "https://www.chess.com/game/live/184729808796",
+    "reason": "already_in_baseline",
+    "detail": "La partida ya está en el baseline congelado.",
+    "cohortId": "transfer-20261010-2",
+    "syncedAt": "2026-10-10T07:53:45.872Z",
+    "rulesVersion": "fase1-filter-v1",
+    "weaknessInference": null
+  },
+  {
+    "gameId": "b18fab14-befa-11f1-be75-03cfdc01000f",
+    "url": "https://www.chess.com/game/live/184741346262",
+    "reason": "already_in_baseline",
+    "detail": "La partida ya está en el baseline congelado.",
+    "cohortId": "transfer-20261010-2",
+    "syncedAt": "2026-10-10T07:53:45.872Z",
+    "rulesVersion": "fase1-filter-v1",
+    "weaknessInference": null
+  },
+  {
+    "gameId": "91201186-befc-11f1-a987-563c1101000f",
+    "url": "https://www.chess.com/game/live/184741754464",
+    "reason": "not_after_baseline_cutoff",
+    "detail": "No es posterior al corte del baseline.",
+    "cohortId": "transfer-20261010-2",
+    "syncedAt": "2026-10-10T07:53:45.872Z",
+    "rulesVersion": "fase1-filter-v1",
+    "weaknessInference": null
+  },
+  {
+    "gameId": "a859f631-befc-11f1-983e-eed3f101000f",
+    "url": "https://www.chess.com/game/live/184741774270",
+    "reason": "already_in_baseline",
+    "detail": "La partida ya está en el baseline congelado.",
+    "cohortId": "transfer-20261010-2",
+    "syncedAt": "2026-10-10T07:53:45.872Z",
+    "rulesVersion": "fase1-filter-v1",
+    "weaknessInference": null
+  },
+  {
+    "gameId": "3d37c908-beff-11f1-983e-eed3f101000f",
+    "url": "https://www.chess.com/game/live/184742346134",
+    "reason": "already_in_baseline",
+    "detail": "La partida ya está en el baseline congelado.",
+    "cohortId": "transfer-20261010-2",
+    "syncedAt": "2026-10-10T07:53:45.872Z",
+    "rulesVersion": "fase1-filter-v1",
+    "weaknessInference": null
+  },
+  {
+    "gameId": "32df4b00-c0f9-11f1-8c7a-e0caaf01000f",
+    "url": "https://www.chess.com/game/live/184872228748",
+    "reason": "too_few_plies",
+    "detail": "0–8 medias jugadas: partida de uno a cuatro movimientos.",
+    "cohortId": "transfer-20261010-2",
+    "syncedAt": "2026-10-10T07:53:45.872Z",
+    "rulesVersion": "fase1-filter-v1",
+    "weaknessInference": null
+  },
+  {
+    "gameId": "e5fe04a6-c0fb-11f1-b809-a9c32901000f",
+    "url": "https://www.chess.com/game/live/184872990824",
+    "reason": "early_resign_or_abandon",
+    "detail": "9–20 medias jugadas con resigned o abandoned. No se interpreta como debilidad ajedrecística.",
+    "cohortId": "transfer-20261010-2",
+    "syncedAt": "2026-10-10T07:53:45.872Z",
+    "rulesVersion": "fase1-filter-v1",
+    "weaknessInference": null
+  },
+  {
+    "gameId": "7a69dc7b-c16d-11f1-9651-fbb1b701000f",
+    "url": "https://www.chess.com/game/live/184896015698",
+    "reason": "early_resign_or_abandon",
+    "detail": "9–20 medias jugadas con resigned o abandoned. No se interpreta como debilidad ajedrecística.",
+    "cohortId": "transfer-20261010-2",
+    "syncedAt": "2026-10-10T07:53:45.872Z",
+    "rulesVersion": "fase1-filter-v1",
+    "weaknessInference": null
+  },
+  {
+    "gameId": "91c76873-c276-11f1-9651-fbb1b701000f",
+    "url": "https://www.chess.com/game/live/184967663522",
+    "reason": "time_control_not_600",
+    "detail": "time_control=180",
+    "cohortId": "transfer-20261010-2",
+    "syncedAt": "2026-10-10T07:53:45.872Z",
+    "rulesVersion": "fase1-filter-v1",
+    "weaknessInference": null
+  },
+  {
+    "gameId": "2af63267-c325-11f1-91e9-76c88101000f",
+    "url": "https://www.chess.com/game/live/185009877398",
+    "reason": "too_few_plies",
+    "detail": "0–8 medias jugadas: partida de uno a cuatro movimientos.",
+    "cohortId": "transfer-20261010-2",
+    "syncedAt": "2026-10-10T07:53:45.872Z",
+    "rulesVersion": "fase1-filter-v1",
+    "weaknessInference": null
+  },
+  {
+    "gameId": "98909400-c46c-11f1-8c7a-e0caaf01000f",
+    "url": "https://www.chess.com/game/live/185093188432",
+    "reason": "time_control_not_600",
+    "detail": "time_control=180",
+    "cohortId": "transfer-20261010-2",
+    "syncedAt": "2026-10-10T07:53:45.872Z",
+    "rulesVersion": "fase1-filter-v1",
+    "weaknessInference": null
+  }
+]
