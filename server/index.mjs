@@ -10,6 +10,7 @@ import { runEvaluation } from "./evaluator.mjs";
 import { BUDGET_SHALLOW } from "../shared/evaluation/budgets.js";
 import { createStore } from "./transfer/store.mjs";
 import { createTransferRouter } from "./transfer/routes.mjs";
+import { createDefenseRouter } from "./defense/routes.mjs";
 import { PLAYER_USERNAME } from "../shared/transfer/constants.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -226,6 +227,10 @@ const handleTransfer = createTransferRouter({
   enginePath: ENGINE_PATH,
   username: PLAYER_USERNAME,
 });
+const handleDefense = createDefenseRouter({
+  datasetFile: path.join(ROOT, "data/defense/defense-lab-v1.json"),
+  evaluate: handleEvaluate,
+});
 
 const server = http.createServer(async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -239,6 +244,11 @@ const server = http.createServer(async (req, res) => {
 
   if (req.url?.startsWith("/api/transfer")) {
     const handled = await handleTransfer(req, res);
+    if (handled) return;
+  }
+
+  if (req.url?.startsWith("/api/defense")) {
+    const handled = await handleDefense(req, res);
     if (handled) return;
   }
 

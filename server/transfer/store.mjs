@@ -1,8 +1,22 @@
 import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync, existsSync, readdirSync, appendFileSync } from "node:fs";
 import path from "node:path";
-import { DETECTOR_ID, FINGERPRINT, FILTER_RULES_ID, TRANSFER_VERSION } from "../../shared/transfer/constants.js";
+import {
+  DETECTOR_ID,
+  FINGERPRINT,
+  FILTER_RULES_ID,
+  TRANSFER_ANALYSIS_CONFIG,
+  TRANSFER_VERSION,
+} from "../../shared/transfer/constants.js";
 import { compareMetrics } from "../../shared/transfer/measure.js";
+import {
+  auditCohortExposure,
+  comparabilityWarning,
+  contextSummary,
+  DOSE_PROTOCOL_ID,
+  gameStartTime,
+  VALIDITY_PIPELINE_VERSION,
+} from "../../shared/transfer/intervention.js";
 
 function safeId(id) {
   if (!/^[A-Za-z0-9-]+$/.test(id)) throw new Error("bad_cohort_id");
@@ -41,6 +55,7 @@ function emptyState() {
     lastSource: null,
     pedagogy: null,
     trainingSnapshot: null,
+    intervention: null,
     exerciseCandidates: [],
     archives: [],
   };
@@ -51,6 +66,7 @@ export function createStore(root) {
   const statePath = path.join(root, "state.json");
   const cohortsDir = path.join(root, "cohorts");
   const baselineDir = path.join(root, "baseline");
+  const auditsDir = path.join(root, "audits");
 
   function cohortDir(id) {
     return path.join(cohortsDir, safeId(id));
@@ -100,6 +116,7 @@ export function createStore(root) {
     const games = readGames(id);
     const exclusions = readExclusions(id);
     const metrics = readJson(path.join(cohortDir(id), "metrics.json"), null);
+    const exposureAudit = readJson(path.join(auditsDir, `${safeId(id)}.json`), null);
     const pending = pendingCount(id);
     return {
       ...meta,
@@ -108,6 +125,7 @@ export function createStore(root) {
       exclusions: exclusions.length,
       decisions: games.reduce((sum, game) => sum + (game.ownDecisions ?? 0), 0),
       metrics: metrics ? stripClusters(metrics) : null,
+      exposureAudit,
       analysisComplete: pending === 0 && games.length > 0,
     };
   }
@@ -142,6 +160,7 @@ export function createStore(root) {
       mkdirSync(root, { recursive: true });
       mkdirSync(cohortsDir, { recursive: true });
       mkdirSync(baselineDir, { recursive: true });
+      mkdirSync(auditsDir, { recursive: true });
       if (!existsSync(statePath)) writeJson(statePath, emptyState());
     },
     readManifest() {
@@ -182,6 +201,16 @@ export function createStore(root) {
         analysisFingerprint: FINGERPRINT,
         filterRulesId: FILTER_RULES_ID,
         baselineCohortId: meta.baselineCohortId,
+        purpose: meta.purpose ?? "post-baseline-transfer",
+        qualifiedAt: meta.qualifiedAt ?? null,
+        protocolId: meta.protocolId ?? null,
+        lessonVersion: meta.lessonVersion ?? null,
+        evalCriterionVersion: meta.evalCriterionVersion ?? null,
+        doseEvidenceSnapshot: meta.doseEvidenceSnapshot ?? null,
+        minimumAllowedDate: meta.minimumAllowedDate ?? null,
+        excludedPreInterventionGameIds: meta.excludedPreInterventionGameIds ?? [],
+        validityPipelineVersion: VALIDITY_PIPELINE_VERSION,
+        engineConfiguration: TRANSFER_ANALYSIS_CONFIG,
       };
       writeJson(path.join(cohortDir(full.id), "meta.json"), full);
       writeJson(path.join(cohortDir(full.id), "games.json"), []);
@@ -217,7 +246,18 @@ export function createStore(root) {
       if (exclusions.length) {
         writeJson(path.join(cohortDir(id), "exclusions.json"), readExclusions(id).concat(exclusions));
       }
-      writeJson(path.join(cohortDir(id), "meta.json"), { ...meta, syncedAt: new Date().toISOString() });
+      const excludedPreInterventionGameIds = [
+        ...(meta.excludedPreInterventionGameIds ?? []),
+        ...exclusions
+          .filter((row) => row.reason === "before_intervention_cutoff")
+          .map((row) => row.gameId)
+          .filter(Boolean),
+      ];
+      writeJson(path.join(cohortDir(id), "meta.json"), {
+        ...meta,
+        syncedAt: new Date().toISOString(),
+        excludedPreInterventionGameIds: [...new Set(excludedPreInterventionGameIds)],
+      });
       return { added: fresh.length };
     },
     appendAnalysis(id, record) {
@@ -266,6 +306,16 @@ export function createStore(root) {
     writeBaselineEngine(engine) {
       writeJson(path.join(baselineDir, "engine.json"), engine);
     },
+    auditExposure(id, qualification, auditedAt = new Date().toISOString()) {
+      const audit = auditCohortExposure({
+        cohortId: id,
+        games: readGames(id),
+        qualification,
+        auditedAt,
+      });
+      writeJson(path.join(auditsDir, `${safeId(id)}.json`), audit);
+      return audit;
+    },
     publicState(job = null) {
       this.ensure();
       const state = this.readState();
@@ -283,6 +333,11 @@ export function createStore(root) {
       const baselineMetrics = this.readBaselineMetrics();
       const exclusions = current ? readExclusions(current.id) : [];
       const games = current ? readGames(current.id) : [];
+      const baselineContext = readJson(path.join(baselineDir, "context.json"), null);
+      const cohortContext = current ? contextSummary(games) : null;
+      const contextWarning = baselineContext && cohortContext
+        ? comparabilityWarning(baselineContext, cohortContext)
+        : null;
       let comparison = null;
       if (baselineMetrics && current?.metrics && current.analysisComplete) {
         try {
@@ -320,6 +375,14 @@ export function createStore(root) {
         openCohort: open,
         frozenCohorts: frozen,
         currentCohortId: current?.id ?? null,
+        intervention: state.intervention ?? {
+          protocolId: DOSE_PROTOCOL_ID,
+          qualified: false,
+          qualifiedAt: null,
+        },
+        currentExposureAudit: current?.exposureAudit ?? null,
+        v03ExposureAudit: readJson(path.join(auditsDir, "transfer-20261010-2.json"), null),
+        context: { baseline: baselineContext, cohort: cohortContext, warning: contextWarning },
         includedCount: games.length,
         excludedCount: exclusions.length,
         exclusionCounts: [...grouped.entries()].map(([reason, count]) => ({ reason, count })),
@@ -347,6 +410,10 @@ export function createStore(root) {
           metrics: readJson(path.join(cohortDir(id), "metrics.json"), null),
           frozen: readJson(path.join(cohortDir(id), "frozen.json"), null),
           analysis: [...analysisRecords(id).values()],
+          exposureAudit: readJson(path.join(auditsDir, `${safeId(id)}.json`), null),
+          metricsHash: existsSync(path.join(cohortDir(id), "metrics.json"))
+            ? sha256(readFileSync(path.join(cohortDir(id), "metrics.json"), "utf8"))
+            : null,
         };
       }
       return {
@@ -358,6 +425,12 @@ export function createStore(root) {
         state: this.readState(),
         cohorts,
         public: state,
+        versions: {
+          interventionLog: "intervention-log-v1",
+          doseProtocol: DOSE_PROTOCOL_ID,
+          exposureAudit: "exposure-audit-v1",
+          validityPipeline: VALIDITY_PIPELINE_VERSION,
+        },
       };
     },
     examples(id) {
@@ -385,6 +458,13 @@ function publicGame(game) {
     timeControl: game.timeControl,
     ownDecisions: game.ownDecisions,
     ratings: game.ratings,
+    ratingDifference:
+      Number.isFinite(Number(game.ratings?.own)) && Number.isFinite(Number(game.ratings?.opponent))
+        ? Number(game.ratings.own) - Number(game.ratings.opponent)
+        : null,
+    durationMoves: Math.ceil(Number(game.plies ?? 0) / 2),
+    phaseApproximate: game.decisions?.at(-1)?.phaseProxy ?? null,
+    gameDate: gameStartTime(game) ?? game.endUtc,
     weaknessInference: null,
   };
 }

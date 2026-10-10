@@ -20,14 +20,14 @@ export function fetchTransferState(): Promise<TransferState> {
 export function startTransferSync(source: "live" | "fixtures", training: unknown) {
   return request("/api/transfer/sync", {
     method: "POST",
-    body: JSON.stringify({ source, training }),
+    body: JSON.stringify({ source, training, purpose: "post-intervention-transfer" }),
   });
 }
 
 export function resumeTransfer(training: unknown) {
   return request("/api/transfer/resume", {
     method: "POST",
-    body: JSON.stringify({ training }),
+    body: JSON.stringify({ training, purpose: "post-intervention-transfer" }),
   });
 }
 

@@ -1,6 +1,7 @@
 import type { SkillId } from "../data/skills";
 import type { EvaluationStatus } from "@shared/evaluation/types";
 import { APP_STATE_VERSION } from "../data/constants";
+import type { DefenseLabState } from "./defense";
 
 export type { EvaluationStatus };
 
@@ -77,14 +78,71 @@ export interface UserProgress {
   totalSessionMinutes: number;
 }
 
+export type PedagogyEventType =
+  | "lesson_started"
+  | "lesson_completed"
+  | "exercise_confirmed"
+  | "training_session_started"
+  | "training_session_completed";
+
+export interface PedagogyEvent {
+  id: string;
+  occurredAt: string;
+  eventType: PedagogyEventType;
+  patternId: string;
+  lessonVersion: string | null;
+  exerciseId: string | null;
+  attemptId: string | null;
+  evaluationStatus: EvaluationStatus | null;
+  evalCriterionVersion: string | null;
+  source: "app" | "migration";
+}
+
+export interface InterventionQualification {
+  protocolId: "cct-refutation-dose-v1";
+  patternId: string;
+  qualified: boolean;
+  qualifiedAt: string | null;
+  lessonCompletedAt: string | null;
+  confirmedExercises: number;
+  verifiedSuccesses: number;
+  distinctSessions: number;
+  distinctCalendarDays: number;
+  missingRequirements: string[];
+  evidenceEventIds: string[];
+}
+
 export interface AppStateV2 {
-  version: typeof APP_STATE_VERSION;
+  version: 2;
   username: string;
   attempts: AttemptRecord[];
   skills: Record<SkillId, SkillState>;
   progress: UserProgress;
   updatedAt: string;
   migrationNote?: string;
+}
+
+export interface AppStateV3 {
+  version: 3;
+  username: string;
+  attempts: AttemptRecord[];
+  skills: Record<SkillId, SkillState>;
+  progress: UserProgress;
+  interventionLogVersion: "intervention-log-v1";
+  pedagogyEvents: PedagogyEvent[];
+  interventionQualification: InterventionQualification;
+  migrationReport: {
+    migratedAt: string;
+    recoveredEventIds: string[];
+    incomplete: { kind: string; attemptId?: string | null; reason: string }[];
+  } | null;
+  updatedAt: string;
+  migrationNote?: string;
+}
+
+export interface AppStateV4 extends Omit<AppStateV3, "version"> {
+  version: typeof APP_STATE_VERSION;
+  defenseLab: DefenseLabState;
 }
 
 /** @deprecated */
@@ -109,4 +167,4 @@ export interface AppStateV1 {
   updatedAt: string;
 }
 
-export type AppState = AppStateV2;
+export type AppState = AppStateV4;

@@ -1,0 +1,4464 @@
+{
+  "version": "defense-ranking-v1",
+  "detectorVersion": "defense-opportunity-v1",
+  "selectionVersion": "defense-selection-v1",
+  "generatedAt": "2026-10-10T06:22:59.539Z",
+  "weights": "DEFENSE_SELECTION_WEIGHTS",
+  "minimumQualityScore": 55,
+  "candidates": [
+    {
+      "candidateId": "def-2d6a1945-b44f-11f1-bb1f-e68c2101000f-46",
+      "qualityScore": 30,
+      "tacticalClarityScore": 20,
+      "engineStabilityScore": 18,
+      "severityScore": 15,
+      "motifConfidenceScore": 10,
+      "sourceQualityScore": 10,
+      "baseScore": 103,
+      "diversityAdjustments": {
+        "color": 2,
+        "phase": 2,
+        "resource": 3,
+        "opening": 1
+      },
+      "finalScore": 111,
+      "rank": 1,
+      "selected": true,
+      "scoreDeltaFromCutoff": null,
+      "diversityCategories": [
+        "color",
+        "phase",
+        "resource",
+        "opening"
+      ],
+      "selectionReason": "Seleccionado en el puesto 1: calidad pedagógica 103 y ajuste de diversidad 8.",
+      "disposition": "selected",
+      "reasons": [
+        "Seleccionado en el puesto 1: calidad pedagógica 103 y ajuste de diversidad 8."
+      ]
+    },
+    {
+      "candidateId": "def-0503d84b-bc8b-11f1-983e-eed3f101000f-25",
+      "qualityScore": 30,
+      "tacticalClarityScore": 17,
+      "engineStabilityScore": 14,
+      "severityScore": 15,
+      "motifConfidenceScore": 7,
+      "sourceQualityScore": 10,
+      "baseScore": 93,
+      "diversityAdjustments": {
+        "color": 2,
+        "phase": 0,
+        "resource": 3,
+        "opening": 1
+      },
+      "finalScore": 99,
+      "rank": 2,
+      "selected": true,
+      "scoreDeltaFromCutoff": null,
+      "diversityCategories": [
+        "color",
+        "resource",
+        "opening"
+      ],
+      "selectionReason": "Seleccionado en el puesto 2: calidad pedagógica 93 y ajuste de diversidad 6.",
+      "disposition": "selected",
+      "reasons": [
+        "Seleccionado en el puesto 2: calidad pedagógica 93 y ajuste de diversidad 6."
+      ]
+    },
+    {
+      "candidateId": "def-1bb59532-bd0f-11f1-9651-fbb1b701000f-47",
+      "qualityScore": 30,
+      "tacticalClarityScore": 12,
+      "engineStabilityScore": 18,
+      "severityScore": 15,
+      "motifConfidenceScore": 10,
+      "sourceQualityScore": 10,
+      "baseScore": 95,
+      "diversityAdjustments": {
+        "color": 0,
+        "phase": 0,
+        "resource": 0,
+        "opening": 1
+      },
+      "finalScore": 96,
+      "rank": 3,
+      "selected": true,
+      "scoreDeltaFromCutoff": null,
+      "diversityCategories": [
+        "opening"
+      ],
+      "selectionReason": "Seleccionado en el puesto 3: calidad pedagógica 95 y ajuste de diversidad 1.",
+      "disposition": "selected",
+      "reasons": [
+        "Seleccionado en el puesto 3: calidad pedagógica 95 y ajuste de diversidad 1."
+      ]
+    },
+    {
+      "candidateId": "def-2c046547-b925-11f1-b596-8a56cc01000f-74",
+      "qualityScore": 30,
+      "tacticalClarityScore": 12,
+      "engineStabilityScore": 14,
+      "severityScore": 15,
+      "motifConfidenceScore": 7,
+      "sourceQualityScore": 10,
+      "baseScore": 88,
+      "diversityAdjustments": {
+        "color": 0,
+        "phase": 2,
+        "resource": 3,
+        "opening": 1
+      },
+      "finalScore": 94,
+      "rank": 4,
+      "selected": true,
+      "scoreDeltaFromCutoff": null,
+      "diversityCategories": [
+        "phase",
+        "resource",
+        "opening"
+      ],
+      "selectionReason": "Seleccionado en el puesto 4: calidad pedagógica 88 y ajuste de diversidad 6.",
+      "disposition": "selected",
+      "reasons": [
+        "Seleccionado en el puesto 4: calidad pedagógica 88 y ajuste de diversidad 6."
+      ]
+    },
+    {
+      "candidateId": "def-b0bdf537-ae33-11f1-a51b-ebd42201000f-11",
+      "qualityScore": 30,
+      "tacticalClarityScore": 12,
+      "engineStabilityScore": 14,
+      "severityScore": 15,
+      "motifConfidenceScore": 10,
+      "sourceQualityScore": 10,
+      "baseScore": 91,
+      "diversityAdjustments": {
+        "color": 0,
+        "phase": 2,
+        "resource": 0,
+        "opening": 1
+      },
+      "finalScore": 94,
+      "rank": 5,
+      "selected": true,
+      "scoreDeltaFromCutoff": null,
+      "diversityCategories": [
+        "phase",
+        "opening"
+      ],
+      "selectionReason": "Seleccionado en el puesto 5: calidad pedagógica 91 y ajuste de diversidad 3.",
+      "disposition": "selected",
+      "reasons": [
+        "Seleccionado en el puesto 5: calidad pedagógica 91 y ajuste de diversidad 3."
+      ]
+    },
+    {
+      "candidateId": "def-0a0c100e-adbe-11f1-8acf-f45fe701000f-74",
+      "qualityScore": 30,
+      "tacticalClarityScore": 12,
+      "engineStabilityScore": 14,
+      "severityScore": 15,
+      "motifConfidenceScore": 7,
+      "sourceQualityScore": 10,
+      "baseScore": 88,
+      "diversityAdjustments": {
+        "color": 0,
+        "phase": 0,
+        "resource": 3,
+        "opening": 1
+      },
+      "finalScore": 92,
+      "rank": 6,
+      "selected": true,
+      "scoreDeltaFromCutoff": null,
+      "diversityCategories": [
+        "resource",
+        "opening"
+      ],
+      "selectionReason": "Seleccionado en el puesto 6: calidad pedagógica 88 y ajuste de diversidad 4.",
+      "disposition": "selected",
+      "reasons": [
+        "Seleccionado en el puesto 6: calidad pedagógica 88 y ajuste de diversidad 4."
+      ]
+    },
+    {
+      "candidateId": "def-3fb7013d-acd7-11f1-bbdf-8eeeee01000f-112",
+      "qualityScore": 30,
+      "tacticalClarityScore": 12,
+      "engineStabilityScore": 14,
+      "severityScore": 15,
+      "motifConfidenceScore": 7,
+      "sourceQualityScore": 10,
+      "baseScore": 88,
+      "diversityAdjustments": {
+        "color": 0,
+        "phase": 0,
+        "resource": 3,
+        "opening": 1
+      },
+      "finalScore": 92,
+      "rank": 7,
+      "selected": true,
+      "scoreDeltaFromCutoff": null,
+      "diversityCategories": [
+        "resource",
+        "opening"
+      ],
+      "selectionReason": "Seleccionado en el puesto 7: calidad pedagógica 88 y ajuste de diversidad 4.",
+      "disposition": "selected",
+      "reasons": [
+        "Seleccionado en el puesto 7: calidad pedagógica 88 y ajuste de diversidad 4."
+      ]
+    },
+    {
+      "candidateId": "def-545b74dd-bc3e-11f1-983e-eed3f101000f-22",
+      "qualityScore": 30,
+      "tacticalClarityScore": 12,
+      "engineStabilityScore": 14,
+      "severityScore": 15,
+      "motifConfidenceScore": 10,
+      "sourceQualityScore": 10,
+      "baseScore": 91,
+      "diversityAdjustments": {
+        "color": 0,
+        "phase": 0,
+        "resource": 0,
+        "opening": 1
+      },
+      "finalScore": 92,
+      "rank": 8,
+      "selected": true,
+      "scoreDeltaFromCutoff": null,
+      "diversityCategories": [
+        "opening"
+      ],
+      "selectionReason": "Seleccionado en el puesto 8: calidad pedagógica 91 y ajuste de diversidad 1.",
+      "disposition": "selected",
+      "reasons": [
+        "Seleccionado en el puesto 8: calidad pedagógica 91 y ajuste de diversidad 1."
+      ]
+    },
+    {
+      "candidateId": "def-55cc2e25-ae7f-11f1-8cd6-ece1e601000f-59",
+      "qualityScore": 30,
+      "tacticalClarityScore": 12,
+      "engineStabilityScore": 14,
+      "severityScore": 15,
+      "motifConfidenceScore": 10,
+      "sourceQualityScore": 10,
+      "baseScore": 91,
+      "diversityAdjustments": {
+        "color": 0,
+        "phase": 0,
+        "resource": 0,
+        "opening": 1
+      },
+      "finalScore": 92,
+      "rank": 9,
+      "selected": true,
+      "scoreDeltaFromCutoff": null,
+      "diversityCategories": [
+        "opening"
+      ],
+      "selectionReason": "Seleccionado en el puesto 9: calidad pedagógica 91 y ajuste de diversidad 1.",
+      "disposition": "selected",
+      "reasons": [
+        "Seleccionado en el puesto 9: calidad pedagógica 91 y ajuste de diversidad 1."
+      ]
+    },
+    {
+      "candidateId": "def-5884ba18-b894-11f1-837b-7ca6b701000f-25",
+      "qualityScore": 30,
+      "tacticalClarityScore": 20,
+      "engineStabilityScore": 14,
+      "severityScore": 10,
+      "motifConfidenceScore": 7,
+      "sourceQualityScore": 10,
+      "baseScore": 91,
+      "diversityAdjustments": {
+        "color": 0,
+        "phase": 0,
+        "resource": 0,
+        "opening": 1
+      },
+      "finalScore": 92,
+      "rank": 10,
+      "selected": true,
+      "scoreDeltaFromCutoff": null,
+      "diversityCategories": [
+        "opening"
+      ],
+      "selectionReason": "Seleccionado en el puesto 10: calidad pedagógica 91 y ajuste de diversidad 1.",
+      "disposition": "selected",
+      "reasons": [
+        "Seleccionado en el puesto 10: calidad pedagógica 91 y ajuste de diversidad 1."
+      ]
+    },
+    {
+      "candidateId": "def-f62ae496-bb06-11f1-a095-e68c2101000f-135",
+      "qualityScore": 30,
+      "tacticalClarityScore": 12,
+      "engineStabilityScore": 14,
+      "severityScore": 15,
+      "motifConfidenceScore": 10,
+      "sourceQualityScore": 10,
+      "baseScore": 91,
+      "diversityAdjustments": {
+        "color": 0,
+        "phase": 0,
+        "resource": 0,
+        "opening": 1
+      },
+      "finalScore": 92,
+      "rank": 11,
+      "selected": true,
+      "scoreDeltaFromCutoff": null,
+      "diversityCategories": [
+        "opening"
+      ],
+      "selectionReason": "Seleccionado en el puesto 11: calidad pedagógica 91 y ajuste de diversidad 1.",
+      "disposition": "selected",
+      "reasons": [
+        "Seleccionado en el puesto 11: calidad pedagógica 91 y ajuste de diversidad 1."
+      ]
+    },
+    {
+      "candidateId": "def-3afc4ce0-af9f-11f1-93e5-8500da01000f-41",
+      "qualityScore": 30,
+      "tacticalClarityScore": 20,
+      "engineStabilityScore": 14,
+      "severityScore": 10,
+      "motifConfidenceScore": 3,
+      "sourceQualityScore": 10,
+      "baseScore": 87,
+      "diversityAdjustments": {
+        "color": 0,
+        "phase": 0,
+        "resource": 3,
+        "opening": 1
+      },
+      "finalScore": 91,
+      "rank": 12,
+      "selected": true,
+      "scoreDeltaFromCutoff": null,
+      "diversityCategories": [
+        "resource",
+        "opening"
+      ],
+      "selectionReason": "Seleccionado en el puesto 12: calidad pedagógica 87 y ajuste de diversidad 4.",
+      "disposition": "selected",
+      "reasons": [
+        "Seleccionado en el puesto 12: calidad pedagógica 87 y ajuste de diversidad 4."
+      ]
+    },
+    {
+      "candidateId": "def-004d0ff8-abd5-11f1-bb1f-e68c2101000f-13",
+      "qualityScore": 30,
+      "tacticalClarityScore": 12,
+      "engineStabilityScore": 14,
+      "severityScore": 15,
+      "motifConfidenceScore": 7,
+      "sourceQualityScore": 10,
+      "baseScore": 88,
+      "diversityAdjustments": {
+        "color": 0,
+        "phase": 0,
+        "resource": 0,
+        "opening": 1
+      },
+      "finalScore": 89,
+      "rank": 13,
+      "selected": true,
+      "scoreDeltaFromCutoff": null,
+      "diversityCategories": [
+        "opening"
+      ],
+      "selectionReason": "Seleccionado en el puesto 13: calidad pedagógica 88 y ajuste de diversidad 1.",
+      "disposition": "selected",
+      "reasons": [
+        "Seleccionado en el puesto 13: calidad pedagógica 88 y ajuste de diversidad 1."
+      ]
+    },
+    {
+      "candidateId": "def-2211f289-b764-11f1-a095-e68c2101000f-103",
+      "qualityScore": 30,
+      "tacticalClarityScore": 12,
+      "engineStabilityScore": 14,
+      "severityScore": 15,
+      "motifConfidenceScore": 7,
+      "sourceQualityScore": 10,
+      "baseScore": 88,
+      "diversityAdjustments": {
+        "color": 0,
+        "phase": 0,
+        "resource": 0,
+        "opening": 1
+      },
+      "finalScore": 89,
+      "rank": 14,
+      "selected": true,
+      "scoreDeltaFromCutoff": null,
+      "diversityCategories": [
+        "opening"
+      ],
+      "selectionReason": "Seleccionado en el puesto 14: calidad pedagógica 88 y ajuste de diversidad 1.",
+      "disposition": "selected",
+      "reasons": [
+        "Seleccionado en el puesto 14: calidad pedagógica 88 y ajuste de diversidad 1."
+      ]
+    },
+    {
+      "candidateId": "def-45c030d6-b717-11f1-b596-8a56cc01000f-42",
+      "qualityScore": 30,
+      "tacticalClarityScore": 12,
+      "engineStabilityScore": 14,
+      "severityScore": 15,
+      "motifConfidenceScore": 7,
+      "sourceQualityScore": 10,
+      "baseScore": 88,
+      "diversityAdjustments": {
+        "color": 0,
+        "phase": 0,
+        "resource": 0,
+        "opening": 1
+      },
+      "finalScore": 89,
+      "rank": 15,
+      "selected": true,
+      "scoreDeltaFromCutoff": null,
+      "diversityCategories": [
+        "opening"
+      ],
+      "selectionReason": "Seleccionado en el puesto 15: calidad pedagógica 88 y ajuste de diversidad 1.",
+      "disposition": "selected",
+      "reasons": [
+        "Seleccionado en el puesto 15: calidad pedagógica 88 y ajuste de diversidad 1."
+      ]
+    },
+    {
+      "candidateId": "def-466f8022-adee-11f1-93e5-8500da01000f-23",
+      "qualityScore": 30,
+      "tacticalClarityScore": 12,
+      "engineStabilityScore": 14,
+      "severityScore": 15,
+      "motifConfidenceScore": 7,
+      "sourceQualityScore": 10,
+      "baseScore": 88,
+      "diversityAdjustments": {
+        "color": 0,
+        "phase": 0,
+        "resource": 0,
+        "opening": 1
+      },
+      "finalScore": 89,
+      "rank": 16,
+      "selected": true,
+      "scoreDeltaFromCutoff": null,
+      "diversityCategories": [
+        "opening"
+      ],
+      "selectionReason": "Seleccionado en el puesto 16: calidad pedagógica 88 y ajuste de diversidad 1.",
+      "disposition": "selected",
+      "reasons": [
+        "Seleccionado en el puesto 16: calidad pedagógica 88 y ajuste de diversidad 1."
+      ]
+    },
+    {
+      "candidateId": "def-e126f55a-b968-11f1-becf-3c44d601000f-17",
+      "qualityScore": 30,
+      "tacticalClarityScore": 12,
+      "engineStabilityScore": 14,
+      "severityScore": 15,
+      "motifConfidenceScore": 7,
+      "sourceQualityScore": 10,
+      "baseScore": 88,
+      "diversityAdjustments": {
+        "color": 0,
+        "phase": 0,
+        "resource": 0,
+        "opening": 1
+      },
+      "finalScore": 89,
+      "rank": 17,
+      "selected": true,
+      "scoreDeltaFromCutoff": null,
+      "diversityCategories": [
+        "opening"
+      ],
+      "selectionReason": "Seleccionado en el puesto 17: calidad pedagógica 88 y ajuste de diversidad 1.",
+      "disposition": "selected",
+      "reasons": [
+        "Seleccionado en el puesto 17: calidad pedagógica 88 y ajuste de diversidad 1."
+      ]
+    },
+    {
+      "candidateId": "def-09381500-b613-11f1-8cd6-ece1e601000f-41",
+      "qualityScore": 30,
+      "tacticalClarityScore": 12,
+      "engineStabilityScore": 14,
+      "severityScore": 15,
+      "motifConfidenceScore": 7,
+      "sourceQualityScore": 10,
+      "baseScore": 88,
+      "diversityAdjustments": {
+        "color": 0,
+        "phase": 0,
+        "resource": 0,
+        "opening": 0
+      },
+      "finalScore": 88,
+      "rank": 18,
+      "selected": true,
+      "scoreDeltaFromCutoff": null,
+      "diversityCategories": [],
+      "selectionReason": "Seleccionado en el puesto 18: calidad pedagógica 88 y ajuste de diversidad 0.",
+      "disposition": "selected",
+      "reasons": [
+        "Seleccionado en el puesto 18: calidad pedagógica 88 y ajuste de diversidad 0."
+      ]
+    },
+    {
+      "candidateId": "def-15ecf772-b40a-11f1-bb1f-e68c2101000f-33",
+      "qualityScore": 30,
+      "tacticalClarityScore": 12,
+      "engineStabilityScore": 14,
+      "severityScore": 15,
+      "motifConfidenceScore": 7,
+      "sourceQualityScore": 10,
+      "baseScore": 88,
+      "diversityAdjustments": {
+        "color": 0,
+        "phase": 0,
+        "resource": 0,
+        "opening": 0
+      },
+      "finalScore": 88,
+      "rank": 19,
+      "selected": true,
+      "scoreDeltaFromCutoff": null,
+      "diversityCategories": [],
+      "selectionReason": "Seleccionado en el puesto 19: calidad pedagógica 88 y ajuste de diversidad 0.",
+      "disposition": "selected",
+      "reasons": [
+        "Seleccionado en el puesto 19: calidad pedagógica 88 y ajuste de diversidad 0."
+      ]
+    },
+    {
+      "candidateId": "def-41340e8e-bd06-11f1-a696-76c0b701000f-40",
+      "qualityScore": 30,
+      "tacticalClarityScore": 12,
+      "engineStabilityScore": 14,
+      "severityScore": 15,
+      "motifConfidenceScore": 7,
+      "sourceQualityScore": 10,
+      "baseScore": 88,
+      "diversityAdjustments": {
+        "color": 0,
+        "phase": 0,
+        "resource": 0,
+        "opening": 0
+      },
+      "finalScore": 88,
+      "rank": 20,
+      "selected": true,
+      "scoreDeltaFromCutoff": null,
+      "diversityCategories": [],
+      "selectionReason": "Seleccionado en el puesto 20: calidad pedagógica 88 y ajuste de diversidad 0.",
+      "disposition": "selected",
+      "reasons": [
+        "Seleccionado en el puesto 20: calidad pedagógica 88 y ajuste de diversidad 0."
+      ]
+    },
+    {
+      "candidateId": "def-55d1442d-af9d-11f1-93e5-8500da01000f-43",
+      "qualityScore": 30,
+      "tacticalClarityScore": 12,
+      "engineStabilityScore": 14,
+      "severityScore": 15,
+      "motifConfidenceScore": 7,
+      "sourceQualityScore": 10,
+      "baseScore": 88,
+      "diversityAdjustments": {
+        "color": 0,
+        "phase": 0,
+        "resource": 0,
+        "opening": 0
+      },
+      "finalScore": 88,
+      "rank": 21,
+      "selected": true,
+      "scoreDeltaFromCutoff": null,
+      "diversityCategories": [],
+      "selectionReason": "Seleccionado en el puesto 21: calidad pedagógica 88 y ajuste de diversidad 0.",
+      "disposition": "selected",
+      "reasons": [
+        "Seleccionado en el puesto 21: calidad pedagógica 88 y ajuste de diversidad 0."
+      ]
+    },
+    {
+      "candidateId": "def-9eee7044-b904-11f1-9c4d-f45fe701000f-102",
+      "qualityScore": 30,
+      "tacticalClarityScore": 12,
+      "engineStabilityScore": 14,
+      "severityScore": 15,
+      "motifConfidenceScore": 7,
+      "sourceQualityScore": 10,
+      "baseScore": 88,
+      "diversityAdjustments": {
+        "color": 0,
+        "phase": 0,
+        "resource": 0,
+        "opening": 0
+      },
+      "finalScore": 88,
+      "rank": 22,
+      "selected": true,
+      "scoreDeltaFromCutoff": null,
+      "diversityCategories": [],
+      "selectionReason": "Seleccionado en el puesto 22: calidad pedagógica 88 y ajuste de diversidad 0.",
+      "disposition": "selected",
+      "reasons": [
+        "Seleccionado en el puesto 22: calidad pedagógica 88 y ajuste de diversidad 0."
+      ]
+    },
+    {
+      "candidateId": "def-f1b69558-b10a-11f1-8acf-f45fe701000f-64",
+      "qualityScore": 30,
+      "tacticalClarityScore": 12,
+      "engineStabilityScore": 14,
+      "severityScore": 15,
+      "motifConfidenceScore": 7,
+      "sourceQualityScore": 10,
+      "baseScore": 88,
+      "diversityAdjustments": {
+        "color": 0,
+        "phase": 0,
+        "resource": 0,
+        "opening": 0
+      },
+      "finalScore": 88,
+      "rank": 23,
+      "selected": true,
+      "scoreDeltaFromCutoff": null,
+      "diversityCategories": [],
+      "selectionReason": "Seleccionado en el puesto 23: calidad pedagógica 88 y ajuste de diversidad 0.",
+      "disposition": "selected",
+      "reasons": [
+        "Seleccionado en el puesto 23: calidad pedagógica 88 y ajuste de diversidad 0."
+      ]
+    },
+    {
+      "candidateId": "def-f835b867-b8a9-11f1-9343-8dc15001000f-62",
+      "qualityScore": 30,
+      "tacticalClarityScore": 12,
+      "engineStabilityScore": 14,
+      "severityScore": 15,
+      "motifConfidenceScore": 7,
+      "sourceQualityScore": 10,
+      "baseScore": 88,
+      "diversityAdjustments": {
+        "color": 0,
+        "phase": 0,
+        "resource": 0,
+        "opening": 0
+      },
+      "finalScore": 88,
+      "rank": 24,
+      "selected": true,
+      "scoreDeltaFromCutoff": null,
+      "diversityCategories": [],
+      "selectionReason": "Seleccionado en el puesto 24: calidad pedagógica 88 y ajuste de diversidad 0.",
+      "disposition": "selected",
+      "reasons": [
+        "Seleccionado en el puesto 24: calidad pedagógica 88 y ajuste de diversidad 0."
+      ]
+    },
+    {
+      "candidateId": "def-bda0eaeb-beba-11f1-b809-a9c32901000f-22",
+      "qualityScore": 30,
+      "tacticalClarityScore": 12,
+      "engineStabilityScore": 14,
+      "severityScore": 10,
+      "motifConfidenceScore": 7,
+      "sourceQualityScore": 10,
+      "baseScore": 83,
+      "diversityAdjustments": {
+        "color": 0,
+        "phase": 0,
+        "resource": 3,
+        "opening": 0
+      },
+      "finalScore": 86,
+      "rank": 25,
+      "selected": false,
+      "scoreDeltaFromCutoff": -2,
+      "diversityCategories": [
+        "resource"
+      ],
+      "selectionReason": "Elegible, pero quedó en el puesto 25. No fue seleccionado por la cuota de 24; los ajustes de diversidad (resource) no compensaron la diferencia de calidad.",
+      "disposition": "eligible_not_selected",
+      "reasons": [
+        "Elegible, pero quedó en el puesto 25. No fue seleccionado por la cuota de 24; los ajustes de diversidad (resource) no compensaron la diferencia de calidad."
+      ]
+    },
+    {
+      "candidateId": "def-36d00b40-b3e6-11f1-8acf-f45fe701000f-119",
+      "qualityScore": 30,
+      "tacticalClarityScore": 12,
+      "engineStabilityScore": 14,
+      "severityScore": 15,
+      "motifConfidenceScore": 3,
+      "sourceQualityScore": 10,
+      "baseScore": 84,
+      "diversityAdjustments": {
+        "color": 0,
+        "phase": 0,
+        "resource": 0,
+        "opening": 1
+      },
+      "finalScore": 85,
+      "rank": 26,
+      "selected": false,
+      "scoreDeltaFromCutoff": -3,
+      "diversityCategories": [
+        "opening"
+      ],
+      "selectionReason": "Elegible, pero quedó en el puesto 26. No fue seleccionado por la cuota de 24; los ajustes de diversidad (opening) no compensaron la diferencia de calidad.",
+      "disposition": "eligible_not_selected",
+      "reasons": [
+        "Elegible, pero quedó en el puesto 26. No fue seleccionado por la cuota de 24; los ajustes de diversidad (opening) no compensaron la diferencia de calidad."
+      ]
+    },
+    {
+      "candidateId": "def-a71c7e42-af9b-11f1-8cd6-ece1e601000f-74",
+      "qualityScore": 30,
+      "tacticalClarityScore": 12,
+      "engineStabilityScore": 14,
+      "severityScore": 15,
+      "motifConfidenceScore": 3,
+      "sourceQualityScore": 10,
+      "baseScore": 84,
+      "diversityAdjustments": {
+        "color": 0,
+        "phase": 0,
+        "resource": 0,
+        "opening": 1
+      },
+      "finalScore": 85,
+      "rank": 27,
+      "selected": false,
+      "scoreDeltaFromCutoff": -3,
+      "diversityCategories": [
+        "opening"
+      ],
+      "selectionReason": "Elegible, pero quedó en el puesto 27. No fue seleccionado por la cuota de 24; los ajustes de diversidad (opening) no compensaron la diferencia de calidad.",
+      "disposition": "eligible_not_selected",
+      "reasons": [
+        "Elegible, pero quedó en el puesto 27. No fue seleccionado por la cuota de 24; los ajustes de diversidad (opening) no compensaron la diferencia de calidad."
+      ]
+    },
+    {
+      "candidateId": "def-a8e1ae1b-ac8b-11f1-bb1f-e68c2101000f-46",
+      "qualityScore": 30,
+      "tacticalClarityScore": 12,
+      "engineStabilityScore": 14,
+      "severityScore": 15,
+      "motifConfidenceScore": 3,
+      "sourceQualityScore": 10,
+      "baseScore": 84,
+      "diversityAdjustments": {
+        "color": 0,
+        "phase": 0,
+        "resource": 0,
+        "opening": 1
+      },
+      "finalScore": 85,
+      "rank": 28,
+      "selected": false,
+      "scoreDeltaFromCutoff": -3,
+      "diversityCategories": [
+        "opening"
+      ],
+      "selectionReason": "Elegible, pero quedó en el puesto 28. No fue seleccionado por la cuota de 24; los ajustes de diversidad (opening) no compensaron la diferencia de calidad.",
+      "disposition": "eligible_not_selected",
+      "reasons": [
+        "Elegible, pero quedó en el puesto 28. No fue seleccionado por la cuota de 24; los ajustes de diversidad (opening) no compensaron la diferencia de calidad."
+      ]
+    },
+    {
+      "candidateId": "def-35938919-be92-11f1-be75-03cfdc01000f-26",
+      "qualityScore": 30,
+      "tacticalClarityScore": 12,
+      "engineStabilityScore": 14,
+      "severityScore": 10,
+      "motifConfidenceScore": 7,
+      "sourceQualityScore": 10,
+      "baseScore": 83,
+      "diversityAdjustments": {
+        "color": 0,
+        "phase": 0,
+        "resource": 0,
+        "opening": 1
+      },
+      "finalScore": 84,
+      "rank": 29,
+      "selected": false,
+      "scoreDeltaFromCutoff": -4,
+      "diversityCategories": [
+        "opening"
+      ],
+      "selectionReason": "Elegible, pero quedó en el puesto 29. No fue seleccionado por la cuota de 24; los ajustes de diversidad (opening) no compensaron la diferencia de calidad.",
+      "disposition": "eligible_not_selected",
+      "reasons": [
+        "Elegible, pero quedó en el puesto 29. No fue seleccionado por la cuota de 24; los ajustes de diversidad (opening) no compensaron la diferencia de calidad."
+      ]
+    },
+    {
+      "candidateId": "def-65a18981-b847-11f1-8ba1-8500da01000f-54",
+      "qualityScore": 30,
+      "tacticalClarityScore": 12,
+      "engineStabilityScore": 14,
+      "severityScore": 10,
+      "motifConfidenceScore": 7,
+      "sourceQualityScore": 10,
+      "baseScore": 83,
+      "diversityAdjustments": {
+        "color": 0,
+        "phase": 0,
+        "resource": 0,
+        "opening": 1
+      },
+      "finalScore": 84,
+      "rank": 30,
+      "selected": false,
+      "scoreDeltaFromCutoff": -4,
+      "diversityCategories": [
+        "opening"
+      ],
+      "selectionReason": "Elegible, pero quedó en el puesto 30. No fue seleccionado por la cuota de 24; los ajustes de diversidad (opening) no compensaron la diferencia de calidad.",
+      "disposition": "eligible_not_selected",
+      "reasons": [
+        "Elegible, pero quedó en el puesto 30. No fue seleccionado por la cuota de 24; los ajustes de diversidad (opening) no compensaron la diferencia de calidad."
+      ]
+    },
+    {
+      "candidateId": "def-a976c725-b77b-11f1-b492-d9079701000f-38",
+      "qualityScore": 30,
+      "tacticalClarityScore": 12,
+      "engineStabilityScore": 14,
+      "severityScore": 10,
+      "motifConfidenceScore": 7,
+      "sourceQualityScore": 10,
+      "baseScore": 83,
+      "diversityAdjustments": {
+        "color": 0,
+        "phase": 0,
+        "resource": 0,
+        "opening": 1
+      },
+      "finalScore": 84,
+      "rank": 31,
+      "selected": false,
+      "scoreDeltaFromCutoff": -4,
+      "diversityCategories": [
+        "opening"
+      ],
+      "selectionReason": "Elegible, pero quedó en el puesto 31. No fue seleccionado por la cuota de 24; los ajustes de diversidad (opening) no compensaron la diferencia de calidad.",
+      "disposition": "eligible_not_selected",
+      "reasons": [
+        "Elegible, pero quedó en el puesto 31. No fue seleccionado por la cuota de 24; los ajustes de diversidad (opening) no compensaron la diferencia de calidad."
+      ]
+    },
+    {
+      "candidateId": "def-c27d2b9f-aec1-11f1-b6f0-30204801000f-18",
+      "qualityScore": 30,
+      "tacticalClarityScore": 12,
+      "engineStabilityScore": 14,
+      "severityScore": 15,
+      "motifConfidenceScore": 3,
+      "sourceQualityScore": 10,
+      "baseScore": 84,
+      "diversityAdjustments": {
+        "color": 0,
+        "phase": 0,
+        "resource": 0,
+        "opening": 0
+      },
+      "finalScore": 84,
+      "rank": 32,
+      "selected": false,
+      "scoreDeltaFromCutoff": -4,
+      "diversityCategories": [],
+      "selectionReason": "Elegible, pero quedó en el puesto 32. No fue seleccionado por la cuota de 24; ya había cobertura suficiente de sus categorías.",
+      "disposition": "eligible_not_selected",
+      "reasons": [
+        "Elegible, pero quedó en el puesto 32. No fue seleccionado por la cuota de 24; ya había cobertura suficiente de sus categorías."
+      ]
+    },
+    {
+      "candidateId": "def-1e4f2271-ade3-11f1-b4a6-d9079701000f-38",
+      "qualityScore": 30,
+      "tacticalClarityScore": 12,
+      "engineStabilityScore": 14,
+      "severityScore": 10,
+      "motifConfidenceScore": 7,
+      "sourceQualityScore": 10,
+      "baseScore": 83,
+      "diversityAdjustments": {
+        "color": 0,
+        "phase": 0,
+        "resource": 0,
+        "opening": 0
+      },
+      "finalScore": 83,
+      "rank": 33,
+      "selected": false,
+      "scoreDeltaFromCutoff": -5,
+      "diversityCategories": [],
+      "selectionReason": "Elegible, pero quedó en el puesto 33. No fue seleccionado por la cuota de 24; ya había cobertura suficiente de sus categorías.",
+      "disposition": "eligible_not_selected",
+      "reasons": [
+        "Elegible, pero quedó en el puesto 33. No fue seleccionado por la cuota de 24; ya había cobertura suficiente de sus categorías."
+      ]
+    },
+    {
+      "candidateId": "def-dd44b1e2-ad58-11f1-b6f0-30204801000f-31",
+      "qualityScore": 30,
+      "tacticalClarityScore": 20,
+      "engineStabilityScore": 14,
+      "severityScore": 6,
+      "motifConfidenceScore": 3,
+      "sourceQualityScore": 10,
+      "baseScore": 83,
+      "diversityAdjustments": {
+        "color": 0,
+        "phase": 0,
+        "resource": 0,
+        "opening": 0
+      },
+      "finalScore": 83,
+      "rank": 34,
+      "selected": false,
+      "scoreDeltaFromCutoff": -5,
+      "diversityCategories": [],
+      "selectionReason": "Elegible, pero quedó en el puesto 34. No fue seleccionado por la cuota de 24; ya había cobertura suficiente de sus categorías.",
+      "disposition": "eligible_not_selected",
+      "reasons": [
+        "Elegible, pero quedó en el puesto 34. No fue seleccionado por la cuota de 24; ya había cobertura suficiente de sus categorías."
+      ]
+    },
+    {
+      "candidateId": "def-29b66ed5-b77e-11f1-bb80-3022bd01000f-11",
+      "qualityScore": 30,
+      "tacticalClarityScore": 12,
+      "engineStabilityScore": 14,
+      "severityScore": 6,
+      "motifConfidenceScore": 7,
+      "sourceQualityScore": 10,
+      "baseScore": 79,
+      "diversityAdjustments": {
+        "color": 0,
+        "phase": 0,
+        "resource": 0,
+        "opening": 1
+      },
+      "finalScore": 80,
+      "rank": 35,
+      "selected": false,
+      "scoreDeltaFromCutoff": -8,
+      "diversityCategories": [
+        "opening"
+      ],
+      "selectionReason": "Elegible, pero quedó en el puesto 35. No fue seleccionado por la cuota de 24; los ajustes de diversidad (opening) no compensaron la diferencia de calidad.",
+      "disposition": "eligible_not_selected",
+      "reasons": [
+        "Elegible, pero quedó en el puesto 35. No fue seleccionado por la cuota de 24; los ajustes de diversidad (opening) no compensaron la diferencia de calidad."
+      ]
+    },
+    {
+      "candidateId": "def-28e6d974-b922-11f1-9e49-30204801000f-46",
+      "qualityScore": 30,
+      "tacticalClarityScore": 12,
+      "engineStabilityScore": 14,
+      "severityScore": 6,
+      "motifConfidenceScore": 7,
+      "sourceQualityScore": 10,
+      "baseScore": 79,
+      "diversityAdjustments": {
+        "color": 0,
+        "phase": 0,
+        "resource": 0,
+        "opening": 0
+      },
+      "finalScore": 79,
+      "rank": 36,
+      "selected": false,
+      "scoreDeltaFromCutoff": -9,
+      "diversityCategories": [],
+      "selectionReason": "Elegible, pero quedó en el puesto 36. No fue seleccionado por la cuota de 24; ya había cobertura suficiente de sus categorías.",
+      "disposition": "eligible_not_selected",
+      "reasons": [
+        "Elegible, pero quedó en el puesto 36. No fue seleccionado por la cuota de 24; ya había cobertura suficiente de sus categorías."
+      ]
+    },
+    {
+      "candidateId": "def-bdcdbd92-bd70-11f1-8bef-2a4af901000f-57",
+      "qualityScore": 30,
+      "tacticalClarityScore": 12,
+      "engineStabilityScore": 14,
+      "severityScore": 10,
+      "motifConfidenceScore": 3,
+      "sourceQualityScore": 10,
+      "baseScore": 79,
+      "diversityAdjustments": {
+        "color": 0,
+        "phase": 0,
+        "resource": 0,
+        "opening": 0
+      },
+      "finalScore": 79,
+      "rank": 37,
+      "selected": false,
+      "scoreDeltaFromCutoff": -9,
+      "diversityCategories": [],
+      "selectionReason": "Elegible, pero quedó en el puesto 37. No fue seleccionado por la cuota de 24; ya había cobertura suficiente de sus categorías.",
+      "disposition": "eligible_not_selected",
+      "reasons": [
+        "Elegible, pero quedó en el puesto 37. No fue seleccionado por la cuota de 24; ya había cobertura suficiente de sus categorías."
+      ]
+    },
+    {
+      "candidateId": "def-028ce014-b40c-11f1-856c-7c639201000f-33",
+      "sourceKey": "028ce014-b40c-11f1-856c-7c639201000f:33",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-03e1fdee-ad5a-11f1-8cd6-ece1e601000f-54",
+      "sourceKey": "03e1fdee-ad5a-11f1-8cd6-ece1e601000f:54",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-05edc434-b32b-11f1-8acf-f45fe701000f-106",
+      "sourceKey": "05edc434-b32b-11f1-8acf-f45fe701000f:106",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-0893b3ca-b465-11f1-9f37-3022bd01000f-118",
+      "sourceKey": "0893b3ca-b465-11f1-9f37-3022bd01000f:118",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-0accf5e6-b77f-11f1-9343-8dc15001000f-34",
+      "sourceKey": "0accf5e6-b77f-11f1-9343-8dc15001000f:34",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-0b508a20-bb88-11f1-bb80-3022bd01000f-14",
+      "sourceKey": "0b508a20-bb88-11f1-bb80-3022bd01000f:14",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-0ba87d16-b238-11f1-93e5-8500da01000f-85",
+      "sourceKey": "0ba87d16-b238-11f1-93e5-8500da01000f:85",
+      "disposition": "rejected_already_lost",
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-147e70a4-be8e-11f1-a3d5-fa8da001000f-46",
+      "sourceKey": "147e70a4-be8e-11f1-a3d5-fa8da001000f:46",
+      "disposition": "rejected_already_lost",
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-18181904-acd5-11f1-a51b-ebd42201000f-67",
+      "sourceKey": "18181904-acd5-11f1-a51b-ebd42201000f:67",
+      "disposition": "rejected_already_lost",
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-184a87b2-be98-11f1-b809-a9c32901000f-41",
+      "sourceKey": "184a87b2-be98-11f1-b809-a9c32901000f:41",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-19d0342f-bd04-11f1-94d8-40057201000f-100",
+      "sourceKey": "19d0342f-bd04-11f1-94d8-40057201000f:100",
+      "disposition": "rejected_already_lost",
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-1ad00fe9-abd6-11f1-856c-7c639201000f-29",
+      "sourceKey": "1ad00fe9-abd6-11f1-856c-7c639201000f:29",
+      "disposition": "rejected_already_lost",
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-1bf4cfb0-b3b4-11f1-8cd6-ece1e601000f-37",
+      "sourceKey": "1bf4cfb0-b3b4-11f1-8cd6-ece1e601000f:37",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-1d24044e-bb85-11f1-9e49-30204801000f-20",
+      "sourceKey": "1d24044e-bb85-11f1-9e49-30204801000f:20",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-2114a94a-b96a-11f1-9343-8dc15001000f-50",
+      "sourceKey": "2114a94a-b96a-11f1-9343-8dc15001000f:50",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-24db4209-b77d-11f1-837b-7ca6b701000f-70",
+      "sourceKey": "24db4209-b77d-11f1-837b-7ca6b701000f:70",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-28b9f4e0-ad45-11f1-856c-7c639201000f-70",
+      "sourceKey": "28b9f4e0-ad45-11f1-856c-7c639201000f:70",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-2c88e2cc-baa3-11f1-9a2c-ece1e601000f-74",
+      "sourceKey": "2c88e2cc-baa3-11f1-9a2c-ece1e601000f:74",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-2cd52b0b-b6a6-11f1-a51b-ebd42201000f-83",
+      "sourceKey": "2cd52b0b-b6a6-11f1-a51b-ebd42201000f:83",
+      "disposition": "rejected_already_lost",
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-2dfcf3ab-be96-11f1-94d8-40057201000f-20",
+      "sourceKey": "2dfcf3ab-be96-11f1-94d8-40057201000f:20",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-2fb03437-bb84-11f1-bb80-3022bd01000f-52",
+      "sourceKey": "2fb03437-bb84-11f1-bb80-3022bd01000f:52",
+      "disposition": "rejected_already_lost",
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-303c4e5e-b965-11f1-b596-8a56cc01000f-42",
+      "sourceKey": "303c4e5e-b965-11f1-b596-8a56cc01000f:42",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-30cc6d3f-b382-11f1-8cd6-ece1e601000f-81",
+      "sourceKey": "30cc6d3f-b382-11f1-8cd6-ece1e601000f:81",
+      "disposition": "rejected_already_lost",
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-312734c0-abb1-11f1-baf2-8a56cc01000f-81",
+      "sourceKey": "312734c0-abb1-11f1-baf2-8a56cc01000f:81",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-3289d624-abaa-11f1-8cd6-ece1e601000f-94",
+      "sourceKey": "3289d624-abaa-11f1-8cd6-ece1e601000f:94",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-36736d89-b898-11f1-9343-8dc15001000f-45",
+      "sourceKey": "36736d89-b898-11f1-9343-8dc15001000f:45",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-3697c7b5-bd17-11f1-a696-76c0b701000f-53",
+      "sourceKey": "3697c7b5-bd17-11f1-a696-76c0b701000f:53",
+      "disposition": "rejected_already_lost",
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-37717de8-b8fc-11f1-9343-8dc15001000f-32",
+      "sourceKey": "37717de8-b8fc-11f1-9343-8dc15001000f:32",
+      "disposition": "rejected_already_lost",
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-39364d61-bbc4-11f1-9e49-30204801000f-24",
+      "sourceKey": "39364d61-bbc4-11f1-9e49-30204801000f:24",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-3c89188b-bd10-11f1-a696-76c0b701000f-20",
+      "sourceKey": "3c89188b-bd10-11f1-a696-76c0b701000f:20",
+      "disposition": "rejected_already_lost",
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-3d37c908-beff-11f1-983e-eed3f101000f-63",
+      "sourceKey": "3d37c908-beff-11f1-983e-eed3f101000f:63",
+      "disposition": "rejected_already_lost",
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-3f947597-b40b-11f1-a51b-ebd42201000f-22",
+      "sourceKey": "3f947597-b40b-11f1-a51b-ebd42201000f:22",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-418f9305-aec3-11f1-b6f0-30204801000f-38",
+      "sourceKey": "418f9305-aec3-11f1-b6f0-30204801000f:38",
+      "disposition": "rejected_already_lost",
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-42695290-b237-11f1-b6f0-30204801000f-13",
+      "sourceKey": "42695290-b237-11f1-b6f0-30204801000f:13",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-462a3fb9-adf6-11f1-9f37-3022bd01000f-10",
+      "sourceKey": "462a3fb9-adf6-11f1-9f37-3022bd01000f:10",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-499690b9-beb8-11f1-9651-fbb1b701000f-36",
+      "sourceKey": "499690b9-beb8-11f1-9651-fbb1b701000f:36",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-4ee5f007-b2b6-11f1-bb1f-e68c2101000f-46",
+      "sourceKey": "4ee5f007-b2b6-11f1-bb1f-e68c2101000f:46",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-50494d1d-b76f-11f1-b492-d9079701000f-40",
+      "sourceKey": "50494d1d-b76f-11f1-b492-d9079701000f:40",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-520cf94c-b8fb-11f1-becf-3c44d601000f-29",
+      "sourceKey": "520cf94c-b8fb-11f1-becf-3c44d601000f:29",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-5499199f-bb85-11f1-8ba1-8500da01000f-73",
+      "sourceKey": "5499199f-bb85-11f1-8ba1-8500da01000f:73",
+      "disposition": "rejected_already_lost",
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-54e31c84-b5ee-11f1-b4a6-d9079701000f-80",
+      "sourceKey": "54e31c84-b5ee-11f1-b4a6-d9079701000f:80",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-554b6ac3-b718-11f1-a095-e68c2101000f-37",
+      "sourceKey": "554b6ac3-b718-11f1-a095-e68c2101000f:37",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-55bc812d-aeca-11f1-856c-7c639201000f-28",
+      "sourceKey": "55bc812d-aeca-11f1-856c-7c639201000f:28",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-57fb3b0b-bd03-11f1-9651-fbb1b701000f-56",
+      "sourceKey": "57fb3b0b-bd03-11f1-9651-fbb1b701000f:56",
+      "disposition": "rejected_already_lost",
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-582f2086-adc2-11f1-8cd6-ece1e601000f-63",
+      "sourceKey": "582f2086-adc2-11f1-8cd6-ece1e601000f:63",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-58df6243-b2b7-11f1-8acf-f45fe701000f-86",
+      "sourceKey": "58df6243-b2b7-11f1-8acf-f45fe701000f:86",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-595cee54-b44d-11f1-bb1f-e68c2101000f-50",
+      "sourceKey": "595cee54-b44d-11f1-bb1f-e68c2101000f:50",
+      "disposition": "rejected_already_lost",
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-5a0a46b7-b8ff-11f1-9343-8dc15001000f-63",
+      "sourceKey": "5a0a46b7-b8ff-11f1-9343-8dc15001000f:63",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-5a42e843-b5dd-11f1-93e5-8500da01000f-16",
+      "sourceKey": "5a42e843-b5dd-11f1-93e5-8500da01000f:16",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-5a43493e-bc3a-11f1-94d8-40057201000f-69",
+      "sourceKey": "5a43493e-bc3a-11f1-94d8-40057201000f:69",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-5d45aaff-bc48-11f1-b809-a9c32901000f-14",
+      "sourceKey": "5d45aaff-bc48-11f1-b809-a9c32901000f:14",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-5f0360fa-b9d7-11f1-becf-3c44d601000f-60",
+      "sourceKey": "5f0360fa-b9d7-11f1-becf-3c44d601000f:60",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-6193a34f-b52c-11f1-baf2-8a56cc01000f-53",
+      "sourceKey": "6193a34f-b52c-11f1-baf2-8a56cc01000f:53",
+      "disposition": "rejected_already_lost",
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-63fa3a78-b90e-11f1-a6ac-8eeeee01000f-81",
+      "sourceKey": "63fa3a78-b90e-11f1-a6ac-8eeeee01000f:81",
+      "disposition": "rejected_already_lost",
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-6ba74ba3-b3e3-11f1-b6f0-30204801000f-42",
+      "sourceKey": "6ba74ba3-b3e3-11f1-b6f0-30204801000f:42",
+      "disposition": "rejected_already_lost",
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-6c2edd20-b962-11f1-9e49-30204801000f-51",
+      "sourceKey": "6c2edd20-b962-11f1-9e49-30204801000f:51",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-6de0c2f9-b383-11f1-bb1f-e68c2101000f-30",
+      "sourceKey": "6de0c2f9-b383-11f1-bb1f-e68c2101000f:30",
+      "disposition": "rejected_already_lost",
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-6e93c1f5-acd3-11f1-856c-7c639201000f-11",
+      "sourceKey": "6e93c1f5-acd3-11f1-856c-7c639201000f:11",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-72d81975-b23d-11f1-93e5-8500da01000f-116",
+      "sourceKey": "72d81975-b23d-11f1-93e5-8500da01000f:116",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-7331be73-b909-11f1-9a2c-ece1e601000f-39",
+      "sourceKey": "7331be73-b909-11f1-9a2c-ece1e601000f:39",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-79f07c8c-be84-11f1-8dbb-feb0c301000f-47",
+      "sourceKey": "79f07c8c-be84-11f1-8dbb-feb0c301000f:47",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-807e4488-b910-11f1-9343-8dc15001000f-112",
+      "sourceKey": "807e4488-b910-11f1-9343-8dc15001000f:112",
+      "disposition": "rejected_already_lost",
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-830e0cd6-bda7-11f1-9651-fbb1b701000f-55",
+      "sourceKey": "830e0cd6-bda7-11f1-9651-fbb1b701000f:55",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-877fccc8-b3b8-11f1-baf2-8a56cc01000f-20",
+      "sourceKey": "877fccc8-b3b8-11f1-baf2-8a56cc01000f:20",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-8e52999b-b90c-11f1-9c4d-f45fe701000f-108",
+      "sourceKey": "8e52999b-b90c-11f1-9c4d-f45fe701000f:108",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-926e26a9-b3b9-11f1-b4a6-d9079701000f-38",
+      "sourceKey": "926e26a9-b3b9-11f1-b4a6-d9079701000f:38",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-937edfab-b6b4-11f1-baf2-8a56cc01000f-120",
+      "sourceKey": "937edfab-b6b4-11f1-baf2-8a56cc01000f:120",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-93aece99-ad58-11f1-bb1f-e68c2101000f-14",
+      "sourceKey": "93aece99-ad58-11f1-bb1f-e68c2101000f:14",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-9ce10922-bde5-11f1-a696-76c0b701000f-29",
+      "sourceKey": "9ce10922-bde5-11f1-a696-76c0b701000f:29",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-9e5e130e-bd73-11f1-a3d5-fa8da001000f-70",
+      "sourceKey": "9e5e130e-bd73-11f1-a3d5-fa8da001000f:70",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-a1867f5e-bb06-11f1-a095-e68c2101000f-24",
+      "sourceKey": "a1867f5e-bb06-11f1-a095-e68c2101000f:24",
+      "disposition": "rejected_already_lost",
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-a5180b40-b585-11f1-baf2-8a56cc01000f-63",
+      "sourceKey": "a5180b40-b585-11f1-baf2-8a56cc01000f:63",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-a859f631-befc-11f1-983e-eed3f101000f-74",
+      "sourceKey": "a859f631-befc-11f1-983e-eed3f101000f:74",
+      "disposition": "rejected_already_lost",
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-a9c5a0c0-bb68-11f1-a095-e68c2101000f-47",
+      "sourceKey": "a9c5a0c0-bb68-11f1-a095-e68c2101000f:47",
+      "disposition": "rejected_already_lost",
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-aa66c7b9-b846-11f1-b492-d9079701000f-41",
+      "sourceKey": "aa66c7b9-b846-11f1-b492-d9079701000f:41",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-ac08efbf-b805-11f1-bb80-3022bd01000f-31",
+      "sourceKey": "ac08efbf-b805-11f1-bb80-3022bd01000f:31",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-af4d2e0f-ae30-11f1-b6f0-30204801000f-34",
+      "sourceKey": "af4d2e0f-ae30-11f1-b6f0-30204801000f:34",
+      "disposition": "rejected_already_lost",
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-b18fab14-befa-11f1-be75-03cfdc01000f-45",
+      "sourceKey": "b18fab14-befa-11f1-be75-03cfdc01000f:45",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-b2c985a5-b966-11f1-9c4d-f45fe701000f-45",
+      "sourceKey": "b2c985a5-b966-11f1-9c4d-f45fe701000f:45",
+      "disposition": "rejected_already_lost",
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-b3502fbe-b500-11f1-8acf-f45fe701000f-93",
+      "sourceKey": "b3502fbe-b500-11f1-8acf-f45fe701000f:93",
+      "disposition": "rejected_already_lost",
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-b5d7681f-baa1-11f1-bb80-3022bd01000f-62",
+      "sourceKey": "b5d7681f-baa1-11f1-bb80-3022bd01000f:62",
+      "disposition": "rejected_already_lost",
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-b7c4e153-bd07-11f1-8c7a-e0caaf01000f-18",
+      "sourceKey": "b7c4e153-bd07-11f1-8c7a-e0caaf01000f:18",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-b859fe45-be2c-11f1-9982-0d13da01000f-63",
+      "sourceKey": "b859fe45-be2c-11f1-9982-0d13da01000f:63",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-b875a57f-b9db-11f1-9e49-30204801000f-61",
+      "sourceKey": "b875a57f-b9db-11f1-9e49-30204801000f:61",
+      "disposition": "rejected_already_lost",
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-b877dc13-be2b-11f1-8dbb-feb0c301000f-10",
+      "sourceKey": "b877dc13-be2b-11f1-8dbb-feb0c301000f:10",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-b9486002-abe3-11f1-8cd6-ece1e601000f-52",
+      "sourceKey": "b9486002-abe3-11f1-8cd6-ece1e601000f:52",
+      "disposition": "rejected_already_lost",
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-bb87bd22-b90b-11f1-a095-e68c2101000f-51",
+      "sourceKey": "bb87bd22-b90b-11f1-a095-e68c2101000f:51",
+      "disposition": "rejected_already_lost",
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-bbb0d6e0-b5db-11f1-9f37-3022bd01000f-46",
+      "sourceKey": "bbb0d6e0-b5db-11f1-9f37-3022bd01000f:46",
+      "disposition": "rejected_already_lost",
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-bce49b8d-b5e6-11f1-b6f0-30204801000f-119",
+      "sourceKey": "bce49b8d-b5e6-11f1-b6f0-30204801000f:119",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-c3ca4aa7-b46f-11f1-b4a6-d9079701000f-77",
+      "sourceKey": "c3ca4aa7-b46f-11f1-b4a6-d9079701000f:77",
+      "disposition": "rejected_already_lost",
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-c4a491da-b260-11f1-a51b-ebd42201000f-45",
+      "sourceKey": "c4a491da-b260-11f1-a51b-ebd42201000f:45",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-cc8edd5f-add5-11f1-b4a6-d9079701000f-57",
+      "sourceKey": "cc8edd5f-add5-11f1-b4a6-d9079701000f:57",
+      "disposition": "rejected_already_lost",
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-d6c67169-b501-11f1-9f37-3022bd01000f-31",
+      "sourceKey": "d6c67169-b501-11f1-9f37-3022bd01000f:31",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-d818d49f-b4fc-11f1-8cd6-ece1e601000f-34",
+      "sourceKey": "d818d49f-b4fc-11f1-8cd6-ece1e601000f:34",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-da6864ab-b8fc-11f1-a095-e68c2101000f-36",
+      "sourceKey": "da6864ab-b8fc-11f1-a095-e68c2101000f:36",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-db6cc3c6-adb5-11f1-9f37-3022bd01000f-91",
+      "sourceKey": "db6cc3c6-adb5-11f1-9f37-3022bd01000f:91",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "winning_or_mating_defense_available",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-dd854408-bb67-11f1-b492-d9079701000f-46",
+      "sourceKey": "dd854408-bb67-11f1-b492-d9079701000f:46",
+      "disposition": "rejected_already_lost",
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-df7b69e5-ae80-11f1-bb1f-e68c2101000f-33",
+      "sourceKey": "df7b69e5-ae80-11f1-bb1f-e68c2101000f:33",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-e137f684-abd9-11f1-bbdf-8eeeee01000f-37",
+      "sourceKey": "e137f684-abd9-11f1-bbdf-8eeeee01000f:37",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-e2fcd74e-b135-11f1-bbdf-8eeeee01000f-33",
+      "sourceKey": "e2fcd74e-b135-11f1-bbdf-8eeeee01000f:33",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-e530abea-b6a4-11f1-bb1f-e68c2101000f-55",
+      "sourceKey": "e530abea-b6a4-11f1-bb1f-e68c2101000f:55",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-e5b9d695-bc90-11f1-983e-eed3f101000f-26",
+      "sourceKey": "e5b9d695-bc90-11f1-983e-eed3f101000f:26",
+      "disposition": "rejected_already_lost",
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-e75765e2-b77f-11f1-8ba1-8500da01000f-58",
+      "sourceKey": "e75765e2-b77f-11f1-8ba1-8500da01000f:58",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-f0a4bc4d-b513-11f1-bbdf-8eeeee01000f-76",
+      "sourceKey": "f0a4bc4d-b513-11f1-bbdf-8eeeee01000f:76",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-f226628b-b139-11f1-bb1f-e68c2101000f-49",
+      "sourceKey": "f226628b-b139-11f1-bb1f-e68c2101000f:49",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-f2a1e49e-b3e3-11f1-bbdf-8eeeee01000f-14",
+      "sourceKey": "f2a1e49e-b3e3-11f1-bbdf-8eeeee01000f:14",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-f2cefdc1-ae34-11f1-bb1f-e68c2101000f-36",
+      "sourceKey": "f2cefdc1-ae34-11f1-bb1f-e68c2101000f:36",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-f3cdcaeb-bd11-11f1-8dbb-feb0c301000f-37",
+      "sourceKey": "f3cdcaeb-bd11-11f1-8dbb-feb0c301000f:37",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-f422b759-b236-11f1-8acf-f45fe701000f-30",
+      "sourceKey": "f422b759-b236-11f1-8acf-f45fe701000f:30",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-f4fd92c0-b11e-11f1-8acf-f45fe701000f-21",
+      "sourceKey": "f4fd92c0-b11e-11f1-8acf-f45fe701000f:21",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-f85ad26f-bc3b-11f1-a696-76c0b701000f-75",
+      "sourceKey": "f85ad26f-bc3b-11f1-a696-76c0b701000f:75",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-fc9e3635-b6a2-11f1-93e5-8500da01000f-64",
+      "sourceKey": "fc9e3635-b6a2-11f1-93e5-8500da01000f:64",
+      "disposition": "rejected_already_lost",
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-ff5e40fd-bbce-11f1-a095-e68c2101000f-32",
+      "sourceKey": "ff5e40fd-bbce-11f1-a095-e68c2101000f:32",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    },
+    {
+      "candidateId": "def-ff7155be-bd65-11f1-8bef-2a4af901000f-66",
+      "sourceKey": "ff7155be-bd65-11f1-8bef-2a4af901000f:66",
+      "disposition": "rejected_below_cp_loss",
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ]
+    }
+  ],
+  "eligibility": [
+    {
+      "candidateId": "def-004d0ff8-abd5-11f1-bb1f-e68c2101000f-13",
+      "eligible": true,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp"
+      ],
+      "evaluationId": "728ab512a22cfe38099f071c",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-028ce014-b40c-11f1-856c-7c639201000f-33",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "c23860e948c60d4af6cc1715",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-03e1fdee-ad5a-11f1-8cd6-ece1e601000f-54",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "5acf15c78cd52cbab78d5bae",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-0503d84b-bc8b-11f1-983e-eed3f101000f-25",
+      "eligible": true,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp"
+      ],
+      "evaluationId": "6d405c2139a9bb825f6b39bf",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-05edc434-b32b-11f1-8acf-f45fe701000f-106",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "6e2d6f9ff40983c6ef9a44b1",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-0893b3ca-b465-11f1-9f37-3022bd01000f-118",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "eb2ec3e8955a46c0ffa953de",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-09381500-b613-11f1-8cd6-ece1e601000f-41",
+      "eligible": true,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp"
+      ],
+      "evaluationId": "81d1a9df3c7b64bbc5a9a517",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-0a0c100e-adbe-11f1-8acf-f45fe701000f-74",
+      "eligible": true,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp"
+      ],
+      "evaluationId": "9de1a413582a33202a01de1e",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-0accf5e6-b77f-11f1-9343-8dc15001000f-34",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "aadf3e1d8ace6632f2dc8451",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-0b508a20-bb88-11f1-bb80-3022bd01000f-14",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "76eec0aba6c8b45aeac2705a",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-0ba87d16-b238-11f1-93e5-8500da01000f-85",
+      "eligible": false,
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "2d62d720ff7f5e50c7dab893",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-147e70a4-be8e-11f1-a3d5-fa8da001000f-46",
+      "eligible": false,
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "f445a62db1339c57f2054682",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-15ecf772-b40a-11f1-bb1f-e68c2101000f-33",
+      "eligible": true,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp"
+      ],
+      "evaluationId": "e878130b06dd870a55764888",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-18181904-acd5-11f1-a51b-ebd42201000f-67",
+      "eligible": false,
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "528854bd9f664296cea202a4",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-184a87b2-be98-11f1-b809-a9c32901000f-41",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "0d6d354c5184509f1fbb1c3a",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-19d0342f-bd04-11f1-94d8-40057201000f-100",
+      "eligible": false,
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "186a7f85670bd32b683e98b9",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-1ad00fe9-abd6-11f1-856c-7c639201000f-29",
+      "eligible": false,
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "7fc3fc04a5f28f73bd3281e4",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-1bb59532-bd0f-11f1-9651-fbb1b701000f-47",
+      "eligible": true,
+      "reasons": [
+        "winning_or_mating_defense_available"
+      ],
+      "evaluationId": "3bcb12ac2210805236b2184a",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-1bf4cfb0-b3b4-11f1-8cd6-ece1e601000f-37",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "ed9dbae99777eb96e9ed6873",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-1d24044e-bb85-11f1-9e49-30204801000f-20",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "2359928684c84da575051497",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-1e4f2271-ade3-11f1-b4a6-d9079701000f-38",
+      "eligible": true,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp"
+      ],
+      "evaluationId": "e3a01324f2fb39c535a52519",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-2114a94a-b96a-11f1-9343-8dc15001000f-50",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "cc68d96d544c53966afd6462",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-2211f289-b764-11f1-a095-e68c2101000f-103",
+      "eligible": true,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp"
+      ],
+      "evaluationId": "884412f25d8ddfac96184745",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-24db4209-b77d-11f1-837b-7ca6b701000f-70",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "39203429a44e67f0105b8fa1",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-28b9f4e0-ad45-11f1-856c-7c639201000f-70",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "9a8bb94bdc5c1bce22ca2278",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-28e6d974-b922-11f1-9e49-30204801000f-46",
+      "eligible": true,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp"
+      ],
+      "evaluationId": "3a2012c943372b5928f21bd3",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-29b66ed5-b77e-11f1-bb80-3022bd01000f-11",
+      "eligible": true,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp"
+      ],
+      "evaluationId": "05f6578c1b89fa16254ddf60",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-2c046547-b925-11f1-b596-8a56cc01000f-74",
+      "eligible": true,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp"
+      ],
+      "evaluationId": "ef2c0d1c61c29f5d257d3c2b",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-2c88e2cc-baa3-11f1-9a2c-ece1e601000f-74",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "6a8b5a7708103b286c12cc64",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-2cd52b0b-b6a6-11f1-a51b-ebd42201000f-83",
+      "eligible": false,
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "a9b6951ed43f8fbe0c16ea77",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-2d6a1945-b44f-11f1-bb1f-e68c2101000f-46",
+      "eligible": true,
+      "reasons": [
+        "winning_or_mating_defense_available"
+      ],
+      "evaluationId": "547cdf62a9da1986d044a82c",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-2dfcf3ab-be96-11f1-94d8-40057201000f-20",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "f7140c2a7bd0dc41ad21079a",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-2fb03437-bb84-11f1-bb80-3022bd01000f-52",
+      "eligible": false,
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "d79689f6fd8394eb1c8ab51f",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-303c4e5e-b965-11f1-b596-8a56cc01000f-42",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "d3e7c63a2a328102a86f1276",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-30cc6d3f-b382-11f1-8cd6-ece1e601000f-81",
+      "eligible": false,
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "8defd7bae838ec6138ef8fea",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-312734c0-abb1-11f1-baf2-8a56cc01000f-81",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "45b0f80316fdec56c9473a1c",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-3289d624-abaa-11f1-8cd6-ece1e601000f-94",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "10432947429ec2b5f64cd8dd",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-35938919-be92-11f1-be75-03cfdc01000f-26",
+      "eligible": true,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp"
+      ],
+      "evaluationId": "c8e0e9b9280d758d8cf61c29",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-36736d89-b898-11f1-9343-8dc15001000f-45",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "4c6092eb920ae0d7ad91f738",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-3697c7b5-bd17-11f1-a696-76c0b701000f-53",
+      "eligible": false,
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "7f4aa2eb7f5c2ecaf6aaabac",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-36d00b40-b3e6-11f1-8acf-f45fe701000f-119",
+      "eligible": true,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp"
+      ],
+      "evaluationId": "040c375ca98e643b5b79e40b",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-37717de8-b8fc-11f1-9343-8dc15001000f-32",
+      "eligible": false,
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "4f18919e23ce3a5c19ab5eef",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-39364d61-bbc4-11f1-9e49-30204801000f-24",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "a887781573cf628ee5dfdc09",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-3afc4ce0-af9f-11f1-93e5-8500da01000f-41",
+      "eligible": true,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp"
+      ],
+      "evaluationId": "05d4a08199ce1047fc12d86b",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-3c89188b-bd10-11f1-a696-76c0b701000f-20",
+      "eligible": false,
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "7cfc256810899663e064a9b6",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-3d37c908-beff-11f1-983e-eed3f101000f-63",
+      "eligible": false,
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "3de494c18b9632841fbb9d2b",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-3f947597-b40b-11f1-a51b-ebd42201000f-22",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "8e8776fde568470f4d0257c1",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-3fb7013d-acd7-11f1-bbdf-8eeeee01000f-112",
+      "eligible": true,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp"
+      ],
+      "evaluationId": "bc221fc203280353accc234a",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-41340e8e-bd06-11f1-a696-76c0b701000f-40",
+      "eligible": true,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp"
+      ],
+      "evaluationId": "c69d8d224a17caccc247499c",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-418f9305-aec3-11f1-b6f0-30204801000f-38",
+      "eligible": false,
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "097ea54b17161c6fbc00d2a5",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-42695290-b237-11f1-b6f0-30204801000f-13",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "7cd36ceec5e3791d185e4adb",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-45c030d6-b717-11f1-b596-8a56cc01000f-42",
+      "eligible": true,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp"
+      ],
+      "evaluationId": "e33e6f27d2e010b01f11e21c",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-462a3fb9-adf6-11f1-9f37-3022bd01000f-10",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "b43775c13f4325c0bf7dd390",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-466f8022-adee-11f1-93e5-8500da01000f-23",
+      "eligible": true,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp"
+      ],
+      "evaluationId": "c261fd2ca5b0e807a6827f68",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-499690b9-beb8-11f1-9651-fbb1b701000f-36",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "b787480764a347569c0bd082",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-4ee5f007-b2b6-11f1-bb1f-e68c2101000f-46",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "cb65099f7c959949526951c7",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-50494d1d-b76f-11f1-b492-d9079701000f-40",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "a198c68261394010b6c2cfdd",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-520cf94c-b8fb-11f1-becf-3c44d601000f-29",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "2bfb0dc245784eabb2f79bbb",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-545b74dd-bc3e-11f1-983e-eed3f101000f-22",
+      "eligible": true,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp"
+      ],
+      "evaluationId": "7df32004ac8589dfa585724a",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-5499199f-bb85-11f1-8ba1-8500da01000f-73",
+      "eligible": false,
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "83605b05ba25c1ec8ab1d0c9",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-54e31c84-b5ee-11f1-b4a6-d9079701000f-80",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "79361e65ada68a6c4de569b3",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-554b6ac3-b718-11f1-a095-e68c2101000f-37",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "8b41b5a12bb9c9a7f7963b72",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-55bc812d-aeca-11f1-856c-7c639201000f-28",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "a780c4ebad23764a18ac38ae",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-55cc2e25-ae7f-11f1-8cd6-ece1e601000f-59",
+      "eligible": true,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp"
+      ],
+      "evaluationId": "e21711202b561522603cc579",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-55d1442d-af9d-11f1-93e5-8500da01000f-43",
+      "eligible": true,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp"
+      ],
+      "evaluationId": "3f752d1e83e2ccab5c8fec80",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-57fb3b0b-bd03-11f1-9651-fbb1b701000f-56",
+      "eligible": false,
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "ea6d024777f60264f576af12",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-582f2086-adc2-11f1-8cd6-ece1e601000f-63",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "a47bfe2691e32c3c9dec75b9",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-5884ba18-b894-11f1-837b-7ca6b701000f-25",
+      "eligible": true,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp"
+      ],
+      "evaluationId": "3622bd41acaaed4f0e47548c",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-58df6243-b2b7-11f1-8acf-f45fe701000f-86",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "4bd15e5cf9a0d0eb8e7f640e",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-595cee54-b44d-11f1-bb1f-e68c2101000f-50",
+      "eligible": false,
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "91ba5cea9d48c5b038078d9c",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-5a0a46b7-b8ff-11f1-9343-8dc15001000f-63",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "ed8c4636d8fa7388a235e683",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-5a42e843-b5dd-11f1-93e5-8500da01000f-16",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "b5bd939636ec28256d672ff2",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-5a43493e-bc3a-11f1-94d8-40057201000f-69",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "d82341503aa9a7da913335e7",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-5d45aaff-bc48-11f1-b809-a9c32901000f-14",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "d1c3ef268d529ec81ee0c382",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-5f0360fa-b9d7-11f1-becf-3c44d601000f-60",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "e0442fab2fb91fd4f327ea77",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-6193a34f-b52c-11f1-baf2-8a56cc01000f-53",
+      "eligible": false,
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "a781d461ef4c82e6260de74b",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-63fa3a78-b90e-11f1-a6ac-8eeeee01000f-81",
+      "eligible": false,
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "316df4cd59b8ee1f17865db2",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-65a18981-b847-11f1-8ba1-8500da01000f-54",
+      "eligible": true,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp"
+      ],
+      "evaluationId": "f24e2cc54366b871015f3125",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-6ba74ba3-b3e3-11f1-b6f0-30204801000f-42",
+      "eligible": false,
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "3d045279401026307d4b9361",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-6c2edd20-b962-11f1-9e49-30204801000f-51",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "081065d299283e122093bc6e",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-6de0c2f9-b383-11f1-bb1f-e68c2101000f-30",
+      "eligible": false,
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "7e60fe693e7109a5e4fc02d8",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-6e93c1f5-acd3-11f1-856c-7c639201000f-11",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "d5da29320aece702cc91dab1",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-72d81975-b23d-11f1-93e5-8500da01000f-116",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "ac419828513efe11c0b95dd0",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-7331be73-b909-11f1-9a2c-ece1e601000f-39",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "d6f53f1c62152899f3920e71",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-79f07c8c-be84-11f1-8dbb-feb0c301000f-47",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "b8a53301d0db68b44159d0f3",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-807e4488-b910-11f1-9343-8dc15001000f-112",
+      "eligible": false,
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "84a7ec42e282b03a5c79d59d",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-830e0cd6-bda7-11f1-9651-fbb1b701000f-55",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "e20d474af376b32efeb19e76",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-877fccc8-b3b8-11f1-baf2-8a56cc01000f-20",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "781eaa53919e5d244a431238",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-8e52999b-b90c-11f1-9c4d-f45fe701000f-108",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "abc04dd87658145f0aba3514",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-926e26a9-b3b9-11f1-b4a6-d9079701000f-38",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "8c634f8ca2f4a00b4e2a90c6",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-937edfab-b6b4-11f1-baf2-8a56cc01000f-120",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "1690ad871648fc36521d3531",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-93aece99-ad58-11f1-bb1f-e68c2101000f-14",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "bd0575bd982eff9e6547eeab",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-9ce10922-bde5-11f1-a696-76c0b701000f-29",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "f2f8e6e93fc187ff564b4dc1",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-9e5e130e-bd73-11f1-a3d5-fa8da001000f-70",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "8b679d5920fc848d65a62ed1",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-9eee7044-b904-11f1-9c4d-f45fe701000f-102",
+      "eligible": true,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp"
+      ],
+      "evaluationId": "f7370044c8a50e9b59dd682a",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-a1867f5e-bb06-11f1-a095-e68c2101000f-24",
+      "eligible": false,
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "bd2421211c0aed798014b050",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-a5180b40-b585-11f1-baf2-8a56cc01000f-63",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "b72c1b285e815b9146effb4f",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-a71c7e42-af9b-11f1-8cd6-ece1e601000f-74",
+      "eligible": true,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp"
+      ],
+      "evaluationId": "de9aa7f7f0c00dffd678988d",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-a859f631-befc-11f1-983e-eed3f101000f-74",
+      "eligible": false,
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "789c964558012afe4f73d67d",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-a8e1ae1b-ac8b-11f1-bb1f-e68c2101000f-46",
+      "eligible": true,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp"
+      ],
+      "evaluationId": "d4bdecb7ab8229cd1ddfa245",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-a976c725-b77b-11f1-b492-d9079701000f-38",
+      "eligible": true,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp"
+      ],
+      "evaluationId": "106e70d507d59a8d1dc2621c",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-a9c5a0c0-bb68-11f1-a095-e68c2101000f-47",
+      "eligible": false,
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "06b6a6b2c10a6e228c060580",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-aa66c7b9-b846-11f1-b492-d9079701000f-41",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "f3d536130b94fafd39cf6a94",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-ac08efbf-b805-11f1-bb80-3022bd01000f-31",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "d8c82b2551a6e7eee8835a08",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-af4d2e0f-ae30-11f1-b6f0-30204801000f-34",
+      "eligible": false,
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "5147582757914921612b2a71",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-b0bdf537-ae33-11f1-a51b-ebd42201000f-11",
+      "eligible": true,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp"
+      ],
+      "evaluationId": "9d0d1f7d6396c1c521028b2f",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-b18fab14-befa-11f1-be75-03cfdc01000f-45",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "f22e3e02a5e921f0077d2671",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-b2c985a5-b966-11f1-9c4d-f45fe701000f-45",
+      "eligible": false,
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "a20671c6fda179a3ba088f81",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-b3502fbe-b500-11f1-8acf-f45fe701000f-93",
+      "eligible": false,
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "d2b3767194ae42edaf72ae74",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-b5d7681f-baa1-11f1-bb80-3022bd01000f-62",
+      "eligible": false,
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "1b63bb88ad018ad19cb701bc",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-b7c4e153-bd07-11f1-8c7a-e0caaf01000f-18",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "5261f0329062abfa16775470",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-b859fe45-be2c-11f1-9982-0d13da01000f-63",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "6c8fccdf10db1bf15c84aa94",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-b875a57f-b9db-11f1-9e49-30204801000f-61",
+      "eligible": false,
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "3e550c25924a299053fada4c",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-b877dc13-be2b-11f1-8dbb-feb0c301000f-10",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "0ffad85eac36654ba946daa7",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-b9486002-abe3-11f1-8cd6-ece1e601000f-52",
+      "eligible": false,
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "40aa9db323e7004ed639d37e",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-bb87bd22-b90b-11f1-a095-e68c2101000f-51",
+      "eligible": false,
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "86dc58068355597bdcc5962c",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-bbb0d6e0-b5db-11f1-9f37-3022bd01000f-46",
+      "eligible": false,
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "23e512ca4ea0d05c570e566a",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-bce49b8d-b5e6-11f1-b6f0-30204801000f-119",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "afef0795b40a77447ea86bef",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-bda0eaeb-beba-11f1-b809-a9c32901000f-22",
+      "eligible": true,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp"
+      ],
+      "evaluationId": "f970c7fe04fbe51baa35857d",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-bdcdbd92-bd70-11f1-8bef-2a4af901000f-57",
+      "eligible": true,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp"
+      ],
+      "evaluationId": "6851fa03a886dcd3e08048f3",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-c27d2b9f-aec1-11f1-b6f0-30204801000f-18",
+      "eligible": true,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp"
+      ],
+      "evaluationId": "e60d569158fe7b6da1e906c7",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-c3ca4aa7-b46f-11f1-b4a6-d9079701000f-77",
+      "eligible": false,
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "3d9b0b4b86ae20f5bd963cdb",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-c4a491da-b260-11f1-a51b-ebd42201000f-45",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "04a6a60647aceb9e10ef7a6e",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-cc8edd5f-add5-11f1-b4a6-d9079701000f-57",
+      "eligible": false,
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "ac98e3ffdb1f326ca67b2163",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-d6c67169-b501-11f1-9f37-3022bd01000f-31",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "aff58edb9eb699d65bc8207e",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-d818d49f-b4fc-11f1-8cd6-ece1e601000f-34",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "916161680a6d161e68fb11ef",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-da6864ab-b8fc-11f1-a095-e68c2101000f-36",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "8275ae553747b063a582cc3e",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-db6cc3c6-adb5-11f1-9f37-3022bd01000f-91",
+      "eligible": false,
+      "reasons": [
+        "winning_or_mating_defense_available",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "b4e5a57b5517f9ff762fa736",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-dd44b1e2-ad58-11f1-b6f0-30204801000f-31",
+      "eligible": true,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp"
+      ],
+      "evaluationId": "deacd8ef52d3b182f383e693",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-dd854408-bb67-11f1-b492-d9079701000f-46",
+      "eligible": false,
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "ebf0ad2ef635ad68a9319467",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-df7b69e5-ae80-11f1-bb1f-e68c2101000f-33",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "fe2cc641c31460688bc25779",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-e126f55a-b968-11f1-becf-3c44d601000f-17",
+      "eligible": true,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp"
+      ],
+      "evaluationId": "209fc065bc6e34cd327ae813",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-e137f684-abd9-11f1-bbdf-8eeeee01000f-37",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "4427116a1f5610439a710368",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-e2fcd74e-b135-11f1-bbdf-8eeeee01000f-33",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "8bd2c15d638e6a24d979bc47",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-e530abea-b6a4-11f1-bb1f-e68c2101000f-55",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "3c51552d997e4c225a960332",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-e5b9d695-bc90-11f1-983e-eed3f101000f-26",
+      "eligible": false,
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "664ee8cfe20adeb409bdecdf",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-e75765e2-b77f-11f1-8ba1-8500da01000f-58",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "f4a2f354881f2ee5d7ba5350",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-f0a4bc4d-b513-11f1-bbdf-8eeeee01000f-76",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "31bc18af4416ce1d8e4540d1",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-f1b69558-b10a-11f1-8acf-f45fe701000f-64",
+      "eligible": true,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp"
+      ],
+      "evaluationId": "220b150c71a6cd7f6d516cd5",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-f226628b-b139-11f1-bb1f-e68c2101000f-49",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "88c8da792cdae6396ece84ea",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-f2a1e49e-b3e3-11f1-bbdf-8eeeee01000f-14",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "65c5d9b18a510e6568ea170b",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-f2cefdc1-ae34-11f1-bb1f-e68c2101000f-36",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "a3541f719942f32f40c6bb5f",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-f3cdcaeb-bd11-11f1-8dbb-feb0c301000f-37",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "3b7f687370369a63681b529a",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-f422b759-b236-11f1-8acf-f45fe701000f-30",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "0a853fa4f7dcc4889c624fa4",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-f4fd92c0-b11e-11f1-8acf-f45fe701000f-21",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "9562aa83f95a6db5e1aae58c",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-f62ae496-bb06-11f1-a095-e68c2101000f-135",
+      "eligible": true,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp"
+      ],
+      "evaluationId": "09a7d607af140a9b92c07fbb",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-f835b867-b8a9-11f1-9343-8dc15001000f-62",
+      "eligible": true,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp"
+      ],
+      "evaluationId": "445a8b75c76218f886883267",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-f85ad26f-bc3b-11f1-a696-76c0b701000f-75",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "433484d2cd4a38ae76bb85ae",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-fc9e3635-b6a2-11f1-93e5-8500da01000f-64",
+      "eligible": false,
+      "reasons": [
+        "position_already_completely_lost",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "635394e3a120d5f08570ff82",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-ff5e40fd-bbce-11f1-a095-e68c2101000f-32",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "e253cd67af4cf57acff98ea3",
+      "analysisStatus": "cache_hit"
+    },
+    {
+      "candidateId": "def-ff7155be-bd65-11f1-8bef-2a4af901000f-66",
+      "eligible": false,
+      "reasons": [
+        "best_defense_at_least_minus_250_cp",
+        "loss_below_120_cp"
+      ],
+      "evaluationId": "6690840a6ab90db0bc160aa7",
+      "analysisStatus": "cache_hit"
+    }
+  ],
+  "archivedExercises": [
+    {
+      "id": "def-28e6d974-b922-11f1-9e49-30204801000f-46",
+      "version": "defense-exercise-v1",
+      "source": {
+        "gameId": "28e6d974-b922-11f1-9e49-30204801000f",
+        "gameUrl": "https://www.chess.com/game/live/184375669176",
+        "playedAt": "2026-09-25T20:54:04+00:00",
+        "playerColor": "black",
+        "ply": 46,
+        "fen": "1r1r2k1/1pR2p1p/p3p1p1/2Rn4/1P1PB3/P5P1/5P1P/6K1 b - - 1 23",
+        "previousMoveSan": null,
+        "playedMoveUci": "f7f5",
+        "playedMoveSan": "f5",
+        "sourceSet": "phase2_reproducible",
+        "sourceCohortId": null,
+        "sourceFrozenAt": null,
+        "opening": {
+          "eco": "D00",
+          "name": "Queens Pawn Opening Chigorin Variation 2...Nf6 3.Bf4 Bf5"
+        }
+      },
+      "orientation": "black",
+      "phase": "middlegame",
+      "positionBeforeDecisionFen": "1r1r2k1/1pR2p1p/p3p1p1/2Rn4/1P1PB3/P5P1/5P1P/6K1 b - - 1 23",
+      "actualPlayedMoveUci": "f7f5",
+      "actualPlayedMoveSan": "f5",
+      "referenceDefenseUci": "d5c7",
+      "referenceDefenseSan": "Nxc7",
+      "acceptableAlternatives": [],
+      "actualPunishmentLineSan": [
+        "f5",
+        "Bxd5",
+        "exd5",
+        "Kg2",
+        "Rf8",
+        "Rxd5",
+        "Rbd8",
+        "Rxd8",
+        "Rxd8",
+        "Rxb7",
+        "Rxd4",
+        "Ra7"
+      ],
+      "defenseReferenceLineSan": [
+        "Nxc7",
+        "Rxc7",
+        "b6",
+        "Kg2",
+        "Rxd4",
+        "Kf3",
+        "Rd6",
+        "Re7",
+        "Rbd8",
+        "Kg2",
+        "b5",
+        "h4"
+      ],
+      "opponentThreat": {
+        "type": "capture",
+        "description": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "confidence": "high"
+      },
+      "motif": {
+        "resource": "capture_attacker",
+        "confidence": "medium",
+        "evidence": [
+          "La defensa usa una captura para alterar la amenaza."
+        ],
+        "classifierVersion": "defense-motif-v1"
+      },
+      "severity": "notable",
+      "evaluation": {
+        "before": {
+          "cp": 565,
+          "mate": null,
+          "numeric": 565
+        },
+        "afterActual": {
+          "cp": 372,
+          "mate": null,
+          "numeric": 372
+        },
+        "afterDefense": {
+          "cp": 565,
+          "mate": null,
+          "numeric": 565
+        },
+        "cpLossActual": 193,
+        "mateChange": {
+          "best": null,
+          "actual": null
+        },
+        "budgetId": "nodes-80k-v1",
+        "engineSha256": "3336d62e0ca4f5e1d0fdd892e03f19b8674611dd624b4b0afe454ae1e490fb51",
+        "pipelineVersion": "eval-pipeline-v0.2.1",
+        "criterionVersion": "engine-validated-v2",
+        "cacheKeys": [
+          "bb74e8a0c6dcb7498022f281d7a19494361aefceb65d104c4722d26489e2cb73"
+        ],
+        "escalationReason": null
+      },
+      "eligibility": {
+        "detectorVersion": "defense-opportunity-v1",
+        "accepted": true,
+        "reasons": [
+          "best_defense_at_least_minus_250_cp"
+        ]
+      },
+      "pedagogy": {
+        "observable": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "interpretation": "La defensa usa una captura para alterar la amenaza.",
+        "habitHypothesis": "Antes de comprometer una jugada, comprueba la respuesta más forzante del rival.",
+        "confidence": "medium",
+        "transferableRule": "CCT + refutación: después de elegir tu defensa, busca el jaque, captura o amenaza más incómoda del rival."
+      },
+      "sourceContext": {
+        "moveNumber": 23,
+        "opening": "D00 · Queens Pawn Opening Chigorin Variation 2...Nf6 3.Bf4 Bf5"
+      },
+      "lifecycle": "archived_not_selected"
+    },
+    {
+      "id": "def-65a18981-b847-11f1-8ba1-8500da01000f-54",
+      "version": "defense-exercise-v1",
+      "source": {
+        "gameId": "65a18981-b847-11f1-8ba1-8500da01000f",
+        "gameUrl": "https://www.chess.com/game/live/184320528764",
+        "playedAt": "2026-09-24T18:54:45+00:00",
+        "playerColor": "black",
+        "ply": 54,
+        "fen": "4r1k1/5qpp/3p2p1/2p4n/1r2P2P/3PQP2/1BPK1P2/1R4R1 b - - 6 27",
+        "previousMoveSan": null,
+        "playedMoveUci": "f7f4",
+        "playedMoveSan": "Qf4",
+        "sourceSet": "phase2_reproducible",
+        "sourceCohortId": null,
+        "sourceFrozenAt": null,
+        "opening": {
+          "eco": "B10",
+          "name": "Caro Kann Defense Breyer Variation 2...e5 3.Nf3"
+        }
+      },
+      "orientation": "black",
+      "phase": "middlegame",
+      "positionBeforeDecisionFen": "4r1k1/5qpp/3p2p1/2p4n/1r2P2P/3PQP2/1BPK1P2/1R4R1 b - - 6 27",
+      "actualPlayedMoveUci": "f7f4",
+      "actualPlayedMoveSan": "Qf4",
+      "referenceDefenseUci": "f7b7",
+      "referenceDefenseSan": "Qb7",
+      "acceptableAlternatives": [],
+      "actualPunishmentLineSan": [
+        "Qf4",
+        "Qxf4",
+        "Nxf4",
+        "Bc3",
+        "Rxb1",
+        "Rxb1",
+        "Re7",
+        "Rb6",
+        "Rd7",
+        "e5",
+        "Kf7",
+        "exd6"
+      ],
+      "defenseReferenceLineSan": [
+        "Qb7",
+        "Qg5",
+        "Rxb2",
+        "Rxb2",
+        "Qxb2",
+        "Qd5+",
+        "Kh8",
+        "Qxd6",
+        "Qb4+",
+        "Ke3",
+        "Qc3",
+        "Rc1"
+      ],
+      "opponentThreat": {
+        "type": "capture",
+        "description": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "confidence": "high"
+      },
+      "motif": {
+        "resource": "move_attacked_piece",
+        "confidence": "medium",
+        "evidence": [
+          "La línea real muestra una captura inmediata que la defensa evita."
+        ],
+        "classifierVersion": "defense-motif-v1"
+      },
+      "severity": "marked",
+      "evaluation": {
+        "before": {
+          "cp": 536,
+          "mate": null,
+          "numeric": 536
+        },
+        "afterActual": {
+          "cp": 205,
+          "mate": null,
+          "numeric": 205
+        },
+        "afterDefense": {
+          "cp": 536,
+          "mate": null,
+          "numeric": 536
+        },
+        "cpLossActual": 331,
+        "mateChange": {
+          "best": null,
+          "actual": null
+        },
+        "budgetId": "nodes-80k-v1",
+        "engineSha256": "3336d62e0ca4f5e1d0fdd892e03f19b8674611dd624b4b0afe454ae1e490fb51",
+        "pipelineVersion": "eval-pipeline-v0.2.1",
+        "criterionVersion": "engine-validated-v2",
+        "cacheKeys": [
+          "079bc21ff9beb14b5c60e59a31b350822fdd76f50ebe6980876929697221af1a"
+        ],
+        "escalationReason": null
+      },
+      "eligibility": {
+        "detectorVersion": "defense-opportunity-v1",
+        "accepted": true,
+        "reasons": [
+          "best_defense_at_least_minus_250_cp"
+        ]
+      },
+      "pedagogy": {
+        "observable": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "interpretation": "La línea real muestra una captura inmediata que la defensa evita.",
+        "habitHypothesis": "Antes de comprometer una jugada, comprueba la respuesta más forzante del rival.",
+        "confidence": "medium",
+        "transferableRule": "CCT + refutación: después de elegir tu defensa, busca el jaque, captura o amenaza más incómoda del rival."
+      },
+      "sourceContext": {
+        "moveNumber": 27,
+        "opening": "B10 · Caro Kann Defense Breyer Variation 2...e5 3.Nf3"
+      },
+      "lifecycle": "archived_not_selected"
+    },
+    {
+      "id": "def-a71c7e42-af9b-11f1-8cd6-ece1e601000f-74",
+      "version": "defense-exercise-v1",
+      "source": {
+        "gameId": "a71c7e42-af9b-11f1-8cd6-ece1e601000f",
+        "gameUrl": "https://www.chess.com/game/live/174428222284",
+        "playedAt": "2026-09-13T17:58:49+00:00",
+        "playerColor": "black",
+        "ply": 74,
+        "fen": "4r3/5pkp/1r4p1/Rp6/1RpN4/2n4P/2P2PP1/5K2 b - - 17 37",
+        "previousMoveSan": null,
+        "playedMoveUci": "e8e5",
+        "playedMoveSan": "Re5",
+        "sourceSet": "phase2_reproducible",
+        "sourceCohortId": null,
+        "sourceFrozenAt": null,
+        "opening": {
+          "eco": "C45",
+          "name": "Scotch Game...4.Nxd4 Nxd4 5.Qxd4 d6"
+        }
+      },
+      "orientation": "black",
+      "phase": "middlegame",
+      "positionBeforeDecisionFen": "4r3/5pkp/1r4p1/Rp6/1RpN4/2n4P/2P2PP1/5K2 b - - 17 37",
+      "actualPlayedMoveUci": "e8e5",
+      "actualPlayedMoveSan": "Re5",
+      "referenceDefenseUci": "b6d6",
+      "referenceDefenseSan": "Rd6",
+      "acceptableAlternatives": [],
+      "actualPunishmentLineSan": [
+        "Re5",
+        "Rxc4",
+        "Ne4",
+        "Nf3",
+        "Ree6",
+        "Rd4",
+        "Rbc6",
+        "Ra2",
+        "Rc5",
+        "h4",
+        "Rc7",
+        "Rb2"
+      ],
+      "defenseReferenceLineSan": [
+        "Rd6",
+        "Ra3",
+        "Rxd4",
+        "Kg1",
+        "Ne2+",
+        "Kh2",
+        "Re5",
+        "Rb1",
+        "Red5",
+        "Re3",
+        "Rd2",
+        "Re1"
+      ],
+      "opponentThreat": {
+        "type": "capture",
+        "description": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "confidence": "high"
+      },
+      "motif": {
+        "resource": "prophylaxis",
+        "confidence": "low",
+        "evidence": [
+          "La defensa reduce la continuación rival sin una táctica única observable."
+        ],
+        "classifierVersion": "defense-motif-v1"
+      },
+      "severity": "critical",
+      "evaluation": {
+        "before": {
+          "cp": 663,
+          "mate": null,
+          "numeric": 663
+        },
+        "afterActual": {
+          "cp": -20,
+          "mate": null,
+          "numeric": -20
+        },
+        "afterDefense": {
+          "cp": 663,
+          "mate": null,
+          "numeric": 663
+        },
+        "cpLossActual": 683,
+        "mateChange": {
+          "best": null,
+          "actual": null
+        },
+        "budgetId": "nodes-80k-v1",
+        "engineSha256": "3336d62e0ca4f5e1d0fdd892e03f19b8674611dd624b4b0afe454ae1e490fb51",
+        "pipelineVersion": "eval-pipeline-v0.2.1",
+        "criterionVersion": "engine-validated-v2",
+        "cacheKeys": [
+          "88cb5c69b000b2444a2026bab20ae27d52a17b54bb6fbd10b5466c1e655ed37f"
+        ],
+        "escalationReason": null
+      },
+      "eligibility": {
+        "detectorVersion": "defense-opportunity-v1",
+        "accepted": true,
+        "reasons": [
+          "best_defense_at_least_minus_250_cp"
+        ]
+      },
+      "pedagogy": {
+        "observable": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "interpretation": "La defensa recomendada reduce la continuación más exigente del rival.",
+        "habitHypothesis": "Antes de comprometer una jugada, comprueba la respuesta más forzante del rival.",
+        "confidence": "low",
+        "transferableRule": "CCT + refutación: después de elegir tu defensa, busca el jaque, captura o amenaza más incómoda del rival."
+      },
+      "sourceContext": {
+        "moveNumber": 37,
+        "opening": "C45 · Scotch Game...4.Nxd4 Nxd4 5.Qxd4 d6"
+      },
+      "lifecycle": "archived_not_selected"
+    },
+    {
+      "id": "def-bda0eaeb-beba-11f1-b809-a9c32901000f-22",
+      "version": "defense-exercise-v1",
+      "source": {
+        "gameId": "bda0eaeb-beba-11f1-b809-a9c32901000f",
+        "gameUrl": "https://www.chess.com/game/live/184729808796",
+        "playedAt": "2026-10-02T23:54:43+00:00",
+        "playerColor": "black",
+        "ply": 22,
+        "fen": "r1b2rk1/ppp2npp/3p4/2b1p1BQ/2BnP3/3P4/PPPN1qPP/R2K1R2 b - - 5 11",
+        "previousMoveSan": null,
+        "playedMoveUci": "f2e2",
+        "playedMoveSan": "Qe2+",
+        "sourceSet": "phase2_reproducible",
+        "sourceCohortId": null,
+        "sourceFrozenAt": null,
+        "opening": {
+          "eco": "C50",
+          "name": "Giuoco Piano Game Giuoco Pianissimo Variation 4...d6"
+        }
+      },
+      "orientation": "black",
+      "phase": "middlegame",
+      "positionBeforeDecisionFen": "r1b2rk1/ppp2npp/3p4/2b1p1BQ/2BnP3/3P4/PPPN1qPP/R2K1R2 b - - 5 11",
+      "actualPlayedMoveUci": "f2e2",
+      "actualPlayedMoveSan": "Qe2+",
+      "referenceDefenseUci": "f2g2",
+      "referenceDefenseSan": "Qxg2",
+      "acceptableAlternatives": [],
+      "actualPunishmentLineSan": [
+        "Qe2+",
+        "Qxe2"
+      ],
+      "defenseReferenceLineSan": [
+        "Qxg2",
+        "Bxf7+",
+        "Kh8",
+        "Qh4",
+        "Bg4+",
+        "Kc1",
+        "Nf3",
+        "Qg3",
+        "Qxg3",
+        "hxg3",
+        "Rxf7",
+        "Nxf3"
+      ],
+      "opponentThreat": {
+        "type": "capture",
+        "description": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "confidence": "high"
+      },
+      "motif": {
+        "resource": "queen_trade",
+        "confidence": "medium",
+        "evidence": [
+          "La defensa inicia un cambio que reduce las piezas atacantes."
+        ],
+        "classifierVersion": "defense-motif-v1"
+      },
+      "severity": "marked",
+      "evaluation": {
+        "before": {
+          "cp": 558,
+          "mate": null,
+          "numeric": 558
+        },
+        "afterActual": {
+          "cp": 76,
+          "mate": null,
+          "numeric": 76
+        },
+        "afterDefense": {
+          "cp": 558,
+          "mate": null,
+          "numeric": 558
+        },
+        "cpLossActual": 482,
+        "mateChange": {
+          "best": null,
+          "actual": null
+        },
+        "budgetId": "nodes-80k-v1",
+        "engineSha256": "3336d62e0ca4f5e1d0fdd892e03f19b8674611dd624b4b0afe454ae1e490fb51",
+        "pipelineVersion": "eval-pipeline-v0.2.1",
+        "criterionVersion": "engine-validated-v2",
+        "cacheKeys": [
+          "c62088337af5f7c32cfb97967e13bb0dc7972cba343881f30ff10935a23b0a2d"
+        ],
+        "escalationReason": null
+      },
+      "eligibility": {
+        "detectorVersion": "defense-opportunity-v1",
+        "accepted": true,
+        "reasons": [
+          "best_defense_at_least_minus_250_cp"
+        ]
+      },
+      "pedagogy": {
+        "observable": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "interpretation": "La defensa inicia un cambio que reduce las piezas atacantes.",
+        "habitHypothesis": "Antes de comprometer una jugada, comprueba la respuesta más forzante del rival.",
+        "confidence": "medium",
+        "transferableRule": "CCT + refutación: después de elegir tu defensa, busca el jaque, captura o amenaza más incómoda del rival."
+      },
+      "sourceContext": {
+        "moveNumber": 11,
+        "opening": "C50 · Giuoco Piano Game Giuoco Pianissimo Variation 4...d6"
+      },
+      "lifecycle": "archived_not_selected"
+    },
+    {
+      "id": "def-35938919-be92-11f1-be75-03cfdc01000f-26",
+      "version": "defense-exercise-v1",
+      "source": {
+        "gameId": "35938919-be92-11f1-be75-03cfdc01000f",
+        "gameUrl": "https://www.chess.com/game/live/184719941270",
+        "playedAt": "2026-10-02T19:01:18+00:00",
+        "playerColor": "black",
+        "ply": 26,
+        "fen": "rn2k2r/1ppqbppn/p2p3p/3Pp3/4P2B/2N2NP1/PPP1QP1P/R4RK1 b kq - 0 13",
+        "previousMoveSan": null,
+        "playedMoveUci": "e7h4",
+        "playedMoveSan": "Bxh4",
+        "sourceSet": "phase2_reproducible",
+        "sourceCohortId": null,
+        "sourceFrozenAt": null,
+        "opening": {
+          "eco": "C62",
+          "name": "Ruy Lopez Opening Old Steinitz Defense 4.d4 Bd7"
+        }
+      },
+      "orientation": "black",
+      "phase": "middlegame",
+      "positionBeforeDecisionFen": "rn2k2r/1ppqbppn/p2p3p/3Pp3/4P2B/2N2NP1/PPP1QP1P/R4RK1 b kq - 0 13",
+      "actualPlayedMoveUci": "e7h4",
+      "actualPlayedMoveSan": "Bxh4",
+      "referenceDefenseUci": "g7g5",
+      "referenceDefenseSan": "g5",
+      "acceptableAlternatives": [],
+      "actualPunishmentLineSan": [
+        "Bxh4",
+        "Nxh4"
+      ],
+      "defenseReferenceLineSan": [
+        "g5",
+        "Bxg5",
+        "hxg5",
+        "Nd2",
+        "Qh3",
+        "f3",
+        "g4",
+        "fxg4",
+        "Nf6",
+        "g5",
+        "Nh7",
+        "Nd1"
+      ],
+      "opponentThreat": {
+        "type": "capture",
+        "description": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "confidence": "high"
+      },
+      "motif": {
+        "resource": "move_attacked_piece",
+        "confidence": "medium",
+        "evidence": [
+          "La línea real muestra una captura inmediata que la defensa evita."
+        ],
+        "classifierVersion": "defense-motif-v1"
+      },
+      "severity": "marked",
+      "evaluation": {
+        "before": {
+          "cp": 450,
+          "mate": null,
+          "numeric": 450
+        },
+        "afterActual": {
+          "cp": 74,
+          "mate": null,
+          "numeric": 74
+        },
+        "afterDefense": {
+          "cp": 450,
+          "mate": null,
+          "numeric": 450
+        },
+        "cpLossActual": 376,
+        "mateChange": {
+          "best": null,
+          "actual": null
+        },
+        "budgetId": "nodes-80k-v1",
+        "engineSha256": "3336d62e0ca4f5e1d0fdd892e03f19b8674611dd624b4b0afe454ae1e490fb51",
+        "pipelineVersion": "eval-pipeline-v0.2.1",
+        "criterionVersion": "engine-validated-v2",
+        "cacheKeys": [
+          "a6db1f76bd40380fe0867dc94dc44f2a7d1383ad5623ae1573fea95c6c0e60d5"
+        ],
+        "escalationReason": null
+      },
+      "eligibility": {
+        "detectorVersion": "defense-opportunity-v1",
+        "accepted": true,
+        "reasons": [
+          "best_defense_at_least_minus_250_cp"
+        ]
+      },
+      "pedagogy": {
+        "observable": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "interpretation": "La línea real muestra una captura inmediata que la defensa evita.",
+        "habitHypothesis": "Antes de comprometer una jugada, comprueba la respuesta más forzante del rival.",
+        "confidence": "medium",
+        "transferableRule": "CCT + refutación: después de elegir tu defensa, busca el jaque, captura o amenaza más incómoda del rival."
+      },
+      "sourceContext": {
+        "moveNumber": 13,
+        "opening": "C62 · Ruy Lopez Opening Old Steinitz Defense 4.d4 Bd7"
+      },
+      "lifecycle": "archived_not_selected"
+    },
+    {
+      "id": "def-36d00b40-b3e6-11f1-8acf-f45fe701000f-119",
+      "version": "defense-exercise-v1",
+      "source": {
+        "gameId": "36d00b40-b3e6-11f1-8acf-f45fe701000f",
+        "gameUrl": "https://www.chess.com/game/live/184043351682",
+        "playedAt": "2026-09-19T05:10:26+00:00",
+        "playerColor": "white",
+        "ply": 119,
+        "fen": "7k/5Q2/7p/3P2p1/P3qP2/7P/6PK/8 w - - 4 60",
+        "previousMoveSan": null,
+        "playedMoveUci": "f7e6",
+        "playedMoveSan": "Qe6",
+        "sourceSet": "phase2_reproducible",
+        "sourceCohortId": null,
+        "sourceFrozenAt": null,
+        "opening": {
+          "eco": "B40",
+          "name": "Sicilian Defense French Variation 3.Nc3 Nc6 4.Bb5 Nge7"
+        }
+      },
+      "orientation": "white",
+      "phase": "middlegame",
+      "positionBeforeDecisionFen": "7k/5Q2/7p/3P2p1/P3qP2/7P/6PK/8 w - - 4 60",
+      "actualPlayedMoveUci": "f7e6",
+      "actualPlayedMoveSan": "Qe6",
+      "referenceDefenseUci": "d5d6",
+      "referenceDefenseSan": "d6",
+      "acceptableAlternatives": [],
+      "actualPunishmentLineSan": [
+        "Qe6",
+        "Qxf4+"
+      ],
+      "defenseReferenceLineSan": [
+        "d6",
+        "Qd4",
+        "d7",
+        "Qd6",
+        "a5",
+        "g4",
+        "hxg4",
+        "h5",
+        "Qe8+",
+        "Kg7",
+        "Qe5+",
+        "Qxe5"
+      ],
+      "opponentThreat": {
+        "type": "check",
+        "description": "El rival podía responder con un jaque forzante.",
+        "confidence": "high"
+      },
+      "motif": {
+        "resource": "prophylaxis",
+        "confidence": "low",
+        "evidence": [
+          "La defensa reduce la continuación rival sin una táctica única observable."
+        ],
+        "classifierVersion": "defense-motif-v1"
+      },
+      "severity": "critical",
+      "evaluation": {
+        "before": {
+          "cp": 799,
+          "mate": null,
+          "numeric": 799
+        },
+        "afterActual": {
+          "cp": -320,
+          "mate": null,
+          "numeric": -320
+        },
+        "afterDefense": {
+          "cp": 799,
+          "mate": null,
+          "numeric": 799
+        },
+        "cpLossActual": 1119,
+        "mateChange": {
+          "best": null,
+          "actual": null
+        },
+        "budgetId": "nodes-80k-v1",
+        "engineSha256": "3336d62e0ca4f5e1d0fdd892e03f19b8674611dd624b4b0afe454ae1e490fb51",
+        "pipelineVersion": "eval-pipeline-v0.2.1",
+        "criterionVersion": "engine-validated-v2",
+        "cacheKeys": [
+          "529f3e8d6e05e98ec398919df1cb589e7ee00dc9b522e586c0b75290de0b33b2"
+        ],
+        "escalationReason": null
+      },
+      "eligibility": {
+        "detectorVersion": "defense-opportunity-v1",
+        "accepted": true,
+        "reasons": [
+          "best_defense_at_least_minus_250_cp"
+        ]
+      },
+      "pedagogy": {
+        "observable": "El rival podía responder con un jaque forzante.",
+        "interpretation": "La defensa recomendada reduce la continuación más exigente del rival.",
+        "habitHypothesis": "Antes de comprometer una jugada, comprueba la respuesta más forzante del rival.",
+        "confidence": "low",
+        "transferableRule": "CCT + refutación: después de elegir tu defensa, busca el jaque, captura o amenaza más incómoda del rival."
+      },
+      "sourceContext": {
+        "moveNumber": 60,
+        "opening": "B40 · Sicilian Defense French Variation 3.Nc3 Nc6 4.Bb5 Nge7"
+      },
+      "lifecycle": "archived_not_selected"
+    },
+    {
+      "id": "def-a8e1ae1b-ac8b-11f1-bb1f-e68c2101000f-46",
+      "version": "defense-exercise-v1",
+      "source": {
+        "gameId": "a8e1ae1b-ac8b-11f1-bb1f-e68c2101000f",
+        "gameUrl": "https://www.chess.com/game/live/174242151326",
+        "playedAt": "2026-09-09T20:28:09+00:00",
+        "playerColor": "black",
+        "ply": 46,
+        "fen": "4rrk1/1pQ2p1p/p1n3p1/8/1P2p3/P3P1P1/qNPP3P/1R2R1K1 b - - 0 23",
+        "previousMoveSan": null,
+        "playedMoveUci": "a2a3",
+        "playedMoveSan": "Qxa3",
+        "sourceSet": "phase2_reproducible",
+        "sourceCohortId": null,
+        "sourceFrozenAt": null,
+        "opening": {
+          "eco": "A00",
+          "name": "Van t Kruijs Opening 1...e5"
+        }
+      },
+      "orientation": "black",
+      "phase": "middlegame",
+      "positionBeforeDecisionFen": "4rrk1/1pQ2p1p/p1n3p1/8/1P2p3/P3P1P1/qNPP3P/1R2R1K1 b - - 0 23",
+      "actualPlayedMoveUci": "a2a3",
+      "actualPlayedMoveSan": "Qxa3",
+      "referenceDefenseUci": "c6e5",
+      "referenceDefenseSan": "Ne5",
+      "acceptableAlternatives": [],
+      "actualPunishmentLineSan": [
+        "Qxa3",
+        "Qxb7",
+        "Re6",
+        "Rf1",
+        "Qa2",
+        "c4",
+        "Rd6",
+        "Qc7",
+        "Re6",
+        "d4",
+        "exd3",
+        "Nxd3"
+      ],
+      "defenseReferenceLineSan": [
+        "Ne5",
+        "Kf2",
+        "b5",
+        "Qc3",
+        "Qd5",
+        "Re2",
+        "Nf3",
+        "d3",
+        "Qh5",
+        "h4",
+        "Qf5",
+        "g4"
+      ],
+      "opponentThreat": {
+        "type": "capture",
+        "description": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "confidence": "high"
+      },
+      "motif": {
+        "resource": "prophylaxis",
+        "confidence": "low",
+        "evidence": [
+          "La defensa reduce la continuación rival sin una táctica única observable."
+        ],
+        "classifierVersion": "defense-motif-v1"
+      },
+      "severity": "critical",
+      "evaluation": {
+        "before": {
+          "cp": 529,
+          "mate": null,
+          "numeric": 529
+        },
+        "afterActual": {
+          "cp": 0,
+          "mate": null,
+          "numeric": 0
+        },
+        "afterDefense": {
+          "cp": 529,
+          "mate": null,
+          "numeric": 529
+        },
+        "cpLossActual": 529,
+        "mateChange": {
+          "best": null,
+          "actual": null
+        },
+        "budgetId": "nodes-80k-v1",
+        "engineSha256": "3336d62e0ca4f5e1d0fdd892e03f19b8674611dd624b4b0afe454ae1e490fb51",
+        "pipelineVersion": "eval-pipeline-v0.2.1",
+        "criterionVersion": "engine-validated-v2",
+        "cacheKeys": [
+          "b505efd49322518a2f36b4773826087e1167d08ea7f9bec8b9d2830444f3ab01"
+        ],
+        "escalationReason": null
+      },
+      "eligibility": {
+        "detectorVersion": "defense-opportunity-v1",
+        "accepted": true,
+        "reasons": [
+          "best_defense_at_least_minus_250_cp"
+        ]
+      },
+      "pedagogy": {
+        "observable": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "interpretation": "La defensa recomendada reduce la continuación más exigente del rival.",
+        "habitHypothesis": "Antes de comprometer una jugada, comprueba la respuesta más forzante del rival.",
+        "confidence": "low",
+        "transferableRule": "CCT + refutación: después de elegir tu defensa, busca el jaque, captura o amenaza más incómoda del rival."
+      },
+      "sourceContext": {
+        "moveNumber": 23,
+        "opening": "A00 · Van t Kruijs Opening 1...e5"
+      },
+      "lifecycle": "archived_not_selected"
+    },
+    {
+      "id": "def-bdcdbd92-bd70-11f1-8bef-2a4af901000f-57",
+      "version": "defense-exercise-v1",
+      "source": {
+        "gameId": "bdcdbd92-bd70-11f1-8bef-2a4af901000f",
+        "gameUrl": "https://www.chess.com/game/live/184642319430",
+        "playedAt": "2026-10-01T08:35:27+00:00",
+        "playerColor": "white",
+        "ply": 57,
+        "fen": "5r2/pkp5/npp5/2q2P1p/2P3pP/2Q1P1P1/P7/R4RK1 w - - 3 29",
+        "previousMoveSan": null,
+        "playedMoveUci": "g1h2",
+        "playedMoveSan": "Kh2",
+        "sourceSet": "phase2_reproducible",
+        "sourceCohortId": null,
+        "sourceFrozenAt": null,
+        "opening": {
+          "eco": "A04",
+          "name": "Reti Opening Queenside Fianchetto Variation 2.e4 Bb7 3.Nc3 e6"
+        }
+      },
+      "orientation": "white",
+      "phase": "middlegame",
+      "positionBeforeDecisionFen": "5r2/pkp5/npp5/2q2P1p/2P3pP/2Q1P1P1/P7/R4RK1 w - - 3 29",
+      "actualPlayedMoveUci": "g1h2",
+      "actualPlayedMoveSan": "Kh2",
+      "referenceDefenseUci": "f5f6",
+      "referenceDefenseSan": "f6",
+      "acceptableAlternatives": [],
+      "actualPunishmentLineSan": [
+        "Kh2",
+        "Rxf5"
+      ],
+      "defenseReferenceLineSan": [
+        "f6",
+        "Nb4",
+        "Rad1",
+        "Nxa2",
+        "Qd4",
+        "Qxd4",
+        "exd4",
+        "Kc8",
+        "f7",
+        "Nb4",
+        "Rde1",
+        "Kd7"
+      ],
+      "opponentThreat": {
+        "type": "capture",
+        "description": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "confidence": "high"
+      },
+      "motif": {
+        "resource": "prophylaxis",
+        "confidence": "low",
+        "evidence": [
+          "La defensa reduce la continuación rival sin una táctica única observable."
+        ],
+        "classifierVersion": "defense-motif-v1"
+      },
+      "severity": "marked",
+      "evaluation": {
+        "before": {
+          "cp": 442,
+          "mate": null,
+          "numeric": 442
+        },
+        "afterActual": {
+          "cp": -45,
+          "mate": null,
+          "numeric": -45
+        },
+        "afterDefense": {
+          "cp": 442,
+          "mate": null,
+          "numeric": 442
+        },
+        "cpLossActual": 487,
+        "mateChange": {
+          "best": null,
+          "actual": null
+        },
+        "budgetId": "nodes-80k-v1",
+        "engineSha256": "3336d62e0ca4f5e1d0fdd892e03f19b8674611dd624b4b0afe454ae1e490fb51",
+        "pipelineVersion": "eval-pipeline-v0.2.1",
+        "criterionVersion": "engine-validated-v2",
+        "cacheKeys": [
+          "1ed7ba246e16043cc47197ad7ba4011b4cf609e5a9b02e5d43584a98c36918ba"
+        ],
+        "escalationReason": null
+      },
+      "eligibility": {
+        "detectorVersion": "defense-opportunity-v1",
+        "accepted": true,
+        "reasons": [
+          "best_defense_at_least_minus_250_cp"
+        ]
+      },
+      "pedagogy": {
+        "observable": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "interpretation": "La defensa recomendada reduce la continuación más exigente del rival.",
+        "habitHypothesis": "Antes de comprometer una jugada, comprueba la respuesta más forzante del rival.",
+        "confidence": "low",
+        "transferableRule": "CCT + refutación: después de elegir tu defensa, busca el jaque, captura o amenaza más incómoda del rival."
+      },
+      "sourceContext": {
+        "moveNumber": 29,
+        "opening": "A04 · Reti Opening Queenside Fianchetto Variation 2.e4 Bb7 3.Nc3 e6"
+      },
+      "lifecycle": "archived_not_selected"
+    }
+  ]
+}

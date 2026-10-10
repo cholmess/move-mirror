@@ -1,0 +1,284 @@
+{
+  "version": "defense-manifest-v0.4.1",
+  "detectorVersion": "defense-opportunity-v1",
+  "selectionVersion": "defense-selection-v1",
+  "generatedAt": "2026-10-10T06:22:59.539Z",
+  "sourceHashes": {
+    "exercises": "ae32a9da758da742b1958c61b80d14d146452b82cfb6a00ca6a3f078eb2b6fdd",
+    "criticalPositions": "95b56af4528167dbb43d327134fb02f1065873b4b0ccd3e4de51d02eea3ed66f",
+    "deepAnalysis": "f43ed65a3f2bf71b22cdc0447d599caa0439fb3f7c509dbaf11c7fac43aa9a88"
+  },
+  "engine": {
+    "sha256": "3336d62e0ca4f5e1d0fdd892e03f19b8674611dd624b4b0afe454ae1e490fb51",
+    "shallowBudget": "nodes-80k-v1",
+    "deepBudget": "nodes-500k-v1",
+    "threads": 1,
+    "hashMb": 128
+  },
+  "counts": {
+    "candidatesFound": 151,
+    "candidatesAnalyzed": 151,
+    "analysisFailed": 0,
+    "technicallyEligible": 37,
+    "selected": 24,
+    "eligibleNotSelected": 13,
+    "rejectedByQuality": 114
+  },
+  "dispositions": {
+    "selected": 24,
+    "eligible_not_selected": 13,
+    "rejected_below_cp_loss": 77,
+    "rejected_already_lost": 37,
+    "rejected_forced_mate": 0,
+    "rejected_unstable_analysis": 0,
+    "rejected_invalid_position": 0,
+    "rejected_illegal_move": 0,
+    "rejected_duplicate_game": 0,
+    "rejected_low_pedagogical_quality": 0,
+    "analysis_failed": 0
+  },
+  "selectedIds": [
+    "def-2d6a1945-b44f-11f1-bb1f-e68c2101000f-46",
+    "def-0503d84b-bc8b-11f1-983e-eed3f101000f-25",
+    "def-1bb59532-bd0f-11f1-9651-fbb1b701000f-47",
+    "def-2c046547-b925-11f1-b596-8a56cc01000f-74",
+    "def-b0bdf537-ae33-11f1-a51b-ebd42201000f-11",
+    "def-0a0c100e-adbe-11f1-8acf-f45fe701000f-74",
+    "def-3fb7013d-acd7-11f1-bbdf-8eeeee01000f-112",
+    "def-545b74dd-bc3e-11f1-983e-eed3f101000f-22",
+    "def-55cc2e25-ae7f-11f1-8cd6-ece1e601000f-59",
+    "def-5884ba18-b894-11f1-837b-7ca6b701000f-25",
+    "def-f62ae496-bb06-11f1-a095-e68c2101000f-135",
+    "def-3afc4ce0-af9f-11f1-93e5-8500da01000f-41",
+    "def-004d0ff8-abd5-11f1-bb1f-e68c2101000f-13",
+    "def-2211f289-b764-11f1-a095-e68c2101000f-103",
+    "def-45c030d6-b717-11f1-b596-8a56cc01000f-42",
+    "def-466f8022-adee-11f1-93e5-8500da01000f-23",
+    "def-e126f55a-b968-11f1-becf-3c44d601000f-17",
+    "def-09381500-b613-11f1-8cd6-ece1e601000f-41",
+    "def-15ecf772-b40a-11f1-bb1f-e68c2101000f-33",
+    "def-41340e8e-bd06-11f1-a696-76c0b701000f-40",
+    "def-55d1442d-af9d-11f1-93e5-8500da01000f-43",
+    "def-9eee7044-b904-11f1-9c4d-f45fe701000f-102",
+    "def-f1b69558-b10a-11f1-8acf-f45fe701000f-64",
+    "def-f835b867-b8a9-11f1-9343-8dc15001000f-62"
+  ],
+  "selectedDatasetSha256": "bb147f5c8dda0e6a58b3f222b1ce2b9ae055cde7e4a43964a89f2c00febb44d4",
+  "fullRankingSha256": "72811c3bffb4d11e2c728da7367383210324b58c2dab933a45f4a970a6f29ebb",
+  "accountingValid": true,
+  "changesFromV040": {
+    "entered": [
+      "def-2c046547-b925-11f1-b596-8a56cc01000f-74",
+      "def-5884ba18-b894-11f1-837b-7ca6b701000f-25",
+      "def-f62ae496-bb06-11f1-a095-e68c2101000f-135",
+      "def-3afc4ce0-af9f-11f1-93e5-8500da01000f-41",
+      "def-45c030d6-b717-11f1-b596-8a56cc01000f-42",
+      "def-e126f55a-b968-11f1-becf-3c44d601000f-17",
+      "def-f1b69558-b10a-11f1-8acf-f45fe701000f-64",
+      "def-f835b867-b8a9-11f1-9343-8dc15001000f-62"
+    ],
+    "exited": [
+      "def-28e6d974-b922-11f1-9e49-30204801000f-46",
+      "def-35938919-be92-11f1-be75-03cfdc01000f-26",
+      "def-36d00b40-b3e6-11f1-8acf-f45fe701000f-119",
+      "def-65a18981-b847-11f1-8ba1-8500da01000f-54",
+      "def-a71c7e42-af9b-11f1-8cd6-ece1e601000f-74",
+      "def-a8e1ae1b-ac8b-11f1-bb1f-e68c2101000f-46",
+      "def-bda0eaeb-beba-11f1-b809-a9c32901000f-22",
+      "def-bdcdbd92-bd70-11f1-8bef-2a4af901000f-57"
+    ],
+    "enteredReasons": {
+      "def-2c046547-b925-11f1-b596-8a56cc01000f-74": "Seleccionado en el puesto 4: calidad pedagógica 88 y ajuste de diversidad 6.",
+      "def-5884ba18-b894-11f1-837b-7ca6b701000f-25": "Seleccionado en el puesto 10: calidad pedagógica 91 y ajuste de diversidad 1.",
+      "def-f62ae496-bb06-11f1-a095-e68c2101000f-135": "Seleccionado en el puesto 11: calidad pedagógica 91 y ajuste de diversidad 1.",
+      "def-3afc4ce0-af9f-11f1-93e5-8500da01000f-41": "Seleccionado en el puesto 12: calidad pedagógica 87 y ajuste de diversidad 4.",
+      "def-45c030d6-b717-11f1-b596-8a56cc01000f-42": "Seleccionado en el puesto 15: calidad pedagógica 88 y ajuste de diversidad 1.",
+      "def-e126f55a-b968-11f1-becf-3c44d601000f-17": "Seleccionado en el puesto 17: calidad pedagógica 88 y ajuste de diversidad 1.",
+      "def-f1b69558-b10a-11f1-8acf-f45fe701000f-64": "Seleccionado en el puesto 23: calidad pedagógica 88 y ajuste de diversidad 0.",
+      "def-f835b867-b8a9-11f1-9343-8dc15001000f-62": "Seleccionado en el puesto 24: calidad pedagógica 88 y ajuste de diversidad 0."
+    },
+    "exitedReasons": {
+      "def-28e6d974-b922-11f1-9e49-30204801000f-46": "Elegible, pero quedó en el puesto 36. No fue seleccionado por la cuota de 24; ya había cobertura suficiente de sus categorías.",
+      "def-35938919-be92-11f1-be75-03cfdc01000f-26": "Elegible, pero quedó en el puesto 29. No fue seleccionado por la cuota de 24; los ajustes de diversidad (opening) no compensaron la diferencia de calidad.",
+      "def-36d00b40-b3e6-11f1-8acf-f45fe701000f-119": "Elegible, pero quedó en el puesto 26. No fue seleccionado por la cuota de 24; los ajustes de diversidad (opening) no compensaron la diferencia de calidad.",
+      "def-65a18981-b847-11f1-8ba1-8500da01000f-54": "Elegible, pero quedó en el puesto 30. No fue seleccionado por la cuota de 24; los ajustes de diversidad (opening) no compensaron la diferencia de calidad.",
+      "def-a71c7e42-af9b-11f1-8cd6-ece1e601000f-74": "Elegible, pero quedó en el puesto 27. No fue seleccionado por la cuota de 24; los ajustes de diversidad (opening) no compensaron la diferencia de calidad.",
+      "def-a8e1ae1b-ac8b-11f1-bb1f-e68c2101000f-46": "Elegible, pero quedó en el puesto 28. No fue seleccionado por la cuota de 24; los ajustes de diversidad (opening) no compensaron la diferencia de calidad.",
+      "def-bda0eaeb-beba-11f1-b809-a9c32901000f-22": "Elegible, pero quedó en el puesto 25. No fue seleccionado por la cuota de 24; los ajustes de diversidad (resource) no compensaron la diferencia de calidad.",
+      "def-bdcdbd92-bd70-11f1-8bef-2a4af901000f-57": "Elegible, pero quedó en el puesto 37. No fue seleccionado por la cuota de 24; ya había cobertura suficiente de sus categorías."
+    }
+  },
+  "distributions": {
+    "beforeSelection": {
+      "resource": {
+        "capture_attacker": 7,
+        "countercheck": 6,
+        "create_escape_square": 1,
+        "move_attacked_piece": 12,
+        "prophylaxis": 7,
+        "queen_trade": 1,
+        "remove_defender": 3
+      },
+      "phase": {
+        "opening": 5,
+        "middlegame": 28,
+        "endgame": 4
+      },
+      "color": {
+        "white": 18,
+        "black": 19
+      }
+    },
+    "afterSelection": {
+      "resource": {
+        "capture_attacker": 5,
+        "countercheck": 6,
+        "create_escape_square": 1,
+        "move_attacked_piece": 8,
+        "prophylaxis": 1,
+        "remove_defender": 3
+      },
+      "phase": {
+        "opening": 3,
+        "middlegame": 17,
+        "endgame": 4
+      },
+      "color": {
+        "white": 14,
+        "black": 10
+      },
+      "opening": [
+        {
+          "eco": "C20",
+          "name": "Bishops Opening Boi Variation 3.Nc3",
+          "games": 12,
+          "positions": 3,
+          "descriptiveRate": 0.25
+        },
+        {
+          "eco": "C25",
+          "name": "Vienna Game Anderssen Defense 3.Nf3",
+          "games": 16,
+          "positions": 3,
+          "descriptiveRate": 0.1875
+        },
+        {
+          "eco": "C50",
+          "name": "Giuoco Piano Game Giuoco Pianissimo Variation 4...d6",
+          "games": 22,
+          "positions": 3,
+          "descriptiveRate": 0.13636363636363635
+        },
+        {
+          "eco": "B01",
+          "name": "Scandinavian Defense Mieses Kotrc Variation 3.Nc3 Qd8 4.Nf3",
+          "games": 10,
+          "positions": 2,
+          "descriptiveRate": 0.2
+        },
+        {
+          "eco": "A04",
+          "name": "Reti Opening Queenside Fianchetto Variation 2.e4 Bb7 3.Nc3 e6",
+          "games": 2,
+          "positions": 1,
+          "descriptiveRate": 0.5
+        },
+        {
+          "eco": "A45",
+          "name": "Indian Game 2.Bf4 e6 3.e3 d5 4.Nf3",
+          "games": 2,
+          "positions": 1,
+          "descriptiveRate": 0.5
+        },
+        {
+          "eco": "B02",
+          "name": "Alekhines Defense Scandinavian Variation 3.exd5 Nxd5 4.Nxd5 Qxd5 5.Nf3",
+          "games": 2,
+          "positions": 1,
+          "descriptiveRate": 0.5
+        },
+        {
+          "eco": "B07",
+          "name": "Pirc Defense Modern Defense Geller System...3.Nc3 e5 4.Bc4 Be7",
+          "games": 3,
+          "positions": 1,
+          "descriptiveRate": 0.3333333333333333
+        },
+        {
+          "eco": "C00",
+          "name": "French Defense Normal Variation",
+          "games": 3,
+          "positions": 1,
+          "descriptiveRate": 0.3333333333333333
+        },
+        {
+          "eco": "C23",
+          "name": "Bishops Opening 2...Nc6",
+          "games": 6,
+          "positions": 1,
+          "descriptiveRate": 0.16666666666666666
+        },
+        {
+          "eco": "C28",
+          "name": "Bishops Opening Berlin Vienna Hybrid Variation 4...Bb4 5.Nf3",
+          "games": 9,
+          "positions": 1,
+          "descriptiveRate": 0.1111111111111111
+        },
+        {
+          "eco": "C42",
+          "name": "Petrovs Defense Three Knights Game",
+          "games": 3,
+          "positions": 1,
+          "descriptiveRate": 0.3333333333333333
+        },
+        {
+          "eco": "C47",
+          "name": "Four Knights Game Italian Variation",
+          "games": 6,
+          "positions": 1,
+          "descriptiveRate": 0.16666666666666666
+        },
+        {
+          "eco": "C53",
+          "name": "Giuoco Piano Game Main Line",
+          "games": 2,
+          "positions": 1,
+          "descriptiveRate": 0.5
+        },
+        {
+          "eco": "C55",
+          "name": "Italian Game Two Knights Modern Bishops Opening 4...h6 5.Nc3",
+          "games": 5,
+          "positions": 1,
+          "descriptiveRate": 0.2
+        },
+        {
+          "eco": "D00",
+          "name": "Queens Pawn Opening Chigorin Variation 2...Nf6 3.Nf3",
+          "games": 11,
+          "positions": 1,
+          "descriptiveRate": 0.09090909090909091
+        },
+        {
+          "eco": "D02",
+          "name": "London System 3...Bf5",
+          "games": 5,
+          "positions": 1,
+          "descriptiveRate": 0.2
+        }
+      ]
+    }
+  },
+  "constraints": {
+    "maxPerGame": 1,
+    "defendableThresholdCp": -250,
+    "activeCohortsExcluded": true,
+    "transferArtifactsMutated": false,
+    "minimumQualityScore": 55
+  },
+  "limitations": [
+    "La apertura se muestra como contexto descriptivo; no se interpreta como debilidad ni repertorio.",
+    "Las alternativas del usuario se verifican al confirmar mediante engine-validated-v2; el dataset no predeclara alternativas sin análisis."
+  ]
+}

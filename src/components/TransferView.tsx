@@ -79,8 +79,15 @@ export function TransferView() {
   const [busy, setBusy] = useState(false);
 
   const training = useMemo(
-    () => trainingFromState(state.attempts, state.skills[PATTERN_ID]?.masteryEstimate ?? null, state.skills[PATTERN_ID]?.nextReviewAt ?? null),
-    [state.attempts, state.skills]
+    () => ({
+      ...trainingFromState(state.attempts, state.skills[PATTERN_ID]?.masteryEstimate ?? null, state.skills[PATTERN_ID]?.nextReviewAt ?? null),
+      interventionLogVersion: state.interventionLogVersion,
+      pedagogyEvents: state.pedagogyEvents,
+      interventionQualification: state.interventionQualification,
+      lessonVersion: state.pedagogyEvents.find((event) => event.eventType === "lesson_completed")?.lessonVersion ?? null,
+      evalCriterionVersion: "engine-validated-v2",
+    }),
+    [state]
   );
   const profile = summarizeTraining(training);
   const pedagogy = useMemo(
@@ -135,6 +142,11 @@ export function TransferView() {
   const cutoff = data?.baseline?.cutoff?.endUtc
     ? new Date(data.baseline.cutoff.endUtc).toLocaleString("es")
     : null;
+  const dose = state.interventionQualification;
+  const exposure = data?.v03ExposureAudit;
+  const nextMeasurement = data?.openCohort
+    ? (data.openCohort.frozen ? "frozen" : data.openCohort.analysisComplete && data.openCohort.games >= 30 ? "sufficient_descriptive_volume" : "collecting")
+    : dose.qualified ? "eligible_to_collect" : "training_incomplete";
 
   return (
     <div className="page transfer">
@@ -148,6 +160,40 @@ export function TransferView() {
       </header>
 
       {error && <p className="warn">{error}</p>}
+
+      <section className="card">
+        <h2>Estado del entrenamiento</h2>
+        <p><strong>Patrón:</strong> {PATTERN_ID}</p>
+        <p><strong>Microlección:</strong> {training.lessonVersion ?? "versión histórica no demostrable"} · <strong>Protocolo:</strong> {dose.protocolId}</p>
+        <ul className="stat-list">
+          <li>Lección completada: {dose.lessonCompletedAt ? "sí" : "no"}</li>
+          <li>Ejercicios confirmados: {dose.confirmedExercises} / 12</li>
+          <li>Éxitos verificados: {dose.verifiedSuccesses} / 8</li>
+          <li>Sesiones demostrables: {dose.distinctSessions} / 2</li>
+          <li>Días calendario: {dose.distinctCalendarDays} / 2</li>
+          <li>qualifiedAt: {formatWhen(dose.qualifiedAt)}</li>
+        </ul>
+        {!dose.qualified && <p className="warn">Requisitos restantes: {dose.missingRequirements.join(" · ")}</p>}
+      </section>
+
+      <section className="card">
+        <h2>Validez de la cohorte actual</h2>
+        <p><strong>transfer-20261010-2:</strong> Post-baseline.</p>
+        <p>Exposición: <strong>{exposure?.exposureValidity ?? "exposure_unknown"}</strong>.</p>
+        {exposure?.gamesBeforeQualification !== null && exposure?.gamesBeforeQualification !== undefined && (
+          <p>{exposure.gamesBeforeQualification} partidas antes y {exposure.gamesAfterQualification} después de la dosis.</p>
+        )}
+        <p className="muted small">
+          Se observa la frecuencia del detector y su cambio puntual con incertidumbre bootstrap. La exposición solo indica orden temporal; la causalidad no está demostrada.
+          {exposure?.exposureValidity === "exposure_unknown" && " No puede afirmarse que estas partidas sean posteriores al entrenamiento."}
+        </p>
+      </section>
+
+      <section className="card">
+        <h2>Próxima medición</h2>
+        <p className="badge badge-medium">{nextMeasurement}</p>
+        <p>Una cohorte post-intervención solo puede comenzar tras completar la dosis mínima; incluye únicamente partidas con inicio estrictamente posterior a qualifiedAt.</p>
+      </section>
 
       <section className="card">
         <h2>Sincronización</h2>
@@ -166,7 +212,7 @@ export function TransferView() {
           <button
             type="button"
             className="btn primary"
-            disabled={busy || data?.sync.running}
+            disabled={busy || data?.sync.running || !dose.qualified}
             onClick={() => run(() => startTransferSync("live", training))}
           >
             Sincronizar nuevas partidas
@@ -182,7 +228,7 @@ export function TransferView() {
           <button
             type="button"
             className="btn"
-            disabled={busy || data?.sync.running || pending === 0}
+            disabled={busy || data?.sync.running || pending === 0 || !dose.qualified}
             onClick={() => run(() => resumeTransfer(training))}
           >
             Reanudar análisis
@@ -190,7 +236,7 @@ export function TransferView() {
           <button
             type="button"
             className="btn ghost"
-            disabled={busy || data?.sync.running}
+            disabled={busy || data?.sync.running || !dose.qualified}
             onClick={() => run(() => startTransferSync("fixtures", training))}
           >
             Modo offline (fixtures)
@@ -286,6 +332,35 @@ export function TransferView() {
               </ul>
             </div>
           </div>
+        </section>
+      )}
+
+      {data?.context?.warning?.materialDifference && (
+        <p className="warn">{data.context.warning.message}</p>
+      )}
+
+      {data?.context?.baseline && data.context.cohort && (
+        <section className="card">
+          <h2>Contexto de comparabilidad</h2>
+          <div className="grid-2">
+            {([
+              ["Baseline", data.context.baseline],
+              ["Cohorte", data.context.cohort],
+            ] as const).map(([label, context]) => (
+              <div key={label}>
+                <h3>{label}</h3>
+                <ul className="stat-list">
+                  <li>Rating propio medio / mediano: {formatRate(context.ownRatingMean)} / {formatRate(context.ownRatingMedian)}</li>
+                  <li>Rating rival medio / mediano: {formatRate(context.opponentRatingMean)} / {formatRate(context.opponentRatingMedian)}</li>
+                  <li>Diferencia de rating media: {formatRate(context.ratingDifferenceMean)}</li>
+                  <li>Blancas: {context.whiteProportion === null ? "—" : `${Math.round(context.whiteProportion * 100)} %`}</li>
+                  <li>Victorias / derrotas / tablas: {[context.winProportion, context.lossProportion, context.drawProportion].map((value) => value === null ? "—" : `${Math.round(value * 100)} %`).join(" / ")}</li>
+                  <li>Decisiones por partida: {formatRate(context.decisionsPerGame)}</li>
+                </ul>
+              </div>
+            ))}
+          </div>
+          <p className="muted small">Datos descriptivos; no corrigen retrospectivamente las tasas ni constituyen un modelo causal.</p>
         </section>
       )}
 

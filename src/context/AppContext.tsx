@@ -7,12 +7,15 @@ import {
   type ReactNode,
 } from "react";
 import type { AppState, AttemptRecord, CctCapture } from "../types/learning";
+import type { DefenseAttempt, DefenseFeedbackDto, DefensiveResource } from "../types/defense";
 import {
   loadState,
   saveState,
   recordAttempt,
   markLessonComplete,
+  markLessonStarted,
   resetProgress,
+  recordDefenseAttempt,
 } from "../storage/persistence";
 import { EVAL_CRITERION_VERSION, LESSON_VERSION } from "../data/constants";
 import { getExercise } from "../data/exercises";
@@ -34,7 +37,26 @@ interface AppContextValue {
     timeUsedSeconds: number;
   }) => Promise<AttemptRecord | null>;
   completeLesson: () => void;
+  startLesson: () => void;
   resetAll: () => void;
+  recordDefenseLabAttempt: (params: {
+    exerciseId: string;
+    startedAt: string;
+    perceivedThreat: string[];
+    perceivedThreatText: string;
+    selectedResource: DefensiveResource | "not_sure";
+    predictedOpponentReply: string;
+    defenseReasoning: string;
+    verificationConfirmed: boolean;
+    retryOfAttemptId: string | null;
+    feedback: DefenseFeedbackDto & {
+      sourceGameId: string;
+      phase: "opening" | "middlegame" | "endgame";
+      orientation: "white" | "black";
+      moveSan: string;
+      moveUci: string;
+    };
+  }) => DefenseAttempt;
 }
 
 const AppContext = createContext<AppContextValue | null>(null);
@@ -136,9 +158,65 @@ export function AppProvider({ children }: { children: ReactNode }) {
     persist(markLessonComplete(state));
   }, [state, persist]);
 
+  const startLesson = useCallback(() => {
+    const next = markLessonStarted(state);
+    if (next !== state) persist(next);
+  }, [state, persist]);
+
   const resetAll = useCallback(() => {
     persist(resetProgress());
   }, [persist]);
+
+  const recordDefenseLabAttempt = useCallback(
+    (params: {
+      exerciseId: string;
+      startedAt: string;
+      perceivedThreat: string[];
+      perceivedThreatText: string;
+      selectedResource: DefensiveResource | "not_sure";
+      predictedOpponentReply: string;
+      defenseReasoning: string;
+      verificationConfirmed: boolean;
+      retryOfAttemptId: string | null;
+      feedback: DefenseFeedbackDto & {
+        sourceGameId: string;
+        phase: "opening" | "middlegame" | "endgame";
+        orientation: "white" | "black";
+        moveSan: string;
+        moveUci: string;
+      };
+    }) => {
+      const confirmedAt = new Date().toISOString();
+      const attemptId = crypto.randomUUID();
+      const attempt: DefenseAttempt = {
+        attemptId,
+        exerciseId: params.exerciseId,
+        startedAt: params.startedAt,
+        confirmedAt,
+        moveUci: params.feedback.moveUci,
+        moveSan: params.feedback.moveSan,
+        perceivedThreat: params.perceivedThreat,
+        perceivedThreatText: params.perceivedThreatText,
+        selectedResource: params.selectedResource,
+        predictedOpponentReply: params.predictedOpponentReply,
+        defenseReasoning: params.defenseReasoning,
+        verificationConfirmed: params.verificationConfirmed,
+        evaluationStatus: params.feedback.evaluationStatus,
+        evaluationId: params.feedback.evaluationId,
+        retryOfAttemptId: params.retryOfAttemptId,
+        sourceGameId: params.feedback.sourceGameId,
+        interventionEventId: `defense-attempt:${attemptId}`,
+        doseEligible: false,
+        motif: params.feedback.motif.resource,
+        phase: params.feedback.phase,
+        orientation: params.feedback.orientation,
+        sessionId: defenseSessionId(),
+      };
+      persist(recordDefenseAttempt(state, attempt, null, null));
+      return attempt;
+    },
+    [state, persist],
+  );
 
   const value = useMemo(
     () => ({
@@ -146,12 +224,25 @@ export function AppProvider({ children }: { children: ReactNode }) {
       persist,
       submitExerciseAttempt,
       completeLesson,
+      startLesson,
       resetAll,
+      recordDefenseLabAttempt,
     }),
-    [state, persist, submitExerciseAttempt, completeLesson, resetAll]
+    [state, persist, submitExerciseAttempt, completeLesson, startLesson, resetAll, recordDefenseLabAttempt]
   );
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+}
+
+function defenseSessionId() {
+  if (typeof sessionStorage === "undefined") return "defense-runtime";
+  const key = "move-mirror-defense-session-v1";
+  let id = sessionStorage.getItem(key);
+  if (!id) {
+    id = crypto.randomUUID();
+    sessionStorage.setItem(key, id);
+  }
+  return id;
 }
 
 export function useApp() {

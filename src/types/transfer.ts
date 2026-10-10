@@ -62,8 +62,22 @@ export interface TransferState {
     games: number;
     decisions: number;
     analysisComplete: boolean;
+    purpose?: string;
+    exposureAudit?: CohortExposureAudit | null;
   } | null;
   currentCohortId: string | null;
+  intervention: {
+    protocolId: string;
+    qualified: boolean;
+    qualifiedAt: string | null;
+  } | null;
+  currentExposureAudit: CohortExposureAudit | null;
+  v03ExposureAudit: CohortExposureAudit | null;
+  context: {
+    baseline: CompetitiveContext | null;
+    cohort: CompetitiveContext | null;
+    warning: { materialDifference: boolean; reasons: string[]; message: string | null } | null;
+  };
   includedCount: number;
   excludedCount: number;
   exclusionCounts: { reason: string; count: number }[];
@@ -76,6 +90,11 @@ export interface TransferState {
     endUtc: string;
     opening: { eco: string | null; name: string | null };
     ownDecisions: number;
+    ratings?: { own: number | null; opponent: number | null };
+    ratingDifference?: number | null;
+    durationMoves?: number;
+    phaseApproximate?: string | null;
+    gameDate?: string;
     termination: { white: string | null; black: string | null };
   }[];
   comparison: TransferComparison | null;
@@ -89,6 +108,41 @@ export interface TransferState {
   } | null;
   exerciseCandidates: { id: string; key: string; gameId: string; cohortId: string }[];
   examplesLocked: boolean;
+}
+
+export type ExposureValidity =
+  | "post_intervention_verified"
+  | "mixed_exposure"
+  | "pre_intervention"
+  | "exposure_unknown";
+
+export interface CohortExposureAudit {
+  cohortId: string;
+  exposureValidity: ExposureValidity;
+  protocolId: string;
+  qualifiedAt: string | null;
+  gamesBeforeQualification: number | null;
+  gamesAfterQualification: number | null;
+  earliestGameAt: string;
+  latestGameAt: string;
+  auditedAt: string;
+  auditVersion: "exposure-audit-v1";
+  auditHash: string;
+}
+
+export interface CompetitiveContext {
+  games: number;
+  ownRatingMean: number | null;
+  ownRatingMedian: number | null;
+  opponentRatingMean: number | null;
+  opponentRatingMedian: number | null;
+  ratingDifferenceMean: number | null;
+  ratingDifferenceMedian: number | null;
+  whiteProportion: number | null;
+  winProportion: number | null;
+  lossProportion: number | null;
+  drawProportion: number | null;
+  decisionsPerGame: number | null;
 }
 
 export interface TransferExample {

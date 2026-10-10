@@ -8,6 +8,7 @@ import { microLesson } from "../data/microlesson";
 import { coreExercises, exercises, dataManifest } from "../data/exercises";
 import { useApp } from "../context/AppContext";
 import { getExercise } from "../data/exercises";
+import { buildDefenseProfile } from "../domain/defenseProfile";
 
 export function Dashboard() {
   const { state } = useApp();
@@ -18,6 +19,7 @@ export function Dashboard() {
   const lessonDone = !!state.progress.lessonCompletedAt;
   const solvedCount = state.progress.exercisesCompleted.length;
   const [transfer, setTransfer] = useState<TransferState | null>(null);
+  const defense = buildDefenseProfile(state.defenseLab.attempts);
 
   useEffect(() => {
     fetchTransferState().then(setTransfer).catch(() => setTransfer(null));
@@ -109,6 +111,12 @@ export function Dashboard() {
 
       <section className="card">
         <h2>Transferencia a partidas nuevas</h2>
+        <ul className="stat-list">
+          <li>Entrenamiento: {state.interventionQualification.qualified ? "completado" : "en progreso"}</li>
+          <li>Próxima cohorte: {state.interventionQualification.qualified ? "habilitada" : "no habilitada"}</li>
+          <li>Validez de exposición: {transfer?.currentExposureAudit?.exposureValidity ?? "exposure_unknown"}</li>
+          <li>Recomendación: {transfer?.pedagogy?.title ?? "Continuar CCT + refutación"}</li>
+        </ul>
         {transfer?.comparison ? (
           <p>
             {transfer.comparison.label}. En las partidas nuevas el patrón aparece{" "}
@@ -135,6 +143,24 @@ export function Dashboard() {
         <Link className="btn" to="/transfer">
           Ver transferencia
         </Link>
+      </section>
+
+      <section className="card">
+        <p className="eyebrow">Canal adicional</p>
+        <h2>Defense Lab</h2>
+        <p>
+          Próxima posición defensiva personalizada · sesión{" "}
+          {state.defenseLab.sessionExerciseIds.length + 1}
+        </p>
+        <p className="reason">
+          {state.defenseLab.lastSelectionReason ??
+            "Priorizaremos una posición severa con poca evidencia de dominio, variando color y recurso."}
+        </p>
+        <p>
+          <strong>Hipótesis defensiva:</strong> {defense.hypothesis}
+        </p>
+        <p className="muted small">Confianza {defense.confidence}.</p>
+        <Link className="btn" to="/defense">Practicar defensa</Link>
       </section>
 
       <section className="card">

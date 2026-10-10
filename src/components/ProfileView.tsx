@@ -8,6 +8,7 @@ import { PATTERN_ID } from "../data/constants";
 import { fetchTransferState } from "../api/transferClient";
 import type { TransferState } from "../types/transfer";
 import { summarizeTraining } from "@shared/transfer/pedagogy.js";
+import { buildDefenseProfile } from "../domain/defenseProfile";
 
 export function ProfileView() {
   const { state, resetAll } = useApp();
@@ -32,6 +33,10 @@ export function ProfileView() {
       nextReviewAt: state.skills[PATTERN_ID]?.nextReviewAt ?? null,
     });
   }, [state.attempts, state.skills]);
+  const defense = useMemo(
+    () => buildDefenseProfile(state.defenseLab.attempts),
+    [state.defenseLab.attempts],
+  );
 
   const downloadLog = () => {
     const blob = new Blob([exportAttempts(state)], {
@@ -111,7 +116,7 @@ export function ProfileView() {
       </div>
 
       <section className="card">
-        <h2>Dos canales</h2>
+        <h2>Tres canales separados</h2>
         <p className="muted small">
           El dominio de ejercicios (α/β) solo cambia con intentos verificados. Las partidas reales no lo modifican.
         </p>
@@ -121,6 +126,12 @@ export function ProfileView() {
             {training.playable_inexact} imprecisas, {training.incorrect} incorrectas.
           </li>
           <li>Partidas reales: {transfer?.comparison?.label ?? "Datos insuficientes"}.</li>
+          <li>
+            Exposición pedagógica: {state.interventionQualification.qualified
+              ? `dosis completada (${new Date(state.interventionQualification.qualifiedAt!).toLocaleString("es")})`
+              : "dosis en progreso"}.
+          </li>
+          <li>Validez de la cohorte: {transfer?.currentExposureAudit?.exposureValidity ?? "exposure_unknown"}.</li>
           <li>
             Última sincronización:{" "}
             {transfer?.sync.lastSyncedAt
@@ -162,6 +173,33 @@ export function ProfileView() {
         <button type="button" className="btn" onClick={downloadLog}>
           Exportar intentos (JSON)
         </button>
+      </section>
+
+      <section className="card">
+        <h2>Defense Lab</h2>
+        <ul className="stat-list">
+          <li>Posiciones intentadas: {defense.positionsAttempted}</li>
+          <li>Resultados verificados: {defense.verifiedResults}</li>
+          <li>Defensas aceptables: {Math.round(defense.acceptableRate * 100)}%</li>
+          <li>Recursos practicados: {defense.resourcesPracticed.join(", ") || "—"}</li>
+          <li>Última práctica: {defense.lastPracticeAt ? new Date(defense.lastPracticeAt).toLocaleString("es") : "—"}</li>
+          <li>Próxima revisión: {defense.nextReviewAt ? new Date(defense.nextReviewAt).toLocaleDateString("es") : "—"}</li>
+        </ul>
+        <p><strong>Observación:</strong> {defense.observation}</p>
+        <p><strong>Hipótesis:</strong> {defense.hypothesis}</p>
+        <p className="muted small">
+          Confianza {defense.confidence}. Se exige evidencia de 5 posiciones, 3 partidas y 2 sesiones
+          antes de presentar una hipótesis específica.
+        </p>
+        {state.defenseLab.attempts.length > 0 && (
+          <ul className="mono tiny">
+            {state.defenseLab.attempts.slice(-5).reverse().map((attempt) => (
+              <li key={attempt.attemptId}>
+                {new Date(attempt.confirmedAt).toLocaleDateString("es")} · {attempt.motif} · {attempt.evaluationStatus}
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
 
       <section className="card muted-arch">

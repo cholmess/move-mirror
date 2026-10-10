@@ -36,10 +36,10 @@ test.describe("Train no-spoiler", () => {
     });
 
     await page.goto("/train");
-    await page.evaluate(() => localStorage.removeItem("move-mirror-state-v2"));
+    await page.evaluate(() => localStorage.removeItem("move-mirror-state-v4"));
 
     const attemptsBefore = await page.evaluate(() => {
-      const raw = localStorage.getItem("move-mirror-state-v2");
+      const raw = localStorage.getItem("move-mirror-state-v4");
       if (!raw) return 0;
       return JSON.parse(raw).attempts?.length ?? 0;
     });
@@ -81,7 +81,7 @@ test.describe("Train no-spoiler", () => {
     expect(post).toMatch(/Clasificación|Óptima|Aceptable|Imprecisa|Incorrecta|No verificada/);
 
     const attemptsAfter = await page.evaluate(() => {
-      const raw = localStorage.getItem("move-mirror-state-v2");
+      const raw = localStorage.getItem("move-mirror-state-v4");
       return JSON.parse(raw!).attempts.length;
     });
     expect(attemptsAfter).toBe(attemptsBefore + 1);

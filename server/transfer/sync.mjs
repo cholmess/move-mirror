@@ -93,10 +93,15 @@ export async function runSync({
   training = null,
   sleep,
   fetchImpl,
+  purpose = null,
 }) {
   const progress = (patch) => onProgress?.(patch);
   const manifest = store.readManifest();
   const syncedAt = new Date().toISOString();
+  const qualification = training?.interventionQualification ?? null;
+  if (purpose === "post-intervention-transfer" && !qualification?.qualified) {
+    throw new Error("training_incomplete");
+  }
   progress({ phase: "fetch", done: 0, total: 1, message: "Buscando partidas nuevas" });
 
   let fetched;
@@ -127,6 +132,8 @@ export async function runSync({
     username,
     cohortId,
     syncedAt,
+    qualifiedAt: qualification?.qualifiedAt ?? null,
+    purpose,
   });
   if (!cohort && (selected.included.length || selected.excluded.length)) {
     cohort = store.createCohort({
@@ -135,6 +142,17 @@ export async function runSync({
       syncedAt,
       cutoff: manifest.cutoff,
       baselineCohortId: manifest.cohortId,
+      purpose,
+      qualifiedAt: qualification?.qualifiedAt ?? null,
+      protocolId: qualification?.protocolId ?? null,
+      lessonVersion: training?.lessonVersion ?? null,
+      evalCriterionVersion: training?.evalCriterionVersion ?? null,
+      doseEvidenceSnapshot: qualification,
+      minimumAllowedDate: qualification?.qualifiedAt ?? null,
+      excludedPreInterventionGameIds: selected.excluded
+        .filter((row) => row.reason === "before_intervention_cutoff")
+        .map((row) => row.gameId)
+        .filter(Boolean),
     });
   }
   if (cohort) {
@@ -150,7 +168,16 @@ export async function runSync({
   state.lastSource = source;
   state.lastSyncedAt = syncedAt;
   state.lastError = null;
+  if (training) {
+    state.trainingSnapshot = training;
+    state.intervention = qualification;
+  }
   store.writeState(state);
+  if (qualification) {
+    for (const id of store.listCohortIds()) {
+      if (store.readMeta(id)?.frozen) store.auditExposure(id, qualification, syncedAt);
+    }
+  }
 
   if (!cohort) {
     const idle = store.readState();

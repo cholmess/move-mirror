@@ -1,0 +1,2884 @@
+{
+  "version": "defense-lab-v1",
+  "releaseVersion": "0.4.1",
+  "generatedAt": "2026-10-10T06:22:59.539Z",
+  "selection": {
+    "version": "defense-selection-v1",
+    "selected": 24,
+    "technicallyEligible": 37,
+    "candidatesAnalyzed": 151
+  },
+  "exercises": [
+    {
+      "id": "def-2d6a1945-b44f-11f1-bb1f-e68c2101000f-46",
+      "version": "defense-exercise-v1",
+      "source": {
+        "gameId": "2d6a1945-b44f-11f1-bb1f-e68c2101000f",
+        "gameUrl": "https://www.chess.com/game/live/184071191700",
+        "playedAt": "2026-09-19T17:32:24+00:00",
+        "playerColor": "black",
+        "ply": 46,
+        "fen": "r5k1/ppp1q2p/1bn3pQ/4p2P/4P3/3P4/PPP3P1/5R1K b - - 0 23",
+        "previousMoveSan": null,
+        "playedMoveUci": "e7g7",
+        "playedMoveSan": "Qg7",
+        "sourceSet": "phase2_reproducible",
+        "sourceCohortId": null,
+        "sourceFrozenAt": null,
+        "opening": {
+          "eco": "C50",
+          "name": "Giuoco Piano Game Giuoco Pianissimo Variation 4...d6"
+        }
+      },
+      "orientation": "black",
+      "phase": "middlegame",
+      "positionBeforeDecisionFen": "r5k1/ppp1q2p/1bn3pQ/4p2P/4P3/3P4/PPP3P1/5R1K b - - 0 23",
+      "actualPlayedMoveUci": "e7g7",
+      "actualPlayedMoveSan": "Qg7",
+      "referenceDefenseUci": "e7h4",
+      "referenceDefenseSan": "Qh4#",
+      "acceptableAlternatives": [],
+      "actualPunishmentLineSan": [
+        "Qg7",
+        "Qxg7+",
+        "Kxg7",
+        "h6+",
+        "Kxh6",
+        "Rf7",
+        "Rh8",
+        "c4",
+        "Bd4"
+      ],
+      "defenseReferenceLineSan": [
+        "Qh4#"
+      ],
+      "opponentThreat": {
+        "type": "check",
+        "description": "El rival podía responder con un jaque forzante.",
+        "confidence": "high"
+      },
+      "motif": {
+        "resource": "countercheck",
+        "confidence": "high",
+        "evidence": [
+          "La defensa da jaque y obliga al rival a responder."
+        ],
+        "classifierVersion": "defense-motif-v1"
+      },
+      "severity": "critical",
+      "evaluation": {
+        "before": {
+          "cp": null,
+          "mate": 1,
+          "numeric": 99999
+        },
+        "afterActual": {
+          "cp": -805,
+          "mate": null,
+          "numeric": -805
+        },
+        "afterDefense": {
+          "cp": null,
+          "mate": 1,
+          "numeric": 99999
+        },
+        "cpLossActual": 100804,
+        "mateChange": {
+          "best": 1,
+          "actual": null
+        },
+        "budgetId": "nodes-500k-v1",
+        "engineSha256": "3336d62e0ca4f5e1d0fdd892e03f19b8674611dd624b4b0afe454ae1e490fb51",
+        "pipelineVersion": "eval-pipeline-v0.2.1",
+        "criterionVersion": "engine-validated-v2",
+        "cacheKeys": [
+          "2f86c85f8474457d11cd8e70cb3c07f73e80a7af4c89db03d41b98f71f9a156b"
+        ],
+        "escalationReason": "mate_state_change"
+      },
+      "eligibility": {
+        "detectorVersion": "defense-opportunity-v1",
+        "accepted": true,
+        "reasons": [
+          "winning_or_mating_defense_available"
+        ]
+      },
+      "pedagogy": {
+        "observable": "El rival podía responder con un jaque forzante.",
+        "interpretation": "La defensa da jaque y obliga al rival a responder.",
+        "habitHypothesis": "Antes de comprometer una jugada, comprueba la respuesta más forzante del rival.",
+        "confidence": "high",
+        "transferableRule": "CCT + refutación: después de elegir tu defensa, busca el jaque, captura o amenaza más incómoda del rival."
+      },
+      "sourceContext": {
+        "moveNumber": 23,
+        "opening": "C50 · Giuoco Piano Game Giuoco Pianissimo Variation 4...d6"
+      },
+      "lifecycle": "active",
+      "selection": {
+        "version": "defense-selection-v1",
+        "rank": 1,
+        "finalScore": 111,
+        "reason": "Seleccionado en el puesto 1: calidad pedagógica 103 y ajuste de diversidad 8."
+      }
+    },
+    {
+      "id": "def-0503d84b-bc8b-11f1-983e-eed3f101000f-25",
+      "version": "defense-exercise-v1",
+      "source": {
+        "gameId": "0503d84b-bc8b-11f1-983e-eed3f101000f",
+        "gameUrl": "https://www.chess.com/game/live/184586711054",
+        "playedAt": "2026-09-30T05:13:29+00:00",
+        "playerColor": "white",
+        "ply": 25,
+        "fen": "r3k2r/p1p2ppp/2p1p3/8/1B5q/3P4/PPP2PPP/R2QK2R w KQkq - 1 13",
+        "previousMoveSan": null,
+        "playedMoveUci": "e1g1",
+        "playedMoveSan": "O-O",
+        "sourceSet": "phase2_reproducible",
+        "sourceCohortId": null,
+        "sourceFrozenAt": null,
+        "opening": {
+          "eco": "B01",
+          "name": "Scandinavian Defense Mieses Kotrc Variation 3.Nc3 Qd8 4.Nf3"
+        }
+      },
+      "orientation": "white",
+      "phase": "middlegame",
+      "positionBeforeDecisionFen": "r3k2r/p1p2ppp/2p1p3/8/1B5q/3P4/PPP2PPP/R2QK2R w KQkq - 1 13",
+      "actualPlayedMoveUci": "e1g1",
+      "actualPlayedMoveSan": "O-O",
+      "referenceDefenseUci": "d1d2",
+      "referenceDefenseSan": "Qd2",
+      "acceptableAlternatives": [],
+      "actualPunishmentLineSan": [
+        "O-O",
+        "Qxb4"
+      ],
+      "defenseReferenceLineSan": [
+        "Qd2",
+        "a5",
+        "Bc5",
+        "Qf6",
+        "O-O-O",
+        "h5",
+        "Ba3",
+        "O-O-O",
+        "f4"
+      ],
+      "opponentThreat": {
+        "type": "capture",
+        "description": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "confidence": "high"
+      },
+      "motif": {
+        "resource": "move_attacked_piece",
+        "confidence": "medium",
+        "evidence": [
+          "La línea real muestra una captura inmediata que la defensa evita."
+        ],
+        "classifierVersion": "defense-motif-v1"
+      },
+      "severity": "critical",
+      "evaluation": {
+        "before": {
+          "cp": 695,
+          "mate": null,
+          "numeric": 695
+        },
+        "afterActual": {
+          "cp": -47,
+          "mate": null,
+          "numeric": -47
+        },
+        "afterDefense": {
+          "cp": 695,
+          "mate": null,
+          "numeric": 695
+        },
+        "cpLossActual": 742,
+        "mateChange": {
+          "best": null,
+          "actual": null
+        },
+        "budgetId": "nodes-80k-v1",
+        "engineSha256": "3336d62e0ca4f5e1d0fdd892e03f19b8674611dd624b4b0afe454ae1e490fb51",
+        "pipelineVersion": "eval-pipeline-v0.2.1",
+        "criterionVersion": "engine-validated-v2",
+        "cacheKeys": [
+          "48227c502aee514f52eecfac83f06721588729ad3e79fd0f05f6e08c57fe6738"
+        ],
+        "escalationReason": null
+      },
+      "eligibility": {
+        "detectorVersion": "defense-opportunity-v1",
+        "accepted": true,
+        "reasons": [
+          "best_defense_at_least_minus_250_cp"
+        ]
+      },
+      "pedagogy": {
+        "observable": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "interpretation": "La línea real muestra una captura inmediata que la defensa evita.",
+        "habitHypothesis": "Antes de comprometer una jugada, comprueba la respuesta más forzante del rival.",
+        "confidence": "medium",
+        "transferableRule": "CCT + refutación: después de elegir tu defensa, busca el jaque, captura o amenaza más incómoda del rival."
+      },
+      "sourceContext": {
+        "moveNumber": 13,
+        "opening": "B01 · Scandinavian Defense Mieses Kotrc Variation 3.Nc3 Qd8 4.Nf3"
+      },
+      "lifecycle": "active",
+      "selection": {
+        "version": "defense-selection-v1",
+        "rank": 2,
+        "finalScore": 99,
+        "reason": "Seleccionado en el puesto 2: calidad pedagógica 93 y ajuste de diversidad 6."
+      }
+    },
+    {
+      "id": "def-1bb59532-bd0f-11f1-9651-fbb1b701000f-47",
+      "version": "defense-exercise-v1",
+      "source": {
+        "gameId": "1bb59532-bd0f-11f1-9651-fbb1b701000f",
+        "gameUrl": "https://www.chess.com/game/live/184623501520",
+        "playedAt": "2026-09-30T20:46:23+00:00",
+        "playerColor": "white",
+        "ply": 47,
+        "fen": "2Q5/1pp1q1kp/p1np2p1/4p3/8/1BPP2P1/PP4KP/5R2 w - - 1 24",
+        "previousMoveSan": null,
+        "playedMoveUci": "f1f7",
+        "playedMoveSan": "Rf7+",
+        "sourceSet": "phase2_reproducible",
+        "sourceCohortId": null,
+        "sourceFrozenAt": null,
+        "opening": {
+          "eco": "C20",
+          "name": "Bishops Opening Boi Variation 3.Nc3"
+        }
+      },
+      "orientation": "white",
+      "phase": "middlegame",
+      "positionBeforeDecisionFen": "2Q5/1pp1q1kp/p1np2p1/4p3/8/1BPP2P1/PP4KP/5R2 w - - 1 24",
+      "actualPlayedMoveUci": "f1f7",
+      "actualPlayedMoveSan": "Rf7+",
+      "referenceDefenseUci": "c8g8",
+      "referenceDefenseSan": "Qg8+",
+      "acceptableAlternatives": [],
+      "actualPunishmentLineSan": [
+        "Rf7+",
+        "Qxf7",
+        "Bxf7",
+        "Ne7",
+        "Qxc7",
+        "Kxf7",
+        "Qxd6",
+        "b5",
+        "Qxe5",
+        "Nf5",
+        "Kg1",
+        "Ne7"
+      ],
+      "defenseReferenceLineSan": [
+        "Qg8+",
+        "Kh6",
+        "Rf7",
+        "Qxf7",
+        "Qxf7",
+        "Nd4",
+        "Qf8+",
+        "Kh5",
+        "Bd1+",
+        "Ne2",
+        "Bxe2+",
+        "Kg5"
+      ],
+      "opponentThreat": {
+        "type": "capture",
+        "description": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "confidence": "high"
+      },
+      "motif": {
+        "resource": "countercheck",
+        "confidence": "high",
+        "evidence": [
+          "La defensa da jaque y obliga al rival a responder."
+        ],
+        "classifierVersion": "defense-motif-v1"
+      },
+      "severity": "critical",
+      "evaluation": {
+        "before": {
+          "cp": null,
+          "mate": 7,
+          "numeric": 99993
+        },
+        "afterActual": {
+          "cp": -986,
+          "mate": null,
+          "numeric": -986
+        },
+        "afterDefense": {
+          "cp": null,
+          "mate": 7,
+          "numeric": 99993
+        },
+        "cpLossActual": 100979,
+        "mateChange": {
+          "best": 7,
+          "actual": null
+        },
+        "budgetId": "nodes-500k-v1",
+        "engineSha256": "3336d62e0ca4f5e1d0fdd892e03f19b8674611dd624b4b0afe454ae1e490fb51",
+        "pipelineVersion": "eval-pipeline-v0.2.1",
+        "criterionVersion": "engine-validated-v2",
+        "cacheKeys": [
+          "94035b4a28bdfd1992449d2569549660b78ef6eb06afbf12f52506b98934d448"
+        ],
+        "escalationReason": "mate_state_change"
+      },
+      "eligibility": {
+        "detectorVersion": "defense-opportunity-v1",
+        "accepted": true,
+        "reasons": [
+          "winning_or_mating_defense_available"
+        ]
+      },
+      "pedagogy": {
+        "observable": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "interpretation": "La defensa da jaque y obliga al rival a responder.",
+        "habitHypothesis": "Antes de comprometer una jugada, comprueba la respuesta más forzante del rival.",
+        "confidence": "high",
+        "transferableRule": "CCT + refutación: después de elegir tu defensa, busca el jaque, captura o amenaza más incómoda del rival."
+      },
+      "sourceContext": {
+        "moveNumber": 24,
+        "opening": "C20 · Bishops Opening Boi Variation 3.Nc3"
+      },
+      "lifecycle": "active",
+      "selection": {
+        "version": "defense-selection-v1",
+        "rank": 3,
+        "finalScore": 96,
+        "reason": "Seleccionado en el puesto 3: calidad pedagógica 95 y ajuste de diversidad 1."
+      }
+    },
+    {
+      "id": "def-2c046547-b925-11f1-b596-8a56cc01000f-74",
+      "version": "defense-exercise-v1",
+      "source": {
+        "gameId": "2c046547-b925-11f1-b596-8a56cc01000f",
+        "gameUrl": "https://www.chess.com/game/live/184376430496",
+        "playedAt": "2026-09-25T21:21:14+00:00",
+        "playerColor": "black",
+        "ply": 74,
+        "fen": "8/6p1/1p2pk2/p1p1b3/PP4R1/B1P3PP/7K/5r2 b - - 0 37",
+        "previousMoveSan": null,
+        "playedMoveUci": "e5c3",
+        "playedMoveSan": "Bxc3",
+        "sourceSet": "phase2_reproducible",
+        "sourceCohortId": null,
+        "sourceFrozenAt": null,
+        "opening": {
+          "eco": "C23",
+          "name": "Bishops Opening 2...Nc6"
+        }
+      },
+      "orientation": "black",
+      "phase": "endgame",
+      "positionBeforeDecisionFen": "8/6p1/1p2pk2/p1p1b3/PP4R1/B1P3PP/7K/5r2 b - - 0 37",
+      "actualPlayedMoveUci": "e5c3",
+      "actualPlayedMoveSan": "Bxc3",
+      "referenceDefenseUci": "a5b4",
+      "referenceDefenseSan": "axb4",
+      "acceptableAlternatives": [],
+      "actualPunishmentLineSan": [
+        "Bxc3",
+        "bxc5"
+      ],
+      "defenseReferenceLineSan": [
+        "axb4",
+        "cxb4",
+        "Ra1",
+        "bxc5",
+        "Rxa3",
+        "cxb6",
+        "Rb3",
+        "a5",
+        "Ra3",
+        "Rb4",
+        "Rxa5",
+        "b7"
+      ],
+      "opponentThreat": {
+        "type": "capture",
+        "description": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "confidence": "high"
+      },
+      "motif": {
+        "resource": "remove_defender",
+        "confidence": "medium",
+        "evidence": [
+          "La defensa usa una captura para alterar la amenaza."
+        ],
+        "classifierVersion": "defense-motif-v1"
+      },
+      "severity": "critical",
+      "evaluation": {
+        "before": {
+          "cp": 476,
+          "mate": null,
+          "numeric": 476
+        },
+        "afterActual": {
+          "cp": -38,
+          "mate": null,
+          "numeric": -38
+        },
+        "afterDefense": {
+          "cp": 476,
+          "mate": null,
+          "numeric": 476
+        },
+        "cpLossActual": 514,
+        "mateChange": {
+          "best": null,
+          "actual": null
+        },
+        "budgetId": "nodes-80k-v1",
+        "engineSha256": "3336d62e0ca4f5e1d0fdd892e03f19b8674611dd624b4b0afe454ae1e490fb51",
+        "pipelineVersion": "eval-pipeline-v0.2.1",
+        "criterionVersion": "engine-validated-v2",
+        "cacheKeys": [
+          "bb7f1cc7c8ffcbdd4fe5ce25bf2b4c685139cf78feabd8bb99122855324d98b5"
+        ],
+        "escalationReason": null
+      },
+      "eligibility": {
+        "detectorVersion": "defense-opportunity-v1",
+        "accepted": true,
+        "reasons": [
+          "best_defense_at_least_minus_250_cp"
+        ]
+      },
+      "pedagogy": {
+        "observable": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "interpretation": "La defensa usa una captura para alterar la amenaza.",
+        "habitHypothesis": "Antes de comprometer una jugada, comprueba la respuesta más forzante del rival.",
+        "confidence": "medium",
+        "transferableRule": "CCT + refutación: después de elegir tu defensa, busca el jaque, captura o amenaza más incómoda del rival."
+      },
+      "sourceContext": {
+        "moveNumber": 37,
+        "opening": "C23 · Bishops Opening 2...Nc6"
+      },
+      "lifecycle": "active",
+      "selection": {
+        "version": "defense-selection-v1",
+        "rank": 4,
+        "finalScore": 94,
+        "reason": "Seleccionado en el puesto 4: calidad pedagógica 88 y ajuste de diversidad 6."
+      }
+    },
+    {
+      "id": "def-b0bdf537-ae33-11f1-a51b-ebd42201000f-11",
+      "version": "defense-exercise-v1",
+      "source": {
+        "gameId": "b0bdf537-ae33-11f1-a51b-ebd42201000f",
+        "gameUrl": "https://www.chess.com/game/live/174344013540",
+        "playedAt": "2026-09-11T22:58:54+00:00",
+        "playerColor": "white",
+        "ply": 11,
+        "fen": "rnbqk2r/ppp2ppp/8/2bpp3/2B1N3/5N2/PPPP1PPP/R1BQK2R w KQkq - 0 6",
+        "previousMoveSan": null,
+        "playedMoveUci": "c4d5",
+        "playedMoveSan": "Bxd5",
+        "sourceSet": "phase2_reproducible",
+        "sourceCohortId": null,
+        "sourceFrozenAt": null,
+        "opening": {
+          "eco": "C42",
+          "name": "Petrovs Defense Three Knights Game"
+        }
+      },
+      "orientation": "white",
+      "phase": "opening",
+      "positionBeforeDecisionFen": "rnbqk2r/ppp2ppp/8/2bpp3/2B1N3/5N2/PPPP1PPP/R1BQK2R w KQkq - 0 6",
+      "actualPlayedMoveUci": "c4d5",
+      "actualPlayedMoveSan": "Bxd5",
+      "referenceDefenseUci": "c4b5",
+      "referenceDefenseSan": "Bb5+",
+      "acceptableAlternatives": [],
+      "actualPunishmentLineSan": [
+        "Bxd5",
+        "Qxd5"
+      ],
+      "defenseReferenceLineSan": [
+        "Bb5+",
+        "c6",
+        "Nxc5",
+        "cxb5",
+        "O-O",
+        "f6",
+        "d4",
+        "b6",
+        "Nb3",
+        "e4",
+        "Ne1",
+        "O-O"
+      ],
+      "opponentThreat": {
+        "type": "capture",
+        "description": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "confidence": "high"
+      },
+      "motif": {
+        "resource": "countercheck",
+        "confidence": "high",
+        "evidence": [
+          "La defensa da jaque y obliga al rival a responder."
+        ],
+        "classifierVersion": "defense-motif-v1"
+      },
+      "severity": "critical",
+      "evaluation": {
+        "before": {
+          "cp": 555,
+          "mate": null,
+          "numeric": 555
+        },
+        "afterActual": {
+          "cp": -30,
+          "mate": null,
+          "numeric": -30
+        },
+        "afterDefense": {
+          "cp": 555,
+          "mate": null,
+          "numeric": 555
+        },
+        "cpLossActual": 585,
+        "mateChange": {
+          "best": null,
+          "actual": null
+        },
+        "budgetId": "nodes-80k-v1",
+        "engineSha256": "3336d62e0ca4f5e1d0fdd892e03f19b8674611dd624b4b0afe454ae1e490fb51",
+        "pipelineVersion": "eval-pipeline-v0.2.1",
+        "criterionVersion": "engine-validated-v2",
+        "cacheKeys": [
+          "69a9e0166c463f0e7a4ef5c6900dd96db74f484a08fbfa1d1ebfb5ba0833ddd4"
+        ],
+        "escalationReason": null
+      },
+      "eligibility": {
+        "detectorVersion": "defense-opportunity-v1",
+        "accepted": true,
+        "reasons": [
+          "best_defense_at_least_minus_250_cp"
+        ]
+      },
+      "pedagogy": {
+        "observable": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "interpretation": "La defensa da jaque y obliga al rival a responder.",
+        "habitHypothesis": "Antes de comprometer una jugada, comprueba la respuesta más forzante del rival.",
+        "confidence": "high",
+        "transferableRule": "CCT + refutación: después de elegir tu defensa, busca el jaque, captura o amenaza más incómoda del rival."
+      },
+      "sourceContext": {
+        "moveNumber": 6,
+        "opening": "C42 · Petrovs Defense Three Knights Game"
+      },
+      "lifecycle": "active",
+      "selection": {
+        "version": "defense-selection-v1",
+        "rank": 5,
+        "finalScore": 94,
+        "reason": "Seleccionado en el puesto 5: calidad pedagógica 91 y ajuste de diversidad 3."
+      }
+    },
+    {
+      "id": "def-0a0c100e-adbe-11f1-8acf-f45fe701000f-74",
+      "version": "defense-exercise-v1",
+      "source": {
+        "gameId": "0a0c100e-adbe-11f1-8acf-f45fe701000f",
+        "gameUrl": "https://www.chess.com/game/live/174310528942",
+        "playedAt": "2026-09-11T09:07:38+00:00",
+        "playerColor": "black",
+        "ply": 74,
+        "fen": "6k1/4rr1p/2p3pQ/1p1nB2P/pP3Pq1/P3p1P1/7K/3RR3 b - - 2 37",
+        "previousMoveSan": null,
+        "playedMoveUci": "g4h5",
+        "playedMoveSan": "Qxh5+",
+        "sourceSet": "phase2_reproducible",
+        "sourceCohortId": null,
+        "sourceFrozenAt": null,
+        "opening": {
+          "eco": "D00",
+          "name": "Queens Pawn Opening Chigorin Variation 2...Nf6 3.Nf3"
+        }
+      },
+      "orientation": "black",
+      "phase": "middlegame",
+      "positionBeforeDecisionFen": "6k1/4rr1p/2p3pQ/1p1nB2P/pP3Pq1/P3p1P1/7K/3RR3 b - - 2 37",
+      "actualPlayedMoveUci": "g4h5",
+      "actualPlayedMoveSan": "Qxh5+",
+      "referenceDefenseUci": "e7e5",
+      "referenceDefenseSan": "Rxe5",
+      "acceptableAlternatives": [],
+      "actualPunishmentLineSan": [
+        "Qxh5+",
+        "Qxh5",
+        "gxh5",
+        "Rd4",
+        "Re6",
+        "Kg2",
+        "h4",
+        "gxh4",
+        "h5",
+        "Kg3",
+        "Rf5",
+        "Rdd1"
+      ],
+      "defenseReferenceLineSan": [
+        "Rxe5",
+        "Rd4",
+        "Rxh5+",
+        "Qxh5",
+        "Qxh5+",
+        "Kg2",
+        "Rxf4",
+        "gxf4",
+        "Qg4+",
+        "Kh2",
+        "Qh4+",
+        "Kg2"
+      ],
+      "opponentThreat": {
+        "type": "capture",
+        "description": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "confidence": "high"
+      },
+      "motif": {
+        "resource": "capture_attacker",
+        "confidence": "medium",
+        "evidence": [
+          "La defensa usa una captura para alterar la amenaza."
+        ],
+        "classifierVersion": "defense-motif-v1"
+      },
+      "severity": "critical",
+      "evaluation": {
+        "before": {
+          "cp": 1063,
+          "mate": null,
+          "numeric": 1063
+        },
+        "afterActual": {
+          "cp": -215,
+          "mate": null,
+          "numeric": -215
+        },
+        "afterDefense": {
+          "cp": 1063,
+          "mate": null,
+          "numeric": 1063
+        },
+        "cpLossActual": 1278,
+        "mateChange": {
+          "best": null,
+          "actual": null
+        },
+        "budgetId": "nodes-80k-v1",
+        "engineSha256": "3336d62e0ca4f5e1d0fdd892e03f19b8674611dd624b4b0afe454ae1e490fb51",
+        "pipelineVersion": "eval-pipeline-v0.2.1",
+        "criterionVersion": "engine-validated-v2",
+        "cacheKeys": [
+          "2c42ee0ac39d0d572cb422431a37bf38ef99796898d58ae77e8e41cb927996dd"
+        ],
+        "escalationReason": null
+      },
+      "eligibility": {
+        "detectorVersion": "defense-opportunity-v1",
+        "accepted": true,
+        "reasons": [
+          "best_defense_at_least_minus_250_cp"
+        ]
+      },
+      "pedagogy": {
+        "observable": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "interpretation": "La defensa usa una captura para alterar la amenaza.",
+        "habitHypothesis": "Antes de comprometer una jugada, comprueba la respuesta más forzante del rival.",
+        "confidence": "medium",
+        "transferableRule": "CCT + refutación: después de elegir tu defensa, busca el jaque, captura o amenaza más incómoda del rival."
+      },
+      "sourceContext": {
+        "moveNumber": 37,
+        "opening": "D00 · Queens Pawn Opening Chigorin Variation 2...Nf6 3.Nf3"
+      },
+      "lifecycle": "active",
+      "selection": {
+        "version": "defense-selection-v1",
+        "rank": 6,
+        "finalScore": 92,
+        "reason": "Seleccionado en el puesto 6: calidad pedagógica 88 y ajuste de diversidad 4."
+      }
+    },
+    {
+      "id": "def-3fb7013d-acd7-11f1-bbdf-8eeeee01000f-112",
+      "version": "defense-exercise-v1",
+      "source": {
+        "gameId": "3fb7013d-acd7-11f1-bbdf-8eeeee01000f",
+        "gameUrl": "https://www.chess.com/game/live/174256061220",
+        "playedAt": "2026-09-10T05:37:44+00:00",
+        "playerColor": "black",
+        "ply": 112,
+        "fen": "8/8/1k6/pP2K3/P1p4r/3p4/3R4/8 b - - 3 56",
+        "previousMoveSan": null,
+        "playedMoveUci": "c4c3",
+        "playedMoveSan": "c3",
+        "sourceSet": "phase2_reproducible",
+        "sourceCohortId": null,
+        "sourceFrozenAt": null,
+        "opening": {
+          "eco": "A45",
+          "name": "Indian Game 2.Bf4 e6 3.e3 d5 4.Nf3"
+        }
+      },
+      "orientation": "black",
+      "phase": "endgame",
+      "positionBeforeDecisionFen": "8/8/1k6/pP2K3/P1p4r/3p4/3R4/8 b - - 3 56",
+      "actualPlayedMoveUci": "c4c3",
+      "actualPlayedMoveSan": "c3",
+      "referenceDefenseUci": "b6c5",
+      "referenceDefenseSan": "Kc5",
+      "acceptableAlternatives": [],
+      "actualPunishmentLineSan": [
+        "c3",
+        "Rxd3"
+      ],
+      "defenseReferenceLineSan": [
+        "Kc5",
+        "b6",
+        "Rh8",
+        "Ke6",
+        "Rh6+",
+        "Kd7",
+        "Rxb6",
+        "Kd8",
+        "Rh6",
+        "Ke7",
+        "Kd4",
+        "Kf7"
+      ],
+      "opponentThreat": {
+        "type": "capture",
+        "description": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "confidence": "high"
+      },
+      "motif": {
+        "resource": "create_escape_square",
+        "confidence": "medium",
+        "evidence": [
+          "La defensa recoloca el rey frente a la continuación forzante."
+        ],
+        "classifierVersion": "defense-motif-v1"
+      },
+      "severity": "critical",
+      "evaluation": {
+        "before": {
+          "cp": 629,
+          "mate": null,
+          "numeric": 629
+        },
+        "afterActual": {
+          "cp": -42,
+          "mate": null,
+          "numeric": -42
+        },
+        "afterDefense": {
+          "cp": 629,
+          "mate": null,
+          "numeric": 629
+        },
+        "cpLossActual": 671,
+        "mateChange": {
+          "best": null,
+          "actual": null
+        },
+        "budgetId": "nodes-80k-v1",
+        "engineSha256": "3336d62e0ca4f5e1d0fdd892e03f19b8674611dd624b4b0afe454ae1e490fb51",
+        "pipelineVersion": "eval-pipeline-v0.2.1",
+        "criterionVersion": "engine-validated-v2",
+        "cacheKeys": [
+          "f2116755a51263053616ad5620d74a08804b3e762b3d4b1a8836c70dc4d8f451"
+        ],
+        "escalationReason": null
+      },
+      "eligibility": {
+        "detectorVersion": "defense-opportunity-v1",
+        "accepted": true,
+        "reasons": [
+          "best_defense_at_least_minus_250_cp"
+        ]
+      },
+      "pedagogy": {
+        "observable": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "interpretation": "La defensa recoloca el rey frente a la continuación forzante.",
+        "habitHypothesis": "Antes de comprometer una jugada, comprueba la respuesta más forzante del rival.",
+        "confidence": "medium",
+        "transferableRule": "CCT + refutación: después de elegir tu defensa, busca el jaque, captura o amenaza más incómoda del rival."
+      },
+      "sourceContext": {
+        "moveNumber": 56,
+        "opening": "A45 · Indian Game 2.Bf4 e6 3.e3 d5 4.Nf3"
+      },
+      "lifecycle": "active",
+      "selection": {
+        "version": "defense-selection-v1",
+        "rank": 7,
+        "finalScore": 92,
+        "reason": "Seleccionado en el puesto 7: calidad pedagógica 88 y ajuste de diversidad 4."
+      }
+    },
+    {
+      "id": "def-545b74dd-bc3e-11f1-983e-eed3f101000f-22",
+      "version": "defense-exercise-v1",
+      "source": {
+        "gameId": "545b74dd-bc3e-11f1-983e-eed3f101000f",
+        "gameUrl": "https://www.chess.com/game/live/184571430406",
+        "playedAt": "2026-09-29T19:56:44+00:00",
+        "playerColor": "black",
+        "ply": 22,
+        "fen": "r3k2r/pppq1ppp/8/3p1b2/3PnB2/4P3/PP1bKPPP/2RQ1B1R b kq - 1 11",
+        "previousMoveSan": null,
+        "playedMoveUci": "d2c1",
+        "playedMoveSan": "Bxc1",
+        "sourceSet": "phase2_reproducible",
+        "sourceCohortId": null,
+        "sourceFrozenAt": null,
+        "opening": {
+          "eco": "D02",
+          "name": "London System 3...Bf5"
+        }
+      },
+      "orientation": "black",
+      "phase": "middlegame",
+      "positionBeforeDecisionFen": "r3k2r/pppq1ppp/8/3p1b2/3PnB2/4P3/PP1bKPPP/2RQ1B1R b kq - 1 11",
+      "actualPlayedMoveUci": "d2c1",
+      "actualPlayedMoveSan": "Bxc1",
+      "referenceDefenseUci": "f5g4",
+      "referenceDefenseSan": "Bg4+",
+      "acceptableAlternatives": [],
+      "actualPunishmentLineSan": [
+        "Bxc1",
+        "Qxc1",
+        "c5",
+        "f3",
+        "cxd4",
+        "fxe4",
+        "Rc8",
+        "Qd2",
+        "Bxe4",
+        "Qxd4",
+        "Qg4+",
+        "Ke1"
+      ],
+      "defenseReferenceLineSan": [
+        "Bg4+",
+        "Kd3",
+        "Bxd1",
+        "Rxd1",
+        "Qb5+",
+        "Kc2",
+        "Qa4+",
+        "b3",
+        "Qxa2+",
+        "Kd3",
+        "Bb4",
+        "Bg3"
+      ],
+      "opponentThreat": {
+        "type": "capture",
+        "description": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "confidence": "high"
+      },
+      "motif": {
+        "resource": "countercheck",
+        "confidence": "high",
+        "evidence": [
+          "La defensa da jaque y obliga al rival a responder."
+        ],
+        "classifierVersion": "defense-motif-v1"
+      },
+      "severity": "critical",
+      "evaluation": {
+        "before": {
+          "cp": 1709,
+          "mate": null,
+          "numeric": 1709
+        },
+        "afterActual": {
+          "cp": -760,
+          "mate": null,
+          "numeric": -760
+        },
+        "afterDefense": {
+          "cp": 1709,
+          "mate": null,
+          "numeric": 1709
+        },
+        "cpLossActual": 2469,
+        "mateChange": {
+          "best": null,
+          "actual": null
+        },
+        "budgetId": "nodes-80k-v1",
+        "engineSha256": "3336d62e0ca4f5e1d0fdd892e03f19b8674611dd624b4b0afe454ae1e490fb51",
+        "pipelineVersion": "eval-pipeline-v0.2.1",
+        "criterionVersion": "engine-validated-v2",
+        "cacheKeys": [
+          "76dcb01736722e9b1e8c40113e8a9c2592f3d8896341fda64917bddff7e2d11b"
+        ],
+        "escalationReason": null
+      },
+      "eligibility": {
+        "detectorVersion": "defense-opportunity-v1",
+        "accepted": true,
+        "reasons": [
+          "best_defense_at_least_minus_250_cp"
+        ]
+      },
+      "pedagogy": {
+        "observable": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "interpretation": "La defensa da jaque y obliga al rival a responder.",
+        "habitHypothesis": "Antes de comprometer una jugada, comprueba la respuesta más forzante del rival.",
+        "confidence": "high",
+        "transferableRule": "CCT + refutación: después de elegir tu defensa, busca el jaque, captura o amenaza más incómoda del rival."
+      },
+      "sourceContext": {
+        "moveNumber": 11,
+        "opening": "D02 · London System 3...Bf5"
+      },
+      "lifecycle": "active",
+      "selection": {
+        "version": "defense-selection-v1",
+        "rank": 8,
+        "finalScore": 92,
+        "reason": "Seleccionado en el puesto 8: calidad pedagógica 91 y ajuste de diversidad 1."
+      }
+    },
+    {
+      "id": "def-55cc2e25-ae7f-11f1-8cd6-ece1e601000f-59",
+      "version": "defense-exercise-v1",
+      "source": {
+        "gameId": "55cc2e25-ae7f-11f1-8cd6-ece1e601000f",
+        "gameUrl": "https://www.chess.com/game/live/174357538100",
+        "playedAt": "2026-09-12T08:05:05+00:00",
+        "playerColor": "white",
+        "ply": 59,
+        "fen": "2k5/3r2q1/p7/1pNb3p/3P2p1/Q5P1/PP3P1P/2KRR3 w - - 6 30",
+        "previousMoveSan": null,
+        "playedMoveUci": "c5d7",
+        "playedMoveSan": "Nxd7",
+        "sourceSet": "phase2_reproducible",
+        "sourceCohortId": null,
+        "sourceFrozenAt": null,
+        "opening": {
+          "eco": "C00",
+          "name": "French Defense Normal Variation"
+        }
+      },
+      "orientation": "white",
+      "phase": "middlegame",
+      "positionBeforeDecisionFen": "2k5/3r2q1/p7/1pNb3p/3P2p1/Q5P1/PP3P1P/2KRR3 w - - 6 30",
+      "actualPlayedMoveUci": "c5d7",
+      "actualPlayedMoveSan": "Nxd7",
+      "referenceDefenseUci": "e1e8",
+      "referenceDefenseSan": "Re8+",
+      "acceptableAlternatives": [],
+      "actualPunishmentLineSan": [
+        "Nxd7",
+        "Kxd7",
+        "Qxa6",
+        "Qf7",
+        "Qxb5+",
+        "Kd8",
+        "Qb8+",
+        "Kd7",
+        "Re3",
+        "Bxa2",
+        "Qb5+",
+        "Kd8"
+      ],
+      "defenseReferenceLineSan": [
+        "Re8+",
+        "Rd8",
+        "Qxa6+",
+        "Qb7",
+        "Nxb7",
+        "Rxe8",
+        "Nc5+",
+        "Kc7",
+        "Qa7+",
+        "Kc8",
+        "Qd7+",
+        "Kb8"
+      ],
+      "opponentThreat": {
+        "type": "capture",
+        "description": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "confidence": "high"
+      },
+      "motif": {
+        "resource": "countercheck",
+        "confidence": "high",
+        "evidence": [
+          "La defensa da jaque y obliga al rival a responder."
+        ],
+        "classifierVersion": "defense-motif-v1"
+      },
+      "severity": "critical",
+      "evaluation": {
+        "before": {
+          "cp": 1550,
+          "mate": null,
+          "numeric": 1550
+        },
+        "afterActual": {
+          "cp": -1002,
+          "mate": null,
+          "numeric": -1002
+        },
+        "afterDefense": {
+          "cp": 1550,
+          "mate": null,
+          "numeric": 1550
+        },
+        "cpLossActual": 2552,
+        "mateChange": {
+          "best": null,
+          "actual": null
+        },
+        "budgetId": "nodes-80k-v1",
+        "engineSha256": "3336d62e0ca4f5e1d0fdd892e03f19b8674611dd624b4b0afe454ae1e490fb51",
+        "pipelineVersion": "eval-pipeline-v0.2.1",
+        "criterionVersion": "engine-validated-v2",
+        "cacheKeys": [
+          "7d9e7b5ad3a7928e3c0d512c90fb0e7de5011e6fc8611517dcbb833343a0f977"
+        ],
+        "escalationReason": null
+      },
+      "eligibility": {
+        "detectorVersion": "defense-opportunity-v1",
+        "accepted": true,
+        "reasons": [
+          "best_defense_at_least_minus_250_cp"
+        ]
+      },
+      "pedagogy": {
+        "observable": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "interpretation": "La defensa da jaque y obliga al rival a responder.",
+        "habitHypothesis": "Antes de comprometer una jugada, comprueba la respuesta más forzante del rival.",
+        "confidence": "high",
+        "transferableRule": "CCT + refutación: después de elegir tu defensa, busca el jaque, captura o amenaza más incómoda del rival."
+      },
+      "sourceContext": {
+        "moveNumber": 30,
+        "opening": "C00 · French Defense Normal Variation"
+      },
+      "lifecycle": "active",
+      "selection": {
+        "version": "defense-selection-v1",
+        "rank": 9,
+        "finalScore": 92,
+        "reason": "Seleccionado en el puesto 9: calidad pedagógica 91 y ajuste de diversidad 1."
+      }
+    },
+    {
+      "id": "def-5884ba18-b894-11f1-837b-7ca6b701000f-25",
+      "version": "defense-exercise-v1",
+      "source": {
+        "gameId": "5884ba18-b894-11f1-837b-7ca6b701000f",
+        "gameUrl": "https://www.chess.com/game/live/184336739506",
+        "playedAt": "2026-09-25T04:03:23+00:00",
+        "playerColor": "white",
+        "ply": 25,
+        "fen": "r2q1knr/1b2bppp/np2p3/pB1pP3/2pP4/P1N1BN2/1PP1QPPP/R4RK1 w - - 0 13",
+        "previousMoveSan": null,
+        "playedMoveUci": "b5a6",
+        "playedMoveSan": "Bxa6",
+        "sourceSet": "phase2_reproducible",
+        "sourceCohortId": null,
+        "sourceFrozenAt": null,
+        "opening": {
+          "eco": "A04",
+          "name": "Reti Opening Queenside Fianchetto Variation 2.e4 Bb7 3.Nc3 e6"
+        }
+      },
+      "orientation": "white",
+      "phase": "middlegame",
+      "positionBeforeDecisionFen": "r2q1knr/1b2bppp/np2p3/pB1pP3/2pP4/P1N1BN2/1PP1QPPP/R4RK1 w - - 0 13",
+      "actualPlayedMoveUci": "b5a6",
+      "actualPlayedMoveSan": "Bxa6",
+      "referenceDefenseUci": "b2b3",
+      "referenceDefenseSan": "b3",
+      "acceptableAlternatives": [],
+      "actualPunishmentLineSan": [
+        "Bxa6",
+        "Bxa6",
+        "Rfb1",
+        "Qd7",
+        "Qd2",
+        "Ke8",
+        "Ne2",
+        "h6",
+        "Nf4",
+        "Bf8",
+        "b4",
+        "a4"
+      ],
+      "defenseReferenceLineSan": [
+        "b3",
+        "Nc7"
+      ],
+      "opponentThreat": {
+        "type": "capture",
+        "description": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "confidence": "high"
+      },
+      "motif": {
+        "resource": "move_attacked_piece",
+        "confidence": "medium",
+        "evidence": [
+          "La línea real muestra una captura inmediata que la defensa evita."
+        ],
+        "classifierVersion": "defense-motif-v1"
+      },
+      "severity": "marked",
+      "evaluation": {
+        "before": {
+          "cp": 243,
+          "mate": null,
+          "numeric": 243
+        },
+        "afterActual": {
+          "cp": -63,
+          "mate": null,
+          "numeric": -63
+        },
+        "afterDefense": {
+          "cp": 243,
+          "mate": null,
+          "numeric": 243
+        },
+        "cpLossActual": 306,
+        "mateChange": {
+          "best": null,
+          "actual": null
+        },
+        "budgetId": "nodes-80k-v1",
+        "engineSha256": "3336d62e0ca4f5e1d0fdd892e03f19b8674611dd624b4b0afe454ae1e490fb51",
+        "pipelineVersion": "eval-pipeline-v0.2.1",
+        "criterionVersion": "engine-validated-v2",
+        "cacheKeys": [
+          "5552954d9f8a4915d7afa839e6ab3d0e69dfd7b32c9e9dc9522d2401e68831ac"
+        ],
+        "escalationReason": null
+      },
+      "eligibility": {
+        "detectorVersion": "defense-opportunity-v1",
+        "accepted": true,
+        "reasons": [
+          "best_defense_at_least_minus_250_cp"
+        ]
+      },
+      "pedagogy": {
+        "observable": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "interpretation": "La línea real muestra una captura inmediata que la defensa evita.",
+        "habitHypothesis": "Antes de comprometer una jugada, comprueba la respuesta más forzante del rival.",
+        "confidence": "medium",
+        "transferableRule": "CCT + refutación: después de elegir tu defensa, busca el jaque, captura o amenaza más incómoda del rival."
+      },
+      "sourceContext": {
+        "moveNumber": 13,
+        "opening": "A04 · Reti Opening Queenside Fianchetto Variation 2.e4 Bb7 3.Nc3 e6"
+      },
+      "lifecycle": "active",
+      "selection": {
+        "version": "defense-selection-v1",
+        "rank": 10,
+        "finalScore": 92,
+        "reason": "Seleccionado en el puesto 10: calidad pedagógica 91 y ajuste de diversidad 1."
+      }
+    },
+    {
+      "id": "def-f62ae496-bb06-11f1-a095-e68c2101000f-135",
+      "version": "defense-exercise-v1",
+      "source": {
+        "gameId": "f62ae496-bb06-11f1-a095-e68c2101000f",
+        "gameUrl": "https://www.chess.com/game/live/184487877588",
+        "playedAt": "2026-09-28T06:48:48+00:00",
+        "playerColor": "white",
+        "ply": 135,
+        "fen": "8/PR6/4k3/1P6/r7/6PK/8/8 w - - 1 68",
+        "previousMoveSan": null,
+        "playedMoveUci": "g3g4",
+        "playedMoveSan": "g4",
+        "sourceSet": "phase2_reproducible",
+        "sourceCohortId": null,
+        "sourceFrozenAt": null,
+        "opening": {
+          "eco": "C28",
+          "name": "Bishops Opening Berlin Vienna Hybrid Variation 4...Bb4 5.Nf3"
+        }
+      },
+      "orientation": "white",
+      "phase": "endgame",
+      "positionBeforeDecisionFen": "8/PR6/4k3/1P6/r7/6PK/8/8 w - - 1 68",
+      "actualPlayedMoveUci": "g3g4",
+      "actualPlayedMoveSan": "g4",
+      "referenceDefenseUci": "b7b6",
+      "referenceDefenseSan": "Rb6+",
+      "acceptableAlternatives": [],
+      "actualPunishmentLineSan": [
+        "g4",
+        "Ra3+",
+        "Kh4",
+        "Kd5",
+        "b6",
+        "Kc5",
+        "Rb8",
+        "Ra6",
+        "a8=R",
+        "Rxa8",
+        "Rxa8",
+        "Kc6"
+      ],
+      "defenseReferenceLineSan": [
+        "Rb6+",
+        "Ke5",
+        "Ra6",
+        "Rb4",
+        "b6",
+        "Kd4",
+        "a8=Q",
+        "Kc4",
+        "Qc6+",
+        "Kb3",
+        "b7",
+        "Kb2"
+      ],
+      "opponentThreat": {
+        "type": "check",
+        "description": "El rival podía responder con un jaque forzante.",
+        "confidence": "high"
+      },
+      "motif": {
+        "resource": "countercheck",
+        "confidence": "high",
+        "evidence": [
+          "La defensa da jaque y obliga al rival a responder."
+        ],
+        "classifierVersion": "defense-motif-v1"
+      },
+      "severity": "critical",
+      "evaluation": {
+        "before": {
+          "cp": 902,
+          "mate": null,
+          "numeric": 902
+        },
+        "afterActual": {
+          "cp": -707,
+          "mate": null,
+          "numeric": -707
+        },
+        "afterDefense": {
+          "cp": 902,
+          "mate": null,
+          "numeric": 902
+        },
+        "cpLossActual": 1609,
+        "mateChange": {
+          "best": null,
+          "actual": null
+        },
+        "budgetId": "nodes-80k-v1",
+        "engineSha256": "3336d62e0ca4f5e1d0fdd892e03f19b8674611dd624b4b0afe454ae1e490fb51",
+        "pipelineVersion": "eval-pipeline-v0.2.1",
+        "criterionVersion": "engine-validated-v2",
+        "cacheKeys": [
+          "da98f670606d948a0c3752e9745e2c0243cd7b26f937f71da102aaa5fee4c5ba"
+        ],
+        "escalationReason": null
+      },
+      "eligibility": {
+        "detectorVersion": "defense-opportunity-v1",
+        "accepted": true,
+        "reasons": [
+          "best_defense_at_least_minus_250_cp"
+        ]
+      },
+      "pedagogy": {
+        "observable": "El rival podía responder con un jaque forzante.",
+        "interpretation": "La defensa da jaque y obliga al rival a responder.",
+        "habitHypothesis": "Antes de comprometer una jugada, comprueba la respuesta más forzante del rival.",
+        "confidence": "high",
+        "transferableRule": "CCT + refutación: después de elegir tu defensa, busca el jaque, captura o amenaza más incómoda del rival."
+      },
+      "sourceContext": {
+        "moveNumber": 68,
+        "opening": "C28 · Bishops Opening Berlin Vienna Hybrid Variation 4...Bb4 5.Nf3"
+      },
+      "lifecycle": "active",
+      "selection": {
+        "version": "defense-selection-v1",
+        "rank": 11,
+        "finalScore": 92,
+        "reason": "Seleccionado en el puesto 11: calidad pedagógica 91 y ajuste de diversidad 1."
+      }
+    },
+    {
+      "id": "def-3afc4ce0-af9f-11f1-93e5-8500da01000f-41",
+      "version": "defense-exercise-v1",
+      "source": {
+        "gameId": "3afc4ce0-af9f-11f1-93e5-8500da01000f",
+        "gameUrl": "https://www.chess.com/game/live/174429300434",
+        "playedAt": "2026-09-13T18:28:28+00:00",
+        "playerColor": "white",
+        "ply": 41,
+        "fen": "1k2rb1r/ppp5/1q6/4ppB1/6p1/3P2P1/PPPQB2P/R4R1K w - - 4 21",
+        "previousMoveSan": null,
+        "playedMoveUci": "f1f5",
+        "playedMoveSan": "Rxf5",
+        "sourceSet": "phase2_reproducible",
+        "sourceCohortId": null,
+        "sourceFrozenAt": null,
+        "opening": {
+          "eco": "B02",
+          "name": "Alekhines Defense Scandinavian Variation 3.exd5 Nxd5 4.Nxd5 Qxd5 5.Nf3"
+        }
+      },
+      "orientation": "white",
+      "phase": "middlegame",
+      "positionBeforeDecisionFen": "1k2rb1r/ppp5/1q6/4ppB1/6p1/3P2P1/PPPQB2P/R4R1K w - - 4 21",
+      "actualPlayedMoveUci": "f1f5",
+      "actualPlayedMoveSan": "Rxf5",
+      "referenceDefenseUci": "d3d4",
+      "referenceDefenseSan": "d4",
+      "acceptableAlternatives": [],
+      "actualPunishmentLineSan": [
+        "Rxf5",
+        "Qc6+"
+      ],
+      "defenseReferenceLineSan": [
+        "d4",
+        "Qc6+"
+      ],
+      "opponentThreat": {
+        "type": "check",
+        "description": "El rival podía responder con un jaque forzante.",
+        "confidence": "high"
+      },
+      "motif": {
+        "resource": "prophylaxis",
+        "confidence": "low",
+        "evidence": [
+          "La defensa reduce la continuación rival sin una táctica única observable."
+        ],
+        "classifierVersion": "defense-motif-v1"
+      },
+      "severity": "marked",
+      "evaluation": {
+        "before": {
+          "cp": 250,
+          "mate": null,
+          "numeric": 250
+        },
+        "afterActual": {
+          "cp": -5,
+          "mate": null,
+          "numeric": -5
+        },
+        "afterDefense": {
+          "cp": 250,
+          "mate": null,
+          "numeric": 250
+        },
+        "cpLossActual": 255,
+        "mateChange": {
+          "best": null,
+          "actual": null
+        },
+        "budgetId": "nodes-80k-v1",
+        "engineSha256": "3336d62e0ca4f5e1d0fdd892e03f19b8674611dd624b4b0afe454ae1e490fb51",
+        "pipelineVersion": "eval-pipeline-v0.2.1",
+        "criterionVersion": "engine-validated-v2",
+        "cacheKeys": [
+          "ac3b776b5a37068ade5fa223dc67392d40b3db27ec2a9c71803fd67602ff3a70"
+        ],
+        "escalationReason": null
+      },
+      "eligibility": {
+        "detectorVersion": "defense-opportunity-v1",
+        "accepted": true,
+        "reasons": [
+          "best_defense_at_least_minus_250_cp"
+        ]
+      },
+      "pedagogy": {
+        "observable": "El rival podía responder con un jaque forzante.",
+        "interpretation": "La defensa recomendada reduce la continuación más exigente del rival.",
+        "habitHypothesis": "Antes de comprometer una jugada, comprueba la respuesta más forzante del rival.",
+        "confidence": "low",
+        "transferableRule": "CCT + refutación: después de elegir tu defensa, busca el jaque, captura o amenaza más incómoda del rival."
+      },
+      "sourceContext": {
+        "moveNumber": 21,
+        "opening": "B02 · Alekhines Defense Scandinavian Variation 3.exd5 Nxd5 4.Nxd5 Qxd5 5.Nf3"
+      },
+      "lifecycle": "active",
+      "selection": {
+        "version": "defense-selection-v1",
+        "rank": 12,
+        "finalScore": 91,
+        "reason": "Seleccionado en el puesto 12: calidad pedagógica 87 y ajuste de diversidad 4."
+      }
+    },
+    {
+      "id": "def-004d0ff8-abd5-11f1-bb1f-e68c2101000f-13",
+      "version": "defense-exercise-v1",
+      "source": {
+        "gameId": "004d0ff8-abd5-11f1-bb1f-e68c2101000f",
+        "gameUrl": "https://www.chess.com/game/live/174198087570",
+        "playedAt": "2026-09-08T22:37:03+00:00",
+        "playerColor": "white",
+        "ply": 13,
+        "fen": "rnb1k2r/pppp1pp1/3q1n1p/2bNp3/4P3/P2P1N2/1PP2PPP/R1BQKB1R w KQkq - 1 7",
+        "previousMoveSan": null,
+        "playedMoveUci": "d5f6",
+        "playedMoveSan": "Nxf6+",
+        "sourceSet": "phase2_reproducible",
+        "sourceCohortId": null,
+        "sourceFrozenAt": null,
+        "opening": {
+          "eco": "C25",
+          "name": "Vienna Game Anderssen Defense 3.Nf3"
+        }
+      },
+      "orientation": "white",
+      "phase": "opening",
+      "positionBeforeDecisionFen": "rnb1k2r/pppp1pp1/3q1n1p/2bNp3/4P3/P2P1N2/1PP2PPP/R1BQKB1R w KQkq - 1 7",
+      "actualPlayedMoveUci": "d5f6",
+      "actualPlayedMoveSan": "Nxf6+",
+      "referenceDefenseUci": "d3d4",
+      "referenceDefenseSan": "d4",
+      "acceptableAlternatives": [],
+      "actualPunishmentLineSan": [
+        "Nxf6+",
+        "Qxf6",
+        "Be2",
+        "d6",
+        "c3",
+        "a5",
+        "O-O",
+        "Bb6",
+        "Nd2",
+        "Be6",
+        "Nc4",
+        "Bxc4"
+      ],
+      "defenseReferenceLineSan": [
+        "d4",
+        "Nxe4",
+        "dxc5",
+        "Nxc5",
+        "b4",
+        "Ne6",
+        "Bb2",
+        "Nc6",
+        "Nh4",
+        "Ne7",
+        "Nxe7",
+        "Qxe7"
+      ],
+      "opponentThreat": {
+        "type": "capture",
+        "description": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "confidence": "high"
+      },
+      "motif": {
+        "resource": "move_attacked_piece",
+        "confidence": "medium",
+        "evidence": [
+          "La línea real muestra una captura inmediata que la defensa evita."
+        ],
+        "classifierVersion": "defense-motif-v1"
+      },
+      "severity": "critical",
+      "evaluation": {
+        "before": {
+          "cp": 626,
+          "mate": null,
+          "numeric": 626
+        },
+        "afterActual": {
+          "cp": -12,
+          "mate": null,
+          "numeric": -12
+        },
+        "afterDefense": {
+          "cp": 626,
+          "mate": null,
+          "numeric": 626
+        },
+        "cpLossActual": 638,
+        "mateChange": {
+          "best": null,
+          "actual": null
+        },
+        "budgetId": "nodes-80k-v1",
+        "engineSha256": "3336d62e0ca4f5e1d0fdd892e03f19b8674611dd624b4b0afe454ae1e490fb51",
+        "pipelineVersion": "eval-pipeline-v0.2.1",
+        "criterionVersion": "engine-validated-v2",
+        "cacheKeys": [
+          "11f49e7fc5f14af09886f9ac9245a0ed595fc8493b25128ddfc15f6bbdcdfd7f"
+        ],
+        "escalationReason": null
+      },
+      "eligibility": {
+        "detectorVersion": "defense-opportunity-v1",
+        "accepted": true,
+        "reasons": [
+          "best_defense_at_least_minus_250_cp"
+        ]
+      },
+      "pedagogy": {
+        "observable": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "interpretation": "La línea real muestra una captura inmediata que la defensa evita.",
+        "habitHypothesis": "Antes de comprometer una jugada, comprueba la respuesta más forzante del rival.",
+        "confidence": "medium",
+        "transferableRule": "CCT + refutación: después de elegir tu defensa, busca el jaque, captura o amenaza más incómoda del rival."
+      },
+      "sourceContext": {
+        "moveNumber": 7,
+        "opening": "C25 · Vienna Game Anderssen Defense 3.Nf3"
+      },
+      "lifecycle": "active",
+      "selection": {
+        "version": "defense-selection-v1",
+        "rank": 13,
+        "finalScore": 89,
+        "reason": "Seleccionado en el puesto 13: calidad pedagógica 88 y ajuste de diversidad 1."
+      }
+    },
+    {
+      "id": "def-2211f289-b764-11f1-a095-e68c2101000f-103",
+      "version": "defense-exercise-v1",
+      "source": {
+        "gameId": "2211f289-b764-11f1-a095-e68c2101000f",
+        "gameUrl": "https://www.chess.com/game/live/184261876990",
+        "playedAt": "2026-09-23T15:41:51+00:00",
+        "playerColor": "white",
+        "ply": 103,
+        "fen": "8/1k4p1/2q5/Q7/P2p1b2/1P1P2PP/2P4K/2R5 w - - 2 52",
+        "previousMoveSan": null,
+        "playedMoveUci": "a5b5",
+        "playedMoveSan": "Qb5+",
+        "sourceSet": "phase2_reproducible",
+        "sourceCohortId": null,
+        "sourceFrozenAt": null,
+        "opening": {
+          "eco": "B07",
+          "name": "Pirc Defense Modern Defense Geller System...3.Nc3 e5 4.Bc4 Be7"
+        }
+      },
+      "orientation": "white",
+      "phase": "middlegame",
+      "positionBeforeDecisionFen": "8/1k4p1/2q5/Q7/P2p1b2/1P1P2PP/2P4K/2R5 w - - 2 52",
+      "actualPlayedMoveUci": "a5b5",
+      "actualPlayedMoveSan": "Qb5+",
+      "referenceDefenseUci": "g3f4",
+      "referenceDefenseSan": "gxf4",
+      "acceptableAlternatives": [],
+      "actualPunishmentLineSan": [
+        "Qb5+",
+        "Qxb5"
+      ],
+      "defenseReferenceLineSan": [
+        "gxf4",
+        "Qf3",
+        "Qd2",
+        "g5",
+        "Qg2",
+        "Qxg2+",
+        "Kxg2",
+        "gxf4",
+        "Rg1",
+        "Ka6",
+        "b4",
+        "Kb7"
+      ],
+      "opponentThreat": {
+        "type": "capture",
+        "description": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "confidence": "high"
+      },
+      "motif": {
+        "resource": "capture_attacker",
+        "confidence": "medium",
+        "evidence": [
+          "La defensa usa una captura para alterar la amenaza."
+        ],
+        "classifierVersion": "defense-motif-v1"
+      },
+      "severity": "critical",
+      "evaluation": {
+        "before": {
+          "cp": 876,
+          "mate": null,
+          "numeric": 876
+        },
+        "afterActual": {
+          "cp": -39,
+          "mate": null,
+          "numeric": -39
+        },
+        "afterDefense": {
+          "cp": 876,
+          "mate": null,
+          "numeric": 876
+        },
+        "cpLossActual": 915,
+        "mateChange": {
+          "best": null,
+          "actual": null
+        },
+        "budgetId": "nodes-80k-v1",
+        "engineSha256": "3336d62e0ca4f5e1d0fdd892e03f19b8674611dd624b4b0afe454ae1e490fb51",
+        "pipelineVersion": "eval-pipeline-v0.2.1",
+        "criterionVersion": "engine-validated-v2",
+        "cacheKeys": [
+          "5c0985048f45fda5da498d8e8400c61ed0be2e2fc3ae48554fe533ddf64badd8"
+        ],
+        "escalationReason": null
+      },
+      "eligibility": {
+        "detectorVersion": "defense-opportunity-v1",
+        "accepted": true,
+        "reasons": [
+          "best_defense_at_least_minus_250_cp"
+        ]
+      },
+      "pedagogy": {
+        "observable": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "interpretation": "La defensa usa una captura para alterar la amenaza.",
+        "habitHypothesis": "Antes de comprometer una jugada, comprueba la respuesta más forzante del rival.",
+        "confidence": "medium",
+        "transferableRule": "CCT + refutación: después de elegir tu defensa, busca el jaque, captura o amenaza más incómoda del rival."
+      },
+      "sourceContext": {
+        "moveNumber": 52,
+        "opening": "B07 · Pirc Defense Modern Defense Geller System...3.Nc3 e5 4.Bc4 Be7"
+      },
+      "lifecycle": "active",
+      "selection": {
+        "version": "defense-selection-v1",
+        "rank": 14,
+        "finalScore": 89,
+        "reason": "Seleccionado en el puesto 14: calidad pedagógica 88 y ajuste de diversidad 1."
+      }
+    },
+    {
+      "id": "def-45c030d6-b717-11f1-b596-8a56cc01000f-42",
+      "version": "defense-exercise-v1",
+      "source": {
+        "gameId": "45c030d6-b717-11f1-b596-8a56cc01000f",
+        "gameUrl": "https://www.chess.com/game/live/184240800272",
+        "playedAt": "2026-09-23T06:30:50+00:00",
+        "playerColor": "black",
+        "ply": 42,
+        "fen": "r4rk1/1Q3Np1/p4pqp/8/3P4/2P3Pb/P4P1P/R3R1K1 b - - 0 21",
+        "previousMoveSan": null,
+        "playedMoveUci": "a8b8",
+        "playedMoveSan": "Rab8",
+        "sourceSet": "phase2_reproducible",
+        "sourceCohortId": null,
+        "sourceFrozenAt": null,
+        "opening": {
+          "eco": "C53",
+          "name": "Giuoco Piano Game Main Line"
+        }
+      },
+      "orientation": "black",
+      "phase": "middlegame",
+      "positionBeforeDecisionFen": "r4rk1/1Q3Np1/p4pqp/8/3P4/2P3Pb/P4P1P/R3R1K1 b - - 0 21",
+      "actualPlayedMoveUci": "a8b8",
+      "actualPlayedMoveSan": "Rab8",
+      "referenceDefenseUci": "g6f7",
+      "referenceDefenseSan": "Qxf7",
+      "acceptableAlternatives": [],
+      "actualPunishmentLineSan": [
+        "Rab8",
+        "Nxh6+"
+      ],
+      "defenseReferenceLineSan": [
+        "Qxf7",
+        "Qxf7+",
+        "Rxf7",
+        "c4",
+        "Rc8",
+        "Rac1",
+        "Rfc7",
+        "c5",
+        "Rd8",
+        "Red1",
+        "Be6",
+        "Rd2"
+      ],
+      "opponentThreat": {
+        "type": "check",
+        "description": "El rival podía responder con un jaque forzante.",
+        "confidence": "high"
+      },
+      "motif": {
+        "resource": "remove_defender",
+        "confidence": "medium",
+        "evidence": [
+          "La defensa usa una captura para alterar la amenaza."
+        ],
+        "classifierVersion": "defense-motif-v1"
+      },
+      "severity": "critical",
+      "evaluation": {
+        "before": {
+          "cp": 503,
+          "mate": null,
+          "numeric": 503
+        },
+        "afterActual": {
+          "cp": -227,
+          "mate": null,
+          "numeric": -227
+        },
+        "afterDefense": {
+          "cp": 503,
+          "mate": null,
+          "numeric": 503
+        },
+        "cpLossActual": 730,
+        "mateChange": {
+          "best": null,
+          "actual": null
+        },
+        "budgetId": "nodes-80k-v1",
+        "engineSha256": "3336d62e0ca4f5e1d0fdd892e03f19b8674611dd624b4b0afe454ae1e490fb51",
+        "pipelineVersion": "eval-pipeline-v0.2.1",
+        "criterionVersion": "engine-validated-v2",
+        "cacheKeys": [
+          "0d600e6a51bcf60ba98ac6bf5af2938a56caa27b6f2e7618475374c1f771ac83"
+        ],
+        "escalationReason": null
+      },
+      "eligibility": {
+        "detectorVersion": "defense-opportunity-v1",
+        "accepted": true,
+        "reasons": [
+          "best_defense_at_least_minus_250_cp"
+        ]
+      },
+      "pedagogy": {
+        "observable": "El rival podía responder con un jaque forzante.",
+        "interpretation": "La defensa usa una captura para alterar la amenaza.",
+        "habitHypothesis": "Antes de comprometer una jugada, comprueba la respuesta más forzante del rival.",
+        "confidence": "medium",
+        "transferableRule": "CCT + refutación: después de elegir tu defensa, busca el jaque, captura o amenaza más incómoda del rival."
+      },
+      "sourceContext": {
+        "moveNumber": 21,
+        "opening": "C53 · Giuoco Piano Game Main Line"
+      },
+      "lifecycle": "active",
+      "selection": {
+        "version": "defense-selection-v1",
+        "rank": 15,
+        "finalScore": 89,
+        "reason": "Seleccionado en el puesto 15: calidad pedagógica 88 y ajuste de diversidad 1."
+      }
+    },
+    {
+      "id": "def-466f8022-adee-11f1-93e5-8500da01000f-23",
+      "version": "defense-exercise-v1",
+      "source": {
+        "gameId": "466f8022-adee-11f1-93e5-8500da01000f",
+        "gameUrl": "https://www.chess.com/game/live/174324278282",
+        "playedAt": "2026-09-11T14:48:38+00:00",
+        "playerColor": "white",
+        "ply": 23,
+        "fen": "r3k2r/ppp1bpp1/2np1q1p/3Bp2b/4P3/2PP1N1P/PP2QPP1/R1B1K2R w KQkq - 4 12",
+        "previousMoveSan": null,
+        "playedMoveUci": "e2e3",
+        "playedMoveSan": "Qe3",
+        "sourceSet": "phase2_reproducible",
+        "sourceCohortId": null,
+        "sourceFrozenAt": null,
+        "opening": {
+          "eco": "C55",
+          "name": "Italian Game Two Knights Modern Bishops Opening 4...h6 5.Nc3"
+        }
+      },
+      "orientation": "white",
+      "phase": "middlegame",
+      "positionBeforeDecisionFen": "r3k2r/ppp1bpp1/2np1q1p/3Bp2b/4P3/2PP1N1P/PP2QPP1/R1B1K2R w KQkq - 4 12",
+      "actualPlayedMoveUci": "e2e3",
+      "actualPlayedMoveSan": "Qe3",
+      "referenceDefenseUci": "g2g4",
+      "referenceDefenseSan": "g4",
+      "acceptableAlternatives": [],
+      "actualPunishmentLineSan": [
+        "Qe3",
+        "Bxf3",
+        "Qxf3",
+        "Qxf3",
+        "gxf3",
+        "Bg5",
+        "Be3",
+        "Ne7",
+        "Bc4",
+        "Ng6",
+        "a4",
+        "c6"
+      ],
+      "defenseReferenceLineSan": [
+        "g4",
+        "Bg6",
+        "g5",
+        "hxg5",
+        "Bxg5",
+        "Qxg5",
+        "Nxg5",
+        "Bxg5",
+        "h4",
+        "Bh6",
+        "h5",
+        "Bh7"
+      ],
+      "opponentThreat": {
+        "type": "capture",
+        "description": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "confidence": "high"
+      },
+      "motif": {
+        "resource": "move_attacked_piece",
+        "confidence": "medium",
+        "evidence": [
+          "La línea real muestra una captura inmediata que la defensa evita."
+        ],
+        "classifierVersion": "defense-motif-v1"
+      },
+      "severity": "critical",
+      "evaluation": {
+        "before": {
+          "cp": 511,
+          "mate": null,
+          "numeric": 511
+        },
+        "afterActual": {
+          "cp": -13,
+          "mate": null,
+          "numeric": -13
+        },
+        "afterDefense": {
+          "cp": 511,
+          "mate": null,
+          "numeric": 511
+        },
+        "cpLossActual": 524,
+        "mateChange": {
+          "best": null,
+          "actual": null
+        },
+        "budgetId": "nodes-80k-v1",
+        "engineSha256": "3336d62e0ca4f5e1d0fdd892e03f19b8674611dd624b4b0afe454ae1e490fb51",
+        "pipelineVersion": "eval-pipeline-v0.2.1",
+        "criterionVersion": "engine-validated-v2",
+        "cacheKeys": [
+          "61135fc8448fde53ac71108bc5dd4fb23bbccd3c37c65dd2d5f671aa78b9421b"
+        ],
+        "escalationReason": null
+      },
+      "eligibility": {
+        "detectorVersion": "defense-opportunity-v1",
+        "accepted": true,
+        "reasons": [
+          "best_defense_at_least_minus_250_cp"
+        ]
+      },
+      "pedagogy": {
+        "observable": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "interpretation": "La línea real muestra una captura inmediata que la defensa evita.",
+        "habitHypothesis": "Antes de comprometer una jugada, comprueba la respuesta más forzante del rival.",
+        "confidence": "medium",
+        "transferableRule": "CCT + refutación: después de elegir tu defensa, busca el jaque, captura o amenaza más incómoda del rival."
+      },
+      "sourceContext": {
+        "moveNumber": 12,
+        "opening": "C55 · Italian Game Two Knights Modern Bishops Opening 4...h6 5.Nc3"
+      },
+      "lifecycle": "active",
+      "selection": {
+        "version": "defense-selection-v1",
+        "rank": 16,
+        "finalScore": 89,
+        "reason": "Seleccionado en el puesto 16: calidad pedagógica 88 y ajuste de diversidad 1."
+      }
+    },
+    {
+      "id": "def-e126f55a-b968-11f1-becf-3c44d601000f-17",
+      "version": "defense-exercise-v1",
+      "source": {
+        "gameId": "e126f55a-b968-11f1-becf-3c44d601000f",
+        "gameUrl": "https://www.chess.com/game/live/184388747296",
+        "playedAt": "2026-09-26T05:20:10+00:00",
+        "playerColor": "white",
+        "ply": 17,
+        "fen": "r3kb1r/p1pq1ppp/5n2/1p1P4/2Bn4/2N5/PPPP1PPP/R1BQ1RK1 w kq - 0 9",
+        "previousMoveSan": null,
+        "playedMoveUci": "c4b5",
+        "playedMoveSan": "Bxb5",
+        "sourceSet": "phase2_reproducible",
+        "sourceCohortId": null,
+        "sourceFrozenAt": null,
+        "opening": {
+          "eco": "C47",
+          "name": "Four Knights Game Italian Variation"
+        }
+      },
+      "orientation": "white",
+      "phase": "opening",
+      "positionBeforeDecisionFen": "r3kb1r/p1pq1ppp/5n2/1p1P4/2Bn4/2N5/PPPP1PPP/R1BQ1RK1 w kq - 0 9",
+      "actualPlayedMoveUci": "c4b5",
+      "actualPlayedMoveSan": "Bxb5",
+      "referenceDefenseUci": "c3b5",
+      "referenceDefenseSan": "Nxb5",
+      "acceptableAlternatives": [],
+      "actualPunishmentLineSan": [
+        "Bxb5",
+        "Nxb5"
+      ],
+      "defenseReferenceLineSan": [
+        "Nxb5",
+        "Nxb5",
+        "Qe2+",
+        "Kd8",
+        "Bxb5",
+        "Qxd5",
+        "d4",
+        "Qe6",
+        "Qxe6",
+        "fxe6",
+        "Re1",
+        "Rb8"
+      ],
+      "opponentThreat": {
+        "type": "capture",
+        "description": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "confidence": "high"
+      },
+      "motif": {
+        "resource": "capture_attacker",
+        "confidence": "medium",
+        "evidence": [
+          "La defensa usa una captura para alterar la amenaza."
+        ],
+        "classifierVersion": "defense-motif-v1"
+      },
+      "severity": "critical",
+      "evaluation": {
+        "before": {
+          "cp": 596,
+          "mate": null,
+          "numeric": 596
+        },
+        "afterActual": {
+          "cp": -401,
+          "mate": null,
+          "numeric": -401
+        },
+        "afterDefense": {
+          "cp": 596,
+          "mate": null,
+          "numeric": 596
+        },
+        "cpLossActual": 997,
+        "mateChange": {
+          "best": null,
+          "actual": null
+        },
+        "budgetId": "nodes-80k-v1",
+        "engineSha256": "3336d62e0ca4f5e1d0fdd892e03f19b8674611dd624b4b0afe454ae1e490fb51",
+        "pipelineVersion": "eval-pipeline-v0.2.1",
+        "criterionVersion": "engine-validated-v2",
+        "cacheKeys": [
+          "15a670b793c077d4fd8a5f9dbcc3dc5a5bc9b05cc7e27eb3c5b986d5bb582a8b"
+        ],
+        "escalationReason": null
+      },
+      "eligibility": {
+        "detectorVersion": "defense-opportunity-v1",
+        "accepted": true,
+        "reasons": [
+          "best_defense_at_least_minus_250_cp"
+        ]
+      },
+      "pedagogy": {
+        "observable": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "interpretation": "La defensa usa una captura para alterar la amenaza.",
+        "habitHypothesis": "Antes de comprometer una jugada, comprueba la respuesta más forzante del rival.",
+        "confidence": "medium",
+        "transferableRule": "CCT + refutación: después de elegir tu defensa, busca el jaque, captura o amenaza más incómoda del rival."
+      },
+      "sourceContext": {
+        "moveNumber": 9,
+        "opening": "C47 · Four Knights Game Italian Variation"
+      },
+      "lifecycle": "active",
+      "selection": {
+        "version": "defense-selection-v1",
+        "rank": 17,
+        "finalScore": 89,
+        "reason": "Seleccionado en el puesto 17: calidad pedagógica 88 y ajuste de diversidad 1."
+      }
+    },
+    {
+      "id": "def-09381500-b613-11f1-8cd6-ece1e601000f-41",
+      "version": "defense-exercise-v1",
+      "source": {
+        "gameId": "09381500-b613-11f1-8cd6-ece1e601000f",
+        "gameUrl": "https://www.chess.com/game/live/184180487104",
+        "playedAt": "2026-09-21T23:30:33+00:00",
+        "playerColor": "white",
+        "ply": 41,
+        "fen": "r4r1k/1p3p1p/3b1p2/p1p1p2B/2PpP3/3P3P/PqP2PP1/R2Q1RK1 w - - 2 21",
+        "previousMoveSan": null,
+        "playedMoveUci": "d1b1",
+        "playedMoveSan": "Qb1",
+        "sourceSet": "phase2_reproducible",
+        "sourceCohortId": null,
+        "sourceFrozenAt": null,
+        "opening": {
+          "eco": "B01",
+          "name": "Scandinavian Defense Closed 2...d4"
+        }
+      },
+      "orientation": "white",
+      "phase": "middlegame",
+      "positionBeforeDecisionFen": "r4r1k/1p3p1p/3b1p2/p1p1p2B/2PpP3/3P3P/PqP2PP1/R2Q1RK1 w - - 2 21",
+      "actualPlayedMoveUci": "d1b1",
+      "actualPlayedMoveSan": "Qb1",
+      "referenceDefenseUci": "a1b1",
+      "referenceDefenseSan": "Rb1",
+      "acceptableAlternatives": [],
+      "actualPunishmentLineSan": [
+        "Qb1",
+        "Qxb1"
+      ],
+      "defenseReferenceLineSan": [
+        "Rb1",
+        "Qa3",
+        "Qf3",
+        "Kg7",
+        "Rxb7",
+        "Rab8",
+        "Rd7",
+        "Rbd8",
+        "Qg4+",
+        "Kh8",
+        "Rb7",
+        "Rg8"
+      ],
+      "opponentThreat": {
+        "type": "capture",
+        "description": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "confidence": "high"
+      },
+      "motif": {
+        "resource": "move_attacked_piece",
+        "confidence": "medium",
+        "evidence": [
+          "La línea real muestra una captura inmediata que la defensa evita."
+        ],
+        "classifierVersion": "defense-motif-v1"
+      },
+      "severity": "critical",
+      "evaluation": {
+        "before": {
+          "cp": 554,
+          "mate": null,
+          "numeric": 554
+        },
+        "afterActual": {
+          "cp": -141,
+          "mate": null,
+          "numeric": -141
+        },
+        "afterDefense": {
+          "cp": 554,
+          "mate": null,
+          "numeric": 554
+        },
+        "cpLossActual": 695,
+        "mateChange": {
+          "best": null,
+          "actual": null
+        },
+        "budgetId": "nodes-80k-v1",
+        "engineSha256": "3336d62e0ca4f5e1d0fdd892e03f19b8674611dd624b4b0afe454ae1e490fb51",
+        "pipelineVersion": "eval-pipeline-v0.2.1",
+        "criterionVersion": "engine-validated-v2",
+        "cacheKeys": [
+          "899f3e78a6a6606efb0f012e68262f62ddc28bd9249f377388ac2dd073fcc57b"
+        ],
+        "escalationReason": null
+      },
+      "eligibility": {
+        "detectorVersion": "defense-opportunity-v1",
+        "accepted": true,
+        "reasons": [
+          "best_defense_at_least_minus_250_cp"
+        ]
+      },
+      "pedagogy": {
+        "observable": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "interpretation": "La línea real muestra una captura inmediata que la defensa evita.",
+        "habitHypothesis": "Antes de comprometer una jugada, comprueba la respuesta más forzante del rival.",
+        "confidence": "medium",
+        "transferableRule": "CCT + refutación: después de elegir tu defensa, busca el jaque, captura o amenaza más incómoda del rival."
+      },
+      "sourceContext": {
+        "moveNumber": 21,
+        "opening": "B01 · Scandinavian Defense Closed 2...d4"
+      },
+      "lifecycle": "active",
+      "selection": {
+        "version": "defense-selection-v1",
+        "rank": 18,
+        "finalScore": 88,
+        "reason": "Seleccionado en el puesto 18: calidad pedagógica 88 y ajuste de diversidad 0."
+      }
+    },
+    {
+      "id": "def-15ecf772-b40a-11f1-bb1f-e68c2101000f-33",
+      "version": "defense-exercise-v1",
+      "source": {
+        "gameId": "15ecf772-b40a-11f1-bb1f-e68c2101000f",
+        "gameUrl": "https://www.chess.com/game/live/184050942754",
+        "playedAt": "2026-09-19T09:18:16+00:00",
+        "playerColor": "white",
+        "ply": 33,
+        "fen": "r4k1r/3bqpb1/2pp1n1p/1pn3p1/p2QP3/P1N2NBP/BPP2PP1/R3K2R w KQ - 1 17",
+        "previousMoveSan": null,
+        "playedMoveUci": "e1c1",
+        "playedMoveSan": "O-O-O",
+        "sourceSet": "phase2_reproducible",
+        "sourceCohortId": null,
+        "sourceFrozenAt": null,
+        "opening": {
+          "eco": "C25",
+          "name": "Vienna Game 2...d6 3.Bc4 Nf6 4.d3"
+        }
+      },
+      "orientation": "white",
+      "phase": "middlegame",
+      "positionBeforeDecisionFen": "r4k1r/3bqpb1/2pp1n1p/1pn3p1/p2QP3/P1N2NBP/BPP2PP1/R3K2R w KQ - 1 17",
+      "actualPlayedMoveUci": "e1c1",
+      "actualPlayedMoveSan": "O-O-O",
+      "referenceDefenseUci": "g3d6",
+      "referenceDefenseSan": "Bxd6",
+      "acceptableAlternatives": [],
+      "actualPunishmentLineSan": [
+        "O-O-O",
+        "Nfxe4"
+      ],
+      "defenseReferenceLineSan": [
+        "Bxd6",
+        "Nb7",
+        "Bxe7+",
+        "Kxe7",
+        "Ne5",
+        "Rad8",
+        "O-O",
+        "Nh5",
+        "Nd5+",
+        "Kf8",
+        "Nxd7+",
+        "Kg8"
+      ],
+      "opponentThreat": {
+        "type": "capture",
+        "description": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "confidence": "high"
+      },
+      "motif": {
+        "resource": "remove_defender",
+        "confidence": "medium",
+        "evidence": [
+          "La defensa usa una captura para alterar la amenaza."
+        ],
+        "classifierVersion": "defense-motif-v1"
+      },
+      "severity": "critical",
+      "evaluation": {
+        "before": {
+          "cp": 873,
+          "mate": null,
+          "numeric": 873
+        },
+        "afterActual": {
+          "cp": -42,
+          "mate": null,
+          "numeric": -42
+        },
+        "afterDefense": {
+          "cp": 873,
+          "mate": null,
+          "numeric": 873
+        },
+        "cpLossActual": 915,
+        "mateChange": {
+          "best": null,
+          "actual": null
+        },
+        "budgetId": "nodes-80k-v1",
+        "engineSha256": "3336d62e0ca4f5e1d0fdd892e03f19b8674611dd624b4b0afe454ae1e490fb51",
+        "pipelineVersion": "eval-pipeline-v0.2.1",
+        "criterionVersion": "engine-validated-v2",
+        "cacheKeys": [
+          "fd1c285c97d3843f0d318c7e39c05f6a2991a4a5ee28a2cc4eed3885d31d8a18"
+        ],
+        "escalationReason": null
+      },
+      "eligibility": {
+        "detectorVersion": "defense-opportunity-v1",
+        "accepted": true,
+        "reasons": [
+          "best_defense_at_least_minus_250_cp"
+        ]
+      },
+      "pedagogy": {
+        "observable": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "interpretation": "La defensa usa una captura para alterar la amenaza.",
+        "habitHypothesis": "Antes de comprometer una jugada, comprueba la respuesta más forzante del rival.",
+        "confidence": "medium",
+        "transferableRule": "CCT + refutación: después de elegir tu defensa, busca el jaque, captura o amenaza más incómoda del rival."
+      },
+      "sourceContext": {
+        "moveNumber": 17,
+        "opening": "C25 · Vienna Game 2...d6 3.Bc4 Nf6 4.d3"
+      },
+      "lifecycle": "active",
+      "selection": {
+        "version": "defense-selection-v1",
+        "rank": 19,
+        "finalScore": 88,
+        "reason": "Seleccionado en el puesto 19: calidad pedagógica 88 y ajuste de diversidad 0."
+      }
+    },
+    {
+      "id": "def-41340e8e-bd06-11f1-a696-76c0b701000f-40",
+      "version": "defense-exercise-v1",
+      "source": {
+        "gameId": "41340e8e-bd06-11f1-a696-76c0b701000f",
+        "gameUrl": "https://www.chess.com/game/live/184620968356",
+        "playedAt": "2026-09-30T19:46:45+00:00",
+        "playerColor": "black",
+        "ply": 40,
+        "fen": "r5k1/ppp3pp/1b1p4/3Pp3/1P4b1/P2PBn2/5PKP/1R3R2 b - - 4 20",
+        "previousMoveSan": null,
+        "playedMoveUci": "f3d2",
+        "playedMoveSan": "Nd2",
+        "sourceSet": "phase2_reproducible",
+        "sourceCohortId": null,
+        "sourceFrozenAt": null,
+        "opening": {
+          "eco": "C50",
+          "name": "Giuoco Piano Game Giuoco Pianissimo Italian Four Knights Variation 5...d6"
+        }
+      },
+      "orientation": "black",
+      "phase": "middlegame",
+      "positionBeforeDecisionFen": "r5k1/ppp3pp/1b1p4/3Pp3/1P4b1/P2PBn2/5PKP/1R3R2 b - - 4 20",
+      "actualPlayedMoveUci": "f3d2",
+      "actualPlayedMoveSan": "Nd2",
+      "referenceDefenseUci": "b6e3",
+      "referenceDefenseSan": "Bxe3",
+      "acceptableAlternatives": [],
+      "actualPunishmentLineSan": [
+        "Nd2",
+        "Bxd2"
+      ],
+      "defenseReferenceLineSan": [
+        "Bxe3",
+        "fxe3",
+        "Nd2",
+        "Rbc1",
+        "Nxf1",
+        "Kxf1",
+        "Rc8",
+        "Ke1",
+        "c5",
+        "bxc5",
+        "dxc5",
+        "a4"
+      ],
+      "opponentThreat": {
+        "type": "capture",
+        "description": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "confidence": "high"
+      },
+      "motif": {
+        "resource": "capture_attacker",
+        "confidence": "medium",
+        "evidence": [
+          "La defensa usa una captura para alterar la amenaza."
+        ],
+        "classifierVersion": "defense-motif-v1"
+      },
+      "severity": "critical",
+      "evaluation": {
+        "before": {
+          "cp": 629,
+          "mate": null,
+          "numeric": 629
+        },
+        "afterActual": {
+          "cp": -43,
+          "mate": null,
+          "numeric": -43
+        },
+        "afterDefense": {
+          "cp": 629,
+          "mate": null,
+          "numeric": 629
+        },
+        "cpLossActual": 672,
+        "mateChange": {
+          "best": null,
+          "actual": null
+        },
+        "budgetId": "nodes-80k-v1",
+        "engineSha256": "3336d62e0ca4f5e1d0fdd892e03f19b8674611dd624b4b0afe454ae1e490fb51",
+        "pipelineVersion": "eval-pipeline-v0.2.1",
+        "criterionVersion": "engine-validated-v2",
+        "cacheKeys": [
+          "618d54658c4697e6cdc343909a0ea84c93c61f12bc46fdc4ac52971f3c679a3f"
+        ],
+        "escalationReason": null
+      },
+      "eligibility": {
+        "detectorVersion": "defense-opportunity-v1",
+        "accepted": true,
+        "reasons": [
+          "best_defense_at_least_minus_250_cp"
+        ]
+      },
+      "pedagogy": {
+        "observable": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "interpretation": "La defensa usa una captura para alterar la amenaza.",
+        "habitHypothesis": "Antes de comprometer una jugada, comprueba la respuesta más forzante del rival.",
+        "confidence": "medium",
+        "transferableRule": "CCT + refutación: después de elegir tu defensa, busca el jaque, captura o amenaza más incómoda del rival."
+      },
+      "sourceContext": {
+        "moveNumber": 20,
+        "opening": "C50 · Giuoco Piano Game Giuoco Pianissimo Italian Four Knights Variation 5...d6"
+      },
+      "lifecycle": "active",
+      "selection": {
+        "version": "defense-selection-v1",
+        "rank": 20,
+        "finalScore": 88,
+        "reason": "Seleccionado en el puesto 20: calidad pedagógica 88 y ajuste de diversidad 0."
+      }
+    },
+    {
+      "id": "def-55d1442d-af9d-11f1-93e5-8500da01000f-43",
+      "version": "defense-exercise-v1",
+      "source": {
+        "gameId": "55d1442d-af9d-11f1-93e5-8500da01000f",
+        "gameUrl": "https://www.chess.com/game/live/174428732942",
+        "playedAt": "2026-09-13T18:11:46+00:00",
+        "playerColor": "white",
+        "ply": 43,
+        "fen": "3q1rk1/5pp1/3p1b1p/p7/P1P1P3/1r1Q3P/2P2PP1/R4RK1 w - - 0 22",
+        "previousMoveSan": null,
+        "playedMoveUci": "d3b3",
+        "playedMoveSan": "Qxb3",
+        "sourceSet": "phase2_reproducible",
+        "sourceCohortId": null,
+        "sourceFrozenAt": null,
+        "opening": {
+          "eco": "C25",
+          "name": "Vienna Game 2...d6 3.Bc4"
+        }
+      },
+      "orientation": "white",
+      "phase": "middlegame",
+      "positionBeforeDecisionFen": "3q1rk1/5pp1/3p1b1p/p7/P1P1P3/1r1Q3P/2P2PP1/R4RK1 w - - 0 22",
+      "actualPlayedMoveUci": "d3b3",
+      "actualPlayedMoveSan": "Qxb3",
+      "referenceDefenseUci": "c2b3",
+      "referenceDefenseSan": "cxb3",
+      "acceptableAlternatives": [],
+      "actualPunishmentLineSan": [
+        "Qxb3",
+        "Bxa1"
+      ],
+      "defenseReferenceLineSan": [
+        "cxb3",
+        "Bxa1",
+        "Rxa1",
+        "Qb6",
+        "Re1",
+        "Qb4",
+        "Re3",
+        "Re8",
+        "g3",
+        "Qc5",
+        "Qd5",
+        "Qxd5"
+      ],
+      "opponentThreat": {
+        "type": "capture",
+        "description": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "confidence": "high"
+      },
+      "motif": {
+        "resource": "capture_attacker",
+        "confidence": "medium",
+        "evidence": [
+          "La defensa usa una captura para alterar la amenaza."
+        ],
+        "classifierVersion": "defense-motif-v1"
+      },
+      "severity": "critical",
+      "evaluation": {
+        "before": {
+          "cp": 491,
+          "mate": null,
+          "numeric": 491
+        },
+        "afterActual": {
+          "cp": -85,
+          "mate": null,
+          "numeric": -85
+        },
+        "afterDefense": {
+          "cp": 491,
+          "mate": null,
+          "numeric": 491
+        },
+        "cpLossActual": 576,
+        "mateChange": {
+          "best": null,
+          "actual": null
+        },
+        "budgetId": "nodes-80k-v1",
+        "engineSha256": "3336d62e0ca4f5e1d0fdd892e03f19b8674611dd624b4b0afe454ae1e490fb51",
+        "pipelineVersion": "eval-pipeline-v0.2.1",
+        "criterionVersion": "engine-validated-v2",
+        "cacheKeys": [
+          "a26f3c952ed17debe573109942097774fef92e95588c32c2991eb578e905cf40"
+        ],
+        "escalationReason": null
+      },
+      "eligibility": {
+        "detectorVersion": "defense-opportunity-v1",
+        "accepted": true,
+        "reasons": [
+          "best_defense_at_least_minus_250_cp"
+        ]
+      },
+      "pedagogy": {
+        "observable": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "interpretation": "La defensa usa una captura para alterar la amenaza.",
+        "habitHypothesis": "Antes de comprometer una jugada, comprueba la respuesta más forzante del rival.",
+        "confidence": "medium",
+        "transferableRule": "CCT + refutación: después de elegir tu defensa, busca el jaque, captura o amenaza más incómoda del rival."
+      },
+      "sourceContext": {
+        "moveNumber": 22,
+        "opening": "C25 · Vienna Game 2...d6 3.Bc4"
+      },
+      "lifecycle": "active",
+      "selection": {
+        "version": "defense-selection-v1",
+        "rank": 21,
+        "finalScore": 88,
+        "reason": "Seleccionado en el puesto 21: calidad pedagógica 88 y ajuste de diversidad 0."
+      }
+    },
+    {
+      "id": "def-9eee7044-b904-11f1-9c4d-f45fe701000f-102",
+      "version": "defense-exercise-v1",
+      "source": {
+        "gameId": "9eee7044-b904-11f1-9c4d-f45fe701000f",
+        "gameUrl": "https://www.chess.com/game/live/184366941330",
+        "playedAt": "2026-09-25T17:31:03+00:00",
+        "playerColor": "black",
+        "ply": 102,
+        "fen": "8/p5pk/6rp/3q4/3P4/1PP3P1/P1Q4K/8 b - - 13 51",
+        "previousMoveSan": null,
+        "playedMoveUci": "h7h8",
+        "playedMoveSan": "Kh8",
+        "sourceSet": "phase2_reproducible",
+        "sourceCohortId": null,
+        "sourceFrozenAt": null,
+        "opening": {
+          "eco": "C20",
+          "name": "Kings Pawn Opening 1...e5"
+        }
+      },
+      "orientation": "black",
+      "phase": "middlegame",
+      "positionBeforeDecisionFen": "8/p5pk/6rp/3q4/3P4/1PP3P1/P1Q4K/8 b - - 13 51",
+      "actualPlayedMoveUci": "h7h8",
+      "actualPlayedMoveSan": "Kh8",
+      "referenceDefenseUci": "d5f3",
+      "referenceDefenseSan": "Qf3",
+      "acceptableAlternatives": [],
+      "actualPunishmentLineSan": [
+        "Kh8",
+        "Qxg6"
+      ],
+      "defenseReferenceLineSan": [
+        "Qf3",
+        "Qg2",
+        "Qxc3",
+        "Qf2",
+        "Qd3",
+        "a4",
+        "h5",
+        "Qg2",
+        "Rf6",
+        "Qb2",
+        "Qf5",
+        "Qe2"
+      ],
+      "opponentThreat": {
+        "type": "capture",
+        "description": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "confidence": "high"
+      },
+      "motif": {
+        "resource": "move_attacked_piece",
+        "confidence": "medium",
+        "evidence": [
+          "La línea real muestra una captura inmediata que la defensa evita."
+        ],
+        "classifierVersion": "defense-motif-v1"
+      },
+      "severity": "critical",
+      "evaluation": {
+        "before": {
+          "cp": 839,
+          "mate": null,
+          "numeric": 839
+        },
+        "afterActual": {
+          "cp": 315,
+          "mate": null,
+          "numeric": 315
+        },
+        "afterDefense": {
+          "cp": 839,
+          "mate": null,
+          "numeric": 839
+        },
+        "cpLossActual": 524,
+        "mateChange": {
+          "best": null,
+          "actual": null
+        },
+        "budgetId": "nodes-80k-v1",
+        "engineSha256": "3336d62e0ca4f5e1d0fdd892e03f19b8674611dd624b4b0afe454ae1e490fb51",
+        "pipelineVersion": "eval-pipeline-v0.2.1",
+        "criterionVersion": "engine-validated-v2",
+        "cacheKeys": [
+          "717848eb000bfee2d2266454b23583f53aebbffabff16c732d5191926b47d234"
+        ],
+        "escalationReason": null
+      },
+      "eligibility": {
+        "detectorVersion": "defense-opportunity-v1",
+        "accepted": true,
+        "reasons": [
+          "best_defense_at_least_minus_250_cp"
+        ]
+      },
+      "pedagogy": {
+        "observable": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "interpretation": "La línea real muestra una captura inmediata que la defensa evita.",
+        "habitHypothesis": "Antes de comprometer una jugada, comprueba la respuesta más forzante del rival.",
+        "confidence": "medium",
+        "transferableRule": "CCT + refutación: después de elegir tu defensa, busca el jaque, captura o amenaza más incómoda del rival."
+      },
+      "sourceContext": {
+        "moveNumber": 51,
+        "opening": "C20 · Kings Pawn Opening 1...e5"
+      },
+      "lifecycle": "active",
+      "selection": {
+        "version": "defense-selection-v1",
+        "rank": 22,
+        "finalScore": 88,
+        "reason": "Seleccionado en el puesto 22: calidad pedagógica 88 y ajuste de diversidad 0."
+      }
+    },
+    {
+      "id": "def-f1b69558-b10a-11f1-8acf-f45fe701000f-64",
+      "version": "defense-exercise-v1",
+      "source": {
+        "gameId": "f1b69558-b10a-11f1-8acf-f45fe701000f",
+        "gameUrl": "https://www.chess.com/game/live/174514102048",
+        "playedAt": "2026-09-15T13:46:30+00:00",
+        "playerColor": "black",
+        "ply": 64,
+        "fen": "7r/ppp2kp1/3p4/4pP2/2b1Pn2/2P1K1R1/1P6/2B5 b - - 3 32",
+        "previousMoveSan": null,
+        "playedMoveUci": "h8h3",
+        "playedMoveSan": "Rh3",
+        "sourceSet": "phase2_reproducible",
+        "sourceCohortId": null,
+        "sourceFrozenAt": null,
+        "opening": {
+          "eco": "C50",
+          "name": "Italian Game 3...d6"
+        }
+      },
+      "orientation": "black",
+      "phase": "endgame",
+      "positionBeforeDecisionFen": "7r/ppp2kp1/3p4/4pP2/2b1Pn2/2P1K1R1/1P6/2B5 b - - 3 32",
+      "actualPlayedMoveUci": "h8h3",
+      "actualPlayedMoveSan": "Rh3",
+      "referenceDefenseUci": "f4e2",
+      "referenceDefenseSan": "Ne2",
+      "acceptableAlternatives": [],
+      "actualPunishmentLineSan": [
+        "Rh3",
+        "Rxh3",
+        "Nxh3",
+        "Kf3",
+        "d5",
+        "Be3",
+        "Kf6",
+        "Kg4",
+        "Nf4",
+        "Bxf4",
+        "Be2+",
+        "Kg3"
+      ],
+      "defenseReferenceLineSan": [
+        "Ne2",
+        "b3",
+        "Nxg3",
+        "bxc4",
+        "a5",
+        "Kd3",
+        "Nh5",
+        "Bg5",
+        "Nf6",
+        "Be3",
+        "a4",
+        "c5"
+      ],
+      "opponentThreat": {
+        "type": "capture",
+        "description": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "confidence": "high"
+      },
+      "motif": {
+        "resource": "move_attacked_piece",
+        "confidence": "medium",
+        "evidence": [
+          "La línea real muestra una captura inmediata que la defensa evita."
+        ],
+        "classifierVersion": "defense-motif-v1"
+      },
+      "severity": "critical",
+      "evaluation": {
+        "before": {
+          "cp": 879,
+          "mate": null,
+          "numeric": 879
+        },
+        "afterActual": {
+          "cp": -717,
+          "mate": null,
+          "numeric": -717
+        },
+        "afterDefense": {
+          "cp": 879,
+          "mate": null,
+          "numeric": 879
+        },
+        "cpLossActual": 1596,
+        "mateChange": {
+          "best": null,
+          "actual": null
+        },
+        "budgetId": "nodes-80k-v1",
+        "engineSha256": "3336d62e0ca4f5e1d0fdd892e03f19b8674611dd624b4b0afe454ae1e490fb51",
+        "pipelineVersion": "eval-pipeline-v0.2.1",
+        "criterionVersion": "engine-validated-v2",
+        "cacheKeys": [
+          "a03e24ed56639fbbdd3df4be0d5ef10d60ac10158e320e3d0dc601030e594bc9"
+        ],
+        "escalationReason": null
+      },
+      "eligibility": {
+        "detectorVersion": "defense-opportunity-v1",
+        "accepted": true,
+        "reasons": [
+          "best_defense_at_least_minus_250_cp"
+        ]
+      },
+      "pedagogy": {
+        "observable": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "interpretation": "La línea real muestra una captura inmediata que la defensa evita.",
+        "habitHypothesis": "Antes de comprometer una jugada, comprueba la respuesta más forzante del rival.",
+        "confidence": "medium",
+        "transferableRule": "CCT + refutación: después de elegir tu defensa, busca el jaque, captura o amenaza más incómoda del rival."
+      },
+      "sourceContext": {
+        "moveNumber": 32,
+        "opening": "C50 · Italian Game 3...d6"
+      },
+      "lifecycle": "active",
+      "selection": {
+        "version": "defense-selection-v1",
+        "rank": 23,
+        "finalScore": 88,
+        "reason": "Seleccionado en el puesto 23: calidad pedagógica 88 y ajuste de diversidad 0."
+      }
+    },
+    {
+      "id": "def-f835b867-b8a9-11f1-9343-8dc15001000f-62",
+      "version": "defense-exercise-v1",
+      "source": {
+        "gameId": "f835b867-b8a9-11f1-9343-8dc15001000f",
+        "gameUrl": "https://www.chess.com/game/live/184340797698",
+        "playedAt": "2026-09-25T06:40:32+00:00",
+        "playerColor": "black",
+        "ply": 62,
+        "fen": "R1b4r/1p4p1/1k3pr1/1p2p3/4P1P1/3P1B2/3K3p/2R5 b - - 1 31",
+        "previousMoveSan": null,
+        "playedMoveUci": "c8g4",
+        "playedMoveSan": "Bxg4",
+        "sourceSet": "phase2_reproducible",
+        "sourceCohortId": null,
+        "sourceFrozenAt": null,
+        "opening": {
+          "eco": "C20",
+          "name": "Kings Pawn Opening Leonardis Variation"
+        }
+      },
+      "orientation": "black",
+      "phase": "middlegame",
+      "positionBeforeDecisionFen": "R1b4r/1p4p1/1k3pr1/1p2p3/4P1P1/3P1B2/3K3p/2R5 b - - 1 31",
+      "actualPlayedMoveUci": "c8g4",
+      "actualPlayedMoveSan": "Bxg4",
+      "referenceDefenseUci": "h2h1q",
+      "referenceDefenseSan": "h1=Q",
+      "acceptableAlternatives": [],
+      "actualPunishmentLineSan": [
+        "Bxg4",
+        "Rxh8"
+      ],
+      "defenseReferenceLineSan": [
+        "h1=Q",
+        "Rxh1",
+        "Rxh1",
+        "Bxh1",
+        "Bxg4",
+        "Bg2",
+        "Bd7",
+        "Bf1",
+        "Rg1",
+        "Ke2",
+        "b4",
+        "Kf2"
+      ],
+      "opponentThreat": {
+        "type": "capture",
+        "description": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "confidence": "high"
+      },
+      "motif": {
+        "resource": "move_attacked_piece",
+        "confidence": "medium",
+        "evidence": [
+          "La línea real muestra una captura inmediata que la defensa evita."
+        ],
+        "classifierVersion": "defense-motif-v1"
+      },
+      "severity": "critical",
+      "evaluation": {
+        "before": {
+          "cp": 671,
+          "mate": null,
+          "numeric": 671
+        },
+        "afterActual": {
+          "cp": -51,
+          "mate": null,
+          "numeric": -51
+        },
+        "afterDefense": {
+          "cp": 671,
+          "mate": null,
+          "numeric": 671
+        },
+        "cpLossActual": 722,
+        "mateChange": {
+          "best": null,
+          "actual": null
+        },
+        "budgetId": "nodes-80k-v1",
+        "engineSha256": "3336d62e0ca4f5e1d0fdd892e03f19b8674611dd624b4b0afe454ae1e490fb51",
+        "pipelineVersion": "eval-pipeline-v0.2.1",
+        "criterionVersion": "engine-validated-v2",
+        "cacheKeys": [
+          "38ed1d4ce497d072933ba601a829cfb18057afa4917354620552396c105d034d"
+        ],
+        "escalationReason": null
+      },
+      "eligibility": {
+        "detectorVersion": "defense-opportunity-v1",
+        "accepted": true,
+        "reasons": [
+          "best_defense_at_least_minus_250_cp"
+        ]
+      },
+      "pedagogy": {
+        "observable": "El rival podía capturar de inmediato, ganando material o tiempo.",
+        "interpretation": "La línea real muestra una captura inmediata que la defensa evita.",
+        "habitHypothesis": "Antes de comprometer una jugada, comprueba la respuesta más forzante del rival.",
+        "confidence": "medium",
+        "transferableRule": "CCT + refutación: después de elegir tu defensa, busca el jaque, captura o amenaza más incómoda del rival."
+      },
+      "sourceContext": {
+        "moveNumber": 31,
+        "opening": "C20 · Kings Pawn Opening Leonardis Variation"
+      },
+      "lifecycle": "active",
+      "selection": {
+        "version": "defense-selection-v1",
+        "rank": 24,
+        "finalScore": 88,
+        "reason": "Seleccionado en el puesto 24: calidad pedagógica 88 y ajuste de diversidad 0."
+      }
+    }
+  ]
+}

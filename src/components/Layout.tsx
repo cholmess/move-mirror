@@ -6,6 +6,7 @@ const links = [
   { to: "/", label: "Dashboard" },
   { to: "/lesson", label: "Microlección" },
   { to: "/train", label: "Entrenar" },
+  { to: "/defense", label: "Defense Lab" },
   { to: "/profile", label: "Perfil" },
   { to: "/transfer", label: "Transferencia" },
 ];

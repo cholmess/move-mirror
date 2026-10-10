@@ -21,7 +21,7 @@ export function createTransferRouter({ store, fixturesDir, enginePath, username 
     return store.publicState(job);
   }
 
-  async function start(source, training) {
+  async function start(source, training, purpose = "post-intervention-transfer") {
     if (job.running) {
       const error = new Error("sync_in_progress");
       error.code = "sync_in_progress";
@@ -36,6 +36,7 @@ export function createTransferRouter({ store, fixturesDir, enginePath, username 
       fixturesDir,
       enginePath,
       training,
+      purpose,
       signal: abort.signal,
       onProgress: (progress) => {
         job.progress = progress;
@@ -83,13 +84,13 @@ export function createTransferRouter({ store, fixturesDir, enginePath, username 
       }
       if (url.pathname === "/api/transfer/sync" && req.method === "POST") {
         const body = await readBody(req);
-        await start(body.source === "fixtures" ? "fixtures" : "live", body.training ?? null);
+        await start(body.source === "fixtures" ? "fixtures" : "live", body.training ?? null, body.purpose);
         json(res, 202, snapshot());
         return true;
       }
       if (url.pathname === "/api/transfer/resume" && req.method === "POST") {
         const body = await readBody(req);
-        await start(body.source === "fixtures" || snapshot().sync.lastSource === "fixtures" ? "fixtures" : "live", body.training ?? null);
+        await start(body.source === "fixtures" || snapshot().sync.lastSource === "fixtures" ? "fixtures" : "live", body.training ?? null, body.purpose);
         json(res, 202, snapshot());
         return true;
       }
@@ -125,6 +126,12 @@ export function createTransferRouter({ store, fixturesDir, enginePath, username 
         const body = await readBody(req);
         const state = store.readState();
         state.trainingSnapshot = body.training ?? state.trainingSnapshot;
+        state.intervention = body.training?.interventionQualification ?? state.intervention;
+        if (state.intervention) {
+          for (const id of store.listCohortIds()) {
+            if (store.readMeta(id)?.frozen) store.auditExposure(id, state.intervention);
+          }
+        }
         state.pedagogy = decidePedagogy({
           training: state.trainingSnapshot ?? {},
           comparison: snapshot().comparison,

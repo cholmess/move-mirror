@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Chessboard } from "react-chessboard";
 import { microLesson, getLessonExampleFen } from "../data/microlesson";
@@ -6,7 +6,7 @@ import { getExercise } from "../data/exercises";
 import { useApp } from "../context/AppContext";
 
 export function MicroLesson() {
-  const { completeLesson, state } = useApp();
+  const { completeLesson, startLesson, state } = useApp();
   const [stepIndex, setStepIndex] = useState(0);
   const steps = microLesson.steps;
   const step = steps[stepIndex]!;
@@ -14,6 +14,10 @@ export function MicroLesson() {
   const example = step.exampleExerciseId
     ? getExercise(step.exampleExerciseId)
     : undefined;
+
+  useEffect(() => {
+    startLesson();
+  }, [startLesson]);
 
   const onFinish = () => {
     completeLesson();

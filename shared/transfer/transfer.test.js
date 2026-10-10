@@ -135,6 +135,25 @@ describe("transfer selection", () => {
     expect(second.excluded).toHaveLength(0);
   });
 
+  it("uses game startTime > qualifiedAt and excludes games already used for post-intervention cohorts", () => {
+    const qualifiedAt = "2026-01-01T00:00:00.000Z";
+    const withStart = LONG_PGN.replace('[TimeControl "600"]', '[UTCDate "2026.01.02"]\n[StartTime "10:00:00"]\n[TimeControl "600"]');
+    const result = selectTransferGames({
+      rawGames: [
+        raw({ pgn: withStart }),
+        raw({ uuid: "used", url: "https://www.chess.com/game/live/used", pgn: withStart }),
+      ],
+      baseline,
+      knownIds: new Set(["used"]),
+      cohortId: "post",
+      syncedAt: "2026-10-10T00:00:00.000Z",
+      purpose: "post-intervention-transfer",
+      qualifiedAt,
+    });
+    expect(result.included[0].startTime).toBe("2026-01-02T10:00:00.000Z");
+    expect(reasons(result)).toContain("already_in_frozen_cohort");
+  });
+
   it("keeps the baseline cutoff from the pair (end_time, game_id) and rejects baseline ids", () => {
     expect(isAfterCutoff(1000, "a", baseline.cutoff)).toBe(false);
     expect(isAfterCutoff(1000, "z", baseline.cutoff)).toBe(true);

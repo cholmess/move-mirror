@@ -205,6 +205,8 @@ export function selectTransferGames({
   username = PLAYER_USERNAME,
   cohortId,
   syncedAt,
+  qualifiedAt = null,
+  purpose = null,
 }) {
   const included = [];
   const excluded = [];
@@ -234,7 +236,12 @@ export function selectTransferGames({
   for (const raw of rawGames ?? []) {
     const gameId = raw.uuid || raw.gameId || null;
     const url = normalizeUrl(raw.url);
-    if (gameId && originalIds.has(gameId)) continue;
+    if (gameId && originalIds.has(gameId)) {
+      if (purpose === "post-intervention-transfer") {
+        note(gameId, url, "already_in_frozen_cohort", "La partida ya pertenece a una cohorte anterior.");
+      }
+      continue;
+    }
     if (gameId && seenIds.has(gameId)) {
       note(gameId, url, "duplicate_game_id", "Mismo game id en la sincronización.");
       continue;
@@ -307,6 +314,21 @@ export function selectTransferGames({
     }
 
     const headers = parsed.headers ?? {};
+    const startTime = startTimeFromHeaders(headers);
+    if (purpose === "post-intervention-transfer") {
+      if (!qualifiedAt) {
+        note(gameId, url, "training_incomplete", "No existe un qualifiedAt verificable.");
+        continue;
+      }
+      if (!startTime) {
+        note(gameId, url, "missing_game_start_time", "El PGN no contiene UTCDate y StartTime/UTCTime.");
+        continue;
+      }
+      if (startTime <= qualifiedAt) {
+        note(gameId, url, "before_intervention_cutoff", `startTime=${startTime}; qualifiedAt=${qualifiedAt}`);
+        continue;
+      }
+    }
     const pgnTc = headers.TimeControl;
     if (pgnTc && pgnTc !== "600" && pgnTc !== "600+0") {
       note(gameId, url, "time_control_mismatch", `PGN TimeControl=${pgnTc}`);
@@ -336,6 +358,7 @@ export function selectTransferGames({
       cohortId,
       endTime: Number(raw.end_time),
       endUtc: new Date(Number(raw.end_time) * 1000).toISOString(),
+      startTime,
       timeControl: TIME_CONTROL,
       timeClass: raw.time_class ?? "rapid",
       rules: "chess",
@@ -366,6 +389,14 @@ export function selectTransferGames({
   }
 
   return { included, excluded, knownIds, knownUrls, recordedExclusions };
+}
+
+function startTimeFromHeaders(headers) {
+  const date = headers.UTCDate ?? headers.Date;
+  const time = headers.StartTime ?? headers.UTCTime;
+  if (!date || !time || !/^\d{4}\.\d{2}\.\d{2}$/.test(date) || !/^\d{2}:\d{2}:\d{2}$/.test(time)) return null;
+  const iso = `${date.replaceAll(".", "-")}T${time}.000Z`;
+  return Number.isNaN(Date.parse(iso)) ? null : iso;
 }
 
 export function cohortIdForSync(existingIds, nowIso) {

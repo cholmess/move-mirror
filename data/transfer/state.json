@@ -1,5 +1,5 @@
 {
-  "version": "0.3.0",
+  "version": "0.3.1",
   "lastSyncedAt": "2026-10-10T08:15:32.041Z",
   "lastError": null,
   "lastSource": "live",
@@ -28,6 +28,7 @@
     "mastery": 0.7333333333333334,
     "nextReviewAt": null
   },
+  "intervention": null,
   "exerciseCandidates": [
     {
       "id": "cand-9aa6d1ca-c026-11f1-9982-0d13da01000f:28",

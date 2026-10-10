@@ -1,0 +1,147 @@
+{
+  "version": "0.3.1",
+  "validityPipelineVersion": "transfer-validity-pipeline-v0.3.1",
+  "generatedAt": "2026-10-10T10:11:00.000Z",
+  "cohortId": "transfer-20261010-2",
+  "immutableCohortConfirmed": true,
+  "originalMetricsHash": "2e047cc4e24761259c86db90c3f8dc6ff44a95d57b88e8e4b3eb27374ef2271e",
+  "auditHash": "1c193870e0131c9763381ff8df7f5ef3e243db020145326aa973b76562fe2040",
+  "interventionLogVersion": "intervention-log-v1",
+  "protocolId": "cct-refutation-dose-v1",
+  "migration": {
+    "version": "intervention-log-v1",
+    "recoveredEvents": [],
+    "incompleteEvents": [
+      {
+        "kind": "lesson_completed",
+        "reason": "no_persisted_lesson_completion_event_on_server"
+      },
+      {
+        "kind": "exercise_confirmed",
+        "reason": "training_snapshot_contains_counts_without_attempt_timestamps"
+      },
+      {
+        "kind": "training_session",
+        "reason": "no_persisted_session_boundaries"
+      }
+    ],
+    "demonstrableRequirements": [],
+    "nonDemonstrableRequirements": [
+      "lesson_completed",
+      "12_confirmed_exercises",
+      "8_verified_successes",
+      "2_distinct_sessions",
+      "2_distinct_calendar_days",
+      "engine-validated-v2_for_all_qualifying_attempts"
+    ]
+  },
+  "qualification": {
+    "protocolId": "cct-refutation-dose-v1",
+    "patternId": "cct-opponent-refutation",
+    "qualified": false,
+    "qualifiedAt": null,
+    "lessonCompletedAt": null,
+    "confirmedExercises": 0,
+    "verifiedSuccesses": 0,
+    "distinctSessions": 0,
+    "distinctCalendarDays": 0,
+    "missingRequirements": [
+      "lesson_completed",
+      "confirmed_exercises:0/12",
+      "verified_successes:0/8",
+      "distinct_sessions:0/2",
+      "distinct_calendar_days:0/2"
+    ],
+    "evidenceEventIds": []
+  },
+  "exposureAudit": {
+    "cohortId": "transfer-20261010-2",
+    "exposureValidity": "exposure_unknown",
+    "protocolId": "cct-refutation-dose-v1",
+    "qualifiedAt": null,
+    "gamesBeforeQualification": null,
+    "gamesAfterQualification": null,
+    "earliestGameAt": "2026-10-04T19:05:46.000Z",
+    "latestGameAt": "2026-10-10T04:57:32.000Z",
+    "auditedAt": "2026-10-10T10:11:00.000Z",
+    "auditVersion": "exposure-audit-v1",
+    "auditHash": "1c193870e0131c9763381ff8df7f5ef3e243db020145326aa973b76562fe2040"
+  },
+  "validPostInterventionGameIds": [],
+  "comparability": {
+    "baseline": {
+      "games": 200,
+      "ownRatingMean": 1235.205,
+      "ownRatingMedian": 1237,
+      "opponentRatingMean": 1233.175,
+      "opponentRatingMedian": 1239,
+      "ratingDifferenceMean": 2.03,
+      "ratingDifferenceMedian": 0,
+      "whiteProportion": 0.505,
+      "winProportion": 0.465,
+      "lossProportion": 0.46,
+      "drawProportion": 0.075,
+      "decisionsPerGame": 38.645
+    },
+    "cohort": {
+      "games": 55,
+      "ownRatingMean": 1314.2727272727273,
+      "ownRatingMedian": 1323,
+      "opponentRatingMean": 1312,
+      "opponentRatingMedian": 1318,
+      "ratingDifferenceMean": 2.272727272727273,
+      "ratingDifferenceMedian": 4,
+      "whiteProportion": 0.5272727272727272,
+      "winProportion": 0.509090909090909,
+      "lossProportion": 0.38181818181818183,
+      "drawProportion": 0.10909090909090909,
+      "decisionsPerGame": 38.018181818181816
+    },
+    "warning": {
+      "materialDifference": false,
+      "reasons": [],
+      "message": null,
+      "thresholds": {
+        "ownRatingMean": 100,
+        "opponentRatingMean": 100,
+        "whiteProportion": 0.15,
+        "resultProportion": 0.2,
+        "decisionsPerGameRelative": 0.25
+      }
+    }
+  },
+  "answers": {
+    "verifiableTrainingEvidence": "No. El snapshot histórico solo conserva conteos, no eventos fechados ni sesiones.",
+    "minimumDoseReachedAt": null,
+    "v03Timing": "exposure_unknown; la cohorte es post-baseline, no post-intervención verificable.",
+    "validPostInterventionGames": "Ninguna puede declararse válida con la evidencia histórica disponible.",
+    "permittedConclusions": [
+      "La tasa puntual bajó, pero el intervalo incluye ausencia de cambio.",
+      "La cohorte contiene 55 partidas post-baseline y 2091 decisiones.",
+      "No hay evidencia suficiente para atribuir el cambio a la lección."
+    ],
+    "missingData": [
+      "lesson_completed",
+      "12_confirmed_exercises",
+      "8_verified_successes",
+      "2_distinct_sessions",
+      "2_distinct_calendar_days",
+      "engine-validated-v2_for_all_qualifying_attempts"
+    ]
+  },
+  "frozenArtifacts": {
+    "detectorId": "allowed-forcing-reply-transfer-v1",
+    "analysisFingerprint": "transfer-analysis-v1|allowed-forcing-reply-transfer-v1|fase1-filter-v1|phase-proxy-material-v1|transfer-confirm-v1|nodes-80k-v1|80000|nodes-500k-v1|500000|120|105-135|1|128|true|uci-searchmoves|100000|side-to-move",
+    "metricsHash": "2e047cc4e24761259c86db90c3f8dc6ff44a95d57b88e8e4b3eb27374ef2271e"
+  },
+  "sourceTrainingSnapshot": {
+    "verified_best": 0,
+    "verified_acceptable": 0,
+    "playable_inexact": 0,
+    "incorrect": 0,
+    "unverified": 0,
+    "attempts": 0,
+    "mastery": 0.7333333333333334,
+    "nextReviewAt": null
+  }
+}

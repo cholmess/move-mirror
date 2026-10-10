@@ -1,6 +1,7 @@
 import { BUDGET_DEEP, BUDGET_SHALLOW } from "../evaluation/budgets.js";
 
-export const TRANSFER_VERSION = "0.3.0";
+export const TRANSFER_VERSION = "0.3.1";
+export const VALIDITY_PIPELINE_VERSION = "transfer-validity-pipeline-v0.3.1";
 export const DETECTOR_ID = "allowed-forcing-reply-transfer-v1";
 export const FILTER_RULES_ID = "fase1-filter-v1";
 export const PHASE_PROXY_ID = "phase-proxy-material-v1";

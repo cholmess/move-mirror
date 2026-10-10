@@ -1,0 +1,14 @@
+{
+  "games": 200,
+  "ownRatingMean": 1235.205,
+  "ownRatingMedian": 1237,
+  "opponentRatingMean": 1233.175,
+  "opponentRatingMedian": 1239,
+  "ratingDifferenceMean": 2.03,
+  "ratingDifferenceMedian": 0,
+  "whiteProportion": 0.505,
+  "winProportion": 0.465,
+  "lossProportion": 0.46,
+  "drawProportion": 0.075,
+  "decisionsPerGame": 38.645
+}

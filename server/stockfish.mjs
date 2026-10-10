@@ -1,4 +1,4 @@
-import { spawn } from "node:child_process";
+import { execFileSync, spawn } from "node:child_process";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { BUDGET_SHALLOW } from "../shared/evaluation/budgets.js";
@@ -29,7 +29,10 @@ export class StockfishEngine {
     this.engineSha256 = null;
     this.stopping = false;
     try {
-      const buf = readFileSync(enginePath);
+      const resolvedPath = enginePath.includes("/")
+        ? enginePath
+        : execFileSync("which", [enginePath], { encoding: "utf8" }).trim();
+      const buf = readFileSync(resolvedPath);
       this.engineSha256 = createHash("sha256").update(buf).digest("hex");
     } catch {
       this.engineSha256 = null;
@@ -41,15 +44,17 @@ export class StockfishEngine {
   }
 
   _attachListeners() {
-    this.proc.stdout.on("data", (chunk) => {
+    const attachedProc = this.proc;
+    attachedProc.stdout.on("data", (chunk) => {
       for (const line of chunk.toString().split("\n")) {
         const t = line.trim();
         if (t) this.lines.push(t);
         if (t.startsWith("id name ")) this.engineVersion = t.slice(8);
       }
     });
-    this.proc.stderr.on("data", () => {});
-    this.proc.on("close", () => {
+    attachedProc.stderr.on("data", () => {});
+    attachedProc.on("close", () => {
+      if (this.proc !== attachedProc) return;
       this.proc = null;
       if (!this.stopping) {
         this._dead = true;

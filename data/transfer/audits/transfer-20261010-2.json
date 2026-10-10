@@ -1,0 +1,13 @@
+{
+  "cohortId": "transfer-20261010-2",
+  "exposureValidity": "exposure_unknown",
+  "protocolId": "cct-refutation-dose-v1",
+  "qualifiedAt": null,
+  "gamesBeforeQualification": null,
+  "gamesAfterQualification": null,
+  "earliestGameAt": "2026-10-04T19:05:46.000Z",
+  "latestGameAt": "2026-10-10T04:57:32.000Z",
+  "auditedAt": "2026-10-10T10:11:00.000Z",
+  "auditVersion": "exposure-audit-v1",
+  "auditHash": "1c193870e0131c9763381ff8df7f5ef3e243db020145326aa973b76562fe2040"
+}
