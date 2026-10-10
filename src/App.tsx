@@ -10,6 +10,7 @@ import { TransferView } from "./components/TransferView";
 import { DefenseLab } from "./components/DefenseLab";
 import { ImportHub } from "./components/ImportHub";
 import { ManualImport } from "./components/ManualImport";
+import { ScoresheetImport } from "./components/ScoresheetImport";
 import { GamesLibrary } from "./components/GamesLibrary";
 import { GameDetail } from "./components/GameDetail";
 
@@ -28,6 +29,8 @@ export default function App() {
             <Route path="defense" element={<DefenseLab />} />
             <Route path="import" element={<ImportHub />} />
             <Route path="import/manual" element={<ManualImport />} />
+            <Route path="import/scoresheet" element={<ScoresheetImport />} />
+            <Route path="import/scoresheet/:draftId" element={<ScoresheetImport />} />
             <Route path="games" element={<GamesLibrary />} />
             <Route path="games/:id" element={<GameDetail />} />
           </Route>

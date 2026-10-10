@@ -1,0 +1,98 @@
+{
+  "providerId": "fixture",
+  "providerVersion": "scoresheet-ocr-fixture-v1",
+  "pages": [
+    {
+      "page": 1,
+      "width": 800,
+      "height": 600,
+      "rawText": "1. e4 e5\n2. Nf3 Nc6",
+      "tokens": [
+        {
+          "id": "t-1.-40-120",
+          "page": 1,
+          "text": "1.",
+          "confidence": 0.99,
+          "boundingBox": {
+            "x": 40,
+            "y": 120,
+            "width": 20,
+            "height": 14
+          },
+          "lineId": "line-120",
+          "side": "white"
+        },
+        {
+          "id": "t-e4-70-120",
+          "page": 1,
+          "text": "e4",
+          "confidence": 0.93,
+          "boundingBox": {
+            "x": 70,
+            "y": 120,
+            "width": 20,
+            "height": 14
+          },
+          "lineId": "line-120",
+          "side": "white"
+        },
+        {
+          "id": "t-e5-130-120",
+          "page": 1,
+          "text": "e5",
+          "confidence": 0.93,
+          "boundingBox": {
+            "x": 130,
+            "y": 120,
+            "width": 20,
+            "height": 14
+          },
+          "lineId": "line-120",
+          "side": "white"
+        },
+        {
+          "id": "t-2.-40-150",
+          "page": 1,
+          "text": "2.",
+          "confidence": 0.99,
+          "boundingBox": {
+            "x": 40,
+            "y": 150,
+            "width": 20,
+            "height": 14
+          },
+          "lineId": "line-150",
+          "side": "white"
+        },
+        {
+          "id": "t-Nf3-70-150",
+          "page": 1,
+          "text": "Nf3",
+          "confidence": 0.93,
+          "boundingBox": {
+            "x": 70,
+            "y": 150,
+            "width": 30,
+            "height": 14
+          },
+          "lineId": "line-150",
+          "side": "white"
+        },
+        {
+          "id": "t-Nc6-130-150",
+          "page": 1,
+          "text": "Nc6",
+          "confidence": 0.93,
+          "boundingBox": {
+            "x": 130,
+            "y": 150,
+            "width": 30,
+            "height": 14
+          },
+          "lineId": "line-150",
+          "side": "white"
+        }
+      ]
+    }
+  ]
+}

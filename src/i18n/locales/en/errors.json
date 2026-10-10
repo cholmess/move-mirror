@@ -28,5 +28,20 @@
   "illegalMoveManual": "That move is not legal in the current position.",
   "invalidFen": "That starting position is not valid.",
   "saveFailed": "Could not save.",
-  "manualImportSaveFailed": "Could not save the game."
+  "manualImportSaveFailed": "Could not save the game.",
+  "scoresheet_too_large": "The scoresheet file is too large.",
+  "scoresheet_unsupported_format": "That file format is not supported for scoresheets.",
+  "scoresheet_mime_mismatch": "The file content does not match its type.",
+  "scoresheet_draft_not_found": "Scoresheet draft not found.",
+  "scoresheet_confirmation_required": "Review and confirm the full game before importing.",
+  "scoresheet_unresolved_plies": "Resolve every doubtful move before importing.",
+  "scoresheet_page_not_found": "That page preview is not available.",
+  "scoresheet_path_outside_root": "Invalid scoresheet storage path.",
+  "SCORESHEET_REVIEW_REQUIRED": "Some moves still need your review before import.",
+  "SCORESHEET_PDF_ENCRYPTED": "This PDF is protected. Save an unprotected copy and try again.",
+  "SCORESHEET_FILE_CORRUPT": "That file could not be read. Try another photo or PDF.",
+  "SCORESHEET_OCR_QUEUE_FULL": "Too many read jobs are queued. Try again shortly.",
+  "SCORESHEET_OCR_TIMEOUT": "Reading the sheet took too long.",
+  "SCORESHEET_OCR_CANCELLED": "Reading was cancelled.",
+  "scoresheet_invalid_region": "That crop or region is not valid."
 }

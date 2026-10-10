@@ -1,0 +1,17 @@
+{
+  "version": "scoresheet-fixtures-v1",
+  "scenarios": [
+    "clear-en",
+    "clear-es",
+    "clear-de",
+    "castling-zero",
+    "unclear-capture",
+    "s-five-confusion",
+    "ambiguous-legal-moves",
+    "rotated-image",
+    "low-contrast",
+    "early-correction",
+    "dedup-scoresheet",
+    "two-page-pdf"
+  ]
+}

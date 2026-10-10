@@ -1,7 +1,7 @@
 {
   "name": "move-mirror",
   "private": true,
-  "version": "0.5.1",
+  "version": "0.5.2",
   "type": "module",
   "scripts": {
     "dev": "concurrently -n web,engine -c blue,green \"vite\" \"node server/index.mjs\"",
@@ -25,16 +25,26 @@
     "games:verify": "node scripts/games-admin.mjs verify",
     "games:export": "node scripts/games-admin.mjs export",
     "i18n:check": "node scripts/i18n-check.mjs",
-    "i18n:sync": "node scripts/i18n-sync-missing.mjs"
+    "i18n:sync": "node scripts/i18n-sync-missing.mjs",
+    "scoresheets:verify": "node scripts/scoresheets-admin.mjs verify",
+    "scoresheets:cleanup": "node scripts/scoresheets-admin.mjs cleanup",
+    "scoresheets:build-fixtures": "node scripts/build-scoresheet-fixtures.mjs",
+    "scoresheets:benchmark": "node scripts/scoresheets-benchmark.mjs",
+    "scoresheets:validate-real": "node scripts/scoresheets-validate-real.mjs",
+    "test:ocr-integration": "node scripts/test-ocr-integration.mjs"
   },
   "dependencies": {
     "chess.js": "^1.0.0-beta.8",
     "i18next": "^26.4.3",
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^4.10.38",
     "react": "^18.3.1",
     "react-chessboard": "^4.7.2",
     "react-dom": "^18.3.1",
     "react-i18next": "^17.0.16",
-    "react-router-dom": "^6.28.0"
+    "react-router-dom": "^6.28.0",
+    "sharp": "^0.35.5",
+    "tesseract.js": "^7.0.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.49.0",

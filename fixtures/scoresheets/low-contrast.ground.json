@@ -1,0 +1,14 @@
+{
+  "id": "low-contrast",
+  "locale": "en",
+  "expectedPlies": 3,
+  "expectedMoves": [
+    "c4",
+    "c5",
+    "Nf3"
+  ],
+  "expectedHumanReview": 0,
+  "metadata": {
+    "result": "*"
+  }
+}

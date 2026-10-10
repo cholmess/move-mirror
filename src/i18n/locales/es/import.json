@@ -54,8 +54,13 @@
     "lichess": "Lichess",
     "pgn_file": "Archivo PGN",
     "pgn_text": "PGN pegado",
-    "manual": "Entrada manual"
+    "manual": "Entrada manual",
+    "scoresheet": "Planilla"
   },
+  "scoresheetEyebrow": "Planilla",
+  "scoresheetTitle": "Fotografiar una planilla",
+  "scoresheetLead": "Sube una foto o PDF. MoveMirror intentará leer las jugadas y te pedirá revisar cualquier duda.",
+  "openScoresheet": "Escanear planilla",
   "manualEyebrow": "Entrada manual",
   "manualPageTitle": "Registrar una partida en el tablero",
   "manualPageLead": "Puedes volver a cualquier jugada; una jugada nueva desde ahí reemplaza la continuación.",

@@ -28,5 +28,20 @@
   "illegalMoveManual": "Esa jugada no es legal en la posición actual.",
   "invalidFen": "Esa posición inicial no es válida.",
   "saveFailed": "No se pudo guardar.",
-  "manualImportSaveFailed": "No se pudo guardar la partida."
+  "manualImportSaveFailed": "No se pudo guardar la partida.",
+  "scoresheet_too_large": "El archivo de la planilla es demasiado grande.",
+  "scoresheet_unsupported_format": "Ese formato no está soportado para planillas.",
+  "scoresheet_mime_mismatch": "El contenido del archivo no coincide con su tipo.",
+  "scoresheet_draft_not_found": "No se encontró el borrador de la planilla.",
+  "scoresheet_confirmation_required": "Revisa y confirma la partida completa antes de importar.",
+  "scoresheet_unresolved_plies": "Resuelve todas las jugadas dudosas antes de importar.",
+  "scoresheet_page_not_found": "Esa vista previa de página no está disponible.",
+  "scoresheet_path_outside_root": "Ruta de almacenamiento de planilla no válida.",
+  "SCORESHEET_REVIEW_REQUIRED": "Aún hay jugadas por revisar antes de importar.",
+  "SCORESHEET_PDF_ENCRYPTED": "Este PDF está protegido. Guarda una copia sin contraseña e inténtalo nuevamente.",
+  "SCORESHEET_FILE_CORRUPT": "No se pudo leer ese archivo. Prueba otra foto o PDF.",
+  "SCORESHEET_OCR_QUEUE_FULL": "Hay demasiadas lecturas en cola. Inténtalo de nuevo en un momento.",
+  "SCORESHEET_OCR_TIMEOUT": "La lectura tardó demasiado.",
+  "SCORESHEET_OCR_CANCELLED": "Se canceló la lectura.",
+  "scoresheet_invalid_region": "Ese recorte o región no es válido."
 }

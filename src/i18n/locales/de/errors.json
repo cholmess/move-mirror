@@ -28,5 +28,20 @@
   "illegalMoveManual": "Dieser Zug ist in der aktuellen Stellung nicht legal.",
   "invalidFen": "Diese Startstellung ist nicht gültig.",
   "saveFailed": "Speichern fehlgeschlagen.",
-  "manualImportSaveFailed": "Partie konnte nicht gespeichert werden."
+  "manualImportSaveFailed": "Partie konnte nicht gespeichert werden.",
+  "scoresheet_too_large": "Die Formular-Datei ist zu groß.",
+  "scoresheet_unsupported_format": "Dieses Dateiformat wird für Formulare nicht unterstützt.",
+  "scoresheet_mime_mismatch": "Der Dateiinhalt passt nicht zum angegebenen Typ.",
+  "scoresheet_draft_not_found": "Formular-Entwurf nicht gefunden.",
+  "scoresheet_confirmation_required": "Prüfe und bestätige die gesamte Partie vor dem Import.",
+  "scoresheet_unresolved_plies": "Kläre alle unklaren Züge vor dem Import.",
+  "scoresheet_page_not_found": "Diese Seitenvorschau ist nicht verfügbar.",
+  "scoresheet_path_outside_root": "Ungültiger Speicherpfad für Formulare.",
+  "SCORESHEET_REVIEW_REQUIRED": "Vor dem Import müssen noch Züge geprüft werden.",
+  "SCORESHEET_PDF_ENCRYPTED": "Diese PDF-Datei ist geschützt. Speichere eine ungeschützte Kopie und versuche es erneut.",
+  "SCORESHEET_FILE_CORRUPT": "Diese Datei konnte nicht gelesen werden. Probiere ein anderes Foto oder PDF.",
+  "SCORESHEET_OCR_QUEUE_FULL": "Zu viele Lesevorgänge in der Warteschlange. Versuche es gleich erneut.",
+  "SCORESHEET_OCR_TIMEOUT": "Das Einlesen hat zu lange gedauert.",
+  "SCORESHEET_OCR_CANCELLED": "Das Einlesen wurde abgebrochen.",
+  "scoresheet_invalid_region": "Dieser Zuschnitt oder Bereich ist ungültig."
 }

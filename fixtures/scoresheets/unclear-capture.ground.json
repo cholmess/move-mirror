@@ -1,0 +1,14 @@
+{
+  "id": "unclear-capture",
+  "locale": "en",
+  "expectedPlies": 3,
+  "expectedMoves": [
+    "e4",
+    "d5",
+    "exd5"
+  ],
+  "expectedHumanReview": 0,
+  "metadata": {
+    "result": "*"
+  }
+}

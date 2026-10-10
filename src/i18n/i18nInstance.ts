@@ -18,6 +18,7 @@ import enTechnical from "./locales/en/technical.json";
 import enAccessibility from "./locales/en/accessibility.json";
 import enAdaptive from "./locales/en/adaptive.json";
 import enDomain from "./locales/en/domain.json";
+import enScoresheet from "./locales/en/scoresheet.json";
 
 import esCommon from "./locales/es/common.json";
 import esNavigation from "./locales/es/navigation.json";
@@ -34,6 +35,7 @@ import esTechnical from "./locales/es/technical.json";
 import esAccessibility from "./locales/es/accessibility.json";
 import esAdaptive from "./locales/es/adaptive.json";
 import esDomain from "./locales/es/domain.json";
+import esScoresheet from "./locales/es/scoresheet.json";
 
 import deCommon from "./locales/de/common.json";
 import deNavigation from "./locales/de/navigation.json";
@@ -50,6 +52,7 @@ import deTechnical from "./locales/de/technical.json";
 import deAccessibility from "./locales/de/accessibility.json";
 import deAdaptive from "./locales/de/adaptive.json";
 import deDomain from "./locales/de/domain.json";
+import deScoresheet from "./locales/de/scoresheet.json";
 
 const resources = {
   en: {
@@ -68,6 +71,7 @@ const resources = {
     accessibility: enAccessibility,
     adaptive: enAdaptive,
     domain: enDomain,
+    scoresheet: enScoresheet,
   },
   es: {
     common: esCommon,
@@ -85,6 +89,7 @@ const resources = {
     accessibility: esAccessibility,
     adaptive: esAdaptive,
     domain: esDomain,
+    scoresheet: esScoresheet,
   },
   de: {
     common: deCommon,
@@ -102,6 +107,7 @@ const resources = {
     accessibility: deAccessibility,
     adaptive: deAdaptive,
     domain: deDomain,
+    scoresheet: deScoresheet,
   },
 } as const;
 
@@ -126,6 +132,7 @@ void i18n.use(initReactI18next).init({
     "accessibility",
     "adaptive",
     "domain",
+    "scoresheet",
   ],
   interpolation: { escapeValue: false },
   returnNull: false,

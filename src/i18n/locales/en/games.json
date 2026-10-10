@@ -93,6 +93,7 @@
     "lichess": "Lichess",
     "pgn_file": "File",
     "pgn_text": "Pasted PGN",
-    "manual": "Manual"
+    "manual": "Manual",
+    "scoresheet": "Scoresheet"
   }
 }

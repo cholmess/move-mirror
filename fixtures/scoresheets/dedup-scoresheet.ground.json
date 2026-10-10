@@ -1,0 +1,15 @@
+{
+  "id": "dedup-scoresheet",
+  "locale": "en",
+  "expectedPlies": 4,
+  "expectedMoves": [
+    "a3",
+    "h6",
+    "b3",
+    "g6"
+  ],
+  "expectedHumanReview": 0,
+  "metadata": {
+    "result": "*"
+  }
+}

@@ -54,8 +54,13 @@
     "lichess": "Lichess",
     "pgn_file": "PGN file",
     "pgn_text": "Pasted PGN",
-    "manual": "Manual entry"
+    "manual": "Manual entry",
+    "scoresheet": "Scoresheet"
   },
+  "scoresheetEyebrow": "Scoresheet",
+  "scoresheetTitle": "Scan a scoresheet",
+  "scoresheetLead": "Upload a photo or PDF. MoveMirror will read what it can and ask you to review anything uncertain.",
+  "openScoresheet": "Scan scoresheet",
   "manualEyebrow": "Manual entry",
   "manualPageTitle": "Record a game on the board",
   "manualPageLead": "You can go back to any move; a new move from there replaces the continuation.",

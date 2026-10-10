@@ -1,0 +1,14 @@
+{
+  "id": "ambiguous-legal-moves",
+  "locale": "en",
+  "expectedPlies": 3,
+  "expectedMoves": [
+    "e4",
+    "e5",
+    "Nc3"
+  ],
+  "expectedHumanReview": 1,
+  "metadata": {
+    "result": "*"
+  }
+}

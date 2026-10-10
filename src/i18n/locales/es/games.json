@@ -93,6 +93,7 @@
     "lichess": "Lichess",
     "pgn_file": "Archivo",
     "pgn_text": "PGN pegado",
-    "manual": "A mano"
+    "manual": "A mano",
+    "scoresheet": "Planilla"
   }
 }

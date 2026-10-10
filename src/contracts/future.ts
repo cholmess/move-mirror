@@ -20,9 +20,16 @@ export interface SparringAgentService {
   }): Promise<{ fen: string; narrative: string; expectedStress: number }>;
 }
 
-/** Implementado en v0.3 por el bucle de transferencia (`server/transfer`). */
+/** Implementado en v0.5 por el Import Hub (`server/games`). */
 export interface GameSyncService {
   syncLatestGames(username: string, since?: string): Promise<{ imported: number }>;
+}
+
+/** Retención futura de originales. En v0.5 todo permanece local. */
+export interface GameRetentionContract {
+  retainRawPgn: boolean;
+  cloudArchive: false;
+  deleteRawWithoutDeletingCanonical: true;
 }
 
 /** Generación de ejercicios nuevos a partir del historial analizado. */

@@ -54,8 +54,13 @@
     "lichess": "Lichess",
     "pgn_file": "PGN-Datei",
     "pgn_text": "Eingefügtes PGN",
-    "manual": "Manuelle Eingabe"
+    "manual": "Manuelle Eingabe",
+    "scoresheet": "Partieformular"
   },
+  "scoresheetEyebrow": "Partieformular",
+  "scoresheetTitle": "Partieformular einlesen",
+  "scoresheetLead": "Lade ein Foto oder PDF hoch. MoveMirror liest die erkennbaren Züge und bittet dich, unklare Stellen zu prüfen.",
+  "openScoresheet": "Formular einlesen",
   "manualEyebrow": "Manuelle Eingabe",
   "manualPageTitle": "Partie am Brett notieren",
   "manualPageLead": "Du kannst zu jedem Zug zurückgehen; ein neuer Zug von dort ersetzt die Fortsetzung.",

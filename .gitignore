@@ -9,5 +9,9 @@ test-results/
 data/fase-2/engine_output/
 data/fase-2/output/
 data/engine-cache/
+data/test-games/
+data/games/
+data/games-backup-pre-v0.5.0/
+*.traineddata
 data/transfer/baseline/analysis.jsonl
 data/transfer/cohorts/**/analysis.jsonl

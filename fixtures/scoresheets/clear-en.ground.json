@@ -1,0 +1,15 @@
+{
+  "id": "clear-en",
+  "locale": "en",
+  "expectedPlies": 4,
+  "expectedMoves": [
+    "e4",
+    "e5",
+    "Nf3",
+    "Nc6"
+  ],
+  "expectedHumanReview": 0,
+  "metadata": {
+    "result": "*"
+  }
+}

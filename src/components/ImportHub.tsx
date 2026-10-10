@@ -219,6 +219,15 @@ export function ImportHub() {
           </Link>
         </section>
 
+        <section className="card import-card" data-testid="scoresheet-import-card">
+          <p className="eyebrow">{t("scoresheetEyebrow")}</p>
+          <h2>{t("scoresheetTitle")}</h2>
+          <p className="muted">{t("scoresheetLead")}</p>
+          <Link className="btn primary" to="/import/scoresheet">
+            {t("openScoresheet")}
+          </Link>
+        </section>
+
         <section className="card import-card">
           <p className="eyebrow">{t("identityEyebrow")}</p>
           <h2>{t("pgnAliasTitle")}</h2>

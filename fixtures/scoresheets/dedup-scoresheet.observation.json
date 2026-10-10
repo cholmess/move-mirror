@@ -1,0 +1,154 @@
+{
+  "providerId": "fixture",
+  "providerVersion": "scoresheet-ocr-fixture-v1",
+  "pages": [
+    {
+      "page": 1,
+      "width": 800,
+      "height": 600,
+      "rawText": "White: DedupAlice\nBlack: DedupBob\n1. a3 h6\n2. b3 g6",
+      "tokens": [
+        {
+          "id": "t-White:-40-120",
+          "page": 1,
+          "text": "White:",
+          "confidence": 0.93,
+          "boundingBox": {
+            "x": 40,
+            "y": 120,
+            "width": 60,
+            "height": 14
+          },
+          "lineId": "line-120",
+          "side": "white"
+        },
+        {
+          "id": "t-DedupAlice-130-120",
+          "page": 1,
+          "text": "DedupAlice",
+          "confidence": 0.93,
+          "boundingBox": {
+            "x": 130,
+            "y": 120,
+            "width": 100,
+            "height": 14
+          },
+          "lineId": "line-120",
+          "side": "white"
+        },
+        {
+          "id": "t-Black:-40-150",
+          "page": 1,
+          "text": "Black:",
+          "confidence": 0.93,
+          "boundingBox": {
+            "x": 40,
+            "y": 150,
+            "width": 60,
+            "height": 14
+          },
+          "lineId": "line-150",
+          "side": "white"
+        },
+        {
+          "id": "t-DedupBob-130-150",
+          "page": 1,
+          "text": "DedupBob",
+          "confidence": 0.93,
+          "boundingBox": {
+            "x": 130,
+            "y": 150,
+            "width": 80,
+            "height": 14
+          },
+          "lineId": "line-150",
+          "side": "white"
+        },
+        {
+          "id": "t-1.-40-180",
+          "page": 1,
+          "text": "1.",
+          "confidence": 0.99,
+          "boundingBox": {
+            "x": 40,
+            "y": 180,
+            "width": 20,
+            "height": 14
+          },
+          "lineId": "line-180",
+          "side": "white"
+        },
+        {
+          "id": "t-a3-70-180",
+          "page": 1,
+          "text": "a3",
+          "confidence": 0.93,
+          "boundingBox": {
+            "x": 70,
+            "y": 180,
+            "width": 20,
+            "height": 14
+          },
+          "lineId": "line-180",
+          "side": "white"
+        },
+        {
+          "id": "t-h6-130-180",
+          "page": 1,
+          "text": "h6",
+          "confidence": 0.93,
+          "boundingBox": {
+            "x": 130,
+            "y": 180,
+            "width": 20,
+            "height": 14
+          },
+          "lineId": "line-180",
+          "side": "white"
+        },
+        {
+          "id": "t-2.-40-210",
+          "page": 1,
+          "text": "2.",
+          "confidence": 0.99,
+          "boundingBox": {
+            "x": 40,
+            "y": 210,
+            "width": 20,
+            "height": 14
+          },
+          "lineId": "line-210",
+          "side": "white"
+        },
+        {
+          "id": "t-b3-70-210",
+          "page": 1,
+          "text": "b3",
+          "confidence": 0.93,
+          "boundingBox": {
+            "x": 70,
+            "y": 210,
+            "width": 20,
+            "height": 14
+          },
+          "lineId": "line-210",
+          "side": "white"
+        },
+        {
+          "id": "t-g6-130-210",
+          "page": 1,
+          "text": "g6",
+          "confidence": 0.93,
+          "boundingBox": {
+            "x": 130,
+            "y": 210,
+            "width": 20,
+            "height": 14
+          },
+          "lineId": "line-210",
+          "side": "white"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "rotated-image",
+  "locale": "en",
+  "expectedPlies": 3,
+  "expectedMoves": [
+    "d4",
+    "d5",
+    "c4"
+  ],
+  "expectedHumanReview": 0,
+  "metadata": {
+    "result": "*"
+  }
+}

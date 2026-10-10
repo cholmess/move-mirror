@@ -11,7 +11,9 @@ import { BUDGET_SHALLOW } from "../shared/evaluation/budgets.js";
 import { createStore } from "./transfer/store.mjs";
 import { createTransferRouter } from "./transfer/routes.mjs";
 import { createDefenseRouter } from "./defense/routes.mjs";
-import { PLAYER_USERNAME } from "../shared/transfer/constants.js";
+import { createGamesStore } from "./games/store.mjs";
+import { createGamesRouter } from "./games/routes.mjs";
+import { createScoresheetRouter } from "./scoresheets/routes.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
@@ -221,12 +223,21 @@ async function handleEvaluate(body, signal) {
 
 const transferStore = createStore(path.join(ROOT, "data/transfer"));
 transferStore.ensure();
+const gamesStore = createGamesStore(
+  process.env.GAMES_DATA_DIR
+    ? path.resolve(ROOT, process.env.GAMES_DATA_DIR)
+    : path.join(ROOT, "data/games"),
+  { projectRoot: ROOT },
+);
+gamesStore.ensure();
 const handleTransfer = createTransferRouter({
   store: transferStore,
   fixturesDir: path.join(ROOT, "fixtures/chesscom"),
   enginePath: ENGINE_PATH,
-  username: PLAYER_USERNAME,
+  username: gamesStore.readIdentity().chessComUsernames[0] ?? "",
 });
+const handleGames = createGamesRouter({ store: gamesStore });
+const handleScoresheet = createScoresheetRouter({ gamesStore });
 const handleDefense = createDefenseRouter({
   datasetFile: path.join(ROOT, "data/defense/defense-lab-v1.json"),
   evaluate: handleEvaluate,
@@ -234,7 +245,7 @@ const handleDefense = createDefenseRouter({
 
 const server = http.createServer(async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
   if (req.method === "OPTIONS") {
     res.writeHead(204);
@@ -244,6 +255,16 @@ const server = http.createServer(async (req, res) => {
 
   if (req.url?.startsWith("/api/transfer")) {
     const handled = await handleTransfer(req, res);
+    if (handled) return;
+  }
+
+  if (req.url?.startsWith("/api/import/scoresheet")) {
+    const handled = await handleScoresheet(req, res);
+    if (handled) return;
+  }
+
+  if (req.url?.startsWith("/api/import") || req.url?.startsWith("/api/games") || req.url?.startsWith("/api/player-identity")) {
+    const handled = await handleGames(req, res);
     if (handled) return;
   }
 
