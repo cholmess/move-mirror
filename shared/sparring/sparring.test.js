@@ -159,9 +159,9 @@ describe("clock", () => {
       mode: "10+0",
       whiteRemainingMs: 0,
       blackRemainingMs: 600_000,
-      runningColor: null,
-      lastStartedAt: null,
-    });
+      activeColor: null,
+      status: "paused",
+    }, "epoch-timeout-test");
     expect(t?.result).toBe("0-1");
   });
 });

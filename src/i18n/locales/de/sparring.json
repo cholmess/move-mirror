@@ -41,6 +41,8 @@
   "noEval": "Engine-Bewertung ist während der Partie ausgeblendet.",
   "loadError": "Sparring konnte nicht geladen werden. Prüfe, ob der Engine-Dienst läuft.",
   "enginePaused": "Engine nicht verfügbar. Du kannst es erneut versuchen, wenn sie zurück ist.",
+  "serverRestartPaused": "Die Partie wurde wegen eines Serverneustarts pausiert. Fahre fort, wenn du bereit bist.",
+  "continueSession": "Fortsetzen",
   "retryEngine": "Gegenzug wiederholen",
   "resultTitle": "Übungsergebnis",
   "review": {

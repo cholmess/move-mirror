@@ -41,6 +41,8 @@
   "noEval": "La evaluación del motor está oculta durante la partida.",
   "loadError": "No se pudo cargar sparring. Comprueba que el servicio del motor esté activo.",
   "enginePaused": "Motor no disponible. Puedes reintentar cuando vuelva.",
+  "serverRestartPaused": "La partida se pausó porque el servidor se reinició. Continúa cuando estés listo.",
+  "continueSession": "Continuar",
   "retryEngine": "Reintentar jugada del rival",
   "resultTitle": "Resultado de práctica",
   "review": {

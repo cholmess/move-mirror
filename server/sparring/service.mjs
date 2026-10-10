@@ -19,8 +19,13 @@ import { agentMovePublicDto, sessionPublicDto } from "../../shared/sparring/dto.
 import { buildProfileSnapshot, applyReviewToProfile, profileNeedsFromStore } from "../../shared/sparring/profile.js";
 import {
   clockPublicDto,
+  markClockExpired,
+  markClockFinished,
+  migratePersistedClock,
   pauseClock,
   pauseClockAfterMove,
+  recoverClockAfterProcessChange,
+  resumeClockAfterServerRestart,
   startClock,
   timeoutResult,
 } from "../../shared/sparring/clock.js";
@@ -65,13 +70,13 @@ function recentMotifsFromDecisions(decisions) {
     .filter(Boolean);
 }
 
-function declareTimeout(session, timeout) {
+function declareTimeout(session, timeout, currentEpochId) {
   session.status = "completed";
   session.result = timeout.result;
   session.termination = timeout.termination;
   session.timeoutDeclared = true;
   session.completedAt = new Date().toISOString();
-  session.clock = pauseClock(session.clock);
+  session.clock = markClockExpired(session.clock, currentEpochId);
 }
 
 export function createSparringService({
@@ -82,27 +87,57 @@ export function createSparringService({
   evaluate,
   defenseDatasetFile,
   cacheRoot,
+  monotonicEpochId = randomUUID(),
 }) {
   const cache = new SparringCache(cacheRoot);
+  const resumeInflight = new Map();
+
+  function hydrateSession(session) {
+    if (!session?.clock) return { session, changed: false };
+    const { clock, changed: clockChanged } = recoverClockAfterProcessChange(session.clock, monotonicEpochId);
+    let changed = clockChanged;
+    const next = { ...session, clock: migratePersistedClock(clock) };
+    if (clockChanged) changed = true;
+    return { session: next, changed };
+  }
+
+  function loadSession(id) {
+    const raw = store.readSession(id);
+    if (!raw) return null;
+    const { session, changed } = hydrateSession(raw);
+    if (changed) store.saveSession(session);
+    return session;
+  }
+
+  function publicClock(session) {
+    return clockPublicDto(session.clock, monotonicEpochId);
+  }
 
   function sessionFen(session) {
     return rebuildChess(session.startingFen, session.movesUci).fen;
   }
 
   function publicSession(session) {
-    return sessionPublicDto(session, sessionFen(session));
+    return sessionPublicDto(session, sessionFen(session), { currentEpochId: monotonicEpochId });
   }
 
   function syncClockToTurn(session) {
     if (session.clock.mode === "untimed") return session.clock;
-    if (session.status !== "active" || session.timeoutDeclared) return pauseClock(session.clock);
-    if (session.enginePaused) return pauseClock(session.clock);
-    const fen = sessionFen(session);
-    const paused = pauseClock(session.clock);
-    if (sideToMoveIsAgent(fen, session.userColor)) {
-      return startClock(paused, agentColor(session.userColor));
+    if (session.status !== "active" || session.timeoutDeclared) {
+      return markClockFinished(session.clock, monotonicEpochId);
     }
-    return startClock(paused, session.userColor);
+    if (session.enginePaused) {
+      return pauseClock(session.clock, { reason: "engine_wait", currentEpochId: monotonicEpochId });
+    }
+    const migrated = migratePersistedClock(session.clock);
+    if (migrated.status === "paused" && migrated.pauseReason === "server_restart") {
+      return migrated;
+    }
+    const fen = sessionFen(session);
+    const paused = pauseClock(session.clock, { currentEpochId: monotonicEpochId });
+    const color = sideToMoveIsAgent(fen, session.userColor) ? agentColor(session.userColor) : session.userColor;
+    const withActive = { ...paused, activeColor: color };
+    return startClock(withActive, color, monotonicEpochId);
   }
 
   function activateSession(session) {
@@ -118,7 +153,7 @@ export function createSparringService({
     const existing = session.decisions.find((d) => d.idempotencyKey === turnKey);
     if (existing) return existing.chosen;
 
-    session.clock = pauseClock(session.clock);
+    session.clock = pauseClock(session.clock, { reason: "engine_wait", currentEpochId: monotonicEpochId });
 
     const cacheKey = makeSparringDecisionCacheKey({
       fen,
@@ -218,13 +253,13 @@ export function createSparringService({
       session.result = term.result;
       session.termination = term.termination;
       session.completedAt = new Date().toISOString();
-      session.clock = pauseClock(session.clock);
+      session.clock = markClockFinished(session.clock, monotonicEpochId);
     } else if (session.maxPlies && session.movesUci.length >= session.maxPlies) {
       session.status = "completed";
       session.result = "*";
       session.termination = "training_goal_reached";
       session.completedAt = new Date().toISOString();
-      session.clock = pauseClock(session.clock);
+      session.clock = markClockFinished(session.clock, monotonicEpochId);
     } else {
       session.clock = syncClockToTurn(session);
     }
@@ -265,7 +300,7 @@ export function createSparringService({
   }
 
   function getSession(id) {
-    const session = store.readSession(id);
+    const session = loadSession(id);
     if (!session) return null;
     return publicSession(session);
   }
@@ -308,7 +343,7 @@ export function createSparringService({
     getSession,
 
     getSessionInternal(id) {
-      return store.readSession(id);
+      return loadSession(id);
     },
 
     listSessions() {
@@ -325,17 +360,17 @@ export function createSparringService({
     },
 
     async applyPlayerMove(sessionId, { moveUci }) {
-      let session = store.readSession(sessionId);
+      let session = loadSession(sessionId);
       if (!session) throw new Error("session_not_found");
       if (session.timeoutDeclared || ["completed", "resigned", "abandoned"].includes(session.status)) {
         throw new Error("session_finished");
       }
 
       session = activateSession(session);
-      session.clock = pauseClock(session.clock);
-      const timeoutBefore = timeoutResult(session.clock);
+      session.clock = pauseClock(session.clock, { currentEpochId: monotonicEpochId });
+      const timeoutBefore = timeoutResult(session.clock, monotonicEpochId);
       if (timeoutBefore) {
-        declareTimeout(session, timeoutBefore);
+        declareTimeout(session, timeoutBefore, monotonicEpochId);
         store.saveSession(session);
         return { session: publicSession(session), agentMove: null };
       }
@@ -348,7 +383,7 @@ export function createSparringService({
 
       session.movesUci.push(moveUci);
       session.movesSan.push(applied.san);
-      session.clock = pauseClockAfterMove(session.clock);
+      session.clock = pauseClockAfterMove(session.clock, monotonicEpochId);
 
       const chess = applied.chess;
       let term = detectTermination(chess);
@@ -360,7 +395,7 @@ export function createSparringService({
         session.result = term.result;
         session.termination = term.termination;
         session.completedAt = new Date().toISOString();
-        session.clock = pauseClock(session.clock);
+        session.clock = markClockFinished(session.clock, monotonicEpochId);
         store.saveSession(session);
         return { session: publicSession(session), agentMove: null };
       }
@@ -377,21 +412,21 @@ export function createSparringService({
                 moveUci: session.movesUci.at(-1),
                 moveSan: session.movesSan.at(-1),
                 sessionStatus: session.status,
-                clock: clockPublicDto(session.clock),
+                clock: publicClock(session),
               })
             : null;
         return { session: publicSession(session), agentMove };
       } catch (err) {
         session.status = "paused";
         session.enginePaused = true;
-        session.clock = pauseClock(session.clock);
+        session.clock = pauseClock(session.clock, { reason: "engine_error", currentEpochId: monotonicEpochId });
         store.saveSession(session);
         throw err;
       }
     },
 
     async agentMove(sessionId) {
-      let session = store.readSession(sessionId);
+      let session = loadSession(sessionId);
       if (!session) throw new Error("session_not_found");
       if (session.timeoutDeclared || ["completed", "resigned", "abandoned"].includes(session.status)) {
         throw new Error("session_finished");
@@ -408,7 +443,7 @@ export function createSparringService({
           moveUci: existing.chosen.uci,
           moveSan: uciToSan(existing.fenBefore, existing.chosen.uci),
           sessionStatus: session.status,
-          clock: clockPublicDto(session.clock),
+          clock: publicClock(session),
         });
       }
 
@@ -420,13 +455,13 @@ export function createSparringService({
             moveUci: last.chosen.uci,
             moveSan: uciToSan(last.fenBefore, last.chosen.uci),
             sessionStatus: session.status,
-            clock: clockPublicDto(session.clock),
+            clock: publicClock(session),
           });
         }
         throw new Error("not_agent_turn");
       }
 
-      session.clock = pauseClock(session.clock);
+      session.clock = pauseClock(session.clock, { reason: "engine_wait", currentEpochId: monotonicEpochId });
       try {
         const chosen = await runAgentDecision(session, fen);
         const chess = rebuildChess(session.startingFen, session.movesUci).chess;
@@ -436,7 +471,7 @@ export function createSparringService({
           session.result = term.result;
           session.termination = term.termination;
           session.completedAt = new Date().toISOString();
-          session.clock = pauseClock(session.clock);
+          session.clock = markClockFinished(session.clock, monotonicEpochId);
         } else {
           session.clock = syncClockToTurn(session);
         }
@@ -446,12 +481,12 @@ export function createSparringService({
           moveUci: chosen.uci,
           moveSan: uciToSan(fen, chosen.uci),
           sessionStatus: session.status,
-          clock: clockPublicDto(session.clock),
+          clock: publicClock(session),
         });
       } catch (err) {
         session.status = "paused";
         session.enginePaused = true;
-        session.clock = pauseClock(session.clock);
+        session.clock = pauseClock(session.clock, { reason: "engine_error", currentEpochId: monotonicEpochId });
         store.saveSession(session);
         store.recordMetric({ type: "engine_error", sessionId, error: String(err.message ?? err) });
         throw err;
@@ -459,7 +494,7 @@ export function createSparringService({
     },
 
     hint(sessionId) {
-      const session = store.readSession(sessionId);
+      const session = loadSession(sessionId);
       if (!session) throw new Error("session_not_found");
       session.hintsUsed += 1;
       session.hintUsedPlies.push(session.movesUci.length);
@@ -468,33 +503,59 @@ export function createSparringService({
     },
 
     resign(sessionId) {
-      const session = store.readSession(sessionId);
+      const session = loadSession(sessionId);
       if (!session) throw new Error("session_not_found");
       session.status = "resigned";
       session.result = session.userColor === "white" ? "0-1" : "1-0";
       session.termination = "resignation";
       session.completedAt = new Date().toISOString();
-      session.clock = pauseClock(session.clock);
+      session.clock = markClockFinished(session.clock, monotonicEpochId);
       store.saveSession(session);
       return publicSession(session);
     },
 
     resume(sessionId) {
-      const session = store.readSession(sessionId);
-      if (!session) throw new Error("session_not_found");
-      if (session.status !== "paused") throw new Error("not_paused");
-      session.status = "active";
-      session.enginePaused = false;
-      session.clock = syncClockToTurn(session);
-      store.saveSession(session);
-      return publicSession(session);
+      const run = () => {
+        const session = loadSession(sessionId);
+        if (!session) throw new Error("session_not_found");
+        if (session.timeoutDeclared || ["completed", "resigned", "abandoned"].includes(session.status)) {
+          throw new Error("session_finished");
+        }
+
+        const migrated = migratePersistedClock(session.clock);
+        if (migrated.mode === "10+0") {
+          if (migrated.status === "running" && migrated.monotonicEpochId === monotonicEpochId) {
+            return publicSession(session);
+          }
+          if (migrated.pauseReason === "server_restart") {
+            if (session.status !== "active") throw new Error("not_active");
+            const { clock } = resumeClockAfterServerRestart(session.clock, monotonicEpochId);
+            session.clock = clock;
+            store.saveSession(session);
+            return publicSession(session);
+          }
+        }
+
+        if (session.status !== "paused") throw new Error("not_paused");
+        session.status = "active";
+        session.enginePaused = false;
+        session.clock = syncClockToTurn(session);
+        store.saveSession(session);
+        return publicSession(session);
+      };
+
+      if (resumeInflight.has(sessionId)) return resumeInflight.get(sessionId);
+      const result = run();
+      resumeInflight.set(sessionId, result);
+      resumeInflight.delete(sessionId);
+      return result;
     },
 
     async runReview(sessionId) {
       const existing = store.readReview(sessionId);
       if (existing) return existing;
 
-      const session = store.readSession(sessionId);
+      const session = loadSession(sessionId);
       if (!session) throw new Error("session_not_found");
       if (session.status !== "completed" && session.status !== "resigned") throw new Error("session_not_finished");
       if (session.reviewStatus === "completed") {
@@ -538,7 +599,7 @@ export function createSparringService({
     },
 
     getReview(sessionId) {
-      const session = store.readSession(sessionId);
+      const session = loadSession(sessionId);
       if (!session) throw new Error("session_not_found");
       if (session.status !== "completed" && session.status !== "resigned") {
         throw new Error("review_not_available");
@@ -547,7 +608,7 @@ export function createSparringService({
     },
 
     exportPgn(sessionId) {
-      const session = store.readSession(sessionId);
+      const session = loadSession(sessionId);
       if (!session) throw new Error("session_not_found");
       return sessionToPgn(session);
     },

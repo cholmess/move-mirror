@@ -20,7 +20,9 @@ export interface SparringSessionDto {
     mode: "untimed" | "10+0";
     whiteRemainingMs?: number | null;
     blackRemainingMs?: number | null;
-    runningColor?: "white" | "black" | null;
+    activeColor?: "white" | "black" | null;
+    status?: "running" | "paused" | "expired" | "finished";
+    resumeRequired?: boolean;
   };
   agentTurnNumber: number;
   reviewStatus: string;

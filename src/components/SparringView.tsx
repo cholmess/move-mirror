@@ -152,6 +152,21 @@ export function SparringView() {
     }
   };
 
+  const handleContinueAfterRestart = async () => {
+    if (!session) return;
+    setBusy(true);
+    setError(null);
+    try {
+      const next = await postResume(session.sessionId);
+      syncSession(next);
+    } catch (err) {
+      const code = err instanceof Error ? err.message : "";
+      setError(t(`errors.${code}`, { defaultValue: t("loadError") }));
+    } finally {
+      setBusy(false);
+    }
+  };
+
   const runReview = async () => {
     if (!session) return;
     setBusy(true);
@@ -171,6 +186,8 @@ export function SparringView() {
       .then(setReview)
       .catch(() => undefined);
   }, [screen, session]);
+
+  const clockResumeRequired = session?.clock?.mode === "10+0" && Boolean(session.clock.resumeRequired);
 
   const clockLabel = useMemo(() => {
     if (!session?.clock || session.clock.mode === "untimed") return null;
@@ -242,7 +259,15 @@ export function SparringView() {
       <div className="panel train-layout" data-testid="sparring-root">
         <h1>{t("title")}</h1>
         <p className="muted">{t("noEval")}</p>
-        {session.sessionStatus === "paused" && (
+        {clockResumeRequired && (
+          <div className="callout warn" data-testid="sparring-server-restart">
+            <p>{t("serverRestartPaused")}</p>
+            <button type="button" className="btn primary" onClick={() => void handleContinueAfterRestart()}>
+              {t("continueSession")}
+            </button>
+          </div>
+        )}
+        {session.sessionStatus === "paused" && !clockResumeRequired && (
           <div className="callout warn">
             <p>{t("enginePaused")}</p>
             <button type="button" className="btn" onClick={() => void handleRetryEngine()}>
@@ -255,7 +280,9 @@ export function SparringView() {
             position={boardFen}
             boardOrientation={boardOrientation(session)}
             onPieceDrop={onDrop}
-            arePiecesDraggable={!busy && userToMove(session) && session.sessionStatus === "active"}
+            arePiecesDraggable={
+              !busy && !clockResumeRequired && userToMove(session) && session.sessionStatus === "active"
+            }
           />
           <aside>
             <p>{userToMove(session) ? t("yourTurn") : t("opponentTurn")}</p>

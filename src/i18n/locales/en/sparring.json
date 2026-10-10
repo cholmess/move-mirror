@@ -41,6 +41,8 @@
   "noEval": "Engine evaluation is hidden during the game.",
   "loadError": "Could not load sparring. Check that the engine service is running.",
   "enginePaused": "Engine unavailable. You can retry when it is back.",
+  "serverRestartPaused": "The game was paused because the server restarted. Continue when you're ready.",
+  "continueSession": "Continue",
   "retryEngine": "Retry opponent move",
   "resultTitle": "Practice result",
   "review": {

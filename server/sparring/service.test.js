@@ -8,6 +8,8 @@ import { createSparringStore } from "./store.mjs";
 import { createSparringService } from "./service.mjs";
 import { clockPublicDto, pauseClock, startClock } from "../../shared/sparring/clock.js";
 
+const TEST_EPOCH = "epoch-test-1111-4111-8111-111111111111";
+
 const fen = "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1";
 
 function mockEngine() {
@@ -41,6 +43,7 @@ describe("sparring service closure", () => {
       evaluate: async () => ({ status: "unverified", evalFinalStatus: "unverified" }),
       defenseDatasetFile: null,
       cacheRoot: store.dirs.cache,
+      monotonicEpochId: TEST_EPOCH,
     });
   });
 
@@ -99,18 +102,24 @@ describe("sparring service closure", () => {
   });
 
   it("engine pause does not consume user clock while waiting", () => {
-    let clock = {
-      mode: "10+0",
-      whiteRemainingMs: 600_000,
-      blackRemainingMs: 600_000,
-      runningColor: "white",
-      runningSinceMono: performance.now() - 5000,
-    };
-    clock = pauseClock(clock);
-    expect(clock.runningColor).toBeNull();
+    const t0 = performance.now();
+    let clock = startClock(
+      {
+        mode: "10+0",
+        whiteRemainingMs: 600_000,
+        blackRemainingMs: 600_000,
+        activeColor: null,
+        status: "paused",
+      },
+      "white",
+      TEST_EPOCH,
+      t0 - 5000,
+    );
+    clock = pauseClock(clock, { reason: "engine_wait", currentEpochId: TEST_EPOCH, nowMono: t0 });
+    expect(clock.activeColor).toBeNull();
     expect(clock.whiteRemainingMs).toBeLessThan(600_000);
     const before = clock.whiteRemainingMs;
-    clock = pauseClock(clock);
+    clock = pauseClock(clock, { reason: "engine_wait", currentEpochId: TEST_EPOCH, nowMono: t0 + 1000 });
     expect(clock.whiteRemainingMs).toBe(before);
   });
 
@@ -125,8 +134,10 @@ describe("sparring service closure", () => {
       mode: "10+0",
       whiteRemainingMs: 0,
       blackRemainingMs: 600_000,
-      runningColor: null,
+      activeColor: null,
+      status: "expired",
       runningSinceMono: null,
+      monotonicEpochId: null,
     };
     internal.timeoutDeclared = true;
     internal.status = "completed";
@@ -146,6 +157,6 @@ describe("sparring service closure", () => {
 
 describe("clock monotonic view", () => {
   it("untimed has no fictitious timers", () => {
-    expect(clockPublicDto({ mode: "untimed" })).toEqual({ mode: "untimed" });
+    expect(clockPublicDto({ mode: "untimed" }, TEST_EPOCH)).toEqual({ mode: "untimed" });
   });
 });

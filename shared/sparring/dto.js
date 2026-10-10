@@ -27,6 +27,10 @@ const FORBIDDEN_SPOILER_KEYS = new Set([
   "movesSan",
   "pendingAgentIdempotency",
   "enginePaused",
+  "runningSinceMono",
+  "monotonicEpochId",
+  "pauseReason",
+  "runningColor",
   "hintsUsed",
   "hintUsedPlies",
   "source",
@@ -59,8 +63,9 @@ export function agentMovePublicDto({ moveUci, moveSan, sessionStatus, clock, ses
   };
 }
 
-export function sessionPublicDto(session, fen) {
+export function sessionPublicDto(session, fen, options = {}) {
   const terminal = ["completed", "resigned", "abandoned", "engine_error"].includes(session.status);
+  const epochId = options.currentEpochId ?? session.clock?.monotonicEpochId ?? null;
   const dto = {
     sessionId: session.id,
     sessionStatus: session.status,
@@ -72,7 +77,7 @@ export function sessionPublicDto(session, fen) {
       uci,
       san: session.movesSan[index] ?? uci,
     })),
-    clock: clockPublicDto(session.clock),
+    clock: clockPublicDto(session.clock, epochId),
     agentTurnNumber: agentTurnNumber(session.movesUci, session.userColor, session.startingFen),
     reviewStatus: session.reviewStatus,
     practicePatternId: session.profileSnapshot?.patternId ?? session.source?.patternId ?? null,
