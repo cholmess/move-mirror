@@ -1,0 +1,88 @@
+[
+  {
+    "key": "595cee54-b44d-11f1-bb1f-e68c2101000f:40",
+    "game_id": "595cee54-b44d-11f1-bb1f-e68c2101000f",
+    "game_url": "https://www.chess.com/game/live/184070622900",
+    "move_number": 20,
+    "color": "black",
+    "fen": "r4rk1/2p1n1p1/3p3p/1pb1p2P/p3Pq2/P1P2N2/RP3PPN/3Q1RK1 b - - 0 20",
+    "played": "Qg4",
+    "solution": "Qxe4",
+    "solution_line": "Qxe4 Ra1 Rab8 g3 Rf5 b4 axb3 Qxb3+",
+    "played_line": "Qg4 Nxg4 g5 Ngh2 Kg7 Qe2",
+    "loss_numeric": 1458,
+    "motifs": [
+      "allowed_forcing_reply",
+      "allowed_piece_capture",
+      "missed_forcing_move"
+    ]
+  },
+  {
+    "key": "3fb7013d-acd7-11f1-bbdf-8eeeee01000f:122",
+    "game_id": "3fb7013d-acd7-11f1-bbdf-8eeeee01000f",
+    "game_url": "https://www.chess.com/game/live/174256061220",
+    "move_number": 61,
+    "color": "black",
+    "fen": "8/1k6/8/pP6/P7/2R4r/2K5/8 b - - 0 61",
+    "played": "Rxc3+",
+    "solution": "Rh4",
+    "solution_line": "Rh4 Kb3 Rb4+ Ka3 Rh4",
+    "played_line": "Rxc3+ Kxc3",
+    "loss_numeric": 1254,
+    "motifs": [
+      "allowed_forcing_reply",
+      "allowed_piece_capture",
+      "bad_capture_choice"
+    ]
+  },
+  {
+    "key": "58df6243-b2b7-11f1-8acf-f45fe701000f:84",
+    "game_id": "58df6243-b2b7-11f1-8acf-f45fe701000f",
+    "game_url": "https://www.chess.com/game/live/183971526340",
+    "move_number": 42,
+    "color": "black",
+    "fen": "5R2/1r1q3k/6pp/3p4/p1n5/6B1/P4QPP/6K1 b - - 1 42",
+    "played": "d4",
+    "solution": "Rb1+",
+    "solution_line": "Rb1+ Qf1 Rxf1+ Rxf1 d4 Bh4 d3 Bf6",
+    "played_line": "d4 Qf6",
+    "loss_numeric": 775,
+    "motifs": [
+      "costly_quiet_pawn_move",
+      "missed_forcing_move"
+    ]
+  },
+  {
+    "key": "d7d7d006-abd3-11f1-8acf-f45fe701000f:57",
+    "game_id": "d7d7d006-abd3-11f1-8acf-f45fe701000f",
+    "game_url": "https://www.chess.com/game/live/174197859140",
+    "move_number": 29,
+    "color": "white",
+    "fen": "1k4r1/1p4r1/p1p5/4N3/4P3/1PPPb2P/1P4P1/R4R1K w - - 1 29",
+    "played": "Ng4",
+    "solution": "g4",
+    "solution_line": "g4 Rg5 Nf3 Rb5 Rae1 Bb6 Re2 a5",
+    "played_line": "Ng4 Rxg4",
+    "loss_numeric": 754,
+    "motifs": [
+      "allowed_forcing_reply",
+      "allowed_piece_capture"
+    ]
+  },
+  {
+    "key": "2cd52b0b-b6a6-11f1-a51b-ebd42201000f:51",
+    "game_id": "2cd52b0b-b6a6-11f1-a51b-ebd42201000f",
+    "game_url": "https://www.chess.com/game/live/184215932040",
+    "move_number": 26,
+    "color": "white",
+    "fen": "r1b5/1p4pk/p1pp2qp/P3pr2/1P2Q2b/1B1PB2P/2P2PP1/3R1RK1 w - - 4 26",
+    "played": "Kh2",
+    "solution": "Qxh4",
+    "solution_line": "Qxh4 Bd7 Qg4 Qf6 Qg3 d5 Qh2",
+    "played_line": "Kh2 Bg5",
+    "loss_numeric": 599,
+    "motifs": [
+      "missed_forcing_move"
+    ]
+  }
+]

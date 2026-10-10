@@ -1,0 +1,251 @@
+[
+  {
+    "id": "ex-184070622900-m20",
+    "sourceKey": "595cee54-b44d-11f1-bb1f-e68c2101000f:40",
+    "tier": "core",
+    "fen": "r4rk1/2p1n1p1/3p3p/1pb1p2P/p3Pq2/P1P2N2/RP3PPN/3Q1RK1 b - - 0 20",
+    "sideToMove": "b",
+    "moveNumber": 20,
+    "gameUrl": "https://www.chess.com/game/live/184070622900",
+    "playedMoveSan": "Qg4",
+    "solutionSan": "Qxe4",
+    "referenceLineSan": "Qxe4 Ra1 Rab8 g3 Rf5 b4 axb3 Qxb3+",
+    "realLineSan": "Qg4 Nxg4 g5 Ngh2 Kg7 Qe2",
+    "prompt": "En la partida jugaste Qg4. Encuentra una alternativa que supere la prueba CCT + refutación.",
+    "patternId": "cct-opponent-refutation",
+    "skillIds": [
+      "cct-opponent-refutation",
+      "forced-candidate-generation",
+      "capture-recapture-check"
+    ],
+    "severity": 5,
+    "phase": "middlegame",
+    "motifs": [
+      "allowed_forcing_reply",
+      "allowed_piece_capture",
+      "missed_forcing_move"
+    ],
+    "observableReason": "La respuesta forzada del rival quedó disponible · La línea principal permite capturar una pieza · Había jaque o captura fuerte y se jugó una jugada no forzada",
+    "source": "exercises.json+deep_500k",
+    "analysisVersion": "deep-500k-v1",
+    "block": "discovery",
+    "referenceMoveUci": "f4e4",
+    "referenceMoveSan": "Qxe4",
+    "referenceLineUci": [
+      "f4e4",
+      "a2a1",
+      "a8b8",
+      "g2g3",
+      "f8f5",
+      "b2b4",
+      "a4b3",
+      "d1b3",
+      "e4d5",
+      "b3d5",
+      "e7d5",
+      "g1g2"
+    ],
+    "realMoveUci": "f4g4",
+    "realMoveSan": "Qg4",
+    "realLineUci": [
+      "f4g4",
+      "h2g4",
+      "g7g5",
+      "g4h2",
+      "g8g7",
+      "d1e2"
+    ]
+  },
+  {
+    "id": "ex-174256061220-m61",
+    "sourceKey": "3fb7013d-acd7-11f1-bbdf-8eeeee01000f:122",
+    "tier": "core",
+    "fen": "8/1k6/8/pP6/P7/2R4r/2K5/8 b - - 0 61",
+    "sideToMove": "b",
+    "moveNumber": 61,
+    "gameUrl": "https://www.chess.com/game/live/174256061220",
+    "playedMoveSan": "Rxc3+",
+    "solutionSan": "Rh4",
+    "referenceLineSan": "Rh4 Kb3 Rb4+ Ka3 Rh4",
+    "realLineSan": "Rxc3+ Kxc3",
+    "prompt": "En la partida jugaste Rxc3+. Encuentra una alternativa que supere la prueba CCT + refutación.",
+    "patternId": "cct-opponent-refutation",
+    "skillIds": [
+      "cct-opponent-refutation",
+      "capture-recapture-check"
+    ],
+    "severity": 5,
+    "phase": "endgame",
+    "motifs": [
+      "allowed_forcing_reply",
+      "allowed_piece_capture",
+      "bad_capture_choice"
+    ],
+    "observableReason": "La respuesta forzada del rival quedó disponible · La línea principal permite capturar una pieza · La captura elegida fue costosa",
+    "source": "exercises.json+deep_500k",
+    "analysisVersion": "deep-500k-v1",
+    "block": "discovery",
+    "referenceMoveUci": "h3h4",
+    "referenceMoveSan": "Rh4",
+    "referenceLineUci": [
+      "h3h4",
+      "c2b3",
+      "h4b4",
+      "b3a3",
+      "b4h4"
+    ],
+    "realMoveUci": "h3c3",
+    "realMoveSan": "Rxc3+",
+    "realLineUci": [
+      "h3c3",
+      "c2c3"
+    ]
+  },
+  {
+    "id": "ex-183971526340-m42",
+    "sourceKey": "58df6243-b2b7-11f1-8acf-f45fe701000f:84",
+    "tier": "core",
+    "fen": "5R2/1r1q3k/6pp/3p4/p1n5/6B1/P4QPP/6K1 b - - 1 42",
+    "sideToMove": "b",
+    "moveNumber": 42,
+    "gameUrl": "https://www.chess.com/game/live/183971526340",
+    "playedMoveSan": "d4",
+    "solutionSan": "Rb1+",
+    "referenceLineSan": "Rb1+ Qf1 Rxf1+ Rxf1 d4 Bh4 d3 Bf6",
+    "realLineSan": "d4 Qf6",
+    "prompt": "En la partida jugaste d4. Encuentra una alternativa que supere la prueba CCT + refutación.",
+    "patternId": "cct-opponent-refutation",
+    "skillIds": [
+      "cct-opponent-refutation",
+      "forced-candidate-generation"
+    ],
+    "severity": 4,
+    "phase": "middlegame",
+    "motifs": [
+      "costly_quiet_pawn_move",
+      "missed_forcing_move"
+    ],
+    "observableReason": "Movimiento tranquilo de peón en posición crítica · Había jaque o captura fuerte y se jugó una jugada no forzada",
+    "source": "exercises.json+deep_500k",
+    "analysisVersion": "deep-500k-v1",
+    "block": "discovery",
+    "referenceMoveUci": "b7b1",
+    "referenceMoveSan": "Rb1+",
+    "referenceLineUci": [
+      "b7b1",
+      "f2f1",
+      "b1f1",
+      "f8f1",
+      "d5d4",
+      "g3h4",
+      "d4d3",
+      "h4f6",
+      "d7a7",
+      "g1h1",
+      "d3d2",
+      "f1d1"
+    ],
+    "realMoveUci": "d5d4",
+    "realMoveSan": "d4",
+    "realLineUci": [
+      "d5d4",
+      "f2f6"
+    ]
+  },
+  {
+    "id": "ex-174197859140-m29",
+    "sourceKey": "d7d7d006-abd3-11f1-8acf-f45fe701000f:57",
+    "tier": "core",
+    "fen": "1k4r1/1p4r1/p1p5/4N3/4P3/1PPPb2P/1P4P1/R4R1K w - - 1 29",
+    "sideToMove": "w",
+    "moveNumber": 29,
+    "gameUrl": "https://www.chess.com/game/live/174197859140",
+    "playedMoveSan": "Ng4",
+    "solutionSan": "g4",
+    "referenceLineSan": "g4 Rg5 Nf3 Rb5 Rae1 Bb6 Re2 a5",
+    "realLineSan": "Ng4 Rxg4",
+    "prompt": "En la partida jugaste Ng4. Encuentra una alternativa que supere la prueba CCT + refutación.",
+    "patternId": "cct-opponent-refutation",
+    "skillIds": [
+      "cct-opponent-refutation",
+      "capture-recapture-check"
+    ],
+    "severity": 4,
+    "phase": "middlegame",
+    "motifs": [
+      "allowed_forcing_reply",
+      "allowed_piece_capture"
+    ],
+    "observableReason": "La respuesta forzada del rival quedó disponible · La línea principal permite capturar una pieza",
+    "source": "exercises.json+deep_500k",
+    "analysisVersion": "deep-500k-v1",
+    "block": "discovery",
+    "referenceMoveUci": "g2g4",
+    "referenceMoveSan": "g4",
+    "referenceLineUci": [
+      "g2g4",
+      "g7g5",
+      "e5f3",
+      "g5b5",
+      "a1e1",
+      "e3b6",
+      "e1e2",
+      "a6a5",
+      "e4e5",
+      "b5b3",
+      "g4g5",
+      "a5a4"
+    ],
+    "realMoveUci": "e5g4",
+    "realMoveSan": "Ng4",
+    "realLineUci": [
+      "e5g4",
+      "g7g4"
+    ]
+  },
+  {
+    "id": "ex-184215932040-m26",
+    "sourceKey": "2cd52b0b-b6a6-11f1-a51b-ebd42201000f:51",
+    "tier": "core",
+    "fen": "r1b5/1p4pk/p1pp2qp/P3pr2/1P2Q2b/1B1PB2P/2P2PP1/3R1RK1 w - - 4 26",
+    "sideToMove": "w",
+    "moveNumber": 26,
+    "gameUrl": "https://www.chess.com/game/live/184215932040",
+    "playedMoveSan": "Kh2",
+    "solutionSan": "Qxh4",
+    "referenceLineSan": "Qxh4 Bd7 Qg4 Qf6 Qg3 d5 Qh2",
+    "realLineSan": "Kh2 Bg5",
+    "prompt": "En la partida jugaste Kh2. Encuentra una alternativa que supere la prueba CCT + refutación.",
+    "patternId": "cct-opponent-refutation",
+    "skillIds": [
+      "cct-opponent-refutation",
+      "forced-candidate-generation"
+    ],
+    "severity": 3,
+    "phase": "middlegame",
+    "motifs": [
+      "missed_forcing_move"
+    ],
+    "observableReason": "Había jaque o captura fuerte y se jugó una jugada no forzada",
+    "source": "exercises.json+deep_500k",
+    "analysisVersion": "deep-500k-v1",
+    "block": "discovery",
+    "referenceMoveUci": "e4h4",
+    "referenceMoveSan": "Qxh4",
+    "referenceLineUci": [
+      "e4h4",
+      "c8d7",
+      "h4g4",
+      "g6f6",
+      "g4g3",
+      "d6d5",
+      "g3h2"
+    ],
+    "realMoveUci": "g1h2",
+    "realMoveSan": "Kh2",
+    "realLineUci": [
+      "g1h2",
+      "h4g5"
+    ]
+  }
+]

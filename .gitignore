@@ -1,0 +1,9 @@
+node_modules
+dist
+tsconfig.tsbuildinfo
+.DS_Store
+*.local
+
+# Artefactos pesados del zip (regenerables); se conserva review_output
+data/fase-2/engine_output/
+data/fase-2/output/

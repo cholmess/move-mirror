@@ -1,0 +1,493 @@
+{
+  "engine": {
+    "stage": "deep",
+    "positions_expected": 800,
+    "positions_checkpointed": 800,
+    "errors": 0,
+    "nodes_per_analysis": 500000,
+    "analyses_per_position": 2,
+    "workers": 8,
+    "engine_path": "/workspace/scratch/9ba773b599e5/engine/stockfish/stockfish-linux-x86-64-universal",
+    "engine_sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+    "engine_version": "Stockfish 19 by the Stockfish developers (see AUTHORS file)",
+    "python": "3.12.14",
+    "python_chess": "1.11.2"
+  },
+  "base_positions": 7729,
+  "deep_positions": 800,
+  "confirmed_threshold_numeric": 120,
+  "confirmed": {
+    "discovery": {
+      "positions": 562,
+      "games": 132
+    },
+    "validation": {
+      "positions": 168,
+      "games": 41
+    }
+  },
+  "exposures": {
+    "discovery": 5858,
+    "validation": 1871
+  },
+  "motifs": [
+    {
+      "tag": "allowed_forcing_reply",
+      "label": "La respuesta forzada del rival quedó disponible",
+      "discovery_positions": 262,
+      "discovery_games": 116,
+      "validation_positions": 85,
+      "validation_games": 36,
+      "discovery_share": 0.46619217081850534,
+      "validation_share": 0.5059523809523809
+    },
+    {
+      "tag": "allowed_piece_capture",
+      "label": "La línea principal permite capturar una pieza",
+      "discovery_positions": 118,
+      "discovery_games": 77,
+      "validation_positions": 42,
+      "validation_games": 28,
+      "discovery_share": 0.2099644128113879,
+      "validation_share": 0.25
+    },
+    {
+      "tag": "missed_forcing_move",
+      "label": "Había jaque o captura fuerte y se jugó una jugada no forzada",
+      "discovery_positions": 88,
+      "discovery_games": 55,
+      "validation_positions": 34,
+      "validation_games": 18,
+      "discovery_share": 0.15658362989323843,
+      "validation_share": 0.20238095238095238
+    },
+    {
+      "tag": "bad_capture_choice",
+      "label": "La captura elegida fue costosa",
+      "discovery_positions": 106,
+      "discovery_games": 78,
+      "validation_positions": 22,
+      "validation_games": 18,
+      "discovery_share": 0.18861209964412812,
+      "validation_share": 0.13095238095238096
+    },
+    {
+      "tag": "costly_quiet_pawn_move",
+      "label": "Movimiento tranquilo de peón en posición crítica",
+      "discovery_positions": 114,
+      "discovery_games": 72,
+      "validation_positions": 29,
+      "validation_games": 17,
+      "discovery_share": 0.20284697508896798,
+      "validation_share": 0.17261904761904762
+    }
+  ],
+  "phases": [
+    {
+      "phase": "opening_proxy",
+      "discovery_exposure": 1497,
+      "discovery_confirmed": 52,
+      "discovery_per100": 3.473613894455578,
+      "validation_exposure": 498,
+      "validation_confirmed": 23,
+      "validation_per100": 4.618473895582329
+    },
+    {
+      "phase": "middlegame_proxy",
+      "discovery_exposure": 3148,
+      "discovery_confirmed": 402,
+      "discovery_per100": 12.770012706480305,
+      "validation_exposure": 891,
+      "validation_confirmed": 101,
+      "validation_per100": 11.335578002244668
+    },
+    {
+      "phase": "endgame_proxy",
+      "discovery_exposure": 1213,
+      "discovery_confirmed": 108,
+      "discovery_per100": 8.903544929925804,
+      "validation_exposure": 482,
+      "validation_confirmed": 44,
+      "validation_per100": 9.12863070539419
+    }
+  ],
+  "manual_review_sample": [
+    {
+      "key": "595cee54-b44d-11f1-bb1f-e68c2101000f:40",
+      "game_id": "595cee54-b44d-11f1-bb1f-e68c2101000f",
+      "move_number": 20,
+      "color": "black",
+      "played": "Qg4",
+      "best": "Qxe4",
+      "loss_numeric": 1458,
+      "motifs": [
+        "allowed_forcing_reply",
+        "allowed_piece_capture",
+        "missed_forcing_move"
+      ],
+      "game_url": "https://www.chess.com/game/live/184070622900"
+    },
+    {
+      "key": "9eee7044-b904-11f1-9c4d-f45fe701000f:36",
+      "game_id": "9eee7044-b904-11f1-9c4d-f45fe701000f",
+      "move_number": 18,
+      "color": "black",
+      "played": "Kh8",
+      "best": "Rxe6",
+      "loss_numeric": 1409,
+      "motifs": [
+        "allowed_forcing_reply",
+        "allowed_piece_capture",
+        "missed_forcing_move"
+      ],
+      "game_url": "https://www.chess.com/game/live/184366941330"
+    },
+    {
+      "key": "54e31c84-b5ee-11f1-b4a6-d9079701000f:80",
+      "game_id": "54e31c84-b5ee-11f1-b4a6-d9079701000f",
+      "move_number": 40,
+      "color": "black",
+      "played": "Qc3",
+      "best": "Qb2",
+      "loss_numeric": 1406,
+      "motifs": [
+        "allowed_forcing_reply",
+        "allowed_piece_capture"
+      ],
+      "game_url": "https://www.chess.com/game/live/184171346940"
+    },
+    {
+      "key": "3fb7013d-acd7-11f1-bbdf-8eeeee01000f:122",
+      "game_id": "3fb7013d-acd7-11f1-bbdf-8eeeee01000f",
+      "move_number": 61,
+      "color": "black",
+      "played": "Rxc3+",
+      "best": "Rh4",
+      "loss_numeric": 1254,
+      "motifs": [
+        "allowed_forcing_reply",
+        "allowed_piece_capture",
+        "bad_capture_choice"
+      ],
+      "game_url": "https://www.chess.com/game/live/174256061220"
+    },
+    {
+      "key": "bbb0d6e0-b5db-11f1-9f37-3022bd01000f:16",
+      "game_id": "bbb0d6e0-b5db-11f1-9f37-3022bd01000f",
+      "move_number": 8,
+      "color": "black",
+      "played": "Qd3",
+      "best": "Qe6",
+      "loss_numeric": 1182,
+      "motifs": [
+        "allowed_forcing_reply",
+        "allowed_piece_capture"
+      ],
+      "game_url": "https://www.chess.com/game/live/184165239012"
+    },
+    {
+      "key": "e2fcd74e-b135-11f1-bbdf-8eeeee01000f:33",
+      "game_id": "e2fcd74e-b135-11f1-bbdf-8eeeee01000f",
+      "move_number": 17,
+      "color": "white",
+      "played": "Bxf6",
+      "best": "Qxf6",
+      "loss_numeric": 1162,
+      "motifs": [
+        "allowed_forcing_reply",
+        "allowed_piece_capture",
+        "bad_capture_choice"
+      ],
+      "game_url": "https://www.chess.com/game/live/174528086764"
+    },
+    {
+      "key": "05edc434-b32b-11f1-8acf-f45fe701000f:106",
+      "game_id": "05edc434-b32b-11f1-8acf-f45fe701000f",
+      "move_number": 53,
+      "color": "black",
+      "played": "Rxh4+",
+      "best": "d3",
+      "loss_numeric": 1153,
+      "motifs": [
+        "allowed_forcing_reply",
+        "allowed_piece_capture",
+        "bad_capture_choice"
+      ],
+      "game_url": "https://www.chess.com/game/live/183996840660"
+    },
+    {
+      "key": "da6864ab-b8fc-11f1-a095-e68c2101000f:36",
+      "game_id": "da6864ab-b8fc-11f1-a095-e68c2101000f",
+      "move_number": 18,
+      "color": "black",
+      "played": "Qf6",
+      "best": "f6",
+      "loss_numeric": 1139,
+      "motifs": [
+        "allowed_forcing_reply",
+        "allowed_piece_capture"
+      ],
+      "game_url": "https://www.chess.com/game/live/184364327212"
+    },
+    {
+      "key": "4ee5f007-b2b6-11f1-bb1f-e68c2101000f:46",
+      "game_id": "4ee5f007-b2b6-11f1-bb1f-e68c2101000f",
+      "move_number": 23,
+      "color": "black",
+      "played": "Qxe3",
+      "best": "Rdf8",
+      "loss_numeric": 1099,
+      "motifs": [
+        "allowed_forcing_reply",
+        "allowed_piece_capture",
+        "bad_capture_choice"
+      ],
+      "game_url": "https://www.chess.com/game/live/183971176544"
+    },
+    {
+      "key": "18181904-acd5-11f1-a51b-ebd42201000f:55",
+      "game_id": "18181904-acd5-11f1-a51b-ebd42201000f",
+      "move_number": 28,
+      "color": "white",
+      "played": "c4",
+      "best": "Rf1",
+      "loss_numeric": 1068,
+      "motifs": [
+        "costly_quiet_pawn_move"
+      ],
+      "game_url": "https://www.chess.com/game/live/174255675132"
+    },
+    {
+      "key": "f2cefdc1-ae34-11f1-bb1f-e68c2101000f:28",
+      "game_id": "f2cefdc1-ae34-11f1-bb1f-e68c2101000f",
+      "move_number": 14,
+      "color": "black",
+      "played": "hxg6",
+      "best": "Ne5",
+      "loss_numeric": 1067,
+      "motifs": [
+        "bad_capture_choice"
+      ],
+      "game_url": "https://www.chess.com/game/live/174344244732"
+    },
+    {
+      "key": "db6cc3c6-adb5-11f1-9f37-3022bd01000f:109",
+      "game_id": "db6cc3c6-adb5-11f1-9f37-3022bd01000f",
+      "move_number": 55,
+      "color": "white",
+      "played": "Ra1",
+      "best": "Qxf5",
+      "loss_numeric": 1024,
+      "motifs": [
+        "allowed_forcing_reply",
+        "missed_forcing_move"
+      ],
+      "game_url": "https://www.chess.com/game/live/174308701706"
+    },
+    {
+      "key": "807e4488-b910-11f1-9343-8dc15001000f:38",
+      "game_id": "807e4488-b910-11f1-9343-8dc15001000f",
+      "move_number": 19,
+      "color": "black",
+      "played": "Ng6",
+      "best": "Rxg3+",
+      "loss_numeric": 1020,
+      "motifs": [
+        "missed_forcing_move"
+      ],
+      "game_url": "https://www.chess.com/game/live/184370746310"
+    },
+    {
+      "key": "28b9f4e0-ad45-11f1-856c-7c639201000f:94",
+      "game_id": "28b9f4e0-ad45-11f1-856c-7c639201000f",
+      "move_number": 47,
+      "color": "black",
+      "played": "Kxf4",
+      "best": "Kh5",
+      "loss_numeric": 1008,
+      "motifs": [
+        "allowed_forcing_reply",
+        "bad_capture_choice"
+      ],
+      "game_url": "https://www.chess.com/game/live/174285907590"
+    },
+    {
+      "key": "0a0c100e-adbe-11f1-8acf-f45fe701000f:74",
+      "game_id": "0a0c100e-adbe-11f1-8acf-f45fe701000f",
+      "move_number": 37,
+      "color": "black",
+      "played": "Qxh5+",
+      "best": "Rxe5",
+      "loss_numeric": 992,
+      "motifs": [
+        "allowed_forcing_reply",
+        "allowed_piece_capture",
+        "bad_capture_choice"
+      ],
+      "game_url": "https://www.chess.com/game/live/174310528942"
+    },
+    {
+      "key": "28e6d974-b922-11f1-9e49-30204801000f:46",
+      "game_id": "28e6d974-b922-11f1-9e49-30204801000f",
+      "move_number": 23,
+      "color": "black",
+      "played": "f5",
+      "best": "Nxc7",
+      "loss_numeric": 975,
+      "motifs": [
+        "allowed_forcing_reply",
+        "allowed_piece_capture",
+        "costly_quiet_pawn_move",
+        "missed_forcing_move"
+      ],
+      "game_url": "https://www.chess.com/game/live/184375669176"
+    },
+    {
+      "key": "7331be73-b909-11f1-9a2c-ece1e601000f:41",
+      "game_id": "7331be73-b909-11f1-9a2c-ece1e601000f",
+      "move_number": 21,
+      "color": "white",
+      "played": "Qb7",
+      "best": "Qxa8+",
+      "loss_numeric": 971,
+      "motifs": [
+        "missed_forcing_move"
+      ],
+      "game_url": "https://www.chess.com/game/live/184368525824"
+    },
+    {
+      "key": "55d1442d-af9d-11f1-93e5-8500da01000f:63",
+      "game_id": "55d1442d-af9d-11f1-93e5-8500da01000f",
+      "move_number": 32,
+      "color": "white",
+      "played": "Kf1",
+      "best": "Rxe3",
+      "loss_numeric": 958,
+      "motifs": [
+        "missed_forcing_move"
+      ],
+      "game_url": "https://www.chess.com/game/live/174428732942"
+    },
+    {
+      "key": "c4a491da-b260-11f1-a51b-ebd42201000f:45",
+      "game_id": "c4a491da-b260-11f1-a51b-ebd42201000f",
+      "move_number": 23,
+      "color": "white",
+      "played": "Rf2",
+      "best": "Kh1",
+      "loss_numeric": 951,
+      "motifs": [
+        "allowed_forcing_reply",
+        "allowed_piece_capture"
+      ],
+      "game_url": "https://www.chess.com/game/live/180031305136"
+    },
+    {
+      "key": "2211f289-b764-11f1-a095-e68c2101000f:103",
+      "game_id": "2211f289-b764-11f1-a095-e68c2101000f",
+      "move_number": 52,
+      "color": "white",
+      "played": "Qb5+",
+      "best": "gxf4",
+      "loss_numeric": 943,
+      "motifs": [
+        "allowed_forcing_reply",
+        "allowed_piece_capture"
+      ],
+      "game_url": "https://www.chess.com/game/live/184261876990"
+    }
+  ],
+  "exercises": [
+    {
+      "key": "595cee54-b44d-11f1-bb1f-e68c2101000f:40",
+      "game_id": "595cee54-b44d-11f1-bb1f-e68c2101000f",
+      "game_url": "https://www.chess.com/game/live/184070622900",
+      "move_number": 20,
+      "color": "black",
+      "fen": "r4rk1/2p1n1p1/3p3p/1pb1p2P/p3Pq2/P1P2N2/RP3PPN/3Q1RK1 b - - 0 20",
+      "played": "Qg4",
+      "solution": "Qxe4",
+      "solution_line": "Qxe4 Ra1 Rab8 g3 Rf5 b4 axb3 Qxb3+",
+      "played_line": "Qg4 Nxg4 g5 Ngh2 Kg7 Qe2",
+      "loss_numeric": 1458,
+      "motifs": [
+        "allowed_forcing_reply",
+        "allowed_piece_capture",
+        "missed_forcing_move"
+      ]
+    },
+    {
+      "key": "3fb7013d-acd7-11f1-bbdf-8eeeee01000f:122",
+      "game_id": "3fb7013d-acd7-11f1-bbdf-8eeeee01000f",
+      "game_url": "https://www.chess.com/game/live/174256061220",
+      "move_number": 61,
+      "color": "black",
+      "fen": "8/1k6/8/pP6/P7/2R4r/2K5/8 b - - 0 61",
+      "played": "Rxc3+",
+      "solution": "Rh4",
+      "solution_line": "Rh4 Kb3 Rb4+ Ka3 Rh4",
+      "played_line": "Rxc3+ Kxc3",
+      "loss_numeric": 1254,
+      "motifs": [
+        "allowed_forcing_reply",
+        "allowed_piece_capture",
+        "bad_capture_choice"
+      ]
+    },
+    {
+      "key": "58df6243-b2b7-11f1-8acf-f45fe701000f:84",
+      "game_id": "58df6243-b2b7-11f1-8acf-f45fe701000f",
+      "game_url": "https://www.chess.com/game/live/183971526340",
+      "move_number": 42,
+      "color": "black",
+      "fen": "5R2/1r1q3k/6pp/3p4/p1n5/6B1/P4QPP/6K1 b - - 1 42",
+      "played": "d4",
+      "solution": "Rb1+",
+      "solution_line": "Rb1+ Qf1 Rxf1+ Rxf1 d4 Bh4 d3 Bf6",
+      "played_line": "d4 Qf6",
+      "loss_numeric": 775,
+      "motifs": [
+        "costly_quiet_pawn_move",
+        "missed_forcing_move"
+      ]
+    },
+    {
+      "key": "d7d7d006-abd3-11f1-8acf-f45fe701000f:57",
+      "game_id": "d7d7d006-abd3-11f1-8acf-f45fe701000f",
+      "game_url": "https://www.chess.com/game/live/174197859140",
+      "move_number": 29,
+      "color": "white",
+      "fen": "1k4r1/1p4r1/p1p5/4N3/4P3/1PPPb2P/1P4P1/R4R1K w - - 1 29",
+      "played": "Ng4",
+      "solution": "g4",
+      "solution_line": "g4 Rg5 Nf3 Rb5 Rae1 Bb6 Re2 a5",
+      "played_line": "Ng4 Rxg4",
+      "loss_numeric": 754,
+      "motifs": [
+        "allowed_forcing_reply",
+        "allowed_piece_capture"
+      ]
+    },
+    {
+      "key": "2cd52b0b-b6a6-11f1-a51b-ebd42201000f:51",
+      "game_id": "2cd52b0b-b6a6-11f1-a51b-ebd42201000f",
+      "game_url": "https://www.chess.com/game/live/184215932040",
+      "move_number": 26,
+      "color": "white",
+      "fen": "r1b5/1p4pk/p1pp2qp/P3pr2/1P2Q2b/1B1PB2P/2P2PP1/3R1RK1 w - - 4 26",
+      "played": "Kh2",
+      "solution": "Qxh4",
+      "solution_line": "Qxh4 Bd7 Qg4 Qf6 Qg3 d5 Qh2",
+      "played_line": "Kh2 Bg5",
+      "loss_numeric": 599,
+      "motifs": [
+        "missed_forcing_move"
+      ]
+    }
+  ],
+  "limitations": [
+    "The 800-position deep pass is a prioritized sample, so confirmed alerts per 100 decisions are lower bounds, not a complete error rate.",
+    "Motifs are observable board events; they do not prove attention, calculation, or psychological causes.",
+    "Mate scores use a separate mate field; the numeric field is only for ordering and threshold inclusion."
+  ]
+}

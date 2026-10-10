@@ -1,0 +1,39 @@
+{
+  "generatedAt": "2026-10-10T06:22:59.539Z",
+  "analysisVersion": "deep-500k-v1",
+  "sources": {
+    "exercisesJson": "ae32a9da758da742b1958c61b80d14d146452b82cfb6a00ca6a3f078eb2b6fdd",
+    "criticalPositionsCsv": "95b56af4528167dbb43d327134fb02f1065873b4b0ccd3e4de51d02eea3ed66f",
+    "deep500k": "f43ed65a3f2bf71b22cdc0447d599caa0439fb3f7c509dbaf11c7fac43aa9a88",
+    "deepManifest": {
+      "stage": "deep",
+      "positions_expected": 800,
+      "positions_checkpointed": 800,
+      "errors": 0,
+      "nodes_per_analysis": 500000,
+      "analyses_per_position": 2,
+      "workers": 8,
+      "engine_path": "/workspace/scratch/9ba773b599e5/engine/stockfish/stockfish-linux-x86-64-universal",
+      "engine_sha256": "0f83d24cc46d2c66c60f16001af5444873bc112b7d028594513426894c12da19",
+      "engine_version": "Stockfish 19 by the Stockfish developers (see AUTHORS file)",
+      "python": "3.12.14",
+      "python_chess": "1.11.2"
+    }
+  },
+  "counts": {
+    "core": 5,
+    "pool": 344,
+    "deepRows": 800
+  },
+  "poolFilter": {
+    "motif": "allowed_forcing_reply",
+    "limit": 347
+  },
+  "coreIntegrityKeys": [
+    "595cee54-b44d-11f1-bb1f-e68c2101000f:40",
+    "3fb7013d-acd7-11f1-bbdf-8eeeee01000f:122",
+    "58df6243-b2b7-11f1-8acf-f45fe701000f:84",
+    "d7d7d006-abd3-11f1-8acf-f45fe701000f:57",
+    "2cd52b0b-b6a6-11f1-a51b-ebd42201000f:51"
+  ]
+}
