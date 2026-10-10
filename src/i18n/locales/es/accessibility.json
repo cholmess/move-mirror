@@ -1,0 +1,11 @@
+{
+  "mainContent": "Contenido principal",
+  "languageSelect": "Elegir idioma de la interfaz",
+  "stepDot": "Ir al paso {{title}}",
+  "defenseResourceSelect": "Recurso defensivo",
+  "boardTrain": "Tablero de entrenamiento",
+  "boardDefense": "Tablero de defensa",
+  "boardManual": "Tablero de entrada manual",
+  "boardLesson": "Vista previa del tablero de la lección",
+  "liveRegion": "Anuncios"
+}

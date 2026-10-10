@@ -1,43 +1,63 @@
+import { useEffect, useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
-import { PRODUCT_TAGLINE } from "../data/constants";
+import { useTranslation } from "react-i18next";
 import { useApp } from "../context/AppContext";
+import { fetchIdentity } from "../api/gamesClient";
+import { LanguageSelector } from "./LanguageSelector";
+import { LanguageWelcome } from "./LanguageWelcome";
+import { hasStoredLocalePreference } from "../i18n/localeStorage";
 
-const links = [
-  { to: "/", label: "Dashboard" },
-  { to: "/lesson", label: "Microlección" },
-  { to: "/train", label: "Entrenar" },
-  { to: "/defense", label: "Defense Lab" },
-  { to: "/profile", label: "Perfil" },
-  { to: "/transfer", label: "Transferencia" },
+const navRoutes = [
+  { to: "/", key: "home" as const, end: true },
+  { to: "/lesson", key: "lesson" as const },
+  { to: "/train", key: "train" as const },
+  { to: "/defense", key: "defense" as const },
+  { to: "/games", key: "myGames" as const },
+  { to: "/import", key: "import" as const },
+  { to: "/profile", key: "progress" as const },
+  { to: "/transfer", key: "newGames" as const },
 ];
 
 export function Layout() {
+  const { t } = useTranslation(["navigation", "common"]);
   const { state } = useApp();
+  const [displayName, setDisplayName] = useState(state.username);
+  const [showWelcome, setShowWelcome] = useState(() => !hasStoredLocalePreference());
+
+  useEffect(() => {
+    fetchIdentity()
+      .then((identity) => setDisplayName(identity.displayName || identity.chessComUsernames[0] || state.username))
+      .catch(() => setDisplayName(state.username));
+  }, [state.username]);
 
   return (
     <div className="app-shell">
       <header className="app-header">
         <div className="brand">
           <span className="brand-name">MoveMirror</span>
-          <span className="brand-tag">{PRODUCT_TAGLINE}</span>
+          <span className="brand-tag">{t("common:productTagline")}</span>
         </div>
-        <nav className="nav">
-          {links.map((l) => (
+        <nav className="nav" aria-label={t("navigation:ariaMainNav")}>
+          {navRoutes.map((link) => (
             <NavLink
-              key={l.to}
-              to={l.to}
+              key={link.to}
+              to={link.to}
               className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}
-              end={l.to === "/"}
+              end={link.end}
             >
-              {l.label}
+              {t(`navigation:${link.key}`)}
             </NavLink>
           ))}
         </nav>
         <div className="header-meta">
-          <span className="mono">{state.username}</span>
+          <LanguageSelector compact />
+          <span className="mono">{displayName}</span>
         </div>
       </header>
-      <main className="app-main">
+      <main className="app-main" id="main-content">
+        {showWelcome && (
+          <LanguageWelcome onDone={() => setShowWelcome(false)} />
+        )}
         <Outlet />
       </main>
     </div>

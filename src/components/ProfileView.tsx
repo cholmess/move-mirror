@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { visibleSkills } from "../data/skills";
 import { useApp } from "../context/AppContext";
 import { aggregateEvidence } from "../domain/profile";
@@ -9,17 +10,42 @@ import { fetchTransferState } from "../api/transferClient";
 import type { TransferState } from "../types/transfer";
 import { summarizeTraining } from "@shared/transfer/pedagogy.js";
 import { buildDefenseProfile } from "../domain/defenseProfile";
+import { Link } from "react-router-dom";
+import { PlayerIdentitySection } from "./PlayerIdentitySection";
+import { LanguageSelector } from "./LanguageSelector";
+import {
+  formatComparisonStatus,
+  formatDate,
+  formatDateTime,
+  formatDefenseProfileText,
+  formatDefensiveResource,
+  formatEvaluationStatus,
+  formatEvidenceLevel,
+  formatExposureStatus,
+  formatProfileHistoryEvent,
+} from "../i18n/presenters";
+import type { SupportedLocale } from "../i18n/types";
+import { TechnicalDetails, TechnicalRow } from "./TechnicalDetails";
+
+const SKILL_I18N: Record<string, { name: string; desc: string }> = {
+  "cct-opponent-refutation": { name: "dashboard:skill1Name", desc: "dashboard:skill1Desc" },
+  "forced-candidate-generation": { name: "dashboard:skill2Name", desc: "dashboard:skill2Desc" },
+  "capture-recapture-check": { name: "dashboard:skill3Name", desc: "dashboard:skill3Desc" },
+};
 
 export function ProfileView() {
+  const { t, i18n } = useTranslation(["profile", "dashboard", "common", "transfer", "technical"]);
+  const locale = i18n.language as SupportedLocale;
   const { state, resetAll } = useApp();
 
   const [transfer, setTransfer] = useState<TransferState | null>(null);
   useEffect(() => {
     fetchTransferState().then(setTransfer).catch(() => setTransfer(null));
   }, []);
+
   const training = useMemo(() => {
     const related = state.attempts.filter(
-      (attempt) => attempt.patternId === PATTERN_ID || attempt.skillIds.includes(PATTERN_ID)
+      (attempt) => attempt.patternId === PATTERN_ID || attempt.skillIds.includes(PATTERN_ID),
     );
     const count = (status: string) => related.filter((attempt) => attempt.evaluationStatus === status).length;
     return summarizeTraining({
@@ -33,10 +59,12 @@ export function ProfileView() {
       nextReviewAt: state.skills[PATTERN_ID]?.nextReviewAt ?? null,
     });
   }, [state.attempts, state.skills]);
-  const defense = useMemo(
-    () => buildDefenseProfile(state.defenseLab.attempts),
-    [state.defenseLab.attempts],
-  );
+
+  const defense = useMemo(() => buildDefenseProfile(state.defenseLab.attempts), [state.defenseLab.attempts]);
+  const defenseText = formatDefenseProfileText(defense, locale);
+  const comparisonLabel = transfer?.comparison
+    ? formatComparisonStatus(transfer.comparison.status, locale).label
+    : t("transfer:comparison.insufficient_data.label");
 
   const downloadLog = () => {
     const blob = new Blob([exportAttempts(state)], {
@@ -52,59 +80,66 @@ export function ProfileView() {
 
   return (
     <div className="page profile">
-      <h1>Perfil vivo</h1>
-      <p className="muted">
-        Actualización bayesiana simple (Beta-Binomial por habilidad). Sin ML opaco en MVP.
-      </p>
+      <div className="profile-head">
+        <div>
+          <h1>{t("title")}</h1>
+          <p className="muted">{t("subtitle")}</p>
+        </div>
+        <LanguageSelector compact />
+      </div>
+
+      <PlayerIdentitySection />
 
       <div className="skills-grid">
         {visibleSkills.map((sk) => {
           const st = state.skills[sk.id];
           const agg = aggregateEvidence(sk.id, state.attempts);
+          const labels = SKILL_I18N[sk.id];
           return (
             <article key={sk.id} className="card skill-detail">
-              <h2>{sk.name}</h2>
+              <h2>{labels ? t(labels.name) : sk.name}</h2>
+              {labels && <p className="small muted">{t(labels.desc)}</p>}
               <div className="meter">
-                <div
-                  className="meter-fill"
-                  style={{ width: `${Math.round((st?.masteryEstimate ?? 0) * 100)}%` }}
-                />
+                <div className="meter-fill" style={{ width: `${Math.round((st?.masteryEstimate ?? 0) * 100)}%` }} />
               </div>
               <ul className="stat-list small">
                 <li>
-                  Dominio estimado: {Math.round((st?.masteryEstimate ?? 0) * 100)}% (α=
-                  {st?.alpha.toFixed(1)}, β={st?.beta.toFixed(1)})
+                  {t("estimatedLevel")}: {Math.round((st?.masteryEstimate ?? 0) * 100)}%
                 </li>
                 <li>
-                  Confianza: {Math.round((st?.confidence ?? 0) * 100)}% · Verificados ok{" "}
-                  {st?.successes} · Errores {st?.failures} · Imprecisos {st?.partials} · Sin
-                  verificar {st?.unverifiedCount ?? 0}
+                  {t("evidenceAmount")}: {Math.round((st?.confidence ?? 0) * 100)}% · {t("verifiedOk")}{" "}
+                  {st?.successes} · {t("needsPractice")} {st?.failures} · {t("partials")} {st?.partials} ·{" "}
+                  {t("unverified")} {st?.unverifiedCount ?? 0}
                 </li>
                 <li>
-                  Última práctica:{" "}
-                  {st?.lastPracticeAt
-                    ? new Date(st.lastPracticeAt).toLocaleString("es")
-                    : "—"}
+                  {t("lastPractice")}:{" "}
+                  {st?.lastPracticeAt ? formatDateTime(st.lastPracticeAt, locale) : t("common:dash")}
                 </li>
                 <li>
-                  Próxima revisión sugerida:{" "}
-                  {st?.nextReviewAt
-                    ? new Date(st.nextReviewAt).toLocaleDateString("es")
-                    : "—"}
+                  {t("nextReview")}:{" "}
+                  {st?.nextReviewAt ? formatDate(st.nextReviewAt, locale) : t("common:dash")}
                 </li>
                 <li>
-                  Evidencia review: {agg.reviewEvidence.validationPositions} pos. validación
-                  · Práctica MoveMirror: {agg.practiceAttempts} intentos
+                  {t("reviewEvidence")}: {t("positionsValidation", { count: agg.reviewEvidence.validationPositions })}{" "}
+                  · {t("practiceAttempts")}: {t("attemptsCount", { count: agg.practiceAttempts })}
                 </li>
               </ul>
+              <TechnicalDetails>
+                <TechnicalRow
+                  label={t("technical:alphaBeta")}
+                  value={
+                    st ? `α=${st.alpha.toFixed(1)}, β=${st.beta.toFixed(1)}` : undefined
+                  }
+                />
+              </TechnicalDetails>
               {st && st.history.length > 1 && (
                 <div className="history">
-                  <p className="eyebrow">Evolución reciente</p>
+                  <p className="eyebrow">{t("recentEvolution")}</p>
                   <ul className="mono tiny">
                     {st.history.slice(-5).map((h) => (
                       <li key={h.at + h.event}>
-                        {new Date(h.at).toLocaleDateString("es")} —{" "}
-                        {Math.round(h.mastery * 100)}% — {h.event}
+                        {formatDate(h.at, locale)} — {Math.round(h.mastery * 100)}% —{" "}
+                        {formatProfileHistoryEvent(h.event, locale)}
                       </li>
                     ))}
                   </ul>
@@ -116,86 +151,122 @@ export function ProfileView() {
       </div>
 
       <section className="card">
-        <h2>Tres canales separados</h2>
-        <p className="muted small">
-          El dominio de ejercicios (α/β) solo cambia con intentos verificados. Las partidas reales no lo modifican.
-        </p>
+        <h2>{t("threeChannelsTitle")}</h2>
+        <p className="muted small">{t("threeChannelsHint")}</p>
         <ul className="stat-list">
           <li>
-            Ejercicios: {training.verified_best} mejor jugada, {training.verified_acceptable} aceptables,{" "}
-            {training.playable_inexact} imprecisas, {training.incorrect} incorrectas.
+            {t("exercisesLine", {
+              best: training.verified_best,
+              acceptable: training.verified_acceptable,
+              imprecise: training.playable_inexact,
+              incorrect: training.incorrect,
+            })}
           </li>
-          <li>Partidas reales: {transfer?.comparison?.label ?? "Datos insuficientes"}.</li>
+          <li>{t("realGamesLine", { label: comparisonLabel })}</li>
           <li>
-            Exposición pedagógica: {state.interventionQualification.qualified
-              ? `dosis completada (${new Date(state.interventionQualification.qualifiedAt!).toLocaleString("es")})`
-              : "dosis en progreso"}.
+            {t("pedagogyExposure")}:{" "}
+            {state.interventionQualification.qualified
+              ? t("transfer:trainingChannel.doseComplete", {
+                  date: formatDateTime(state.interventionQualification.qualifiedAt!, locale),
+                })
+              : t("transfer:trainingChannel.doseInProgress")}
           </li>
-          <li>Validez de la cohorte: {transfer?.currentExposureAudit?.exposureValidity ?? "exposure_unknown"}.</li>
           <li>
-            Última sincronización:{" "}
+            {t("cohortValidity")}:{" "}
+            {formatExposureStatus(transfer?.currentExposureAudit?.exposureValidity ?? "exposure_unknown", locale)}
+          </li>
+          <li>
+            {t("lastSync")}:{" "}
             {transfer?.sync.lastSyncedAt
-              ? new Date(transfer.sync.lastSyncedAt).toLocaleString("es")
-              : "sin sincronizar"}
-            .
+              ? formatDateTime(transfer.sync.lastSyncedAt, locale)
+              : t("common:dash")}
           </li>
         </ul>
+        <div className="actions">
+          <Link className="btn" to="/games">
+            {t("dashboard:library")}
+          </Link>
+          <Link className="btn" to="/import">
+            {t("dashboard:importGames")}
+          </Link>
+        </div>
       </section>
 
       <section className="card">
-        <h2>Registro de aprendizaje</h2>
+        <h2>{t("learningLogTitle")}</h2>
         {state.attempts.length === 0 ? (
-          <p className="muted">Aún no hay intentos. Entrena un ejercicio.</p>
+          <p className="muted">{t("noAttempts")}</p>
         ) : (
           <table className="attempts-table">
             <thead>
               <tr>
-                <th>Fecha</th>
-                <th>Ejercicio</th>
-                <th>Resultado</th>
-                <th>Jugada</th>
-                <th>Refutación registrada</th>
+                <th>{t("tableDate")}</th>
+                <th>{t("tableExercise")}</th>
+                <th>{t("tableResult")}</th>
+                <th>{t("tableMove")}</th>
+                <th>{t("tableRefutationLogged")}</th>
               </tr>
             </thead>
             <tbody>
               {[...state.attempts].reverse().slice(0, 20).map((a) => (
                 <tr key={a.id}>
-                  <td>{new Date(a.recordedAt).toLocaleString("es")}</td>
+                  <td>{formatDateTime(a.recordedAt, locale)}</td>
                   <td className="mono">{a.exerciseId}</td>
-                  <td>{a.evaluationStatus}</td>
+                  <td>{formatEvaluationStatus(a.evaluationStatus, locale)}</td>
                   <td>{a.chosenMoveSan}</td>
-                  <td>{a.foundOpponentForcedResponse ? "sí" : "no"}</td>
+                  <td>{a.foundOpponentForcedResponse ? t("common:yes") : t("common:no")}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         )}
         <button type="button" className="btn" onClick={downloadLog}>
-          Exportar intentos (JSON)
+          {t("exportAttempts")}
         </button>
       </section>
 
       <section className="card">
-        <h2>Defense Lab</h2>
+        <h2>{t("defenseTitle")}</h2>
         <ul className="stat-list">
-          <li>Posiciones intentadas: {defense.positionsAttempted}</li>
-          <li>Resultados verificados: {defense.verifiedResults}</li>
-          <li>Defensas aceptables: {Math.round(defense.acceptableRate * 100)}%</li>
-          <li>Recursos practicados: {defense.resourcesPracticed.join(", ") || "—"}</li>
-          <li>Última práctica: {defense.lastPracticeAt ? new Date(defense.lastPracticeAt).toLocaleString("es") : "—"}</li>
-          <li>Próxima revisión: {defense.nextReviewAt ? new Date(defense.nextReviewAt).toLocaleDateString("es") : "—"}</li>
+          <li>
+            {t("defenseAttempted")}: {defense.positionsAttempted}
+          </li>
+          <li>
+            {t("defenseVerified")}: {defense.verifiedResults}
+          </li>
+          <li>
+            {t("defenseAcceptable")}: {Math.round(defense.acceptableRate * 100)}%
+          </li>
+          <li>
+            {t("defenseResources")}:{" "}
+            {defense.resourcesPracticed.map((r) => formatDefensiveResource(r, locale)).join(", ") || t("common:dash")}
+          </li>
+          <li>
+            {t("lastPractice")}:{" "}
+            {defense.lastPracticeAt ? formatDateTime(defense.lastPracticeAt, locale) : t("common:dash")}
+          </li>
+          <li>
+            {t("nextReview")}:{" "}
+            {defense.nextReviewAt ? formatDate(defense.nextReviewAt, locale) : t("common:dash")}
+          </li>
         </ul>
-        <p><strong>Observación:</strong> {defense.observation}</p>
-        <p><strong>Hipótesis:</strong> {defense.hypothesis}</p>
+        <p>
+          <strong>{t("defenseObservation")}:</strong> {defenseText.observation}
+        </p>
+        <p>
+          <strong>{t("defenseHypothesis")}:</strong> {defenseText.hypothesis}
+        </p>
         <p className="muted small">
-          Confianza {defense.confidence}. Se exige evidencia de 5 posiciones, 3 partidas y 2 sesiones
-          antes de presentar una hipótesis específica.
+          {t("defenseEvidenceNote", {
+            confidence: formatEvidenceLevel(defense.confidence as "baja" | "media" | "alta", locale),
+          })}
         </p>
         {state.defenseLab.attempts.length > 0 && (
           <ul className="mono tiny">
             {state.defenseLab.attempts.slice(-5).reverse().map((attempt) => (
               <li key={attempt.attemptId}>
-                {new Date(attempt.confirmedAt).toLocaleDateString("es")} · {attempt.motif} · {attempt.evaluationStatus}
+                {formatDate(attempt.confirmedAt, locale)} · {attempt.motif} ·{" "}
+                {formatEvaluationStatus(attempt.evaluationStatus, locale)}
               </li>
             ))}
           </ul>
@@ -203,17 +274,17 @@ export function ProfileView() {
       </section>
 
       <section className="card muted-arch">
-        <h2>Arquitectura futura (contratos only)</h2>
+        <h2>{t("futureArchTitle")}</h2>
         <ul>
           {Object.values(FUTURE_MODULES).map((name) => (
             <li key={name}>{name}</li>
           ))}
         </ul>
-        <p className="small">Ver <code>src/contracts/future.ts</code></p>
+        <p className="small">{t("futureArchHint")}</p>
       </section>
 
       <button type="button" className="btn danger" onClick={resetAll}>
-        Reiniciar progreso local
+        {t("resetProgress")}
       </button>
     </div>
   );

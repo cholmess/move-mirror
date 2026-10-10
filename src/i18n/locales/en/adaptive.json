@@ -1,0 +1,11 @@
+{
+  "activePattern": "Active pattern: {{title}} (about {{pct}}% in validation).",
+  "patternPriority": "Reinforces the priority pattern (checks, captures, threats, opponent reply).",
+  "severity": "Practice priority {{severity}}/5",
+  "coreExercise": "Core review exercise with full line",
+  "newPosition": "New position for you in MoveMirror",
+  "lowPerformance": "Recent results were weak — worth repeating",
+  "spacedRepetition": "Spaced repetition (≥1 day since last attempt)",
+  "skillUncertainty": "High uncertainty on linked skills",
+  "phaseVariety": "Phase variety: {{phase}}"
+}

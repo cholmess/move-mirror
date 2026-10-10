@@ -21,9 +21,8 @@ import { EVAL_CRITERION_VERSION, LESSON_VERSION } from "../data/constants";
 import { getExercise } from "../data/exercises";
 import { isLegalMove, userFoundForcedResponse } from "../domain/evaluation";
 import { evaluateMoveWithEngine, type EvaluateResult } from "../api/engineClient";
-import {
-  buildReflectionPrompt,
-} from "../domain/pedagogy";
+import { buildReflectionPrompt } from "../domain/pedagogy";
+import { i18n } from "../i18n/i18nInstance";
 import type { EvaluationStatus } from "@shared/evaluation/types";
 
 interface AppContextValue {
@@ -115,7 +114,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
         exercise
       );
 
-      const reflectionPrompt = buildReflectionPrompt(exercise, evaluationStatus);
+      const reflectionPrompt = buildReflectionPrompt(
+        exercise,
+        evaluationStatus,
+        i18n.getFixedT(i18n.language),
+      );
 
       const next = recordAttempt(state, {
         exerciseId: params.exerciseId,

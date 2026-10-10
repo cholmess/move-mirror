@@ -1,18 +1,35 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { fetchTransferState } from "../api/transferClient";
 import type { TransferState } from "../types/transfer";
 import { primaryPattern } from "../data/pattern";
-import { visibleSkills } from "../data/skills";
 import { microLesson } from "../data/microlesson";
 import { coreExercises, exercises, dataManifest } from "../data/exercises";
 import { useApp } from "../context/AppContext";
 import { getExercise } from "../data/exercises";
 import { buildDefenseProfile } from "../domain/defenseProfile";
+import {
+  formatDateTime,
+  formatComparisonStatus,
+  formatDefenseProfileText,
+  formatDefenseSelectionReason,
+  formatEvidenceLevel,
+  formatExposureStatus,
+  formatNumber,
+  formatPedagogyActionExplanation,
+  formatPedagogyActionTitle,
+  formatSelectionReasons,
+  formatSideToMove,
+} from "../i18n/presenters";
+import { selectNextExercise } from "../domain/adaptive";
+import { TechnicalDetails, TechnicalRow } from "./TechnicalDetails";
 
 export function Dashboard() {
+  const { t, i18n } = useTranslation(["dashboard", "common", "lesson", "technical", "defense"]);
   const { state } = useApp();
   const ev = primaryPattern.evidence;
+  const locale = i18n.language as "es" | "en" | "de";
   const currentId = state.progress.currentExerciseId;
   const currentEx = currentId ? getExercise(currentId) : exercises[0];
 
@@ -20,171 +37,226 @@ export function Dashboard() {
   const solvedCount = state.progress.exercisesCompleted.length;
   const [transfer, setTransfer] = useState<TransferState | null>(null);
   const defense = buildDefenseProfile(state.defenseLab.attempts);
+  const defenseText = formatDefenseProfileText(defense, locale);
+  const nextSel = useMemo(() => selectNextExercise(state), [state]);
 
   useEffect(() => {
     fetchTransferState().then(setTransfer).catch(() => setTransfer(null));
   }, []);
 
+  const pedagogyAction = transfer?.pedagogy?.action ?? "continue_cct";
+
   return (
     <div className="page dashboard">
       <section className="hero-card">
-        <p className="eyebrow">Patrón prioritario</p>
-        <h1>{primaryPattern.title}</h1>
-        <p className="lead">{primaryPattern.plainExplanation}</p>
+        <p className="eyebrow">{t("dashboard:practiceNowEyebrow")}</p>
+        <h1>{t("dashboard:patternTitle")}</h1>
+        <p className="lead">{t("dashboard:patternLead")}</p>
         <div className="confidence-row">
           <span className="badge badge-high">
-            Confianza del patrón: {primaryPattern.patternConfidence}
+            {formatEvidenceLevel(primaryPattern.patternConfidence === "alta" ? "high" : "medium", locale)}
           </span>
           <span className="badge badge-medium">
-            Hipótesis pedagógica: {primaryPattern.hypothesisConfidence}
+            {t("common:pedagogyLabels.possibleExplanation")}:{" "}
+            {formatEvidenceLevel(primaryPattern.hypothesisConfidence === "media" ? "medium" : "high", locale)}
           </span>
         </div>
       </section>
 
       <div className="grid-2">
         <section className="card">
-          <h2>Evidencia (observable)</h2>
+          <h2>{t("common:pedagogyLabels.whatWeSee")}</h2>
           <ul className="stat-list">
             <li>
-              <strong>Descubrimiento:</strong> {ev.discoveryPositions} posiciones en{" "}
-              {ev.discoveryGames} partidas distintas ({ev.pctDiscovery}% de alertas
-              confirmadas)
+              {t("dashboard:evidenceDiscovery", {
+                positions: ev.discoveryPositions,
+                games: ev.discoveryGames,
+                pct: ev.pctDiscovery,
+              })}
             </li>
             <li>
-              <strong>Validación temporal:</strong> {ev.validationPositions} posiciones en{" "}
-              {ev.validationGames} partidas ({ev.pctValidation}% — estable)
+              {t("dashboard:evidenceValidation", {
+                positions: ev.validationPositions,
+                games: ev.validationGames,
+                pct: ev.pctValidation,
+              })}
             </li>
             <li>
-              <strong>Muestra:</strong> {ev.sampleGames} partidas Rapid 10+0 ·{" "}
-              {ev.sampleDecisions.toLocaleString()} decisiones analizadas
+              {t("dashboard:evidenceSample", {
+                games: ev.sampleGames,
+                decisions: formatNumber(ev.sampleDecisions, locale),
+              })}
             </li>
           </ul>
           <p className="muted small">
-            Evento observable: tras tu jugada, el rival tenía captura, jaque o secuencia
-            forzada. Causa probable: {primaryPattern.pedagogicalHypothesis}
+            {t("dashboard:evidenceFootnote", { hypothesis: t("dashboard:patternHypothesis") })}
           </p>
+          <p className="muted tiny">{t("common:evidence.hint")}</p>
         </section>
 
         <section className="card">
-          <h2>Progreso y próxima sesión</h2>
+          <h2>{t("dashboard:progressTitle")}</h2>
           <div className="progress-blocks">
             <div>
-              <span className="progress-label">Microlección</span>
-              <span>{lessonDone ? "Completada" : "Pendiente"}</span>
+              <span className="progress-label">{t("dashboard:lessonStatus")}</span>
+              <span>{lessonDone ? t("dashboard:lessonDone") : t("dashboard:lessonPending")}</span>
             </div>
             <div>
-              <span className="progress-label">Ejercicios acertados</span>
+              <span className="progress-label">{t("dashboard:exercisesSolved")}</span>
               <span>
-                {solvedCount} / {coreExercises.length} núcleo · banco{" "}
-                {exercises.length} pos.
+                {t("dashboard:exercisesCore", {
+                  solved: solvedCount,
+                  core: coreExercises.length,
+                  total: exercises.length,
+                })}
               </span>
             </div>
             <div>
-              <span className="progress-label">Intentos registrados</span>
+              <span className="progress-label">{t("dashboard:attemptsLogged")}</span>
               <span>{state.attempts.length}</span>
             </div>
           </div>
           {currentEx && (
             <div className="next-box">
-              <p className="small muted">Siguiente ejercicio sugerido</p>
+              <p className="small muted">{t("dashboard:nextExercise")}</p>
               <p>
-                Movimiento {currentEx.moveNumber} ·{" "}
-                {currentEx.sideToMove === "w" ? "Blancas" : "Negras"}
+                {t("dashboard:moveLabel", {
+                  number: currentEx.moveNumber,
+                  side: formatSideToMove(currentEx.sideToMove, locale),
+                })}
               </p>
               {state.progress.lastSelectionReason && (
-                <p className="reason">{state.progress.lastSelectionReason}</p>
+                <p className="reason">{formatSelectionReasons(nextSel.reasons, locale)}</p>
               )}
             </div>
           )}
           <div className="actions">
             {!lessonDone && (
               <Link className="btn primary" to="/lesson">
-                Comenzar microlección
+                {t("dashboard:startLesson")}
               </Link>
             )}
             <Link className="btn" to="/train">
-              Entrenar ahora
+              {t("dashboard:trainNow")}
+            </Link>
+            <Link className="btn" to="/import">
+              {t("dashboard:importGames")}
+            </Link>
+            <Link className="btn" to="/games">
+              {t("dashboard:library")}
             </Link>
           </div>
         </section>
       </div>
 
       <section className="card">
-        <h2>Transferencia a partidas nuevas</h2>
+        <h2>{t("dashboard:newGamesTitle")}</h2>
         <ul className="stat-list">
-          <li>Entrenamiento: {state.interventionQualification.qualified ? "completado" : "en progreso"}</li>
-          <li>Próxima cohorte: {state.interventionQualification.qualified ? "habilitada" : "no habilitada"}</li>
-          <li>Validez de exposición: {transfer?.currentExposureAudit?.exposureValidity ?? "exposure_unknown"}</li>
-          <li>Recomendación: {transfer?.pedagogy?.title ?? "Continuar CCT + refutación"}</li>
+          <li>
+            {t("dashboard:trainingStatus")}:{" "}
+            {state.interventionQualification.qualified
+              ? t("dashboard:trainingComplete")
+              : t("dashboard:trainingInProgress")}
+          </li>
+          <li>
+            {t("dashboard:nextGroup")}:{" "}
+            {state.interventionQualification.qualified
+              ? t("dashboard:nextGroupEnabled")
+              : t("dashboard:nextGroupDisabled")}
+          </li>
+          <li>
+            {t("dashboard:exposureValidity")}:{" "}
+            {formatExposureStatus(transfer?.currentExposureAudit?.exposureValidity ?? "exposure_unknown", locale)}
+          </li>
+          <li>
+            {t("dashboard:recommendation")}: {formatPedagogyActionTitle(pedagogyAction, locale)}
+          </li>
         </ul>
         {transfer?.comparison ? (
           <p>
-            {transfer.comparison.label}. En las partidas nuevas el patrón aparece{" "}
-            {transfer.comparison.transfer.eventsPer100?.toLocaleString("es", { maximumFractionDigits: 1 })}{" "}
-            veces por 100 decisiones, frente a{" "}
-            {transfer.comparison.baseline.eventsPer100?.toLocaleString("es", { maximumFractionDigits: 1 })}{" "}
-            en el baseline.
+            {t("dashboard:comparisonLine", {
+              label: formatComparisonStatus(transfer.comparison.status, locale).label,
+              transferRate: formatNumber(transfer.comparison.transfer.eventsPer100 ?? 0, locale, {
+                maximumFractionDigits: 1,
+              }),
+              baselineRate: formatNumber(transfer.comparison.baseline.eventsPer100 ?? 0, locale, {
+                maximumFractionDigits: 1,
+              }),
+            })}
           </p>
         ) : (
           <p>
             {transfer?.sync.lastSyncedAt
-              ? "Hay una sincronización, pero la comparación todavía no está cerrada."
-              : "Todavía no hay una comparación entre el baseline y partidas nuevas."}
+              ? t("dashboard:comparisonPendingSync")
+              : t("dashboard:comparisonNone")}
           </p>
         )}
         <p className="muted small">
-          Última sincronización:{" "}
+          {t("dashboard:lastSync")}:{" "}
           {transfer?.sync.lastSyncedAt
-            ? new Date(transfer.sync.lastSyncedAt).toLocaleString("es")
-            : "sin sincronizar"}
-          . Partidas nuevas válidas: {transfer?.includedCount ?? 0}. Excluidas: {transfer?.excludedCount ?? 0}.
+            ? formatDateTime(transfer.sync.lastSyncedAt, locale)
+            : t("dashboard:neverSynced")}
+          . {t("dashboard:validNewGames")}: {transfer?.includedCount ?? 0}. {t("dashboard:excludedGames")}:{" "}
+          {transfer?.excludedCount ?? 0}.
         </p>
-        {transfer?.pedagogy && <p>{transfer.pedagogy.explanation}</p>}
+        {transfer?.pedagogy && (
+          <p>{formatPedagogyActionExplanation(transfer.pedagogy.action, locale)}</p>
+        )}
         <Link className="btn" to="/transfer">
-          Ver transferencia
+          {t("dashboard:viewNewGames")}
+        </Link>
+        <TechnicalDetails>
+          <TechnicalRow label={t("technical:detector")} value={transfer?.detectorId} />
+          <TechnicalRow label={t("technical:patternId")} value={primaryPattern.id} />
+        </TechnicalDetails>
+      </section>
+
+      <section className="card">
+        <p className="eyebrow">{t("dashboard:defenseChannelEyebrow")}</p>
+        <h2>{t("dashboard:defenseTitle")}</h2>
+        <p className="muted">{t("dashboard:defenseSubtitle")}</p>
+        <p>
+          {t("dashboard:defenseNext", { session: state.defenseLab.sessionExerciseIds.length + 1 })}
+        </p>
+        <p className="reason">
+          {state.defenseLab.lastSelectionReason
+            ? formatDefenseSelectionReason(state.defenseLab.lastSelectionReason, locale)
+            : t("dashboard:defenseDefaultReason")}
+        </p>
+        <p>
+          <strong>{t("common:pedagogyLabels.possibleExplanation")}:</strong> {defenseText.hypothesis}
+        </p>
+        <p className="muted small">
+          {t("common:pedagogyLabels.howMuchEvidence")}:{" "}
+          {formatEvidenceLevel(defense.confidence as "baja" | "media" | "alta", locale)}.
+        </p>
+        <Link className="btn" to="/defense">
+          {t("dashboard:defensePractice")}
         </Link>
       </section>
 
       <section className="card">
-        <p className="eyebrow">Canal adicional</p>
-        <h2>Defense Lab</h2>
-        <p>
-          Próxima posición defensiva personalizada · sesión{" "}
-          {state.defenseLab.sessionExerciseIds.length + 1}
-        </p>
-        <p className="reason">
-          {state.defenseLab.lastSelectionReason ??
-            "Priorizaremos una posición severa con poca evidencia de dominio, variando color y recurso."}
-        </p>
-        <p>
-          <strong>Hipótesis defensiva:</strong> {defense.hypothesis}
-        </p>
-        <p className="muted small">Confianza {defense.confidence}.</p>
-        <Link className="btn" to="/defense">Practicar defensa</Link>
-      </section>
-
-      <section className="card">
-        <h2>Habilidades visibles (máx. 3)</h2>
+        <h2>{t("dashboard:skillsEyebrow")}</h2>
         <div className="skills-grid">
-          {visibleSkills.map((sk) => {
-            const st = state.skills[sk.id];
+          {[
+            { id: 1, name: t("dashboard:skill1Name"), desc: t("dashboard:skill1Desc") },
+            { id: 2, name: t("dashboard:skill2Name"), desc: t("dashboard:skill2Desc") },
+            { id: 3, name: t("dashboard:skill3Name"), desc: t("dashboard:skill3Desc") },
+          ].map((sk, index) => {
+            const skillId = ["cct-opponent-refutation", "forced-candidate-generation", "capture-recapture-check"][index]!;
+            const st = state.skills[skillId as keyof typeof state.skills];
             const pct = Math.round((st?.masteryEstimate ?? 0) * 100);
+            const initial = [0.85, 0.72, 0.7][index]!;
             return (
               <article key={sk.id} className="skill-card">
                 <h3>{sk.name}</h3>
-                <p className="small">{sk.description}</p>
+                <p className="small">{sk.desc}</p>
                 <div className="meter">
                   <div className="meter-fill" style={{ width: `${pct}%` }} />
                 </div>
                 <p className="mono small">
-                  Dominio estimado {pct}% · confianza{" "}
-                  {Math.round((st?.confidence ?? sk.initialConfidence) * 100)}%
-                </p>
-                <p className="muted tiny">
-                  Evidencia review: {sk.initialEvidence.discoveryPositions} pos. /{" "}
-                  {sk.initialEvidence.discoveryGames} partidas → validación{" "}
-                  {sk.initialEvidence.validationPositions} /{" "}
-                  {sk.initialEvidence.validationGames}
+                  {t("profile:estimatedLevel", { ns: "profile" })} {pct}% · {t("profile:evidenceAmount", { ns: "profile" })}{" "}
+                  {Math.round((st?.confidence ?? initial) * 100)}%
                 </p>
               </article>
             );
@@ -193,10 +265,16 @@ export function Dashboard() {
       </section>
 
       <p className="muted small center">
-        Lección: {microLesson.title} · Banco Fase 2: {dataManifest.counts.core} núcleo +{" "}
-        {dataManifest.counts.pool} ampliado ({dataManifest.poolFilter.motif}) · Sin centipawns
-        en pantalla principal.
+        {t("dashboard:footerMeta", {
+          lessonTitle: t("lesson:title", { ns: "lesson" }),
+          core: dataManifest.counts.core,
+          pool: dataManifest.counts.pool,
+          motif: dataManifest.poolFilter.motif,
+        })}
       </p>
+      <TechnicalDetails>
+        <TechnicalRow label={t("technical:id")} value={microLesson.id} />
+      </TechnicalDetails>
     </div>
   );
 }

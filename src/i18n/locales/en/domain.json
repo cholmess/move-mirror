@@ -1,0 +1,15 @@
+{
+  "observable": {
+    "La_respuesta_forzada_del_rival_quedo_disponible": "Your opponent’s forced reply was available",
+    "La_linea_principal_permite_capturar_una_pieza": "The main line allows capturing a piece",
+    "Habia_jaque_o_captura_fuerte_y_se_jugo_una_jugada_no_forzada": "There was a strong check or capture but a non-forcing move was played",
+    "La_captura_elegida_fue_costosa": "The chosen capture was costly",
+    "Movimiento_tranquilo_de_peon_en_posicion_critica": "Quiet pawn move in a critical position"
+  },
+  "defenseProfile": {
+    "noAttempts": "No defensive attempts yet.",
+    "resourceErrors": "You missed {{errors}} of {{attempts}} positions of type {{resource}}.",
+    "insufficientVolume": "Not enough volume yet for a new weakness claim.",
+    "resourceOmission": "You might be skipping the {{resource}} resource when checking your opponent’s reply."
+  }
+}

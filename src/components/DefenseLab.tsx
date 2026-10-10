@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Chess } from "chess.js";
 import { Chessboard } from "react-chessboard";
 import { fetchNextDefense, confirmDefense } from "../api/defenseClient";
@@ -9,6 +10,17 @@ import type {
   DefensePromptDto,
   DefensiveResource,
 } from "../types/defense";
+import {
+  formatDefenseSelectionReason,
+  formatDefensiveResource,
+  formatEvaluationStatus,
+  formatEvidenceLevel,
+  formatMoveForDisplay,
+  formatPhase,
+  formatSideToMove,
+} from "../i18n/presenters";
+import type { SupportedLocale } from "../i18n/types";
+import { TechnicalDetails, TechnicalRow } from "./TechnicalDetails";
 
 type Phase = "read" | "threat" | "resource" | "move" | "verify" | "feedback";
 type FullFeedback = DefenseFeedbackDto & {
@@ -19,41 +31,27 @@ type FullFeedback = DefenseFeedbackDto & {
   moveUci: string;
 };
 
-const threatOptions = [
-  ["check", "Jaque"],
-  ["capture", "Captura"],
-  ["mate", "Amenaza de mate"],
-  ["material", "Ganancia de material"],
-  ["positional", "Presión posicional"],
-  ["not_sure", "No estoy seguro"],
-] as const;
+const THREAT_VALUES = ["check", "capture", "mate", "material", "positional", "not_sure"] as const;
 
-const resources: Array<[DefensiveResource | "not_sure", string]> = [
-  ["countercheck", "Contra-jaque"],
-  ["capture_attacker", "Capturar al atacante"],
-  ["move_attacked_piece", "Retirar la pieza atacada"],
-  ["defend_target", "Defender el objetivo"],
-  ["block_or_interpose", "Bloquear o interponer"],
-  ["trade_attackers", "Cambiar atacantes"],
-  ["queen_trade", "Cambiar damas"],
-  ["create_escape_square", "Crear una casilla de escape"],
-  ["remove_defender", "Eliminar al defensor"],
-  ["counterattack", "Contraatacar"],
-  ["simplify", "Simplificar"],
-  ["prophylaxis", "Profilaxis"],
-  ["not_sure", "No estoy seguro"],
+const RESOURCE_VALUES: Array<DefensiveResource | "not_sure"> = [
+  "countercheck",
+  "capture_attacker",
+  "move_attacked_piece",
+  "defend_target",
+  "block_or_interpose",
+  "trade_attackers",
+  "queen_trade",
+  "create_escape_square",
+  "remove_defender",
+  "counterattack",
+  "simplify",
+  "prophylaxis",
+  "not_sure",
 ];
 
-const statusLabel: Record<string, string> = {
-  verified_best: "Defensa óptima verificada",
-  verified_acceptable: "Defensa aceptable verificada",
-  playable_inexact: "Jugable, pero imprecisa",
-  incorrect: "No neutraliza el peligro",
-  unverified: "No verificada",
-  illegal: "Jugada ilegal",
-};
-
 export function DefenseLab() {
+  const { t, i18n } = useTranslation(["defense", "common", "training", "technical"]);
+  const locale = i18n.language as SupportedLocale;
   const { state, recordDefenseLabAttempt } = useApp();
   const [prompt, setPrompt] = useState<DefensePromptDto | null>(null);
   const [phase, setPhase] = useState<Phase>("read");
@@ -99,15 +97,14 @@ export function DefenseLab() {
       setFirstAttempt(null);
       setStartedAt(new Date().toISOString());
     } catch {
-      setError("No fue posible cargar una posición defensiva verificada.");
+      setError(t("loadError"));
     } finally {
       setLoading(false);
     }
-  }, [state.defenseLab.attempts]);
+  }, [state.defenseLab.attempts, t]);
 
   useEffect(() => {
     void loadNext();
-    // The exercise changes only through the explicit next action.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -154,7 +151,7 @@ export function DefenseLab() {
       setFeedback(result);
       setPhase("feedback");
     } catch {
-      setError("No fue posible verificar la defensa. El intento no se marcó como correcto.");
+      setError(t("verifyError"));
     } finally {
       setLoading(false);
     }
@@ -174,22 +171,46 @@ export function DefenseLab() {
     setPhase("move");
   };
 
-  if (loading && !prompt) return <div className="page"><p>Cargando Defense Lab…</p></div>;
-  if (error && !prompt) return <div className="page"><p className="warn">{error}</p></div>;
+  if (loading && !prompt) {
+    return (
+      <div className="page">
+        <p>{t("loading")}</p>
+      </div>
+    );
+  }
+  if (error && !prompt) {
+    return (
+      <div className="page">
+        <p className="warn">{error}</p>
+      </div>
+    );
+  }
   if (!prompt) return null;
+
+  const openingSuffix = prompt.sourceContext.opening ? ` · ${prompt.sourceContext.opening}` : "";
 
   return (
     <div className="page defense" data-testid="defense-root">
       <div className="page-head">
-        <p className="eyebrow">Defense Lab · te toca defender</p>
-        <h1>Neutraliza la amenaza antes de jugar automático</h1>
-        <p className="reason">{prompt.selectionReason}</p>
+        <p className="eyebrow">{t("eyebrow")}</p>
+        <h1>{t("pageTitle")}</h1>
+        <p className="reason" data-testid="defense-selection-reason">
+          {formatDefenseSelectionReason(prompt.selectionReason, locale)}
+        </p>
         {prompt.dataset && (
           <p className="tiny muted">
-            Dataset {prompt.dataset.releaseVersion} · {prompt.dataset.selected} seleccionados de{" "}
-            {prompt.dataset.technicallyEligible} elegibles · universo completo{" "}
-            {prompt.dataset.candidatesAnalyzed} · {prompt.dataset.selectionVersion}
+            {t("datasetMeta", {
+              version: prompt.dataset.releaseVersion,
+              selected: prompt.dataset.selected,
+              eligible: prompt.dataset.technicallyEligible,
+              analyzed: prompt.dataset.candidatesAnalyzed,
+            })}
           </p>
+        )}
+        {prompt.dataset && (
+          <TechnicalDetails>
+            <TechnicalRow label={t("technical:datasetSelection")} value={prompt.dataset.selectionVersion} />
+          </TechnicalDetails>
         )}
       </div>
       <div className="train-grid">
@@ -200,73 +221,107 @@ export function DefenseLab() {
             onPieceDrop={onDrop}
             arePiecesDraggable={phase === "move"}
           />
-          {moveSan && <p className="mono center">Jugada elegida: <strong>{moveSan}</strong></p>}
+          {moveSan && (
+            <p className="mono center">
+              {t("moveChosen", { move: formatMoveForDisplay(moveSan, locale) })}
+            </p>
+          )}
           <p className="muted small">
-            {prompt.sourceContext.playerColor === "white" ? "Blancas" : "Negras"} · movimiento{" "}
-            {prompt.sourceContext.moveNumber} · {prompt.phase}
-            {prompt.sourceContext.opening ? ` · ${prompt.sourceContext.opening}` : ""}
+            {t("contextLine", {
+              side: formatSideToMove(prompt.sourceContext.playerColor === "white" ? "w" : "b", locale),
+              moveNumber: prompt.sourceContext.moveNumber,
+              phase: formatPhase(prompt.phase, locale),
+              opening: openingSuffix,
+            })}
           </p>
           {prompt.previousMoveSan && (
-            <p className="small">Última jugada rival: <span className="mono">{prompt.previousMoveSan}</span></p>
+            <p className="small">
+              {t("lastOpponentMove", {
+                move: formatMoveForDisplay(prompt.previousMoveSan, locale),
+              })}
+            </p>
           )}
         </section>
 
         <section className="card flow-panel">
           {phase === "read" && (
             <>
-              <h2>1. Lee la posición</h2>
-              <p>{prompt.prompt}</p>
-              <p className="muted small">Sin evaluación, flechas ni jugada de la partida.</p>
-              <button className="btn primary" onClick={() => setPhase("threat")}>Ya leí la posición</button>
+              <h2>{t("stepReadTitle")}</h2>
+              <p data-testid="defense-exercise-prompt">
+                {prompt.promptKey ? t("exercisePrompt") : (prompt.prompt ?? t("exercisePrompt"))}
+              </p>
+              <p className="muted small">{t("stepReadHint")}</p>
+              <button className="btn primary" onClick={() => setPhase("threat")}>
+                {t("stepReadDone")}
+              </button>
             </>
           )}
           {phase === "threat" && (
             <>
-              <h2>2. Identifica la amenaza</h2>
-              <p>¿Qué intenta conseguir tu rival si juegas de manera automática?</p>
+              <h2>{t("stepThreatTitle")}</h2>
+              <p>{t("stepThreatQuestion")}</p>
               <div className="choice-grid">
-                {threatOptions.map(([value, label]) => (
+                {THREAT_VALUES.map((value) => (
                   <label key={value}>
                     <input
                       type="checkbox"
                       checked={threats.includes(value)}
                       onChange={() =>
                         setThreats((items) =>
-                          items.includes(value) ? items.filter((item) => item !== value) : [...items, value],
+                          items.includes(value)
+                            ? items.filter((item) => item !== value)
+                            : [...items, value],
                         )
                       }
-                    />{" "}{label}
+                    />{" "}
+                    {t(`threatType.${value}`)}
                   </label>
                 ))}
               </div>
               <label className="field">
-                <span>Describe la respuesta más incómoda del rival (opcional)</span>
-                <textarea className="textarea" value={threatText} onChange={(event) => setThreatText(event.target.value)} />
+                <span>{t("stepThreatOptional")}</span>
+                <textarea
+                  className="textarea"
+                  value={threatText}
+                  onChange={(event) => setThreatText(event.target.value)}
+                />
               </label>
               <button className="btn primary" disabled={!threats.length} onClick={() => setPhase("resource")}>
-                Elegir recurso
+                {t("chooseResource")}
               </button>
             </>
           )}
           {phase === "resource" && (
             <>
-              <h2>3. Elige qué recurso buscar</h2>
-              <p>¿Qué tipo de recurso buscarías primero?</p>
-              <select aria-label="Recurso defensivo" value={resource} onChange={(event) => setResource(event.target.value as DefensiveResource | "not_sure")}>
-                {resources.map(([value, label]) => <option value={value} key={value}>{label}</option>)}
+              <h2>{t("stepResourceTitle")}</h2>
+              <p>{t("stepResourceQuestion")}</p>
+              <select
+                aria-label={t("stepResourceQuestion")}
+                value={resource}
+                onChange={(event) => setResource(event.target.value as DefensiveResource | "not_sure")}
+              >
+                {RESOURCE_VALUES.map((value) => (
+                  <option value={value} key={value}>
+                    {formatDefensiveResource(value, locale)}
+                  </option>
+                ))}
               </select>
-              <div className="actions"><button className="btn primary" onClick={() => setPhase("move")}>Jugar en el tablero</button></div>
+              <div className="actions">
+                <button className="btn primary" onClick={() => setPhase("move")}>
+                  {t("playOnBoard")}
+                </button>
+              </div>
             </>
           )}
           {phase === "move" && (
             <>
-              <h2>4. Juega tu defensa</h2>
-              <p>Arrastra una pieza. También puedes escribir SAN y validarla localmente.</p>
+              <h2>{t("stepMoveTitle")}</h2>
+              <p>{t("stepMoveHint")}</p>
               <label className="field">
-                <span>Jugada en SAN</span>
+                <span>{t("moveSanLabel")}</span>
                 <input
                   className="input"
-                  placeholder="ej. Nf3"
+                  placeholder={t("movePlaceholder")}
                   value={typedSan}
                   onChange={(event) => setTypedSan(event.target.value)}
                 />
@@ -290,41 +345,68 @@ export function DefenseLab() {
                   }
                 }}
               >
-                Validar jugada
+                {t("validateMove")}
               </button>
               {moveUci && (
                 <div className="actions">
-                  <button className="btn primary" onClick={() => setPhase("verify")}>Verificación mental</button>
-                  <button className="btn ghost" onClick={() => { setMoveSan(""); setMoveUci(""); setTypedSan(""); setBoardFen(prompt.fen); }}>Cambiar jugada</button>
+                  <button className="btn primary" onClick={() => setPhase("verify")}>
+                    {t("mentalVerify")}
+                  </button>
+                  <button
+                    className="btn ghost"
+                    onClick={() => {
+                      setMoveSan("");
+                      setMoveUci("");
+                      setTypedSan("");
+                      setBoardFen(prompt.fen);
+                    }}
+                  >
+                    {t("training:changeMove")}
+                  </button>
                 </div>
               )}
             </>
           )}
           {phase === "verify" && (
             <>
-              <h2>5. Verifica antes de confirmar</h2>
+              <h2>{t("stepVerifyTitle")}</h2>
               <label className="field">
-                <span>Respuesta más forzante del rival</span>
-                <input className="input" value={predictedReply} onChange={(event) => setPredictedReply(event.target.value)} />
+                <span>{t("predictedReplyLabel")}</span>
+                <input
+                  className="input"
+                  value={predictedReply}
+                  onChange={(event) => setPredictedReply(event.target.value)}
+                />
               </label>
               <label className="field">
-                <span>¿Por qué debería resistir tu defensa?</span>
-                <textarea className="textarea" value={reasoning} onChange={(event) => setReasoning(event.target.value)} />
+                <span>{t("whyHoldsLabel")}</span>
+                <textarea
+                  className="textarea"
+                  value={reasoning}
+                  onChange={(event) => setReasoning(event.target.value)}
+                />
               </label>
               <label>
                 <input type="checkbox" checked={checked} onChange={(event) => setChecked(event.target.checked)} />{" "}
-                Comprobé jaques, capturas y amenazas del rival después de mi jugada.
+                {t("verifyCheckbox")}
               </label>
               <div className="actions">
                 <button
                   className="btn primary"
                   data-testid="defense-confirm"
-                  disabled={!checked || predictedReply.trim().length < 2 || reasoning.trim().length < 4 || loading}
+                  disabled={
+                    !checked ||
+                    predictedReply.trim().length < 2 ||
+                    reasoning.trim().length < 4 ||
+                    loading
+                  }
                   onClick={() => void submit()}
                 >
-                  {loading ? "Verificando…" : "Confirmar defensa"}
+                  {loading ? t("training:submitting") : t("confirmDefense")}
                 </button>
-                <button className="btn ghost" onClick={() => setPhase("move")}>Cambiar jugada</button>
+                <button className="btn ghost" onClick={() => setPhase("move")}>
+                  {t("training:changeMove")}
+                </button>
               </div>
               {error && <p className="warn">{error}</p>}
             </>
@@ -333,6 +415,7 @@ export function DefenseLab() {
             <DefenseFeedback
               feedback={feedback}
               attempt={firstAttempt}
+              locale={locale}
               onRetry={retry}
               onNext={() => void loadNext()}
             />
@@ -357,37 +440,98 @@ function currentDefenseSessionId() {
 function DefenseFeedback({
   feedback,
   attempt,
+  locale,
   onRetry,
   onNext,
 }: {
   feedback: FullFeedback;
   attempt: DefenseAttempt | null;
+  locale: SupportedLocale;
   onRetry: () => void;
   onNext: () => void;
 }) {
+  const { t } = useTranslation(["defense", "training", "technical"]);
+
+  const resourceLabel =
+    feedback.motif.confidence === "low"
+      ? t("resourceNeutral")
+      : formatDefensiveResource(feedback.motif.resource as DefensiveResource, locale);
+
   return (
     <div data-testid="defense-feedback">
-      <h2>Feedback defensivo</h2>
+      <h2>{t("feedbackTitle")}</h2>
       <ol className="feedback-sequence">
-        <li><strong>Amenaza:</strong> {feedback.threat.description}</li>
-        <li><strong>Tu jugada:</strong> <span className="mono">{feedback.moveSan}</span></li>
-        <li><strong>Estado:</strong> <span className={`result result-${feedback.evaluationStatus}`}>{statusLabel[feedback.evaluationStatus]}</span></li>
-        <li><strong>Recurso:</strong> {feedback.motif.confidence === "low" ? "Defensa neutral" : feedback.motif.resource} ({feedback.motif.confidence})</li>
-        <li><strong>Defensa recomendada:</strong> <span className="mono">{feedback.referenceDefenseSan}</span></li>
-        <li><strong>Respuesta rival más fuerte:</strong> <span className="mono">{feedback.opponentReplySan ?? "no verificada"}</span></li>
-        <li><strong>En la partida:</strong> {feedback.actualPlayedMoveSan} · {feedback.actualPunishmentLineSan.join(" ")}</li>
-        <li><strong>Línea corta:</strong> <span className="mono">{feedback.defenseReferenceLineSan.slice(0, 6).join(" ")}</span></li>
-        <li><strong>Regla transferible:</strong> {feedback.pedagogy.transferableRule}</li>
+        <li>
+          <strong>{t("threat")}:</strong> {feedback.threat.description}
+        </li>
+        <li>
+          <strong>{t("yourMove")}:</strong>{" "}
+          <span className="mono">{formatMoveForDisplay(feedback.moveSan, locale)}</span>
+        </li>
+        <li>
+          <strong>{t("status")}:</strong>{" "}
+          <span className={`result result-${feedback.evaluationStatus}`}>
+            {formatEvaluationStatus(feedback.evaluationStatus, locale)}
+          </span>
+        </li>
+        <li>
+          <strong>{t("resourceLabel")}:</strong> {resourceLabel} (
+          {formatEvidenceLevel(feedback.motif.confidence, locale)})
+        </li>
+        <li>
+          <strong>{t("recommendedDefense")}:</strong>{" "}
+          <span className="mono">{formatMoveForDisplay(feedback.referenceDefenseSan, locale)}</span>
+        </li>
+        <li>
+          <strong>{t("opponentReply")}:</strong>{" "}
+          <span className="mono">
+            {feedback.opponentReplySan
+              ? formatMoveForDisplay(feedback.opponentReplySan, locale)
+              : t("notVerified")}
+          </span>
+        </li>
+        <li>
+          <strong>{t("inGame")}:</strong> {formatMoveForDisplay(feedback.actualPlayedMoveSan, locale)} ·{" "}
+          {feedback.actualPunishmentLineSan
+            .map((move) => formatMoveForDisplay(move, locale))
+            .join(" ")}
+        </li>
+        <li>
+          <strong>{t("shortLine")}:</strong>{" "}
+          <span className="mono">
+            {feedback.defenseReferenceLineSan
+              .slice(0, 6)
+              .map((move) => formatMoveForDisplay(move, locale))
+              .join(" ")}
+          </span>
+        </li>
+        <li>
+          <strong>{t("transferRule")}:</strong> {feedback.pedagogy.transferableRule}
+        </li>
       </ol>
-      <p><strong>Hecho observable:</strong> {feedback.pedagogy.observable}</p>
-      <p><strong>Explicación ajedrecística:</strong> {feedback.pedagogy.interpretation}</p>
-      <p className="muted small">
-        Hipótesis de hábito: {feedback.pedagogy.habitHypothesis} · confianza {feedback.pedagogy.confidence}.
+      <p>
+        <strong>{t("observable")}:</strong> {feedback.pedagogy.observable}
       </p>
-      {attempt?.retryOfAttemptId && <p className="small">Este resultado se compara con tu primer intento.</p>}
+      <p>
+        <strong>{t("interpretation")}:</strong> {feedback.pedagogy.interpretation}
+      </p>
+      <p className="muted small">
+        {t("habitHypothesis")}: {feedback.pedagogy.habitHypothesis} ·{" "}
+        {formatEvidenceLevel(feedback.pedagogy.confidence, locale)}.
+      </p>
+      <TechnicalDetails>
+        <TechnicalRow label={t("technical:uci")} value={feedback.moveUci} />
+      </TechnicalDetails>
+      {attempt?.retryOfAttemptId && (
+        <p className="small">{t("retryCompareNote")}</p>
+      )}
       <div className="actions">
-        <button className="btn" onClick={onRetry}>Reintentar sin flecha</button>
-        <button className="btn primary" onClick={onNext}>Siguiente posición adaptada</button>
+        <button className="btn" onClick={onRetry}>
+          {t("retryNoArrow")}
+        </button>
+        <button className="btn primary" onClick={onNext}>
+          {t("nextAdapted")}
+        </button>
       </div>
     </div>
   );

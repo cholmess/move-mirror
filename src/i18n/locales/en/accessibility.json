@@ -1,0 +1,11 @@
+{
+  "mainContent": "Main content",
+  "languageSelect": "Choose interface language",
+  "stepDot": "Go to step {{title}}",
+  "defenseResourceSelect": "Defensive resource",
+  "boardTrain": "Training board",
+  "boardDefense": "Defense board",
+  "boardManual": "Manual entry board",
+  "boardLesson": "Lesson board preview",
+  "liveRegion": "Announcements"
+}

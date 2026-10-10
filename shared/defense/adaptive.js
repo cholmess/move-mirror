@@ -65,12 +65,12 @@ export function selectDefenseExercise(exercises, attempts, sessionIds = [], now 
     }))
     .sort((a, b) => b.score - a.score || a.exercise.id.localeCompare(b.exercise.id));
   const selected = ranked[0]?.exercise ?? null;
-  if (!selected) return { exercise: null, reason: "No hay posiciones elegibles." };
+  if (!selected) return { exercise: null, reason: { key: "noEligible" } };
 
   const own = attempts.filter((attempt) => attempt.exerciseId === selected.id);
   const failed = own.some((attempt) => !isSuccessForAdaptive(attempt.evaluationStatus));
   const reason = failed
-    ? `Elegimos esta posición porque una defensa de ${selected.motif.resource} todavía necesita revisión.`
-    : `Elegimos esta posición por su severidad y porque aún hay poca evidencia de dominio en ${selected.motif.resource}.`;
+    ? { key: "resourceReview", params: { resource: selected.motif.resource } }
+    : { key: "lowEvidenceResource", params: { resource: selected.motif.resource } };
   return { exercise: selected, reason };
 }

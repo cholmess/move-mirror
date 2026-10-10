@@ -1,5 +1,9 @@
 import type { EvaluationStatus } from "@shared/evaluation/types";
 
+export type DefenseSelectionReasonPayload =
+  | { key: string; params?: Record<string, string | number> }
+  | string;
+
 export type DefensiveResource =
   | "countercheck"
   | "capture_attacker"
@@ -27,8 +31,10 @@ export interface DefensePromptDto {
     opening: string | null;
   };
   previousMoveSan: string | null;
-  prompt: string;
-  selectionReason: string;
+  /** @deprecated API may omit; use promptKey */
+  prompt?: string;
+  promptKey?: "default";
+  selectionReason: DefenseSelectionReasonPayload;
   dataset?: {
     releaseVersion: "0.4.1";
     selectionVersion: "defense-selection-v1";
@@ -97,7 +103,7 @@ export interface DefenseLabState {
   version: "defense-lab-state-v1";
   attempts: DefenseAttempt[];
   currentExerciseId: string | null;
-  lastSelectionReason: string | null;
+  lastSelectionReason: DefenseSelectionReasonPayload | null;
   sessionExerciseIds: string[];
   updatedAt: string | null;
 }

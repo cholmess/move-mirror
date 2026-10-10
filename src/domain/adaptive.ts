@@ -4,9 +4,14 @@ import { PATTERN_ID } from "../data/constants";
 import { primaryPattern } from "../data/pattern";
 import { isSuccessForAdaptive } from "@shared/evaluation/classify.js";
 
+export interface SelectionReason {
+  key: string;
+  params?: Record<string, string | number>;
+}
+
 export interface SelectionResult {
   exercise: Exercise;
-  reasons: string[];
+  reasons: SelectionReason[];
 }
 
 function attemptsForExercise(state: AppState, exerciseId: string) {
@@ -31,40 +36,40 @@ function successRate(state: AppState, exerciseId: string): number | null {
 /** Heurística transparente — sustituible por AdaptiveModelService en el futuro. */
 export function selectNextExercise(state: AppState): SelectionResult {
   const now = Date.now();
-  const reasons: string[] = [];
+  const reasons: SelectionReason[] = [];
 
   const scored = exercises.map((ex) => {
     let score = 0;
-    const localReasons: string[] = [];
+    const localReasons: SelectionReason[] = [];
 
     if (ex.patternId === PATTERN_ID) {
       score += 3;
-      localReasons.push("refuerza el patrón prioritario CCT + refutación");
+      localReasons.push({ key: "patternPriority" });
     }
 
     score += ex.severity * 0.5;
-    localReasons.push(`severidad pedagógica ${ex.severity}/5`);
+    localReasons.push({ key: "severity", params: { severity: ex.severity } });
 
     const attempts = attemptsForExercise(state, ex.id);
     if (ex.tier === "core") {
       score += 1.5;
-      localReasons.push("ejercicio núcleo del review con línea completa");
+      localReasons.push({ key: "coreExercise" });
     }
 
     if (attempts.length === 0) {
       score += 4;
-      localReasons.push("posición nueva para ti en MoveMirror");
+      localReasons.push({ key: "newPosition" });
     } else {
       const rate = successRate(state, ex.id);
       if (rate !== null && rate < 0.5) {
         score += 3;
-        localReasons.push("desempeño reciente bajo — conviene repetir");
+        localReasons.push({ key: "lowPerformance" });
       }
       const last = lastAttemptAt(state, ex.id);
       const daysSince = (now - last) / (86400000);
       if (daysSince >= 1) {
         score += 2;
-        localReasons.push("repetición espaciada (≥1 día desde el último intento)");
+        localReasons.push({ key: "spacedRepetition" });
       }
     }
 
@@ -75,13 +80,13 @@ export function selectNextExercise(state: AppState): SelectionResult {
     }, 0);
     score += skillUncertainty * 2;
     if (skillUncertainty > 0.5) {
-      localReasons.push("incertidumbre alta en habilidades ligadas");
+      localReasons.push({ key: "skillUncertainty" });
     }
 
     const variety =
       ex.phase === "endgame" ? 1 : ex.phase === "opening" ? 0.5 : 0.8;
     score += variety;
-    localReasons.push(`variedad de fase: ${ex.phase}`);
+    localReasons.push({ key: "phaseVariety", params: { phase: ex.phase } });
 
     return { ex, score, localReasons };
   });
@@ -89,13 +94,14 @@ export function selectNextExercise(state: AppState): SelectionResult {
   scored.sort((a, b) => b.score - a.score);
   const best = scored[0]!;
   reasons.push(...best.localReasons.slice(0, 4));
-  reasons.unshift(
-    `Patrón activo: ${primaryPattern.shortTitle} (recurrencia ~${primaryPattern.evidence.pctValidation}% en validación).`
-  );
+  reasons.unshift({
+    key: "activePattern",
+    params: { pct: primaryPattern.evidence.pctValidation },
+  });
 
   return { exercise: best.ex, reasons };
 }
 
 export function formatSelectionExplanation(result: SelectionResult): string {
-  return result.reasons.join(" · ");
+  return result.reasons.map((reason) => `${reason.key}:${JSON.stringify(reason.params ?? {})}`).join("|");
 }

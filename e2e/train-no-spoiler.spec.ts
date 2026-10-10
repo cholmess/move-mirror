@@ -5,6 +5,12 @@ import { test, expect } from "@playwright/test";
  * Nota: la solución puede existir en el bundle JS; esto no es secreto criptográfico.
  */
 test.describe("Train no-spoiler", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem("move-mirror-locale-v1", "es");
+    });
+  });
+
   test("sin evaluación ni solución antes de confirmar", async ({ page }) => {
     let evaluatePosts = 0;
     await page.route("**/api/evaluate", async (route) => {
@@ -44,11 +50,12 @@ test.describe("Train no-spoiler", () => {
       return JSON.parse(raw).attempts?.length ?? 0;
     });
 
-    await page.getByLabel(/Jaques considerados/i).fill("Qg4 jaque lateral");
-    await page.getByLabel(/Capturas consideradas/i).fill("Qxe4 captura");
-    await page.getByLabel(/Amenazas consideradas/i).fill("presión e4");
-    await page.getByLabel(/Primera candidata/i).fill("Qxe4");
-    await page.getByLabel(/Mejor respuesta forzada del rival/i).fill("Nxg4");
+    const cctFields = page.getByTestId("train-flow").getByRole("textbox");
+    await cctFields.nth(0).fill("Qg4 jaque lateral");
+    await cctFields.nth(1).fill("Qxe4 captura");
+    await cctFields.nth(2).fill("presión e4");
+    await cctFields.nth(3).fill("Qxe4");
+    await cctFields.nth(4).fill("Nxg4");
 
     await page.getByRole("button", { name: /Continuar al tablero/i }).click();
 
@@ -58,11 +65,13 @@ test.describe("Train no-spoiler", () => {
     expect(bodyText).not.toMatch(/Óptima|Incorrecta|No verificada/);
     expect(evaluatePosts).toBe(0);
 
-    await page.getByPlaceholder("ej. Qxe4").fill(solutionNeedle);
+    await page.getByTestId("train-flow").locator("input.input").fill(solutionNeedle);
     await page.getByRole("button", { name: /Confirmar jugada escrita/i }).click();
 
     await page
-      .getByPlaceholder(/Por qué elegiste esta jugada/i)
+      .getByTestId("train-flow")
+      .locator("textarea.textarea")
+      .last()
       .fill("Verifiqué jaque y captura del rival antes de mover.");
 
     await page.getByRole("button", { name: /Revisar antes de enviar/i }).click();
@@ -77,8 +86,7 @@ test.describe("Train no-spoiler", () => {
     await expect(page.getByTestId("train-feedback")).toBeVisible();
     expect(evaluatePosts).toBe(1);
 
-    const post = await page.locator("[data-testid=train-feedback]").innerText();
-    expect(post).toMatch(/Clasificación|Óptima|Aceptable|Imprecisa|Incorrecta|No verificada/);
+    await expect(page.getByTestId("train-feedback-classification")).toContainText(/Mejor opción/i);
 
     const attemptsAfter = await page.evaluate(() => {
       const raw = localStorage.getItem("move-mirror-state-v4");

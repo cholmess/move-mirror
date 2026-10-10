@@ -1,0 +1,15 @@
+{
+  "observable": {
+    "La_respuesta_forzada_del_rival_quedo_disponible": "Die erzwungene Antwort deines Gegners war verfügbar",
+    "La_linea_principal_permite_capturar_una_pieza": "Die Hauptvariante erlaubt einen Figurenschlag",
+    "Habia_jaque_o_captura_fuerte_y_se_jugo_una_jugada_no_forzada": "Es gab ein starkes Schach oder einen starken Schlag, aber es wurde ein nicht erzwingender Zug gespielt",
+    "La_captura_elegida_fue_costosa": "Der gewählte Schlag war teuer",
+    "Movimiento_tranquilo_de_peon_en_posicion_critica": "Ruhiger Bauernzug in kritischer Stellung"
+  },
+  "defenseProfile": {
+    "noAttempts": "Noch keine Verteidigungsversuche.",
+    "resourceErrors": "Du hast {{errors}} von {{attempts}} Stellungen vom Typ {{resource}} verpasst.",
+    "insufficientVolume": "Noch zu wenig Volumen für eine neue Schwächenaussage.",
+    "resourceOmission": "Vielleicht überspringst du die Ressource {{resource}}, wenn du die Antwort deines Gegners prüfst."
+  }
+}

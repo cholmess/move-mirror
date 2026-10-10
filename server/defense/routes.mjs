@@ -27,7 +27,7 @@ export function promptDto(exercise, reason, dataset = null) {
       opening: exercise.sourceContext.opening ?? null,
     },
     previousMoveSan: exercise.source.previousMoveSan,
-    prompt: "Te toca defender. Lee la posición antes de elegir una jugada.",
+    promptKey: "default",
     selectionReason: reason,
     ...(dataset?.selection
       ? {

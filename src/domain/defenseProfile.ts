@@ -37,6 +37,28 @@ export function buildDefenseProfile(attempts: DefenseAttempt[]) {
   const nextReviewAt = last
     ? new Date(Date.parse(last) + 3 * 86_400_000).toISOString()
     : null;
+
+  let observationKey: "noAttempts" | "resourceErrors" = "noAttempts";
+  let observationParams: { errors?: number; attempts?: number; resource?: DefensiveResource } = {};
+  let hypothesisKey: "insufficientVolume" | "resourceOmission" = "insufficientVolume";
+  let hypothesisParams: { resource?: DefensiveResource } = {};
+
+  if (weakest) {
+    observationKey = "resourceErrors";
+    observationParams = {
+      errors: weakest[1].errors,
+      attempts: weakest[1].attempts,
+      resource: weakest[0],
+    };
+  }
+
+  if (evidenceEnough && weakest) {
+    hypothesisKey = "resourceOmission";
+    hypothesisParams = { resource: weakest[0] };
+  } else {
+    hypothesisKey = "insufficientVolume";
+  }
+
   return {
     positionsAttempted: positions.length,
     verifiedResults: verified.length,
@@ -50,11 +72,9 @@ export function buildDefenseProfile(attempts: DefenseAttempt[]) {
     nextReviewAt,
     evidenceEnough,
     confidence,
-    observation: weakest
-      ? `Fallaste ${weakest[1].errors} de ${weakest[1].attempts} posiciones de ${weakest[0]}.`
-      : "Todavía no hay intentos defensivos.",
-    hypothesis: evidenceEnough && weakest
-      ? `Podrías estar omitiendo el recurso ${weakest[0]} al verificar la respuesta rival.`
-      : "Aún no hay volumen suficiente para formular una nueva debilidad.",
+    observationKey,
+    observationParams,
+    hypothesisKey,
+    hypothesisParams,
   };
 }

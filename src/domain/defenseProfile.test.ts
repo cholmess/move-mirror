@@ -33,14 +33,14 @@ describe("defensive profile", () => {
   it("keeps claims as low-confidence hypotheses below the minimum sample", () => {
     const profile = buildDefenseProfile([attempt(0), attempt(1), attempt(2), attempt(3)]);
     expect(profile.evidenceEnough).toBe(false);
-    expect(profile.hypothesis).toContain("no hay volumen suficiente");
+    expect(profile.hypothesisKey).toBe("insufficientVolume");
   });
 
   it("separates observation, hypothesis, and confidence after sufficient variety", () => {
     const profile = buildDefenseProfile([0, 1, 2, 3, 4, 5].map(attempt));
     expect(profile.evidenceEnough).toBe(true);
-    expect(profile.observation).toContain("Fallaste");
-    expect(profile.hypothesis).toContain("Podrías");
+    expect(profile.observationKey).toBe("resourceErrors");
+    expect(profile.hypothesisKey).toBe("resourceOmission");
     expect(profile.confidence).toBe("media");
   });
 });

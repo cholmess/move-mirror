@@ -1,5 +1,11 @@
 import { test, expect } from "@playwright/test";
 
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem("move-mirror-locale-v1", "es");
+  });
+});
+
 test("Defense Lab oculta solución, confirma una jugada y no altera la dosis", async ({ page }) => {
   let confirmPosts = 0;
   let evaluatePosts = 0;
@@ -12,8 +18,8 @@ test("Defense Lab oculta solución, confirma una jugada y no altera la dosis", a
       phase: "opening",
       sourceContext: { playedAt: "2026-01-01T00:00:00Z", playerColor: "white", moveNumber: 1, opening: null },
       previousMoveSan: null,
-      prompt: "Te toca defender. Lee la posición antes de elegir una jugada.",
-      selectionReason: "Poca evidencia de dominio.",
+      promptKey: "default",
+      selectionReason: { key: "lowDomainEvidence" },
     },
     {
       exerciseId: "def-game-2-9",
@@ -22,8 +28,8 @@ test("Defense Lab oculta solución, confirma una jugada y no altera la dosis", a
       phase: "opening",
       sourceContext: { playedAt: "2026-01-02T00:00:00Z", playerColor: "white", moveNumber: 5, opening: null },
       previousMoveSan: "e5",
-      prompt: "Te toca defender. Lee la posición antes de elegir una jugada.",
-      selectionReason: "Variedad adaptativa.",
+      promptKey: "default",
+      selectionReason: { key: "adaptiveVariety" },
     },
   ];
 
@@ -91,20 +97,20 @@ test("Defense Lab oculta solución, confirma una jugada y no altera la dosis", a
   expect(confirmPosts).toBe(0);
   expect(evaluatePosts).toBe(0);
 
-  await page.getByRole("button", { name: "Ya leí la posición" }).click();
+  await page.getByRole("button", { name: "He leído la posición" }).click();
   await page.getByLabel("Captura").check();
-  await page.getByText("Describe la respuesta").locator("..").getByRole("textbox").fill("El rival captura en el centro");
-  await page.getByRole("button", { name: "Elegir recurso" }).click();
-  await page.getByLabel("Recurso defensivo").selectOption("counterattack");
+  await page.getByLabel(/Describe la respuesta/i).fill("El rival captura en el centro");
+  await page.getByRole("button", { name: "Elige un recurso" }).click();
+  await page.getByLabel(/tipo de recurso/i).selectOption("counterattack");
   await page.getByRole("button", { name: "Jugar en el tablero" }).click();
 
-  await page.getByPlaceholder("ej. Nf3").fill("e4");
+  await page.getByTestId("defense-root").locator("input.input").fill("e4");
   await page.getByRole("button", { name: "Validar jugada" }).click();
 
-  await page.getByRole("button", { name: "Verificación mental" }).click();
-  await page.getByText("Respuesta más forzante").locator("..").getByRole("textbox").fill("e5");
-  await page.getByText("¿Por qué debería").locator("..").getByRole("textbox").fill("Controlo el centro y reduzco la amenaza.");
-  await page.getByLabel(/Comprobé jaques/).check();
+  await page.getByRole("button", { name: "Comprobación mental" }).click();
+  await page.getByTestId("defense-root").locator("input.input").fill("e5");
+  await page.getByTestId("defense-root").locator("textarea.textarea").fill("Controlo el centro y reduzco la amenaza.");
+  await page.getByLabel(/Revisé los jaques/).check();
   expect(confirmPosts).toBe(0);
   await page.getByTestId("defense-confirm").click();
 
@@ -121,5 +127,5 @@ test("Defense Lab oculta solución, confirma una jugada y no altera la dosis", a
   expect(persisted.pedagogyEvents).toHaveLength(0);
 
   await page.getByRole("button", { name: "Siguiente posición adaptada" }).click();
-  await expect(page.getByText("Variedad adaptativa.")).toBeVisible();
+  await expect(page.getByTestId("defense-selection-reason")).toHaveText(/Variedad adaptativa/i);
 });

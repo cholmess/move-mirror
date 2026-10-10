@@ -1,0 +1,11 @@
+{
+  "activePattern": "Patrón activo: {{title}} (aprox. {{pct}}% en validación).",
+  "patternPriority": "Refuerza el patrón prioritario (jaques, capturas, amenazas, respuesta del rival).",
+  "severity": "Prioridad de práctica {{severity}}/5",
+  "coreExercise": "Ejercicio de repaso del núcleo con línea completa",
+  "newPosition": "Posición nueva para ti en MoveMirror",
+  "lowPerformance": "Resultados recientes débiles — conviene repetir",
+  "spacedRepetition": "Repetición espaciada (≥1 día desde el último intento)",
+  "skillUncertainty": "Alta incertidumbre en habilidades vinculadas",
+  "phaseVariety": "Variedad de fase: {{phase}}"
+}

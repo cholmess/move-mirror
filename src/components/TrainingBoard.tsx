@@ -1,16 +1,23 @@
 import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Chessboard } from "react-chessboard";
 import { Chess } from "chess.js";
 import type { AttemptRecord, CctCapture } from "../types/learning";
 import { useApp } from "../context/AppContext";
 import { coreExercises, getExercise, poolExercises, exercises } from "../data/exercises";
-import { selectNextExercise, formatSelectionExplanation } from "../domain/adaptive";
+import { selectNextExercise } from "../domain/adaptive";
+import { opponentStrongestReply, buildReflectionPrompt } from "../domain/pedagogy";
 import {
-  pedagogicalLabel,
-  pedagogicalSummary,
-  opponentStrongestReply,
-  buildReflectionPrompt,
-} from "../domain/pedagogy";
+  formatEvaluationStatus,
+  formatEvaluationSummary,
+  formatExercisePrompt,
+  formatMoveForDisplay,
+  formatObservableReason,
+  formatSelectionReasons,
+  formatSideToMove,
+} from "../i18n/presenters";
+import type { SupportedLocale } from "../i18n/types";
+import { TechnicalDetails, TechnicalRow } from "./TechnicalDetails";
 
 type Phase = "cct" | "move" | "reason" | "confirm" | "feedback";
 
@@ -32,9 +39,11 @@ function poolOptionsForSelect(currentId: string) {
 }
 
 export function TrainingBoard() {
+  const { t, i18n } = useTranslation(["training", "common"]);
+  const locale = i18n.language as SupportedLocale;
   const { state, submitExerciseAttempt } = useApp();
   const [exerciseId, setExerciseId] = useState(
-    () => state.progress.currentExerciseId ?? exercises[0]!.id
+    () => state.progress.currentExerciseId ?? exercises[0]!.id,
   );
   const exercise = getExercise(exerciseId)!;
 
@@ -47,6 +56,7 @@ export function TrainingBoard() {
   const [submitting, setSubmitting] = useState(false);
 
   const orientation = exercise.sideToMove === "w" ? "white" : "black";
+  const promptText = formatExercisePrompt(exercise.playedMoveSan, locale);
 
   useEffect(() => {
     setExerciseId(state.progress.currentExerciseId ?? exercises[0]!.id);
@@ -101,42 +111,43 @@ export function TrainingBoard() {
     <div className="page train" data-testid="train-root">
       <div className="train-toolbar">
         <label className="small">
-          Ejercicio{" "}
+          {t("selectExercise")}{" "}
           <select
+            data-testid="train-exercise-select"
             value={exerciseId}
             onChange={(e) => resetForExercise(e.target.value)}
           >
-            <optgroup label="Núcleo (5 · líneas completas)">
+            <optgroup label={t("coreGroup", { count: coreExercises.length })}>
               {coreExercises.map((ex) => (
                 <option key={ex.id} value={ex.id}>
-                  Mov. {ex.moveNumber} ({ex.sideToMove === "w" ? "Blancas" : "Negras"})
+                  {t("moveOption", {
+                    number: ex.moveNumber,
+                    side: formatSideToMove(ex.sideToMove, locale),
+                  })}
                 </option>
               ))}
             </optgroup>
-            <optgroup label={`Ampliado (${poolExercises.length} · CSV Fase 2)`}>
+            <optgroup label={t("poolGroup", { count: poolExercises.length })}>
               {poolOptionsForSelect(exerciseId).map((ex) => (
                 <option key={ex.id} value={ex.id}>
-                  Mov. {ex.moveNumber} · sev.{ex.severity}
+                  {t("moveOptionPool", { number: ex.moveNumber, severity: ex.severity })}
                 </option>
               ))}
             </optgroup>
           </select>
         </label>
         <a className="small" href={exercise.gameUrl} target="_blank" rel="noreferrer">
-          Partida en Chess.com
+          {t("gameOnChesscom")}
         </a>
       </div>
 
-      <p className="prompt">{exercise.prompt}</p>
-      {exercise.tier === "pool" && (
-        <p className="muted small">
-          Banco ampliado — mejor jugada según análisis profundo (500k); línea SAN completa solo
-          en ejercicios núcleo.
-        </p>
-      )}
+      <p className="prompt">{promptText}</p>
+      {exercise.tier === "pool" && <p className="muted small">{t("poolHint")}</p>}
       {phase === "feedback" && (
         <p className="muted small">
-          En partida jugaste <strong>{exercise.playedMoveSan}</strong>
+          {t("inGameYouPlayed", {
+            move: formatMoveForDisplay(exercise.playedMoveSan, locale),
+          })}
         </p>
       )}
 
@@ -150,7 +161,7 @@ export function TrainingBoard() {
           />
           {chosenSan && (
             <p className="mono center">
-              Jugada elegida: <strong>{chosenSan}</strong>
+              {t("yourMove")}: <strong>{formatMoveForDisplay(chosenSan, locale)}</strong>
             </p>
           )}
         </div>
@@ -158,33 +169,31 @@ export function TrainingBoard() {
         <div className="card flow-panel" data-testid="train-flow">
           {phase === "cct" && (
             <>
-              <h2>CCT antes de mover</h2>
+              <h2>{t("cctTitle")}</h2>
               <Field
-                label="Jaques considerados"
+                label={t("checksLabel")}
                 value={cct.checksConsidered}
                 onChange={(v) => setCct((c) => ({ ...c, checksConsidered: v }))}
               />
               <Field
-                label="Capturas consideradas"
+                label={t("capturesLabel")}
                 value={cct.capturesConsidered}
                 onChange={(v) => setCct((c) => ({ ...c, capturesConsidered: v }))}
               />
               <Field
-                label="Amenazas consideradas"
+                label={t("threatsLabel")}
                 value={cct.threatsConsidered}
                 onChange={(v) => setCct((c) => ({ ...c, threatsConsidered: v }))}
               />
               <Field
-                label="Primera candidata (SAN o idea)"
+                label={t("firstCandidateLabel")}
                 value={cct.firstCandidate}
                 onChange={(v) => setCct((c) => ({ ...c, firstCandidate: v }))}
               />
               <Field
-                label="Mejor respuesta forzada del rival a esa candidata"
+                label={t("opponentReplyLabel")}
                 value={cct.opponentForcedResponse}
-                onChange={(v) =>
-                  setCct((c) => ({ ...c, opponentForcedResponse: v }))
-                }
+                onChange={(v) => setCct((c) => ({ ...c, opponentForcedResponse: v }))}
               />
               <button
                 type="button"
@@ -192,18 +201,18 @@ export function TrainingBoard() {
                 disabled={!canAdvanceFromCct}
                 onClick={() => setPhase("move")}
               >
-                Continuar al tablero
+                {t("continueBoard")}
               </button>
             </>
           )}
 
           {phase === "move" && (
             <>
-              <h2>Tu jugada</h2>
-              <p>Mueve una pieza legalmente o escribe SAN:</p>
+              <h2>{t("yourMoveTitle")}</h2>
+              <p>{t("yourMoveHint")}</p>
               <input
                 className="input"
-                placeholder="ej. Qxe4"
+                placeholder={t("movePlaceholder")}
                 value={chosenSan}
                 onChange={(e) => setChosenSan(e.target.value)}
               />
@@ -213,18 +222,18 @@ export function TrainingBoard() {
                 disabled={!chosenSan.trim()}
                 onClick={() => setPhase("reason")}
               >
-                Confirmar jugada escrita
+                {t("confirmTypedMove")}
               </button>
             </>
           )}
 
           {phase === "reason" && (
             <>
-              <h2>Razonamiento breve</h2>
+              <h2>{t("reasonTitle")}</h2>
               <textarea
                 className="textarea"
                 rows={4}
-                placeholder="¿Por qué elegiste esta jugada? ¿Comprobaste la refutación?"
+                placeholder={t("reasonPlaceholder")}
                 value={reasoning}
                 onChange={(e) => setReasoning(e.target.value)}
               />
@@ -234,19 +243,23 @@ export function TrainingBoard() {
                 disabled={reasoning.trim().length < 8}
                 onClick={() => setPhase("confirm")}
               >
-                Revisar antes de enviar
+                {t("reviewBeforeSend")}
               </button>
             </>
           )}
 
           {phase === "confirm" && (
             <>
-              <h2>Confirmar respuesta</h2>
+              <h2>{t("confirmTitle")}</h2>
               <ul className="confirm-list">
-                <li>Jugada: {chosenSan}</li>
-                <li>Razonamiento: {reasoning}</li>
+                <li>
+                  {t("confirmMove")}: {formatMoveForDisplay(chosenSan, locale)}
+                </li>
+                <li>
+                  {t("confirmReasoning")}: {reasoning}
+                </li>
               </ul>
-              <p className="muted small">Aún no verás la solución oficial.</p>
+              <p className="muted small">{t("noSolutionYet")}</p>
               <button
                 type="button"
                 className="btn primary"
@@ -254,10 +267,10 @@ export function TrainingBoard() {
                 disabled={submitting}
                 onClick={() => void submit()}
               >
-                {submitting ? "Verificando…" : "Enviar y recibir feedback"}
+                {submitting ? t("submitting") : t("submit")}
               </button>
               <button type="button" className="btn ghost" onClick={() => setPhase("move")}>
-                Cambiar jugada
+                {t("changeMove")}
               </button>
             </>
           )}
@@ -266,6 +279,7 @@ export function TrainingBoard() {
             <FeedbackPanel
               exercise={exercise}
               attempt={lastAttempt}
+              locale={locale}
               onRetry={() => {
                 setPhase("cct");
                 setCct(emptyCct());
@@ -274,7 +288,7 @@ export function TrainingBoard() {
                 setLastAttempt(null);
               }}
               onNext={() => resetForExercise(nextSel.exercise.id)}
-              nextReason={formatSelectionExplanation(nextSel)}
+              nextReason={formatSelectionReasons(nextSel.reasons, locale)}
             />
           )}
         </div>
@@ -309,74 +323,85 @@ function Field({
 function FeedbackPanel({
   exercise,
   attempt,
+  locale,
   onRetry,
   onNext,
   nextReason,
 }: {
   exercise: ReturnType<typeof getExercise>;
   attempt: AttemptRecord;
+  locale: SupportedLocale;
   onRetry: () => void;
   onNext: () => void;
   nextReason: string;
 }) {
+  const { t } = useTranslation(["training", "common", "technical"]);
   if (!exercise) return null;
 
   const status = attempt.evaluationStatus;
   const rivalReply =
-    attempt.opponentReplySan ??
-    opponentStrongestReply(exercise, attempt.opponentReplySan);
+    attempt.opponentReplySan ?? opponentStrongestReply(exercise, attempt.opponentReplySan);
+
+  const altLine = exercise.referenceLineSan
+    ? `${formatMoveForDisplay(exercise.solutionSan, locale)} · ${exercise.referenceLineSan
+        .split(/\s+/)
+        .map((move) => formatMoveForDisplay(move, locale))
+        .join(" ")}`
+    : formatMoveForDisplay(exercise.solutionSan, locale);
 
   return (
     <div className="feedback" data-testid="train-feedback">
-      <h2>Feedback</h2>
+      <h2>{t("feedbackTitle")}</h2>
       <dl className="feedback-dl">
-        <dt>Tu jugada</dt>
-        <dd>{attempt.chosenMoveSan}</dd>
-        <dt>Clasificación</dt>
-        <dd className={`result result-${status}`}>
-          {pedagogicalLabel(status)} — {pedagogicalSummary(status)}
+        <dt>{t("yourMove")}</dt>
+        <dd>{formatMoveForDisplay(attempt.chosenMoveSan, locale)}</dd>
+        <dt>{t("classification")}</dt>
+        <dd className={`result result-${status}`} data-testid="train-feedback-classification">
+          {formatEvaluationStatus(status, locale)} — {formatEvaluationSummary(status, locale)}
         </dd>
-        <dt>Respuesta más fuerte del rival</dt>
+        <dt>{t("opponentStrongest")}</dt>
         <dd className="mono">
-          {rivalReply ?? "No disponible en esta posición"}
+          {rivalReply ? formatMoveForDisplay(rivalReply, locale) : t("opponentUnavailable")}
         </dd>
-        <dt>Motivo observable</dt>
-        <dd>{attempt.observableReason ?? exercise.observableReason ?? "—"}</dd>
-        <dt>Alternativa recomendada</dt>
-        <dd className="mono">
-          {exercise.solutionSan}
-          {exercise.referenceLineSan ? ` · ${exercise.referenceLineSan}` : ""}
+        <dt>{t("observableReason")}</dt>
+        <dd>
+          {formatObservableReason(
+            attempt.observableReason ?? exercise.observableReason ?? null,
+            locale,
+          )}
         </dd>
-        <dt>En partida jugaste</dt>
-        <dd className="mono">{exercise.playedMoveSan}</dd>
+        <dt>{t("recommendedAlt")}</dt>
+        <dd className="mono">{altLine}</dd>
+        <dt>{t("playedInGame")}</dt>
+        <dd className="mono">{formatMoveForDisplay(exercise.playedMoveSan, locale)}</dd>
       </dl>
       <p className="muted small">
-        <strong>Reflexión:</strong>{" "}
-        {attempt.reflectionPrompt ??
-          buildReflectionPrompt(exercise, status)}
+        <strong>{t("reflection")}:</strong>{" "}
+        {attempt.reflectionPrompt ?? buildReflectionPrompt(exercise, status, t)}
       </p>
-      {status === "unverified" && (
-        <p className="warn small">
-          La jugada es legal, pero todavía no ha sido verificada.
-        </p>
-      )}
-      <p className="tiny muted">
-        Criterio: {attempt.evalCriterionVersion}
-        {attempt.evalVerified ? " · evaluación verificada" : " · sin verificación motor"}
-      </p>
+      {status === "unverified" && <p className="warn small">{t("unverifiedWarn")}</p>}
+      <TechnicalDetails>
+        <TechnicalRow label={t("technical:criterion")} value={attempt.evalCriterionVersion} />
+        <TechnicalRow
+          label={t("technical:evaluation")}
+          value={
+            attempt.evalVerified ? t("technical:evalVerified") : t("technical:evalUnverified")
+          }
+        />
+      </TechnicalDetails>
       <div className="actions">
-        {(status === "incorrect" ||
-          status === "playable_inexact" ||
-          status === "unverified") && (
+        {(status === "incorrect" || status === "playable_inexact" || status === "unverified") && (
           <button type="button" className="btn" onClick={onRetry}>
-            Reintentar
+            {t("retry")}
           </button>
         )}
         <button type="button" className="btn primary" onClick={onNext}>
-          Siguiente ejercicio adaptado
+          {t("nextAdaptive")}
         </button>
       </div>
-      <p className="reason small">Próxima selección: {nextReason}</p>
+      <p className="reason small">
+        {t("nextSelection")}: {nextReason}
+      </p>
     </div>
   );
 }

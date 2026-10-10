@@ -1,7 +1,7 @@
 {
   "name": "move-mirror",
   "private": true,
-  "version": "0.4.1",
+  "version": "0.5.1",
   "type": "module",
   "scripts": {
     "dev": "concurrently -n web,engine -c blue,green \"vite\" \"node server/index.mjs\"",
@@ -19,23 +19,31 @@
     "transfer:manifest": "node scripts/build-baseline-manifest.mjs",
     "transfer:baseline": "node scripts/run-transfer-baseline.mjs",
     "transfer:sync": "node scripts/run-transfer-sync.mjs",
-    "defense:build": "node scripts/build-defense-lab.mjs"
+    "defense:build": "node scripts/build-defense-lab.mjs",
+    "games:migrate": "node scripts/migrate-games-v0.5.0.mjs",
+    "games:reindex": "node scripts/games-admin.mjs reindex",
+    "games:verify": "node scripts/games-admin.mjs verify",
+    "games:export": "node scripts/games-admin.mjs export",
+    "i18n:check": "node scripts/i18n-check.mjs",
+    "i18n:sync": "node scripts/i18n-sync-missing.mjs"
   },
   "dependencies": {
     "chess.js": "^1.0.0-beta.8",
+    "i18next": "^26.4.3",
     "react": "^18.3.1",
     "react-chessboard": "^4.7.2",
     "react-dom": "^18.3.1",
+    "react-i18next": "^17.0.16",
     "react-router-dom": "^6.28.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.49.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.3",
+    "concurrently": "^9.1.0",
     "typescript": "^5.6.3",
     "vite": "^5.4.10",
-    "vitest": "^2.1.4",
-    "concurrently": "^9.1.0",
-    "@playwright/test": "^1.49.0"
+    "vitest": "^2.1.4"
   }
 }

@@ -1,0 +1,192 @@
+{
+  "eyebrow": "MoveMirror {{version}}",
+  "title": "¿Estás aplicando lo aprendido en partidas nuevas?",
+  "lead": "Aquí comparamos con qué frecuencia aparece el patrón entrenado en partidas nuevas 10+0 frente a tu muestra anterior congelada. Es rendimiento posterior, no prueba de que el entrenamiento causó el cambio.",
+  "trainingStateTitle": "Estado del entrenamiento",
+  "patternInternal": "Id del patrón",
+  "lessonLine": "Lección · protocolo",
+  "lessonHistorical": "versión histórica no mostrada",
+  "lessonDone": "Lección completada",
+  "exercisesConfirmed": "Ejercicios confirmados",
+  "verifiedSuccesses": "Éxitos verificados",
+  "sessions": "Sesiones distintas",
+  "calendarDays": "Días de calendario",
+  "qualifiedAt": "Entrenamiento completado el",
+  "missingRequirements": "Aún falta",
+  "exposureTitle": "Momento del grupo actual",
+  "postBaseline": "Después de tu muestra anterior.",
+  "exposureLabel": "Exposición",
+  "gamesBeforeAfter": "{{before}} partidas antes y {{after}} después del entrenamiento.",
+  "exposureFootnote": "Comparamos con qué frecuencia aparece el patrón y cuánto pudo cambiar esa tasa. La exposición solo indica el momento; no afirmamos que el entrenamiento causó el cambio.",
+  "exposureUnknownNote": " No sabemos si estas partidas se jugaron después del entrenamiento.",
+  "nextMeasurementTitle": "Próxima medición",
+  "nextMeasurementHint": "Un grupo posterior al entrenamiento puede empezar solo tras la dosis mínima; incluye partidas que empezaron estrictamente después de completar el entrenamiento.",
+  "syncTitle": "Sincronización",
+  "lastSync": "Última sincronización",
+  "baselineCutoff": "Corte de la muestra anterior",
+  "loadingCutoff": "cargando",
+  "baselineCutoffHint": "Solo partidas estándar terminadas tras el corte, 10+0.",
+  "syncNewGames": "Sincronizar partidas nuevas",
+  "cancelSync": "Cancelar",
+  "resumeAnalysis": "Reanudar análisis",
+  "offlineFixtures": "Modo sin conexión (fixtures)",
+  "includedExcludedTitle": "Qué contó y qué no",
+  "validNewGames": "Partidas nuevas válidas",
+  "excludedGames": "Partidas excluidas",
+  "analysisStatus": "Análisis",
+  "analysisPending": "{{count}} decisiones pendientes",
+  "analysisComplete": "completo",
+  "analysisNoCohort": "aún sin grupo",
+  "exclusionFootnote": "Un timeout, abandono o resignación temprana no se interpreta como debilidad. Las exclusiones tempranas siguen la regla congelada de la Fase 1.",
+  "baselineTitle": "Muestra anterior y grupo actual",
+  "baselinePending": "La muestra anterior sigue recalculándose con el mismo presupuesto que las partidas nuevas. Hasta entonces no hay comparación justa.",
+  "baselineRate": "Muestra anterior: {{rate}} eventos por 100 decisiones",
+  "transferRate": "Partidas nuevas: {{rate}} eventos por 100 decisiones",
+  "differenceLine": "Diferencia: {{absolute}} por 100{{relative}}",
+  "relativeSuffix": " ({{percent}} relativo)",
+  "intervalLine": "Rango compatible: {{low}} a {{high}}",
+  "sampleLine": "Muestra: {{transferGames}} partidas nuevas y {{transferDecisions}} decisiones, frente a {{baselineGames}} y {{baselineDecisions}} en la muestra anterior.",
+  "gamesWithPattern": "Partidas con el patrón: {{affected}} de {{analyzed}}",
+  "comparisonPending": "Cuando el análisis termine, la comparación aparecerá aquí.",
+  "meaningTitle": "Qué significa esto",
+  "byPhase": "Por fase",
+  "phaseSlice": "{{phase}}: {{events}} en {{decisions}} decisiones",
+  "severityTitle": "Gravedad y color",
+  "severityNotable": "Destacable",
+  "severityMarked": "Marcado",
+  "severityGrave": "Grave",
+  "pieceCaptureEvents": "Capturas de pieza",
+  "per100White": "Blancas: {{rate}} por 100",
+  "per100Black": "Negras: {{rate}} por 100",
+  "comparabilityTitle": "Contexto de comparabilidad",
+  "comparabilityFootnote": "Solo datos descriptivos; no ajustan tasas retroactivamente ni prueban causalidad.",
+  "contextBaseline": "Muestra anterior",
+  "contextCohort": "Grupo de partidas",
+  "ratingOwnMeanMedian": "Tu rating media / mediana",
+  "ratingOppMeanMedian": "Rating del rival media / mediana",
+  "ratingDiffMean": "Diferencia media de rating",
+  "whiteShare": "Blancas",
+  "resultsWLD": "Victorias / derrotas / tablas",
+  "decisionsPerGame": "Decisiones por partida",
+  "twoChannelsTitle": "Dos canales separados",
+  "exercisesChannel": "Ejercicios",
+  "realGamesChannel": "Partidas reales",
+  "realGamesNoAlpha": "Estos resultados no cambian el dominio en ejercicios.",
+  "nextReview": "Próxima revisión",
+  "recommendationTitle": "Sugerencia",
+  "policyNote": "Regla {{policyId}}. No enseña un patrón nuevo.",
+  "saveRecommendation": "Guardar esta sugerencia",
+  "recommendationPending": "Aparece tras la primera lectura.",
+  "keepTraining": "Seguir entrenando",
+  "freezeGroup": "Bloquear este grupo para revisión",
+  "exportJson": "Exportar JSON",
+  "examplesTitle": "Ejemplos del grupo",
+  "examplesLocked": "Los ejemplos aparecen al bloquear la revisión. Antes el grupo permanece abierto y no pasa a ejercicios.",
+  "examplesEmpty": "No hay eventos confirmados que mostrar en este grupo.",
+  "exampleLine": "Jugada {{moveNumber}} · {{color}}{{capture}}",
+  "exampleCapture": " · captura de pieza",
+  "exampleGameLink": "partida",
+  "saveFutureExercise": "Guardar como ejercicio futuro",
+  "futureExercisesSaved": "Ejercicios futuros guardados: {{count}}. No entran al entrenamiento automáticamente.",
+  "exposure": {
+    "post_intervention_verified": "Partidas después del entrenamiento",
+    "mixed_exposure": "Mezcla de antes y después del entrenamiento",
+    "pre_intervention": "Mayormente antes del entrenamiento",
+    "exposure_unknown": "No sabemos si estas partidas se jugaron después del entrenamiento"
+  },
+  "comparison": {
+    "insufficient_data": {
+      "label": "Datos insuficientes",
+      "meaning": "Aún no hay suficientes partidas o decisiones para comparar este patrón con tu muestra anterior.",
+      "notMeaning": "No significa que mejoraste ni que el patrón se mantuvo igual. No dice nada sobre la causa."
+    },
+    "early_signal": {
+      "label": "Señal temprana",
+      "meaning": "Hay una primera lectura, pero la muestra sigue siendo pequeña. El rango puede cambiar cuando lleguen más partidas.",
+      "notMeaning": "No es mejora confirmada ni prueba de que el entrenamiento funcionó."
+    },
+    "observed_improvement": {
+      "label": "Reducción observada",
+      "meaning": "En partidas nuevas el patrón aparece menos que en la muestra anterior, y el rango es compatible con una caída real. Es rendimiento posterior.",
+      "notMeaning": "No prueba que el entrenamiento de MoveMirror causó el cambio."
+    },
+    "no_clear_reduction": {
+      "label": "Sin reducción clara",
+      "meaning": "Hay suficiente volumen y el rango no está claramente por debajo de cero. No vemos una caída clara del patrón.",
+      "notMeaning": "No significa que el entrenamiento perjudicó tu juego ni que falló el trabajo en ejercicios."
+    }
+  },
+  "exclusion": {
+    "time_control_not_600": "Ritmo distinto",
+    "not_standard_chess": "Variante no estándar",
+    "not_rapid": "No es Rapid",
+    "too_few_plies": "Partida de una a cuatro jugadas",
+    "early_resign_or_abandon": "Resignación o abandono temprano",
+    "not_after_baseline_cutoff": "Antes del corte de la muestra anterior",
+    "already_in_baseline": "Ya en la muestra anterior",
+    "duplicate_game_id": "Id duplicado",
+    "duplicate_url": "URL duplicada",
+    "unparseable_pgn": "No se pudo leer el archivo de partida (PGN)",
+    "missing_pgn": "Falta PGN",
+    "time_control_mismatch": "El PGN no coincide con 10+0"
+  },
+  "pedagogyAction": {
+    "return_to_basics": {
+      "title": "Volver a ejemplos básicos",
+      "explanation": "En ejercicios, los fallos superan a los éxitos verificados. Ayuda volver a ejemplos básicos de jaques, capturas, amenazas y la respuesta más fuerte de tu rival."
+    },
+    "propose_next_pattern": {
+      "title": "Considerar revisar el siguiente patrón",
+      "explanation": "La lección actual ya muestra mejor rendimiento posterior y la práctica está espaciada. Considera revisar el siguiente patrón en una revisión futura. Esta versión no enseña ni sustituye la lección."
+    },
+    "space_practice": {
+      "title": "Espaciar la práctica",
+      "explanation": "El patrón también aparece menos en partidas nuevas. Eso es mejor rendimiento posterior, no un cambio causado por MoveMirror. Tiene sentido espaciar esta lección."
+    },
+    "increase_difficulty": {
+      "title": "Subir la dificultad",
+      "explanation": "Buenos resultados en ejercicios, pero el patrón sigue apareciendo en partidas reales. Mantén el tema y sube la dificultad."
+    },
+    "continue_cct": {
+      "title": "Seguir practicando esta lección",
+      "explanation": "{{gap}}Mantén esta lección y continúa con jaques, capturas, amenazas y la respuesta más fuerte de tu rival."
+    }
+  },
+  "pedagogyGap": "Mejoras en ejercicios, pero los datos de partidas nuevas siguen siendo escasos. ",
+  "interventionRequirement": {
+    "lesson_completed": "Completar la lección",
+    "confirmed_exercises": "Ejercicios confirmados: {{current}} / {{required}}",
+    "verified_successes": "Éxitos verificados: {{current}} / {{required}}",
+    "distinct_sessions": "Sesiones: {{current}} / {{required}}",
+    "distinct_calendar_days": "Días de calendario: {{current}} / {{required}}"
+  },
+  "measurement": {
+    "frozen": "Grupo bloqueado",
+    "collecting": "Recopilando partidas",
+    "sufficient_descriptive_volume": "Suficientes partidas para una lectura descriptiva",
+    "eligible_to_collect": "Listo para recopilar tras el entrenamiento",
+    "training_incomplete": "Completa el entrenamiento primero"
+  },
+  "syncProgress": {
+    "Preparando": "Preparando",
+    "Listo": "Listo",
+    "Análisis cancelado. Se puede reanudar.": "Análisis cancelado. Se puede reanudar.",
+    "Buscando partidas nuevas": "Buscando partidas nuevas",
+    "No hay partidas nuevas": "No hay partidas nuevas",
+    "Analizando decisiones propias": "Analizando tus decisiones",
+    "No hay decisiones nuevas": "No hay decisiones nuevas",
+    "Sincronización terminada": "Sincronización terminada"
+  },
+  "narrative": {
+    "improvingInsufficient": "Mejoras en ejercicios, pero los datos de partidas nuevas siguen siendo escasos.",
+    "observedReduction": "El patrón también aparece menos en partidas nuevas.",
+    "strongButPersists": "Buenos resultados en ejercicios, pero el patrón sigue apareciendo en partidas reales."
+  },
+  "comparabilityWarning": "Los grupos difieren en contexto competitivo; interpreta la comparación con cuidado.",
+  "trainingChannel": {
+    "insufficient": "Datos insuficientes",
+    "doseComplete": "Dosis de entrenamiento completada ({{date}})",
+    "doseInProgress": "Dosis de entrenamiento en curso"
+  },
+  "dashboardSimpleConclusion": "El patrón apareció un poco menos en partidas nuevas, pero la diferencia sigue siendo demasiado pequeña para saber si hay mejora real."
+}

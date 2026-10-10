@@ -1,0 +1,192 @@
+{
+  "eyebrow": "MoveMirror {{version}}",
+  "title": "Are you applying what you learned in new games?",
+  "lead": "Here we compare how often the trained pattern appears in new 10+0 games versus your frozen earlier sample. This is later performance, not proof that training caused the change.",
+  "trainingStateTitle": "Training status",
+  "patternInternal": "Pattern id",
+  "lessonLine": "Lesson · protocol",
+  "lessonHistorical": "historical version not shown",
+  "lessonDone": "Lesson completed",
+  "exercisesConfirmed": "Exercises confirmed",
+  "verifiedSuccesses": "Verified successes",
+  "sessions": "Distinct sessions",
+  "calendarDays": "Calendar days",
+  "qualifiedAt": "Training completed at",
+  "missingRequirements": "Still needed",
+  "exposureTitle": "Timing of the current group",
+  "postBaseline": "After your earlier sample.",
+  "exposureLabel": "Exposure",
+  "gamesBeforeAfter": "{{before}} games before and {{after}} after training.",
+  "exposureFootnote": "We compare how often the pattern appears and how much that rate may have changed. Exposure only shows timing; we do not claim training caused the change.",
+  "exposureUnknownNote": " We do not know whether these games were played after training.",
+  "nextMeasurementTitle": "Next measurement",
+  "nextMeasurementHint": "A post-training group can start only after the minimum dose; it includes games that started strictly after training was completed.",
+  "syncTitle": "Sync",
+  "lastSync": "Last sync",
+  "baselineCutoff": "Earlier sample cutoff",
+  "loadingCutoff": "loading",
+  "baselineCutoffHint": "Only finished standard games after the cutoff, 10+0.",
+  "syncNewGames": "Sync new games",
+  "cancelSync": "Cancel",
+  "resumeAnalysis": "Resume analysis",
+  "offlineFixtures": "Offline mode (fixtures)",
+  "includedExcludedTitle": "What counted and what did not",
+  "validNewGames": "Valid new games",
+  "excludedGames": "Excluded games",
+  "analysisStatus": "Analysis",
+  "analysisPending": "{{count}} decisions pending",
+  "analysisComplete": "complete",
+  "analysisNoCohort": "no group yet",
+  "exclusionFootnote": "A timeout, abandon, or early resign is not read as a weakness. Early exclusions follow the frozen Phase 1 rule.",
+  "baselineTitle": "Earlier sample and current group",
+  "baselinePending": "The earlier sample is still being recalculated with the same budget as new games. Until then there is no fair comparison.",
+  "baselineRate": "Earlier sample: {{rate}} events per 100 decisions",
+  "transferRate": "New games: {{rate}} events per 100 decisions",
+  "differenceLine": "Difference: {{absolute}} per 100{{relative}}",
+  "relativeSuffix": " ({{percent}} relative)",
+  "intervalLine": "Compatible range: {{low}} to {{high}}",
+  "sampleLine": "Sample: {{transferGames}} new games and {{transferDecisions}} decisions, versus {{baselineGames}} and {{baselineDecisions}} in the earlier sample.",
+  "gamesWithPattern": "Games with the pattern: {{affected}} of {{analyzed}}",
+  "comparisonPending": "When analysis is complete, the comparison appears here.",
+  "meaningTitle": "What this means",
+  "byPhase": "By phase",
+  "phaseSlice": "{{phase}}: {{events}} in {{decisions}} decisions",
+  "severityTitle": "Severity and color",
+  "severityNotable": "Notable",
+  "severityMarked": "Marked",
+  "severityGrave": "Severe",
+  "pieceCaptureEvents": "Piece captures",
+  "per100White": "White: {{rate}} per 100",
+  "per100Black": "Black: {{rate}} per 100",
+  "comparabilityTitle": "Comparability context",
+  "comparabilityFootnote": "Descriptive data only; it does not retroactively adjust rates or prove causality.",
+  "contextBaseline": "Earlier sample",
+  "contextCohort": "Group of games",
+  "ratingOwnMeanMedian": "Your rating mean / median",
+  "ratingOppMeanMedian": "Opponent rating mean / median",
+  "ratingDiffMean": "Mean rating difference",
+  "whiteShare": "White",
+  "resultsWLD": "Wins / losses / draws",
+  "decisionsPerGame": "Decisions per game",
+  "twoChannelsTitle": "Two separate channels",
+  "exercisesChannel": "Exercises",
+  "realGamesChannel": "Real games",
+  "realGamesNoAlpha": "These results do not change exercise mastery.",
+  "nextReview": "Next review",
+  "recommendationTitle": "Suggestion",
+  "policyNote": "Rule {{policyId}}. Does not teach a new pattern.",
+  "saveRecommendation": "Save this suggestion",
+  "recommendationPending": "Appears after the first read.",
+  "keepTraining": "Keep training",
+  "freezeGroup": "Lock this group for review",
+  "exportJson": "Export JSON",
+  "examplesTitle": "Examples from the group",
+  "examplesLocked": "Examples appear after you lock the review. Before that the group stays open and does not become exercises.",
+  "examplesEmpty": "No confirmed events to show in this group.",
+  "exampleLine": "Move {{moveNumber}} · {{color}}{{capture}}",
+  "exampleCapture": " · piece capture",
+  "exampleGameLink": "game",
+  "saveFutureExercise": "Save as future exercise",
+  "futureExercisesSaved": "Future exercises saved: {{count}}. They do not enter training automatically.",
+  "exposure": {
+    "post_intervention_verified": "Games after training",
+    "mixed_exposure": "Mix of before and after training",
+    "pre_intervention": "Mostly before training",
+    "exposure_unknown": "We do not know whether these games were played after training"
+  },
+  "comparison": {
+    "insufficient_data": {
+      "label": "Not enough data",
+      "meaning": "There are not yet enough games or decisions to compare this pattern with your earlier sample.",
+      "notMeaning": "It does not mean you improved or that the pattern stayed the same. It says nothing about cause."
+    },
+    "early_signal": {
+      "label": "Early signal",
+      "meaning": "There is a first read, but the sample is still small. The range may shift when more games arrive.",
+      "notMeaning": "This is not confirmed improvement or proof that training worked."
+    },
+    "observed_improvement": {
+      "label": "Observed reduction",
+      "meaning": "In new games the pattern appears less often than in the earlier sample, and the range is compatible with a real drop. This is later performance.",
+      "notMeaning": "It does not prove MoveMirror training caused the change."
+    },
+    "no_clear_reduction": {
+      "label": "No clear reduction",
+      "meaning": "There is enough volume and the range is not clearly below zero. We do not see a clear drop in the pattern.",
+      "notMeaning": "It does not mean training hurt your play or that exercise work failed."
+    }
+  },
+  "exclusion": {
+    "time_control_not_600": "Different time control",
+    "not_standard_chess": "Non-standard variant",
+    "not_rapid": "Not Rapid",
+    "too_few_plies": "Game with one to four moves",
+    "early_resign_or_abandon": "Early resign or abandon",
+    "not_after_baseline_cutoff": "Before earlier-sample cutoff",
+    "already_in_baseline": "Already in earlier sample",
+    "duplicate_game_id": "Duplicate id",
+    "duplicate_url": "Duplicate URL",
+    "unparseable_pgn": "Could not read chess game file (PGN)",
+    "missing_pgn": "Missing PGN",
+    "time_control_mismatch": "PGN does not match 10+0"
+  },
+  "pedagogyAction": {
+    "return_to_basics": {
+      "title": "Return to basic examples",
+      "explanation": "In exercises, misses outweigh verified successes. It helps to return to basic examples of checks, captures, threats, and your opponent’s strongest reply."
+    },
+    "propose_next_pattern": {
+      "title": "Consider reviewing the next pattern",
+      "explanation": "The current lesson already shows better later performance and practice is spaced. Consider reviewing the next pattern in a future review. This version does not teach or replace the lesson."
+    },
+    "space_practice": {
+      "title": "Space out practice",
+      "explanation": "The pattern also appears less in new games. That is better later performance, not a change caused by MoveMirror. Spacing this lesson makes sense."
+    },
+    "increase_difficulty": {
+      "title": "Increase difficulty",
+      "explanation": "Good exercise results, but the pattern still shows up in real games. Keep the theme and increase difficulty."
+    },
+    "continue_cct": {
+      "title": "Keep practicing this lesson",
+      "explanation": "{{gap}}Keep this lesson and continue with checks, captures, threats, and your opponent’s strongest reply."
+    }
+  },
+  "pedagogyGap": "You are improving in exercises, but new-game data is still thin. ",
+  "interventionRequirement": {
+    "lesson_completed": "Complete the lesson",
+    "confirmed_exercises": "Confirmed exercises: {{current}} / {{required}}",
+    "verified_successes": "Verified successes: {{current}} / {{required}}",
+    "distinct_sessions": "Sessions: {{current}} / {{required}}",
+    "distinct_calendar_days": "Calendar days: {{current}} / {{required}}"
+  },
+  "measurement": {
+    "frozen": "Group locked",
+    "collecting": "Collecting games",
+    "sufficient_descriptive_volume": "Enough games for a descriptive read",
+    "eligible_to_collect": "Ready to collect after training",
+    "training_incomplete": "Finish training first"
+  },
+  "syncProgress": {
+    "Preparando": "Preparing",
+    "Listo": "Ready",
+    "Análisis cancelado. Se puede reanudar.": "Analysis cancelled. You can resume.",
+    "Buscando partidas nuevas": "Looking for new games",
+    "No hay partidas nuevas": "No new games",
+    "Analizando decisiones propias": "Analyzing your decisions",
+    "No hay decisiones nuevas": "No new decisions",
+    "Sincronización terminada": "Sync finished"
+  },
+  "narrative": {
+    "improvingInsufficient": "You are improving in exercises, but new-game data is still thin.",
+    "observedReduction": "The pattern also appears less in new games.",
+    "strongButPersists": "Good exercise results, but the pattern still shows up in real games."
+  },
+  "comparabilityWarning": "The groups differ in competitive context; interpret the comparison carefully.",
+  "trainingChannel": {
+    "insufficient": "Not enough data",
+    "doseComplete": "Training dose completed ({{date}})",
+    "doseInProgress": "Training dose in progress"
+  },
+  "dashboardSimpleConclusion": "The pattern appeared a bit less in new games, but the difference is still too small to know if there is real improvement."
+}

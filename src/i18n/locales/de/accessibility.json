@@ -1,0 +1,11 @@
+{
+  "mainContent": "Hauptinhalt",
+  "languageSelect": "Sprache der Oberfläche wählen",
+  "stepDot": "Zu Schritt {{title}} springen",
+  "defenseResourceSelect": "Verteidigungsressource",
+  "boardTrain": "Trainingsbrett",
+  "boardDefense": "Verteidigungsbrett",
+  "boardManual": "Brett für manuelle Eingabe",
+  "boardLesson": "Lektionsbrett (Vorschau)",
+  "liveRegion": "Ansagen"
+}

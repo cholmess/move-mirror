@@ -1,0 +1,15 @@
+{
+  "observable": {
+    "La_respuesta_forzada_del_rival_quedo_disponible": "La respuesta forzada de tu rival quedó disponible",
+    "La_linea_principal_permite_capturar_una_pieza": "La línea principal permite capturar una pieza",
+    "Habia_jaque_o_captura_fuerte_y_se_jugo_una_jugada_no_forzada": "Había jaque o captura fuerte y se jugó una jugada no forzada",
+    "La_captura_elegida_fue_costosa": "La captura elegida fue costosa",
+    "Movimiento_tranquilo_de_peon_en_posicion_critica": "Movimiento tranquilo de peón en posición crítica"
+  },
+  "defenseProfile": {
+    "noAttempts": "Aún no hay intentos defensivos.",
+    "resourceErrors": "Fallaste {{errors}} de {{attempts}} posiciones del tipo {{resource}}.",
+    "insufficientVolume": "Aún no hay volumen suficiente para afirmar una nueva debilidad.",
+    "resourceOmission": "Podrías estar omitiendo el recurso {{resource}} al revisar la respuesta de tu rival."
+  }
+}

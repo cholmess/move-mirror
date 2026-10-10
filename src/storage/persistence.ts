@@ -83,7 +83,7 @@ export function recordDefenseAttempt(
   state: AppState,
   attempt: DefenseAttempt,
   nextExerciseId: string | null,
-  selectionReason: string | null,
+  selectionReason: import("../types/defense").DefenseSelectionReasonPayload | null,
 ): AppState {
   return {
     ...state,

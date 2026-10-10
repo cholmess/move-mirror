@@ -1,0 +1,66 @@
+{
+  "white": "Weiß",
+  "black": "Schwarz",
+  "loading": "Wird geladen…",
+  "cancel": "Abbrechen",
+  "confirm": "Bestätigen",
+  "save": "Speichern",
+  "close": "Schließen",
+  "retry": "Erneut versuchen",
+  "next": "Weiter",
+  "previous": "Zurück",
+  "yes": "Ja",
+  "no": "Nein",
+  "unknownDate": "Unbekanntes Datum",
+  "dash": "—",
+  "productTagline": "Der Schachtrainer, der lernt, wie du spielst.",
+  "language": "Sprache",
+  "languageChanged": "Sprache geändert auf {{language}}.",
+  "chooseLanguage": "Wähle deine Sprache",
+  "chooseLanguageHint": "Du kannst das jederzeit im Menü oder unter Fortschritt ändern.",
+  "pedagogyLabels": {
+    "whatWeSee": "Was wir sehen",
+    "possibleExplanation": "Mögliche Erklärung",
+    "howMuchEvidence": "Wie viel Beleg wir haben"
+  },
+  "evidence": {
+    "low": "Wenig Beleg",
+    "medium": "Mittlerer Beleg",
+    "high": "Starker Beleg",
+    "hint": "Das zeigt, wie viele verschiedene Stellungen die Beobachtung stützen. Es misst nicht deine persönliche Sicherheit."
+  },
+  "evaluationStatus": {
+    "verified_best": "Beste Option",
+    "verified_acceptable": "Gute Option",
+    "playable_inexact": "Spielbar, aber es gab einen präziseren Zug",
+    "incorrect": "Löst die Gefahr nicht",
+    "unverified": "Konnten wir nicht verifizieren",
+    "illegal": "Dieser Zug ist nicht legal"
+  },
+  "evaluationSummary": {
+    "verified_best": "Entspricht der empfohlenen Variante für diese Stellung.",
+    "verified_acceptable": "Eine solide Alternative innerhalb der verifizierten Toleranz.",
+    "playable_inexact": "Spielbar, verliert aber etwas Präzision gegenüber der besten Option.",
+    "incorrect": "Prüfe Schach, Schlagzüge, Drohungen und die stärkste Antwort deines Gegners, bevor du bestätigst.",
+    "unverified": "Der Zug ist legal, aber wir haben ihn noch nicht verifiziert.",
+    "illegal": "Dieser Zug ist in dieser Stellung nicht legal."
+  },
+  "phase": {
+    "opening": "Eröffnung",
+    "middlegame": "Mittelspiel",
+    "endgame": "Endspiel",
+    "opening_proxy": "Eröffnung",
+    "middlegame_proxy": "Mittelspiel",
+    "endgame_proxy": "Endspiel"
+  },
+  "confidencePattern": {
+    "high": "Starker Beleg für dieses Muster",
+    "medium": "Mittlerer Beleg für dieses Muster",
+    "low": "Wenig Beleg für dieses Muster"
+  },
+  "hypothesisConfidence": {
+    "high": "Starke Stütze für diese Erklärung",
+    "medium": "Etwas Stütze; wir brauchen noch mehr Partien",
+    "low": "Nur eine frühe Idee"
+  }
+}

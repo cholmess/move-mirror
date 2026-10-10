@@ -1,0 +1,66 @@
+{
+  "white": "White",
+  "black": "Black",
+  "loading": "Loading…",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+  "save": "Save",
+  "close": "Close",
+  "retry": "Retry",
+  "next": "Next",
+  "previous": "Previous",
+  "yes": "Yes",
+  "no": "No",
+  "unknownDate": "Unknown date",
+  "dash": "—",
+  "productTagline": "The chess coach that learns how you play.",
+  "language": "Language",
+  "languageChanged": "Language changed to {{language}}.",
+  "chooseLanguage": "Choose your language",
+  "chooseLanguageHint": "You can change this anytime in the menu or in Progress.",
+  "pedagogyLabels": {
+    "whatWeSee": "What we see",
+    "possibleExplanation": "Possible explanation",
+    "howMuchEvidence": "How much evidence we have"
+  },
+  "evidence": {
+    "low": "Limited evidence",
+    "medium": "Moderate evidence",
+    "high": "Strong evidence",
+    "hint": "This shows how many distinct positions support the observation. It does not measure your personal confidence."
+  },
+  "evaluationStatus": {
+    "verified_best": "Best option",
+    "verified_acceptable": "Good option",
+    "playable_inexact": "Playable, but there was a more precise move",
+    "incorrect": "Does not solve the danger",
+    "unverified": "We could not verify it",
+    "illegal": "That move is not legal"
+  },
+  "evaluationSummary": {
+    "verified_best": "Matches the recommended line for this position.",
+    "verified_acceptable": "A solid alternative within the verified margin.",
+    "playable_inexact": "Playable, but loses some precision compared with the best option.",
+    "incorrect": "Review checks, captures, threats, and your opponent’s strongest reply before confirming.",
+    "unverified": "The move is legal, but we have not verified it yet.",
+    "illegal": "That move is not legal in this position."
+  },
+  "phase": {
+    "opening": "Opening",
+    "middlegame": "Middlegame",
+    "endgame": "Endgame",
+    "opening_proxy": "Opening",
+    "middlegame_proxy": "Middlegame",
+    "endgame_proxy": "Endgame"
+  },
+  "confidencePattern": {
+    "high": "Strong evidence for this pattern",
+    "medium": "Moderate evidence for this pattern",
+    "low": "Limited evidence for this pattern"
+  },
+  "hypothesisConfidence": {
+    "high": "Strong support for this explanation",
+    "medium": "Some support; we still need more games",
+    "low": "Early idea only"
+  }
+}

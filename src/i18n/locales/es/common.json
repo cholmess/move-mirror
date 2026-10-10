@@ -1,0 +1,66 @@
+{
+  "white": "Blancas",
+  "black": "Negras",
+  "loading": "Cargando…",
+  "cancel": "Cancelar",
+  "confirm": "Confirmar",
+  "save": "Guardar",
+  "close": "Cerrar",
+  "retry": "Reintentar",
+  "next": "Siguiente",
+  "previous": "Anterior",
+  "yes": "Sí",
+  "no": "No",
+  "unknownDate": "Fecha desconocida",
+  "dash": "—",
+  "productTagline": "El entrenador de ajedrez que aprende cómo juegas.",
+  "language": "Idioma",
+  "languageChanged": "Idioma cambiado a {{language}}.",
+  "chooseLanguage": "Elige tu idioma",
+  "chooseLanguageHint": "Puedes cambiarlo cuando quieras en el menú o en Progreso.",
+  "pedagogyLabels": {
+    "whatWeSee": "Lo que vemos",
+    "possibleExplanation": "Posible explicación",
+    "howMuchEvidence": "Cuánta evidencia tenemos"
+  },
+  "evidence": {
+    "low": "Evidencia limitada",
+    "medium": "Evidencia moderada",
+    "high": "Evidencia sólida",
+    "hint": "Indica cuántas posiciones distintas respaldan la observación. No mide tu confianza personal."
+  },
+  "evaluationStatus": {
+    "verified_best": "Mejor opción",
+    "verified_acceptable": "Buena opción",
+    "playable_inexact": "Jugable, pero había una jugada más precisa",
+    "incorrect": "No resuelve el peligro",
+    "unverified": "No pudimos verificarla",
+    "illegal": "Esa jugada no es legal"
+  },
+  "evaluationSummary": {
+    "verified_best": "Coincide con la línea recomendada para esta posición.",
+    "verified_acceptable": "Una alternativa sólida dentro del margen verificado.",
+    "playable_inexact": "Jugable, pero pierde precisión respecto a la mejor opción.",
+    "incorrect": "Revisa jaques, capturas, amenazas y la respuesta más fuerte de tu rival antes de confirmar.",
+    "unverified": "La jugada es legal, pero aún no la hemos verificado.",
+    "illegal": "Esa jugada no es legal en esta posición."
+  },
+  "phase": {
+    "opening": "Apertura",
+    "middlegame": "Medio juego",
+    "endgame": "Final",
+    "opening_proxy": "Apertura",
+    "middlegame_proxy": "Medio juego",
+    "endgame_proxy": "Final"
+  },
+  "confidencePattern": {
+    "high": "Evidencia sólida para este patrón",
+    "medium": "Evidencia moderada para este patrón",
+    "low": "Evidencia limitada para este patrón"
+  },
+  "hypothesisConfidence": {
+    "high": "Apoyo sólido para esta explicación",
+    "medium": "Algo de apoyo; aún necesitamos más partidas",
+    "low": "Solo una idea inicial"
+  }
+}

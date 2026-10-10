@@ -1,0 +1,11 @@
+{
+  "activePattern": "Aktives Muster: {{title}} (ca. {{pct}} % in der Validierung).",
+  "patternPriority": "Verstärkt das Prioritätsmuster (Schach, Schlagzüge, Drohungen, Gegnerantwort).",
+  "severity": "Übungspriorität {{severity}}/5",
+  "coreExercise": "Kernübung mit vollständiger Variante",
+  "newPosition": "Neue Stellung für dich in MoveMirror",
+  "lowPerformance": "Die letzten Ergebnisse waren schwach — Wiederholung lohnt sich",
+  "spacedRepetition": "Abstandswiederholung (≥1 Tag seit dem letzten Versuch)",
+  "skillUncertainty": "Hohe Unsicherheit bei verknüpften Fähigkeiten",
+  "phaseVariety": "Phasenwechsel: {{phase}}"
+}
