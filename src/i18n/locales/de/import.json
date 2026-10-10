@@ -1,6 +1,6 @@
 {
   "eyebrow": "Importieren",
-  "title": "Partien hinzufügen, später entscheiden, was analysiert wird",
+  "title": "Partien hinzufügen und später entscheiden, was analysiert werden soll",
   "lead": "Partien bleiben auf diesem Gerät. Der Import ändert weder Empfehlungen noch die Auswertung neuer Partien.",
   "connectionError": "Verbindung zum lokalen Dienst fehlgeschlagen.",
   "importFailed": "Import konnte nicht abgeschlossen werden.",

@@ -1,7 +1,7 @@
 {
   "generic": "Etwas ist schiefgelaufen. Versuche es noch einmal.",
   "request_failed": "Die Anfrage ist fehlgeschlagen.",
-  "ENGINE_UNAVAILABLE": "Wir konnten deinen Zug nicht verifizieren, weil die Engine nicht verfügbar ist. Dein Fortschritt ändert sich nicht.",
+  "ENGINE_UNAVAILABLE": "Wir konnten deinen Zug gerade nicht überprüfen. Dein Fortschritt bleibt unverändert.",
   "http_error": "Die Engine war nicht erreichbar.",
   "network_error": "Netzwerkfehler bei der Verifizierung.",
   "aborted": "Verifizierung wurde abgebrochen.",
