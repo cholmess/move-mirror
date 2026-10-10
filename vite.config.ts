@@ -17,6 +17,12 @@ export default defineConfig({
   },
   test: {
     environment: "node",
-    include: ["src/**/*.test.ts", "shared/**/*.test.js", "server/**/*.test.js"],
+    include: [
+      "src/**/*.test.ts",
+      "shared/**/*.test.js",
+      "server/**/*.test.js",
+      "e2e/helpers/**/*.test.ts",
+      "scripts/**/*.test.mjs",
+    ],
   },
 });

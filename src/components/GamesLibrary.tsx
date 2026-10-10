@@ -105,12 +105,13 @@ export function GamesLibrary() {
           ))}
         </select>
         <select
+          data-testid="games-pace-filter"
           aria-label={t("filterPace")}
           value={filters.category}
           onChange={(event) => setFilters({ ...filters, category: event.target.value })}
         >
           <option value="">{t("allPaces")}</option>
-          {(["bullet", "blitz", "rapid", "classical", "unknown"] as const).map((category) => (
+          {(["bullet", "blitz", "rapid", "classical", "correspondence", "unknown"] as const).map((category) => (
             <option key={category} value={category}>
               {formatTimeControl(category, locale)}
             </option>

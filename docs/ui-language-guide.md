@@ -29,3 +29,6 @@
 
 - `es`, `en`, `de` with English fallback.
 - Do not concatenate translated fragments; use interpolation and plurals.
+- **`en`** defines keys; **`es` and `de` are authoritative** for their copy.
+- After adding keys in `en`, run `npm run i18n:sync` (adds missing keys only, marks `⟪pending⟫`).
+- Run `npm run i18n:check` before merge — fails on pending keys or UI strings still identical to English (except whitelist).

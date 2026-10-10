@@ -39,12 +39,21 @@ for (const locale of locales) {
 
     test("main routes render without i18n keys or internal enums", async ({ page }) => {
       const routes = ["/", "/lesson", "/train", "/defense", "/transfer", "/import", "/games", "/profile"];
+      const paceLabel: Record<UiLocale, RegExp> = {
+        es: /Rápidas/,
+        en: /Rapid/,
+        de: /Schnellschach/,
+      };
+
       for (const route of routes) {
         await page.goto(route);
         await expect(page.locator("main")).toBeVisible();
         const text = await page.locator("main").innerText();
         expect(text).not.toMatch(/\b(common|navigation|dashboard|training|defense|import):[\w.]+/);
         expect(text).not.toMatch(forbiddenEnum);
+        if (route === "/games") {
+          await expect(page.getByTestId("games-pace-filter")).toContainText(paceLabel[locale]);
+        }
       }
     });
 

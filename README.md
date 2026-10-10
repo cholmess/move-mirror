@@ -2,7 +2,7 @@
 
 **The chess coach that learns how you play.**
 
-MVP privado para `cholmess21`: ciclo **partidas → patrón → microlección → ejercicios → razonamiento → perfil → siguiente ejercicio**, centrado en **CCT + comprobación de la respuesta forzada del rival**.
+MVP privado local: ciclo **partidas → patrón → microlección → ejercicios → razonamiento → perfil → siguiente ejercicio**, centrado en **CCT + comprobación de la respuesta forzada del rival**.
 
 Fuentes: `Chess-ML-Coach-Fase-2-Reproducible.zip` (extraído en `data/fase-2/`), review y visión en los `.md` del repo.
 
@@ -28,6 +28,41 @@ Variable opcional: `POOL_LIMIT=100 npm run sync:fase2`
 
 - Node.js 18+
 - npm
+
+## MoveMirror v0.5 — Import Hub
+
+Desacopla la **adquisición de partidas** del coaching y la transferencia.
+
+- Rutas: `/import`, `/import/manual`, `/games`, `/games/:id`
+- Fuentes: Chess.com, Lichess, archivos PGN, PGN pegado, entrada manual
+- Modelo canónico `canonical-game-v1`, deduplicación `game-fingerprint-v1`, merge `metadata-merge-v1`
+- Identidad local configurable en **Perfil → Identidad del jugador** y `data/games/player-identity.json` (semilla histórica `cholmess21`, no hardcodeada en importación)
+- API: `GET/PATCH /api/player-identity`, `POST /api/player-identity/reconcile` (solo unresolved/probable; no toca confirmaciones manuales ni cohortes congeladas)
+- Importar **no** añade partidas automáticamente al coaching ni a cohortes congeladas
+- Política de coaching productiva actual: `rapid-10m-coaching-v1` (10+0 exacto, identidad verificada, partida finalizada)
+
+```bash
+npm run games:migrate   # migración histórica (idempotente)
+npm run games:verify    # integridad de índices y fingerprints
+npm run games:reindex
+npm run games:export
+npm run test:e2e        # incluye e2e/import-hub.spec.ts
+```
+
+Reportes de migración: `data/games/migration-v0.5.0.json` y `.md`.
+
+## MoveMirror v0.5.1 — Idiomas (es / en / de)
+
+Interfaz en **español**, **inglés** y **alemán** con copy en lenguaje claro. Los detalles técnicos (FEN, UCI, enums internos) van en **Detalles técnicos**, no en el flujo principal.
+
+- **Idiomas:** `es`, `en`, `de` — preferencia en `localStorage` (`move-mirror-locale-v1`).
+- **Fallback:** inglés (`en`) si falta una clave.
+- **Archivos autoritativos:** `src/i18n/locales/es/` y `src/i18n/locales/de/` (no se sobrescriben al sincronizar).
+- **`npm run i18n:sync`** — añade solo claves nuevas desde `en`, marca `⟪pending⟫`; nunca pisa traducciones existentes.
+- **`npm run i18n:check`** — paridad de claves, cero pending, cero inglés de UI no permitido (whitelist estricta por clave/valor).
+- Guías: `docs/ui-language-guide.md`, `docs/plain-language-glossary.md`.
+
+Los ritmos de juego (`bullet`, `blitz`, `rapid`, …) son códigos internos; la UI usa `formatTimeControl()` (p. ej. Rapid → Rápidas / Schnellschach).
 
 ## MoveMirror v0.3 — Transfer Loop
 
@@ -116,6 +151,9 @@ Exporta intentos desde **Perfil → Exportar intentos (JSON)**.
 | `/train` | Tablero interactivo + registro CCT |
 | `/profile` | Perfil vivo + log |
 | `/transfer` | Cohortes, comparación y recomendación |
+| `/import` | Import Hub (Chess.com, Lichess, PGN, manual) |
+| `/import/manual` | Tablero para registrar partidas |
+| `/games` | Biblioteca de partidas canónicas |
 
 | Código | Rol |
 |--------|-----|
@@ -129,9 +167,11 @@ Exporta intentos desde **Perfil → Exportar intentos (JSON)**.
 - Lección: `cct-refutation-v1`
 - Criterio de evaluación: `engine-validated-v2`
 
-## Limitaciones (v0.3)
+## Limitaciones (v0.5)
 
-- Un solo jugador (`cholmess21`) y un solo patrón. v0.3 no enseña una debilidad nueva; solo puede proponer revisarla.
+- Un jugador local (sin cuentas ni multiusuario). OCR/PDF de planillas queda para v0.5.1.
+- Un patrón pedagógico productivo principal (10+0). Otras categorías de tiempo se almacenan pero no se mezclan automáticamente.
+- v0.3/v0.5 no enseña una debilidad nueva automáticamente; solo puede proponer revisarla.
 - La comparación no afirma que MoveMirror haya causado el cambio.
 - El modo offline usa análisis escrito en los fixtures, no Stockfish.
 - Hace falta Stockfish local para el baseline y para las partidas reales.

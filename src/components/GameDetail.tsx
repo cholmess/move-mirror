@@ -18,6 +18,7 @@ import {
   formatGameIneligibility,
   formatImportSource,
   formatMoveForDisplay,
+  formatTimeControl,
 } from "../i18n/presenters";
 import type { SupportedLocale } from "../i18n/types";
 import { TechnicalDetails, TechnicalRow } from "./TechnicalDetails";
@@ -59,7 +60,8 @@ export function GameDetail() {
       </h1>
       <p className="muted">
         {game.timing.startedAt ? formatDateTime(game.timing.startedAt, locale) : t("unknownDate")} ·{" "}
-        {game.chess.result} · {game.timing.timeControl.raw ?? t("unknownTime")}
+        {game.chess.result} · {game.timing.timeControl.raw ?? t("unknownTime")} (
+        {formatTimeControl(game.timing.timeControl.category, locale)})
       </p>
       {error && <p className="card import-error">{error}</p>}
 

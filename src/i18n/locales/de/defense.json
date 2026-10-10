@@ -2,7 +2,7 @@
   "eyebrow": "Verteidigungstraining · du verteidigst",
   "title": "Verteidigungstraining",
   "subtitle": "Übe, wie du reagierst, wenn dein Gegner eine konkrete Drohung setzt.",
-  "pageTitle": "Neutralisiere die Drohung, bevor du auf Autopilot weiterziehst",
+  "pageTitle": "Neutralisiere die Drohung, bevor du ohne Pause weiterziehst",
   "loading": "Verteidigungstraining wird geladen…",
   "loadError": "Wir konnten keine verifizierte Verteidigungsstellung laden.",
   "verifyError": "Wir konnten deine Verteidigung nicht verifizieren. Dieser Versuch wurde nicht als richtig gewertet.",
@@ -14,10 +14,10 @@
   "stepReadHint": "Keine Bewertung, keine Pfeile, kein Partiezug angezeigt.",
   "stepReadDone": "Ich habe die Stellung gelesen",
   "stepThreatTitle": "2. Drohung benennen",
-  "stepThreatQuestion": "Was will dein Gegner erreichen, wenn du automatisch weiterziehst?",
+  "stepThreatQuestion": "Was will dein Gegner erreichen, wenn du sofort weiterziehst?",
   "stepThreatOptional": "Beschreibe die unangenehmste Antwort deines Gegners (optional)",
-  "chooseResource": "Ressource wählen",
-  "stepResourceTitle": "3. Ressource zum Suchen wählen",
+  "chooseResource": "Wähle eine Ressource",
+  "stepResourceTitle": "3. Wähle eine Ressource zum Suchen",
   "stepResourceQuestion": "Welche Art von Ressource würdest du zuerst suchen?",
   "playOnBoard": "Am Brett spielen",
   "stepMoveTitle": "4. Deine Verteidigung spielen",
@@ -87,5 +87,5 @@
     "rankingNotSelectedDetailCategories": "; Diversitätsboni ({{categories}}) haben die Qualitätslücke nicht ausgeglichen",
     "rankingNotSelectedDetailCoverage": "; für diese Kategorien gab es schon genug Abdeckung"
   },
-  "exercisePrompt": "Du verteidigst. Lies die Stellung, bevor du einen Zug wählst."
+  "exercisePrompt": "Du verteidigst. Lies die Stellung, bevor du einen Zug spielst."
 }

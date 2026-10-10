@@ -71,8 +71,9 @@
   "timeControl": {
     "bullet": "Bullet",
     "blitz": "Blitz",
-    "rapid": "Rapid",
-    "classical": "Clásico",
+    "rapid": "Rápidas",
+    "classical": "Clásicas",
+    "correspondence": "Correspondencia",
     "unknown": "Desconocido"
   },
   "ineligibility": {

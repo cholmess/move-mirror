@@ -71,8 +71,9 @@
   "timeControl": {
     "bullet": "Bullet",
     "blitz": "Blitz",
-    "rapid": "Rapid",
+    "rapid": "Schnellschach",
     "classical": "Klassisch",
+    "correspondence": "Fernschach",
     "unknown": "Unbekannt"
   },
   "ineligibility": {

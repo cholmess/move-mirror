@@ -3,18 +3,21 @@ import fs from "node:fs";
 import path from "node:path";
 import {
   LANGS,
-  LOCALES_DIR,
   TARGET_LANGS,
+  assertNoBroadWhitelistPatterns,
   flattenLeaves,
   getByPath,
   isPendingValue,
-  isWhitelistedEnglishMatch,
   listNamespaces,
   loadLocale,
+  whitelistAllowanceReason,
 } from "./i18n-lib.mjs";
+
+assertNoBroadWhitelistPatterns(fs.readFileSync(new URL("./i18n-lib.mjs", import.meta.url), "utf8"));
 
 const srcDir = path.resolve("src/components");
 let errors = 0;
+let broadExceptions = 0;
 
 const stats = {
   en: { total: 0 },
@@ -22,9 +25,9 @@ const stats = {
   de: { total: 0, translated: 0, englishMatches: 0, whitelisted: 0, pending: 0 },
 };
 
-const englishMatchSamples = { es: [], de: [] };
+const whitelistedDetailed = { es: [], de: [] };
 const pendingSamples = { es: [], de: [] };
-const whitelistedSamples = { es: [], de: [] };
+const untranslatedSamples = { es: [], de: [] };
 
 const nsFiles = listNamespaces();
 const enKeys = {};
@@ -64,10 +67,11 @@ for (const lang of TARGET_LANGS) {
     for (const [keyPath, enValue] of enLeaves) {
       stats[lang].total += 1;
       const value = getByPath(target, keyPath);
+      const fullKey = `${ns}:${keyPath}`;
 
       if (isPendingValue(value)) {
         stats[lang].pending += 1;
-        if (pendingSamples[lang].length < 20) pendingSamples[lang].push(`${ns}:${keyPath}`);
+        if (pendingSamples[lang].length < 30) pendingSamples[lang].push(fullKey);
         console.error(`[i18n] pending ${lang}/${file}: ${keyPath}`);
         errors += 1;
         continue;
@@ -80,12 +84,17 @@ for (const lang of TARGET_LANGS) {
 
       if (value === enValue) {
         stats[lang].englishMatches += 1;
-        const fullKey = `${ns}:${keyPath}`;
-        if (isWhitelistedEnglishMatch(enValue, keyPath)) {
+        const reason = whitelistAllowanceReason({
+          fullKey,
+          enValue,
+          localeValue: value,
+          lang,
+        });
+        if (reason) {
           stats[lang].whitelisted += 1;
-          if (whitelistedSamples[lang].length < 30) whitelistedSamples[lang].push(fullKey);
+          whitelistedDetailed[lang].push({ key: fullKey, reason });
         } else {
-          if (englishMatchSamples[lang].length < 40) englishMatchSamples[lang].push(fullKey);
+          if (untranslatedSamples[lang].length < 50) untranslatedSamples[lang].push(fullKey);
           console.error(`[i18n] untranslated (${lang} = en): ${fullKey}`);
           errors += 1;
         }
@@ -138,23 +147,28 @@ console.log("\n[i18n] Summary");
 console.log(`  Keys (en): ${stats.en.total}`);
 for (const lang of TARGET_LANGS) {
   const s = stats[lang];
-  console.log(`  ${lang}: total=${s.total} translated=${s.translated} englishMatches=${s.englishMatches} whitelisted=${s.whitelisted} pending=${s.pending}`);
+  console.log(
+    `  ${lang}: total=${s.total} translated=${s.translated} englishMatches=${s.englishMatches} whitelisted=${s.whitelisted} pending=${s.pending}`,
+  );
 }
 
-if (whitelistedSamples.es.length || whitelistedSamples.de.length) {
-  console.log("\n[i18n] Whitelisted English matches (sample):");
+console.log(`  Broad whitelist exceptions: ${broadExceptions}`);
+console.log(`  Unexpected English (untranslated): ${errors > 0 ? untranslatedSamples.es.length + untranslatedSamples.de.length : 0}`);
+
+if (whitelistedDetailed.es.length || whitelistedDetailed.de.length) {
+  console.log("\n[i18n] Whitelisted English matches (with reason):");
   for (const lang of TARGET_LANGS) {
-    if (whitelistedSamples[lang].length) {
-      console.log(`  ${lang}: ${whitelistedSamples[lang].slice(0, 15).join(", ")}${whitelistedSamples[lang].length > 15 ? "…" : ""}`);
+    for (const entry of whitelistedDetailed[lang]) {
+      console.log(`  ${lang} ${entry.key} → ${entry.reason}`);
     }
   }
 }
 
-if (englishMatchSamples.es.length || englishMatchSamples.de.length) {
-  console.log("\n[i18n] Untranslated UI keys (sample):");
+if (untranslatedSamples.es.length || untranslatedSamples.de.length) {
+  console.log("\n[i18n] Untranslated UI keys:");
   for (const lang of TARGET_LANGS) {
-    if (englishMatchSamples[lang].length) {
-      console.log(`  ${lang}: ${englishMatchSamples[lang].slice(0, 15).join(", ")}`);
+    for (const key of untranslatedSamples[lang]) {
+      console.log(`  ${lang}: ${key}`);
     }
   }
 }

@@ -3,11 +3,14 @@ import { i18n, setAppLocale } from "./i18nInstance";
 import { readStoredLocale, writeStoredLocale } from "./localeStorage";
 import { resolveInitialLocale } from "./resolveLocale";
 import {
+  formatDefenseSelectionReason,
   formatEvaluationStatus,
   formatMoveForDisplay,
   formatExercisePrompt,
+  formatTimeControl,
   moveAriaLabel,
 } from "./presenters";
+import { whitelistAllowanceReason } from "../../scripts/i18n-lib.mjs";
 import { selectNextExercise } from "../domain/adaptive";
 import { createInitialState } from "../storage/persistence";
 
@@ -73,6 +76,36 @@ describe("i18n locale", () => {
     const es = formatExercisePrompt("Be4", "es");
     expect(en).toMatch(/Be4|♗e4/);
     expect(es).toMatch(/partida|played/i);
+  });
+
+  it("formats time control pace labels per locale", () => {
+    expect(formatTimeControl("rapid", "en")).toBe("Rapid");
+    expect(formatTimeControl("rapid", "es")).toBe("Rápidas");
+    expect(formatTimeControl("rapid", "de")).toBe("Schnellschach");
+    expect(formatTimeControl("correspondence", "de")).toBe("Fernschach");
+  });
+
+  it("formats defense selection reason from stable codes", () => {
+    const es = formatDefenseSelectionReason({ key: "lowDomainEvidence" }, "es");
+    const de = formatDefenseSelectionReason({ key: "adaptiveVariety" }, "de");
+    expect(es).toMatch(/dominio|evidencia/i);
+    expect(de).toMatch(/Abwechslung|adaptive/i);
+    expect(formatDefenseSelectionReason("Variedad adaptativa.", "en")).not.toMatch(/Variedad/);
+  });
+
+  it("uses strict whitelist (no blanket namespace exceptions)", () => {
+    expect(whitelistAllowanceReason({
+      fullKey: "games:timeControl.rapid",
+      enValue: "Rapid",
+      localeValue: "Rapid",
+      lang: "de",
+    })).toBeNull();
+    expect(whitelistAllowanceReason({
+      fullKey: "games:timeControl.bullet",
+      enValue: "Bullet",
+      localeValue: "Bullet",
+      lang: "de",
+    })).toMatch(/Bullet/);
   });
 
   it("same state + different locale = same domain result", () => {

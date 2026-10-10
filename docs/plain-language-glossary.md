@@ -21,4 +21,11 @@ Editorial map from internal MoveMirror terms to player-facing language. Internal
 | `illegal` | Esa jugada no es legal | That move is not legal | Dieser Zug ist nicht erlaubt |
 | `exposure_unknown` | No sabemos si estas partidas fueron posteriores al entrenamiento | We do not know whether these games were played after training | Wir wissen nicht, ob diese Partien nach dem Training gespielt wurden |
 
-Brand names unchanged: MoveMirror, Chess.com, Lichess, Stockfish, PGN.
+| `bullet` (pace) | Bullet | Bullet | Bullet |
+| `blitz` | Blitz | Blitz | Blitz |
+| `rapid` | Rápidas | Rapid | Schnellschach |
+| `classical` | Clásicas | Classical | Klassisch |
+| `correspondence` | Correspondencia | Correspondence | Fernschach |
+| `unknown` (pace) | Desconocido | Unknown | Unbekannt |
+
+Brand names unchanged: MoveMirror, Chess.com, Lichess, Stockfish, PGN. Acronyms in technical panel only: FEN, UCI, SAN, SHA-256, ID.

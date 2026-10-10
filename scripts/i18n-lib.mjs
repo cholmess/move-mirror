@@ -6,51 +6,87 @@ export const LANGS = ["en", "es", "de"];
 export const TARGET_LANGS = ["es", "de"];
 export const PENDING_PREFIX = "⟪pending⟫ ";
 
-/** Brand, chess notation, and technical tokens allowed to match English in es/de. */
-export const WHITELIST_SUBSTRINGS = [
-  "MoveMirror",
-  "Chess.com",
-  "Lichess",
-  "Stockfish",
-  "PGN",
-  "SAN",
-  "FEN",
-  "UCI",
-  "JSON",
-  "Chess.js",
-  "♔",
-  "♕",
-  "♖",
-  "♗",
-  "♘",
-  "http://",
-  "https://",
-  "src/contracts/future.ts",
-];
+/** @typedef {{ fullKey: string; enValue: string; localeValue: string; lang: string }} WhitelistContext */
 
-/** Exact English values that may be reused in es/de (field labels, sync keys, etc.). */
-export const WHITELIST_EXACT = new Set([
-  "MoveMirror",
-  "Chess.com",
-  "Lichess",
-  "PGN",
-  "SAN",
-  "FEN",
-  "UCI",
-  "JSON",
-  "Bullet",
-  "Blitz",
-  "Rapid",
-  "Classical",
-  "ID",
-  "Hash",
-  "Pattern id",
-  "Protocol id",
-  "Policy id",
-  "Analysis fingerprint",
-  "Motif classifier",
-  "α / β",
-]);
+/**
+ * Strict whitelist: exact fullKey and/or exact value only. No namespace wildcards.
+ * @returns {string|null} human-readable reason if allowed, else null
+ */
+export function whitelistAllowanceReason({ fullKey, enValue, localeValue, lang }) {
+  if (typeof enValue !== "string" || typeof localeValue !== "string") return "non-string leaf";
+  if (enValue !== localeValue) return null;
+  const trimmed = enValue.trim();
+  if (!trimmed) return "empty string";
+
+  if (fullKey === "common:dash" && trimmed === "—") return "em dash (locale-neutral)";
+  if (fullKey === "common:no" && trimmed === "No" && lang === "es") return "Spanish cognate «No»";
+
+  if (fullKey === "games:timeControl.bullet" && trimmed === "Bullet") return "intentional equal pace label (Bullet)";
+  if (fullKey === "games:timeControl.blitz" && trimmed === "Blitz") return "intentional equal pace label (Blitz)";
+
+  const chessComKeys = new Set([
+    "games:sourceShort.chess_com",
+    "import:chesscom",
+    "import:source.chess_com",
+  ]);
+  if (chessComKeys.has(fullKey) && trimmed === "Chess.com") return "brand name Chess.com";
+
+  const lichessKeys = new Set([
+    "games:sourceShort.lichess",
+    "import:lichess",
+    "import:source.lichess",
+  ]);
+  if (lichessKeys.has(fullKey) && trimmed === "Lichess") return "brand name Lichess";
+
+  const acronymKeys = {
+    "technical:hash": "Hash",
+    "technical:id": "ID",
+    "technical:fen": "FEN",
+    "technical:uci": "UCI",
+  };
+  if (acronymKeys[fullKey] === trimmed) return `acronym ${trimmed}`;
+
+  if (fullKey === "technical:san" && /^SAN\b/i.test(trimmed)) return "notation label SAN";
+
+  if (fullKey === "technical:engineSha" && /SHA/i.test(trimmed)) return "engine SHA label";
+
+  if (trimmed === "MoveMirror" || (trimmed.includes("MoveMirror") && fullKey === "transfer:eyebrow")) {
+    return "product name MoveMirror";
+  }
+
+  if (trimmed === "Stockfish" || trimmed.includes("Stockfish")) return "engine name Stockfish";
+
+  if (trimmed === "PGN" || trimmed.includes("PGN")) {
+    if (/\.pgn|PGN file|Pasted PGN|archivo.*PGN|PGN pegado/i.test(trimmed) && trimmed !== "PGN") {
+      return null;
+    }
+    if (trimmed === "PGN") return "notation PGN";
+  }
+
+  if (/^https?:\/\//.test(trimmed)) return "URL";
+
+  if (/^[a-f0-9]{32,}$/i.test(trimmed)) return "hash value";
+
+  if (/^[\d\s./:+\\\-–—]+$/.test(trimmed)) return "numeric or punctuation only";
+
+  if (/^[♔♕♖♗♘][a-h]?[1-8]?x?[a-h]?[1-8]?[+#!?]*$/i.test(trimmed)) return "chess notation sample";
+
+  if (fullKey.startsWith("transfer:syncProgress.") && lang !== "en") {
+    return "sync progress server key (Spanish key, localized value)";
+  }
+
+  return null;
+}
+
+export function isWhitelistedEnglishMatch(enValue, keyPath, lang, fullKey) {
+  const reason = whitelistAllowanceReason({
+    fullKey: fullKey ?? keyPath,
+    enValue,
+    localeValue: enValue,
+    lang,
+  });
+  return reason !== null;
+}
 
 export function listNamespaces() {
   return fs.readdirSync(path.join(LOCALES_DIR, "en")).filter((f) => f.endsWith(".json"));
@@ -96,19 +132,18 @@ export function isPendingValue(value) {
   return typeof value === "string" && value.startsWith(PENDING_PREFIX);
 }
 
-export function isWhitelistedEnglishMatch(enValue, keyPath) {
-  if (typeof enValue !== "string") return true;
-  const trimmed = enValue.trim();
-  if (!trimmed) return true;
-  if (trimmed === "—" && keyPath.endsWith("dash")) return true;
-  if (trimmed === "No" && keyPath.endsWith("no")) return true;
-  if (WHITELIST_EXACT.has(trimmed)) return true;
-  for (const token of WHITELIST_SUBSTRINGS) {
-    if (trimmed.includes(token)) return true;
+/** Guard: whitelist implementation must not use broad namespace patterns. */
+export function assertNoBroadWhitelistPatterns(sourceText) {
+  const forbidden = [
+    /technical:\*/,
+    /common:\*/,
+    /import:\*/,
+    /keyPath\.startsWith\(\s*["']technical/,
+    /SUBSTRINGS\s*=/,
+  ];
+  for (const pattern of forbidden) {
+    if (pattern.test(sourceText)) {
+      throw new Error(`Forbidden broad whitelist pattern in i18n-lib: ${pattern}`);
+    }
   }
-  if (/^[\d\s./:+\\-]+$/.test(trimmed)) return true;
-  if (/^[♔♕♖♗♘][a-h]?[1-8]?/.test(trimmed)) return true;
-  if (keyPath.startsWith("technical.") && /id|sha|uci|fen|san|hash/i.test(keyPath)) return true;
-  if (keyPath.includes("syncProgress.") && !keyPath.endsWith(".value")) return true;
-  return false;
 }
