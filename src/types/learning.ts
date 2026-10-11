@@ -20,6 +20,33 @@ export interface CctCapture {
   opponentForcedResponse: string;
 }
 
+export interface ReasoningMove {
+  uci: string;
+  san: string;
+}
+
+export interface TrainingReasoningV2 {
+  version: "training-reasoning-v2";
+  checks: {
+    status: "moves_selected" | "none_seen";
+    moves: ReasoningMove[];
+  };
+  captures: {
+    status: "moves_selected" | "none_seen";
+    moves: ReasoningMove[];
+  };
+  threats: {
+    status: "moves_selected" | "none_seen";
+    moves: Array<ReasoningMove & { note?: string }>;
+  };
+  candidate: ReasoningMove;
+  predictedReply:
+    | { status: "move_selected"; move: ReasoningMove }
+    | { status: "none_found" }
+    | { status: "not_applicable_checkmate" };
+  keptCandidateAfterReply: boolean;
+}
+
 export interface AttemptRecord {
   id: string;
   exerciseId: string;
@@ -27,6 +54,7 @@ export interface AttemptRecord {
   skillIds: SkillId[];
   fen: string;
   cct: CctCapture;
+  reasoningV2?: TrainingReasoningV2;
   chosenMoveSan: string;
   reasoning: string;
   timeUsedSeconds: number;

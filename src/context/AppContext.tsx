@@ -6,7 +6,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import type { AppState, AttemptRecord, CctCapture } from "../types/learning";
+import type { AppState, AttemptRecord, CctCapture, TrainingReasoningV2 } from "../types/learning";
 import type { DefenseAttempt, DefenseFeedbackDto, DefensiveResource } from "../types/defense";
 import {
   loadState,
@@ -32,6 +32,7 @@ interface AppContextValue {
   submitExerciseAttempt: (params: {
     exerciseId: string;
     cct: CctCapture;
+    reasoningV2?: TrainingReasoningV2;
     chosenMoveSan: string;
     reasoning: string;
     timeUsedSeconds: number;
@@ -73,6 +74,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     async (params: {
       exerciseId: string;
       cct: CctCapture;
+      reasoningV2?: TrainingReasoningV2;
       chosenMoveSan: string;
       reasoning: string;
       timeUsedSeconds: number;
@@ -127,6 +129,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         skillIds: exercise.skillIds,
         fen: exercise.fen,
         cct: params.cct,
+        reasoningV2: params.reasoningV2,
         chosenMoveSan: params.chosenMoveSan,
         reasoning: params.reasoning,
         timeUsedSeconds: params.timeUsedSeconds,
