@@ -94,6 +94,7 @@ export async function runSync({
   sleep,
   fetchImpl,
   purpose = null,
+  validation = null,
 }) {
   const progress = (patch) => onProgress?.(patch);
   const manifest = store.readManifest();
@@ -154,6 +155,9 @@ export async function runSync({
         .map((row) => row.gameId)
         .filter(Boolean),
     });
+    if (validation?.recordCohortCreated) {
+      await validation.recordCohortCreated(cohort);
+    }
   }
   if (cohort) {
     store.addToCohort(cohort.id, { games: selected.included, exclusions: selected.excluded });

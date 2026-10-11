@@ -53,5 +53,28 @@
   "defenseDefaultReason": "Priorizaremos una posición exigente con poca evidencia de práctica, variando color y recurso.",
   "defenseHypothesisLabel": "Posible hábito",
   "defensePractice": "Practicar defensa",
-  "footerMeta": "Lección: {{lessonTitle}} · Banco de ejercicios: {{core}} núcleo + {{pool}} ampliado ({{motif}}) · Los detalles de evaluación están en detalles técnicos."
+  "footerMeta": "Lección: {{lessonTitle}} · Banco de ejercicios: {{core}} núcleo + {{pool}} ampliado ({{motif}}) · Los detalles de evaluación están en detalles técnicos.",
+  "validation": {
+    "title": "Validación personal",
+    "lesson": "Lección",
+    "lessonDone": "completada",
+    "lessonPending": "pendiente",
+    "exercises": "Ejercicios",
+    "verified": "Respuestas verificadas",
+    "sessions": "Sesiones",
+    "days": "Días",
+    "qualification": "Calificación",
+    "qualificationPending": "pendiente",
+    "qualificationReached": "alcanzada el {{date}}",
+    "afterQualified": "La intervención quedó registrada. Las partidas nuevas podrán medirse como posteriores al entrenamiento.",
+    "loading": "Cargando progreso de validación…",
+    "next": {
+      "complete_lesson": "Completa la lección para empezar a contar práctica.",
+      "more_exercises": "Completa {{count}} ejercicios más para avanzar.",
+      "more_verified_successes": "Sigue practicando hasta verificar más respuestas con el motor.",
+      "more_sessions": "Entrena otra sesión en otro momento para contar una segunda sesión.",
+      "more_days": "Vuelve otro día del calendario para contar un segundo día.",
+      "continue_training": "Sigue entrenando para alcanzar la dosis."
+    }
+  }
 }

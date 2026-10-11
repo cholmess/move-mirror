@@ -53,5 +53,28 @@
   "defenseDefaultReason": "We will prioritize a demanding position with little practice evidence, varying color and resource.",
   "defenseHypothesisLabel": "Possible habit",
   "defensePractice": "Practice defense",
-  "footerMeta": "Lesson: {{lessonTitle}} · Exercise bank: {{core}} core + {{pool}} extended ({{motif}}) · Evaluation details stay in technical details."
+  "footerMeta": "Lesson: {{lessonTitle}} · Exercise bank: {{core}} core + {{pool}} extended ({{motif}}) · Evaluation details stay in technical details.",
+  "validation": {
+    "title": "Personal validation",
+    "lesson": "Lesson",
+    "lessonDone": "completed",
+    "lessonPending": "pending",
+    "exercises": "Exercises",
+    "verified": "Verified answers",
+    "sessions": "Sessions",
+    "days": "Days",
+    "qualification": "Qualification",
+    "qualificationPending": "pending",
+    "qualificationReached": "reached on {{date}}",
+    "afterQualified": "The intervention is recorded. New games can be measured as after training.",
+    "loading": "Loading validation progress…",
+    "next": {
+      "complete_lesson": "Complete the lesson to start counting practice.",
+      "more_exercises": "Complete {{count}} more exercises to advance.",
+      "more_verified_successes": "Keep practicing until more answers are engine-verified.",
+      "more_sessions": "Train again on another day to count a second session.",
+      "more_days": "Come back on another calendar day to count a second day.",
+      "continue_training": "Keep training to reach the dose."
+    }
+  }
 }

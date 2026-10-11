@@ -14,7 +14,7 @@ async function readBody(req) {
   return JSON.parse(Buffer.concat(chunks).toString("utf8"));
 }
 
-export function createTransferRouter({ store, fixturesDir, enginePath, username }) {
+export function createTransferRouter({ store, fixturesDir, enginePath, username, validation = null }) {
   let job = { running: false, progress: null, error: null, abort: null };
 
   function snapshot() {
@@ -37,6 +37,7 @@ export function createTransferRouter({ store, fixturesDir, enginePath, username 
       enginePath,
       training,
       purpose,
+      validation,
       signal: abort.signal,
       onProgress: (progress) => {
         job.progress = progress;
@@ -104,7 +105,11 @@ export function createTransferRouter({ store, fixturesDir, enginePath, username 
         const id = body.cohortId || snapshot().openCohort?.id;
         const rows = store.analyzedRows(id);
         const metrics = measureDecisions(rows, { cohortId: id });
-        store.freeze(id, metrics, new Date().toISOString());
+        const frozenAt = new Date().toISOString();
+        store.freeze(id, metrics, frozenAt);
+        if (validation?.recordCohortFrozen) {
+          await validation.recordCohortFrozen(id, frozenAt);
+        }
         json(res, 200, snapshot());
         return true;
       }

@@ -76,7 +76,12 @@ export function createImportService(store, deps = {}) {
           overrides,
         });
         importedGameIds.push(result.game.id);
-        if (result.disposition === "new_canonical_game") summary.newCanonicalGames += 1;
+        if (result.disposition === "new_canonical_game") {
+          summary.newCanonicalGames += 1;
+          if (deps.onGameImported) {
+            await deps.onGameImported(result.game);
+          }
+        }
         if (result.disposition === "merged_with_existing") summary.mergedDuplicates += 1;
         if (result.disposition === "exact_duplicate") summary.exactDuplicates += 1;
         if (

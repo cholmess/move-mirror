@@ -7,6 +7,7 @@ import { primaryPattern } from "../data/pattern";
 import { microLesson } from "../data/microlesson";
 import { coreExercises, exercises, dataManifest } from "../data/exercises";
 import { useApp } from "../context/AppContext";
+import { useValidationLedger } from "../hooks/useValidationLedger";
 import { getExercise } from "../data/exercises";
 import { buildDefenseProfile } from "../domain/defenseProfile";
 import {
@@ -28,6 +29,7 @@ import { TechnicalDetails, TechnicalRow } from "./TechnicalDetails";
 export function Dashboard() {
   const { t, i18n } = useTranslation(["dashboard", "common", "lesson", "technical", "defense"]);
   const { state } = useApp();
+  const { status: validationStatus } = useValidationLedger(state);
   const ev = primaryPattern.evidence;
   const locale = i18n.language as "es" | "en" | "de";
   const currentId = state.progress.currentExerciseId;
@@ -148,6 +150,56 @@ export function Dashboard() {
           </div>
         </section>
       </div>
+
+      <section className="card" data-testid="validation-ledger-card">
+        <h2>{t("dashboard:validation.title")}</h2>
+        {validationStatus ? (
+          <>
+            <ul className="stat-list">
+              <li>
+                {t("dashboard:validation.lesson")}:{" "}
+                {validationStatus.lessonCompleted
+                  ? t("dashboard:validation.lessonDone")
+                  : t("dashboard:validation.lessonPending")}
+              </li>
+              <li>
+                {t("dashboard:validation.exercises")}: {validationStatus.exercises.done}/
+                {validationStatus.exercises.required}
+              </li>
+              <li>
+                {t("dashboard:validation.verified")}: {validationStatus.verifiedSuccesses.done}/
+                {validationStatus.verifiedSuccesses.required}
+              </li>
+              <li>
+                {t("dashboard:validation.sessions")}: {validationStatus.sessions.done}/
+                {validationStatus.sessions.required}
+              </li>
+              <li>
+                {t("dashboard:validation.days")}: {validationStatus.days.done}/{validationStatus.days.required}
+              </li>
+              <li>
+                {t("dashboard:validation.qualification")}:{" "}
+                {validationStatus.qualificationReached
+                  ? t("dashboard:validation.qualificationReached", {
+                      date: validationStatus.qualificationReachedAt
+                        ? formatDateTime(validationStatus.qualificationReachedAt, locale)
+                        : "",
+                    })
+                  : t("dashboard:validation.qualificationPending")}
+              </li>
+            </ul>
+            <p className="muted small">
+              {validationStatus.qualificationReached
+                ? t("dashboard:validation.afterQualified")
+                : t(`dashboard:validation.next.${validationStatus.nextAction ?? "continue_training"}`, {
+                    count: validationStatus.exercisesRemaining,
+                  })}
+            </p>
+          </>
+        ) : (
+          <p className="muted">{t("dashboard:validation.loading")}</p>
+        )}
+      </section>
 
       <section className="card">
         <h2>{t("dashboard:newGamesTitle")}</h2>

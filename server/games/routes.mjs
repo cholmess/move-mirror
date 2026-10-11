@@ -3,10 +3,10 @@ import { createImportService, decodePgnBytes, decodePgnText } from "./import-ser
 
 const MAX_BODY = Number(process.env.IMPORT_MAX_BODY_BYTES ?? 12 * 1024 * 1024);
 
-export function createGamesRouter({ store }) {
+export function createGamesRouter({ store, onGameImported = null }) {
   store.ensure();
   store.recoverInterruptedJobs();
-  const service = createImportService(store);
+  const service = createImportService(store, { onGameImported });
 
   return async function handleGames(req, res) {
     const url = new URL(req.url, "http://localhost");

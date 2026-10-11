@@ -21,6 +21,7 @@ import { EVAL_CRITERION_VERSION, LESSON_VERSION } from "../data/constants";
 import { getExercise } from "../data/exercises";
 import { isLegalMove, userFoundForcedResponse } from "../domain/evaluation";
 import { evaluateMoveWithEngine, type EvaluateResult } from "../api/engineClient";
+import { syncValidationPedagogy } from "../api/validationClient";
 import { buildReflectionPrompt } from "../domain/pedagogy";
 import { i18n } from "../i18n/i18nInstance";
 import type { EvaluationStatus } from "@shared/evaluation/types";
@@ -152,18 +153,24 @@ export function AppProvider({ children }: { children: ReactNode }) {
       });
 
       persist(next);
+      void syncValidationPedagogy(next.pedagogyEvents).catch(() => undefined);
       return next.attempts[next.attempts.length - 1] ?? null;
     },
     [state, persist]
   );
 
   const completeLesson = useCallback(() => {
-    persist(markLessonComplete(state));
+    const next = markLessonComplete(state);
+    persist(next);
+    void syncValidationPedagogy(next.pedagogyEvents).catch(() => undefined);
   }, [state, persist]);
 
   const startLesson = useCallback(() => {
     const next = markLessonStarted(state);
-    if (next !== state) persist(next);
+    if (next !== state) {
+      persist(next);
+      void syncValidationPedagogy(next.pedagogyEvents).catch(() => undefined);
+    }
   }, [state, persist]);
 
   const resetAll = useCallback(() => {

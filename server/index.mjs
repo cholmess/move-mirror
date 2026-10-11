@@ -17,6 +17,9 @@ import { createScoresheetRouter } from "./scoresheets/routes.mjs";
 import { createSparringStore } from "./sparring/store.mjs";
 import { createSparringService } from "./sparring/service.mjs";
 import { createSparringRouter } from "./sparring/routes.mjs";
+import { createValidationStore } from "./validation/store.mjs";
+import { createValidationService } from "./validation/service.mjs";
+import { createValidationRouter } from "./validation/routes.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
@@ -224,6 +227,18 @@ async function handleEvaluate(body, signal) {
   }
 }
 
+const validationRoot = process.env.VALIDATION_DATA_DIR
+  ? path.resolve(ROOT, process.env.VALIDATION_DATA_DIR)
+  : path.join(ROOT, "data/validation");
+const validationStore = createValidationStore(validationRoot);
+validationStore.ensure();
+const validationService = createValidationService(validationStore);
+const handleValidation = createValidationRouter(() => validationService);
+const validationHooks = {
+  recordCohortCreated: (cohort) => validationService.recordCohortCreated(cohort),
+  recordCohortFrozen: (cohortId, frozenAt) => validationService.recordCohortFrozen(cohortId, frozenAt),
+};
+
 const transferStore = createStore(path.join(ROOT, "data/transfer"));
 transferStore.ensure();
 const gamesStore = createGamesStore(
@@ -238,8 +253,12 @@ const handleTransfer = createTransferRouter({
   fixturesDir: path.join(ROOT, "fixtures/chesscom"),
   enginePath: ENGINE_PATH,
   username: gamesStore.readIdentity().chessComUsernames[0] ?? "",
+  validation: validationHooks,
 });
-const handleGames = createGamesRouter({ store: gamesStore });
+const handleGames = createGamesRouter({
+  store: gamesStore,
+  onGameImported: (game) => validationService.recordGameImported(game),
+});
 const handleScoresheet = createScoresheetRouter({ gamesStore });
 const handleDefense = createDefenseRouter({
   datasetFile: path.join(ROOT, "data/defense/defense-lab-v1.json"),
@@ -262,6 +281,7 @@ function getSparringService() {
       evaluate: handleEvaluate,
       defenseDatasetFile: path.join(ROOT, "data/defense/defense-lab-v1.json"),
       cacheRoot: sparringStore.dirs.cache,
+      validation: validationService,
     });
   }
   return sparringService;
@@ -300,6 +320,11 @@ const server = http.createServer(async (req, res) => {
 
   if (req.url?.startsWith("/api/sparring")) {
     const handled = await handleSparring(req, res);
+    if (handled) return;
+  }
+
+  if (req.url?.startsWith("/api/validation")) {
+    const handled = await handleValidation(req, res);
     if (handled) return;
   }
 

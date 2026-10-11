@@ -70,15 +70,6 @@ function recentMotifsFromDecisions(decisions) {
     .filter(Boolean);
 }
 
-function declareTimeout(session, timeout, currentEpochId) {
-  session.status = "completed";
-  session.result = timeout.result;
-  session.termination = timeout.termination;
-  session.timeoutDeclared = true;
-  session.completedAt = new Date().toISOString();
-  session.clock = markClockExpired(session.clock, currentEpochId);
-}
-
 export function createSparringService({
   store,
   engine,
@@ -88,6 +79,7 @@ export function createSparringService({
   defenseDatasetFile,
   cacheRoot,
   monotonicEpochId = randomUUID(),
+  validation = null,
 }) {
   const cache = new SparringCache(cacheRoot);
   const resumeInflight = new Map();
@@ -119,6 +111,23 @@ export function createSparringService({
 
   function publicSession(session) {
     return sessionPublicDto(session, sessionFen(session), { currentEpochId: monotonicEpochId });
+  }
+
+  function recordTerminal(session) {
+    if (!validation?.recordSparringCompleted) return;
+    if (session.status === "completed" || session.status === "resigned") {
+      void validation.recordSparringCompleted(session);
+    }
+  }
+
+  function declareTimeout(session, timeout, currentEpochId) {
+    session.status = "completed";
+    session.result = timeout.result;
+    session.termination = timeout.termination;
+    session.timeoutDeclared = true;
+    session.completedAt = new Date().toISOString();
+    session.clock = markClockExpired(session.clock, currentEpochId);
+    recordTerminal(session);
   }
 
   function syncClockToTurn(session) {
@@ -254,12 +263,14 @@ export function createSparringService({
       session.termination = term.termination;
       session.completedAt = new Date().toISOString();
       session.clock = markClockFinished(session.clock, monotonicEpochId);
+      recordTerminal(session);
     } else if (session.maxPlies && session.movesUci.length >= session.maxPlies) {
       session.status = "completed";
       session.result = "*";
       session.termination = "training_goal_reached";
       session.completedAt = new Date().toISOString();
       session.clock = markClockFinished(session.clock, monotonicEpochId);
+      recordTerminal(session);
     } else {
       session.clock = syncClockToTurn(session);
     }
@@ -396,6 +407,7 @@ export function createSparringService({
         session.termination = term.termination;
         session.completedAt = new Date().toISOString();
         session.clock = markClockFinished(session.clock, monotonicEpochId);
+        recordTerminal(session);
         store.saveSession(session);
         return { session: publicSession(session), agentMove: null };
       }
@@ -510,6 +522,7 @@ export function createSparringService({
       session.termination = "resignation";
       session.completedAt = new Date().toISOString();
       session.clock = markClockFinished(session.clock, monotonicEpochId);
+      recordTerminal(session);
       store.saveSession(session);
       return publicSession(session);
     },

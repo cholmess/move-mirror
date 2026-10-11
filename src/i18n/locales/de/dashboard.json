@@ -53,5 +53,28 @@
   "defenseDefaultReason": "Anspruchsvolle Stellung mit wenig Übungsbeleg; Farbe und Ressource wechseln.",
   "defenseHypothesisLabel": "Mögliche Gewohnheit",
   "defensePractice": "Verteidigung üben",
-  "footerMeta": "Lektion: {{lessonTitle}} · Übungspool: {{core}} Kern + {{pool}} erweitert ({{motif}}) · Bewertungsdetails stehen in den technischen Details."
+  "footerMeta": "Lektion: {{lessonTitle}} · Übungspool: {{core}} Kern + {{pool}} erweitert ({{motif}}) · Bewertungsdetails stehen in den technischen Details.",
+  "validation": {
+    "title": "Persönliche Validierung",
+    "lesson": "Lektion",
+    "lessonDone": "abgeschlossen",
+    "lessonPending": "ausstehend",
+    "exercises": "Übungen",
+    "verified": "Verifizierte Antworten",
+    "sessions": "Sitzungen",
+    "days": "Tage",
+    "qualification": "Qualifikation",
+    "qualificationPending": "ausstehend",
+    "qualificationReached": "erreicht am {{date}}",
+    "afterQualified": "Die Intervention ist registriert. Neue Partien können als nach dem Training gemessen werden.",
+    "loading": "Validierungsfortschritt wird geladen…",
+    "next": {
+      "complete_lesson": "Schließe die Lektion ab, damit Übung zählt.",
+      "more_exercises": "Schließe noch {{count}} Übungen ab, um voranzukommen.",
+      "more_verified_successes": "Übe weiter, bis mehr Antworten engine-verifiziert sind.",
+      "more_sessions": "Trainiere in einer weiteren Sitzung für die zweite Session.",
+      "more_days": "Komm an einem anderen Kalendertag zurück für den zweiten Tag.",
+      "continue_training": "Trainiere weiter, um die Dosis zu erreichen."
+    }
+  }
 }

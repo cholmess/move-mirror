@@ -1,7 +1,7 @@
 {
   "name": "move-mirror",
   "private": true,
-  "version": "0.6.0",
+  "version": "0.6.1",
   "type": "module",
   "scripts": {
     "dev": "concurrently -n web,engine -c blue,green \"vite\" \"node server/index.mjs\"",
@@ -27,6 +27,8 @@
     "games:export": "node scripts/games-admin.mjs export",
     "i18n:check": "node scripts/i18n-check.mjs",
     "i18n:sync": "node scripts/i18n-sync-missing.mjs",
+    "validation:verify": "node scripts/validation-verify.mjs",
+    "validation:export": "node scripts/validation-export.mjs",
     "scoresheets:verify": "node scripts/scoresheets-admin.mjs verify",
     "scoresheets:cleanup": "node scripts/scoresheets-admin.mjs cleanup",
     "scoresheets:build-fixtures": "node scripts/build-scoresheet-fixtures.mjs",

@@ -84,6 +84,13 @@ npm run dev                  # luego abre /transfer
 
 Modo offline, sin red: en `/transfer`, «Modo offline (fixtures)».
 
+## MoveMirror v0.6.1 — Personal Validation Ledger
+
+- **Canonical evidence** (dose, qualification, snapshots): `data/validation/` on the engine server (`events.jsonl`, `state.json`, `snapshots/`, `exports/`, `migrations/`).
+- **Browser `localStorage`** remains a UI cache; training sync posts pedagogy mirrors to `POST /api/validation/sync` and one-time `POST /api/validation/migrate`.
+- Dose math is unchanged: `shared/transfer/intervention.js` (`cct-refutation-dose-v1`); the ledger does not duplicate rules.
+- Integrity: `npm run validation:verify` · export: `npm run validation:export` · docs: [docs/personal-validation-ledger.md](docs/personal-validation-ledger.md)
+
 ## MoveMirror v0.2.1 — Evaluation Hardening
 
 - Escalamiento automático 80k → 500k cerca de umbrales (35–65 cp, 105–135 cp), mates inestables e información incompleta.
