@@ -1,5 +1,9 @@
 {
   "title": "Progreso",
+  "legacyMasteryTitle": "Dominio Beta (legacy, solo referencia)",
+  "legacyMasteryHint": "Este porcentaje mezclaba confianza del patrón con práctica. El coach v2 usa canales separados arriba.",
+  "legacyMasteryEstimate": "Estimación legacy",
+  "legacyDose": "Dosis legacy (CCT v1)",
   "subtitle": "Actualización sencilla a partir de tus intentos verificados en ejercicios. Sin ML opaco en esta versión.",
   "estimatedLevel": "Nivel estimado",
   "evidenceAmount": "Fuerza de la evidencia",

@@ -13,6 +13,7 @@ import {
   resumeTransfer,
   startTransferSync,
 } from "../api/transferClient";
+import { fetchValidationStatus } from "../api/coachClient";
 import { combinedNarrative, decidePedagogy, summarizeTraining } from "@shared/transfer/pedagogy.js";
 import type { TransferExample, TransferState } from "../types/transfer";
 import {
@@ -71,6 +72,19 @@ export function TransferView() {
     return t(fallbackKey);
   };
 
+  const [coachQualification, setCoachQualification] = useState<{
+    protocolId: string;
+    qualified: boolean;
+    qualifiedAt: string | null;
+    missingRequirements: string[];
+  } | null>(null);
+
+  useEffect(() => {
+    fetchValidationStatus()
+      .then((status) => setCoachQualification(status.coachDose))
+      .catch(() => setCoachQualification(null));
+  }, []);
+
   const training = useMemo(
     () => ({
       ...trainingFromState(
@@ -81,11 +95,19 @@ export function TransferView() {
       interventionLogVersion: state.interventionLogVersion,
       pedagogyEvents: state.pedagogyEvents,
       interventionQualification: state.interventionQualification,
+      coachInterventionQualification: coachQualification?.qualified
+        ? {
+            protocolId: coachQualification.protocolId,
+            qualified: true,
+            qualifiedAt: coachQualification.qualifiedAt,
+            patternId: PATTERN_ID,
+          }
+        : null,
       lessonVersion:
         state.pedagogyEvents.find((event) => event.eventType === "lesson_completed")?.lessonVersion ?? null,
       evalCriterionVersion: "engine-validated-v2",
     }),
-    [state],
+    [state, coachQualification],
   );
   const profile = summarizeTraining(training);
   const pedagogy = useMemo(

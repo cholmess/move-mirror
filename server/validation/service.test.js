@@ -6,7 +6,8 @@ import { createValidationStore, parseEventsJsonl } from "./store.mjs";
 import { createValidationService } from "./service.mjs";
 import { verifyValidationLedger } from "./verify.mjs";
 import { classifyGameInterventionExposure } from "../../shared/validation/classify.js";
-import { REQUIRED_EVAL_CRITERION } from "../../shared/transfer/intervention.js";
+import { DOSE_PROTOCOL_ID, REQUIRED_EVAL_CRITERION } from "../../shared/transfer/intervention.js";
+import { COACH_DOSE_PROTOCOL_ID } from "../../shared/coach/constants.js";
 
 function attempt(i, day, status = "verified_best", session = "s1") {
   return {
@@ -171,5 +172,68 @@ describe("validation ledger service", () => {
   it("verify passes on fresh ledger", () => {
     const report = verifyValidationLedger(service);
     expect(report.ok).toBe(true);
+  });
+
+  it("coach dose v2 coexists without rewriting v1 cohort qualification", async () => {
+    await service.recordDomainEvent({
+      type: "lesson_completed",
+      source: "lesson",
+      observedAt: "2026-10-01T08:00:00.000Z",
+      payload: { lessonVersion: "cct-refutation-v1" },
+    });
+    await service.recordDomainEvent({
+      type: "training_session_started",
+      source: "training",
+      observedAt: "2026-10-01T08:01:00.000Z",
+      payload: { sessionId: "s1", lessonVersion: "cct-refutation-v1" },
+    });
+    await service.recordDomainEvent({
+      type: "training_session_started",
+      source: "training",
+      observedAt: "2026-10-02T08:01:00.000Z",
+      payload: { sessionId: "s2", lessonVersion: "cct-refutation-v1" },
+    });
+    for (let i = 1; i <= 12; i += 1) {
+      await service.recordDomainEvent(attempt(i, i <= 6 ? 1 : 2, "verified_best", i <= 6 ? "s1" : "s2"));
+    }
+    const v1QualifiedAt = service.readState().interventionQualification.qualifiedAt;
+    expect(v1QualifiedAt).toBeTruthy();
+    expect(service.readState().interventionQualification.protocolId).toBe(DOSE_PROTOCOL_ID);
+
+    await service.recordDomainEvent({
+      type: "coach_session_completed",
+      source: "coach",
+      observedAt: "2026-10-10T10:00:00.000Z",
+      payload: {
+        sessionId: "coach-1",
+        protocolId: "candidate-refutation-teaching-v2",
+        contrastCompleted: true,
+        exitRuleRecorded: true,
+      },
+      idempotencyKey: "coach-session-completed:coach-1",
+    });
+    await service.recordDomainEvent({
+      type: "coach_holdout_recorded",
+      source: "coach",
+      observedAt: "2026-10-10T10:05:00.000Z",
+      payload: {
+        sessionId: "coach-1",
+        contentId: "holdout-1",
+        firstAttempt: true,
+        success: true,
+        hintLevel: 0,
+        historicalExposureUncertain: true,
+        countsForProtectedGeneralization: false,
+      },
+      idempotencyKey: "coach-holdout:coach-1",
+    });
+    await service.rebuildFromEvents();
+
+    const state = service.readState();
+    expect(state.interventionQualification.qualifiedAt).toBe(v1QualifiedAt);
+    expect(state.interventionQualification.protocolId).toBe(DOSE_PROTOCOL_ID);
+    expect(state.coachInterventionQualification.protocolId).toBe(COACH_DOSE_PROTOCOL_ID);
+    expect(state.coachInterventionQualification.qualified).toBe(false);
+    expect(state.coachInterventionQualification.missingRequirements).toContain("retention_independent");
   });
 });

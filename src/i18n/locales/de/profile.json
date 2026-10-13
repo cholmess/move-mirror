@@ -1,5 +1,9 @@
 {
   "title": "Fortschritt",
+  "legacyMasteryTitle": "Beta-Beherrschung (Legacy-Referenz)",
+  "legacyMasteryHint": "Dieser Prozentsatz vermischte Musterkonfidenz mit Übung. Coach v2 nutzt getrennte Kanäle oben.",
+  "legacyMasteryEstimate": "Legacy-Schätzung",
+  "legacyDose": "Legacy-Dosis (CCT v1)",
   "subtitle": "Ein klarer Überblick über deine bisherigen Übungen und deinen Fortschritt.",
   "estimatedLevel": "Geschätztes Niveau",
   "evidenceAmount": "Stärke des Belegs",

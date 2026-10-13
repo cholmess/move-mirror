@@ -18,12 +18,18 @@ export function createValidationService(store) {
   }
 
   async function persistRebuild(events, previousQualification = null) {
+    const state = store.readState();
     const prev =
       previousQualification ??
-      (store.readState()?.interventionQualification?.qualifiedAt
-        ? store.readState().interventionQualification
-        : null);
-    const rebuilt = rebuildValidationState(events, { previousQualification: prev, timezone });
+      (state?.interventionQualification?.qualifiedAt ? state.interventionQualification : null);
+    const prevCoach = state?.coachInterventionQualification?.qualifiedAt
+      ? state.coachInterventionQualification
+      : null;
+    const rebuilt = rebuildValidationState(events, {
+      previousQualification: prev,
+      previousCoachQualification: prevCoach,
+      timezone,
+    });
     await store.writeState(rebuilt);
     return rebuilt;
   }
@@ -92,6 +98,7 @@ export function createValidationService(store) {
       else if (days < 2) nextAction = "more_days";
       else nextAction = "continue_training";
     }
+    const coachQ = state?.coachInterventionQualification;
     return {
       lessonCompleted,
       exercises: { done: exercises, required: 12 },
@@ -102,6 +109,14 @@ export function createValidationService(store) {
       qualificationReachedAt: qualified ? q.qualifiedAt : null,
       nextAction,
       exercisesRemaining: Math.max(0, 12 - exercises),
+      coachDose: coachQ
+        ? {
+            protocolId: coachQ.protocolId,
+            qualified: coachQ.qualified,
+            qualifiedAt: coachQ.qualifiedAt,
+            missingRequirements: coachQ.missingRequirements ?? [],
+          }
+        : null,
       canonicalSource: "server",
     };
   }

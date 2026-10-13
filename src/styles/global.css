@@ -494,7 +494,60 @@ a {
   white-space: pre-line;
 }
 
+.coach-session-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 420px) 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+
+.coach-board-panel {
+  position: sticky;
+  top: 0.75rem;
+}
+
+.coach-flow-panel {
+  max-width: 42rem;
+}
+
+.coach-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.75rem 0;
+}
+
+.coach-feedback {
+  border-left: 3px solid var(--accent);
+  padding: 0.5rem 0.75rem;
+  background: var(--surface2);
+}
+
+.nav-more {
+  display: inline-block;
+  position: relative;
+}
+
+.nav-more-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.35rem;
+}
+
 @media (max-width: 900px) {
+  .coach-session-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .coach-board-panel {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: var(--bg);
+    padding-bottom: 0.5rem;
+  }
+
   .board-panel {
     order: 1;
   }

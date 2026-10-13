@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AppProvider } from "./context/AppContext";
 import { LocaleHtmlSync } from "./components/LocaleHtmlSync";
 import { Layout } from "./components/Layout";
+import { CoachHome } from "./components/CoachHome";
+import { CoachSession } from "./components/CoachSession";
 import { Dashboard } from "./components/Dashboard";
 import { MicroLesson } from "./components/MicroLesson";
 import { TrainingBoard } from "./components/TrainingBoard";
@@ -22,7 +24,9 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route element={<Layout />}>
-            <Route index element={<Dashboard />} />
+            <Route index element={<CoachHome />} />
+            <Route path="coach/session/:sessionId?" element={<CoachSession />} />
+            <Route path="dashboard" element={<Dashboard />} />
             <Route path="lesson" element={<MicroLesson />} />
             <Route path="train" element={<TrainingBoard />} />
             <Route path="sparring" element={<SparringView />} />

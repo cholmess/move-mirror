@@ -5,6 +5,7 @@ import {
   REQUIRED_EVAL_CRITERION,
   TARGET_PATTERN_ID,
 } from "../transfer/intervention.js";
+import { COACH_DOSE_PROTOCOL_ID } from "../coach/constants.js";
 import {
   APP_VERSION,
   EVAL_STATUSES,
@@ -43,6 +44,14 @@ export function idempotencyKeyFor(type, parts) {
       return `intervention-qualified:${DOSE_PROTOCOL_ID}`;
     case "validation_snapshot_created":
       return `validation-snapshot:${parts.snapshotHash}`;
+    case "coach_session_completed":
+      return `coach-session-completed:${parts.sessionId}`;
+    case "coach_holdout_recorded":
+      return `coach-holdout:${parts.sessionId}`;
+    case "coach_retention_recorded":
+      return `coach-retention:${parts.sessionId}`;
+    case "coach_dose_qualified":
+      return `coach-dose-qualified:${COACH_DOSE_PROTOCOL_ID}`;
     default:
       throw new Error(`validation_unknown_type:${type}`);
   }
@@ -93,6 +102,22 @@ export function validatePayload(type, payload) {
         throw new Error("validation_invalid_payload");
       }
       return payload;
+    case "coach_session_completed":
+      if (typeof payload.sessionId !== "string" || typeof payload.protocolId !== "string") {
+        throw new Error("validation_invalid_payload");
+      }
+      return payload;
+    case "coach_holdout_recorded":
+    case "coach_retention_recorded":
+      if (typeof payload.sessionId !== "string" || typeof payload.contentId !== "string") {
+        throw new Error("validation_invalid_payload");
+      }
+      return payload;
+    case "coach_dose_qualified":
+      if (typeof payload.qualifiedAt !== "string" || payload.protocolId !== COACH_DOSE_PROTOCOL_ID) {
+        throw new Error("validation_invalid_payload");
+      }
+      return payload;
     default:
       throw new Error(`validation_unknown_type:${type}`);
   }
@@ -109,6 +134,9 @@ export function doseFlagsFor(type) {
   }
   if (type === "intervention_qualified" || type === "validation_snapshot_created") {
     return { doseEligible: false, transferEligible: false };
+  }
+  if (type.startsWith("coach_")) {
+    return { doseEligible: false, transferEligible: type === "coach_dose_qualified" };
   }
   return { doseEligible: true, transferEligible: false };
 }

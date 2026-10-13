@@ -26,6 +26,7 @@ import {
 } from "../i18n/presenters";
 import type { SupportedLocale } from "../i18n/types";
 import { TechnicalDetails, TechnicalRow } from "./TechnicalDetails";
+import { CoachProgressPanel } from "./CoachProgressPanel";
 
 const SKILL_I18N: Record<string, { name: string; desc: string }> = {
   "cct-opponent-refutation": { name: "dashboard:skill1Name", desc: "dashboard:skill1Desc" },
@@ -90,65 +91,54 @@ export function ProfileView() {
 
       <PlayerIdentitySection />
 
-      <div className="skills-grid">
-        {visibleSkills.map((sk) => {
-          const st = state.skills[sk.id];
-          const agg = aggregateEvidence(sk.id, state.attempts);
-          const labels = SKILL_I18N[sk.id];
-          return (
-            <article key={sk.id} className="card skill-detail">
-              <h2>{labels ? t(labels.name) : sk.name}</h2>
-              {labels && <p className="small muted">{t(labels.desc)}</p>}
-              <div className="meter">
-                <div className="meter-fill" style={{ width: `${Math.round((st?.masteryEstimate ?? 0) * 100)}%` }} />
-              </div>
-              <ul className="stat-list small">
-                <li>
-                  {t("estimatedLevel")}: {Math.round((st?.masteryEstimate ?? 0) * 100)}%
-                </li>
-                <li>
-                  {t("evidenceAmount")}: {Math.round((st?.confidence ?? 0) * 100)}% · {t("verifiedOk")}{" "}
-                  {st?.successes} · {t("needsPractice")} {st?.failures} · {t("partials")} {st?.partials} ·{" "}
-                  {t("unverified")} {st?.unverifiedCount ?? 0}
-                </li>
-                <li>
-                  {t("lastPractice")}:{" "}
-                  {st?.lastPracticeAt ? formatDateTime(st.lastPracticeAt, locale) : t("common:dash")}
-                </li>
-                <li>
-                  {t("nextReview")}:{" "}
-                  {st?.nextReviewAt ? formatDate(st.nextReviewAt, locale) : t("common:dash")}
-                </li>
-                <li>
-                  {t("reviewEvidence")}: {t("positionsValidation", { count: agg.reviewEvidence.validationPositions })}{" "}
-                  · {t("practiceAttempts")}: {t("attemptsCount", { count: agg.practiceAttempts })}
-                </li>
-              </ul>
-              <TechnicalDetails>
-                <TechnicalRow
-                  label={t("technical:alphaBeta")}
-                  value={
-                    st ? `α=${st.alpha.toFixed(1)}, β=${st.beta.toFixed(1)}` : undefined
-                  }
-                />
-              </TechnicalDetails>
-              {st && st.history.length > 1 && (
-                <div className="history">
-                  <p className="eyebrow">{t("recentEvolution")}</p>
+      <CoachProgressPanel />
+
+      <details className="card">
+        <summary>{t("profile:legacyMasteryTitle")}</summary>
+        <p className="muted small">{t("profile:legacyMasteryHint")}</p>
+        <div className="skills-grid">
+          {visibleSkills.map((sk) => {
+            const st = state.skills[sk.id];
+            const agg = aggregateEvidence(sk.id, state.attempts);
+            const labels = SKILL_I18N[sk.id];
+            return (
+              <article key={sk.id} className="card skill-detail">
+                <h2>{labels ? t(labels.name) : sk.name}</h2>
+                {labels && <p className="small muted">{t(labels.desc)}</p>}
+                <ul className="stat-list small">
+                  <li>
+                    {t("reviewEvidence")}: {t("positionsValidation", { count: agg.reviewEvidence.validationPositions })}{" "}
+                    · {t("practiceAttempts")}: {t("attemptsCount", { count: agg.practiceAttempts })}
+                  </li>
+                  <li>
+                    {t("lastPractice")}:{" "}
+                    {st?.lastPracticeAt ? formatDateTime(st.lastPracticeAt, locale) : t("common:dash")}
+                  </li>
+                </ul>
+                <TechnicalDetails>
+                  <TechnicalRow
+                    label={t("technical:alphaBeta")}
+                    value={st ? `α=${st.alpha.toFixed(1)}, β=${st.beta.toFixed(1)}` : undefined}
+                  />
+                  <TechnicalRow
+                    label={t("profile:legacyMasteryEstimate")}
+                    value={st ? `${Math.round(st.masteryEstimate * 100)}%` : t("common:dash")}
+                  />
+                </TechnicalDetails>
+                {st && st.history.length > 1 && (
                   <ul className="mono tiny">
-                    {st.history.slice(-5).map((h) => (
+                    {st.history.slice(-3).map((h) => (
                       <li key={h.at + h.event}>
-                        {formatDate(h.at, locale)} — {Math.round(h.mastery * 100)}% —{" "}
-                        {formatProfileHistoryEvent(h.event, locale)}
+                        {formatDate(h.at, locale)} — {formatProfileHistoryEvent(h.event, locale)}
                       </li>
                     ))}
                   </ul>
-                </div>
-              )}
-            </article>
-          );
-        })}
-      </div>
+                )}
+              </article>
+            );
+          })}
+        </div>
+      </details>
 
       <section className="card">
         <h2>{t("threeChannelsTitle")}</h2>
@@ -164,7 +154,7 @@ export function ProfileView() {
           </li>
           <li>{t("realGamesLine", { label: comparisonLabel })}</li>
           <li>
-            {t("pedagogyExposure")}:{" "}
+            {t("profile:legacyDose")}:{" "}
             {state.interventionQualification.qualified
               ? t("transfer:trainingChannel.doseComplete", {
                   date: formatDateTime(state.interventionQualification.qualifiedAt!, locale),

@@ -8,14 +8,18 @@ import { LanguageWelcome } from "./LanguageWelcome";
 import { hasStoredLocalePreference } from "../i18n/localeStorage";
 
 const navRoutes = [
-  { to: "/", key: "home" as const, end: true },
+  { to: "/", key: "today" as const, end: true },
+  { to: "/games", key: "myGames" as const },
+  { to: "/profile", key: "progress" as const },
+];
+
+const moreRoutes = [
+  { to: "/dashboard", key: "legacyHome" as const },
   { to: "/lesson", key: "lesson" as const },
   { to: "/train", key: "train" as const },
   { to: "/sparring", key: "play" as const },
   { to: "/defense", key: "defense" as const },
-  { to: "/games", key: "myGames" as const },
   { to: "/import", key: "import" as const },
-  { to: "/profile", key: "progress" as const },
   { to: "/transfer", key: "newGames" as const },
 ];
 
@@ -49,6 +53,20 @@ export function Layout() {
               {t(`navigation:${link.key}`)}
             </NavLink>
           ))}
+          <details className="nav-more">
+            <summary>{t("navigation:more")}</summary>
+            <div className="nav-more-links">
+              {moreRoutes.map((link) => (
+                <NavLink
+                  key={link.to}
+                  to={link.to}
+                  className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}
+                >
+                  {t(`navigation:${link.key}`)}
+                </NavLink>
+              ))}
+            </div>
+          </details>
         </nav>
         <div className="header-meta">
           <LanguageSelector compact />

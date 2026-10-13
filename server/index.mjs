@@ -20,6 +20,9 @@ import { createSparringRouter } from "./sparring/routes.mjs";
 import { createValidationStore } from "./validation/store.mjs";
 import { createValidationService } from "./validation/service.mjs";
 import { createValidationRouter } from "./validation/routes.mjs";
+import { createCoachStore } from "./coach/store.mjs";
+import { createCoachService } from "./coach/service.mjs";
+import { createCoachRouter } from "./coach/routes.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
@@ -288,6 +291,17 @@ function getSparringService() {
 }
 const handleSparring = createSparringRouter(() => getSparringService());
 
+const coachDataDir = process.env.COACH_DATA_DIR
+  ? path.resolve(ROOT, process.env.COACH_DATA_DIR)
+  : path.join(ROOT, "data");
+const coachStore = createCoachStore(coachDataDir);
+coachStore.ensure();
+const coachService = createCoachService(coachStore, {
+  validation: validationService,
+  evaluateMove: (body) => handleEvaluate(body, AbortSignal.timeout(JOB_TIMEOUT_MS)),
+});
+const handleCoach = createCoachRouter(() => coachService);
+
 const server = http.createServer(async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS");
@@ -325,6 +339,11 @@ const server = http.createServer(async (req, res) => {
 
   if (req.url?.startsWith("/api/validation")) {
     const handled = await handleValidation(req, res);
+    if (handled) return;
+  }
+
+  if (req.url?.startsWith("/api/coach")) {
+    const handled = await handleCoach(req, res);
     if (handled) return;
   }
 

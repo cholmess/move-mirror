@@ -1,5 +1,9 @@
 {
   "title": "Progress",
+  "legacyMasteryTitle": "Beta mastery (legacy reference)",
+  "legacyMasteryHint": "This percentage mixed pattern confidence with practice. Coach v2 uses separate channels above.",
+  "legacyMasteryEstimate": "Legacy estimate",
+  "legacyDose": "Legacy dose (CCT v1)",
   "subtitle": "Simple update from your verified exercise attempts. No opaque ML in this version.",
   "estimatedLevel": "Estimated level",
   "evidenceAmount": "Strength of evidence",

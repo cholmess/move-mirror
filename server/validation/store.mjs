@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { calculateInterventionQualification } from "../../shared/transfer/intervention.js";
+import { calculateCoachDoseQualification } from "../../shared/coach/dose.js";
 
 function atomicJson(file, value) {
   fs.mkdirSync(path.dirname(file), { recursive: true });
@@ -57,6 +58,7 @@ export function createValidationStore(root) {
         eventCount: 0,
         lastEventId: null,
         interventionQualification: calculateInterventionQualification([]),
+        coachInterventionQualification: calculateCoachDoseQualification([]),
         qualifiedAt: null,
         latestSnapshotHash: null,
       });

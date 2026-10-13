@@ -99,7 +99,9 @@ export async function runSync({
   const progress = (patch) => onProgress?.(patch);
   const manifest = store.readManifest();
   const syncedAt = new Date().toISOString();
-  const qualification = training?.interventionQualification ?? null;
+  const coachQualification = training?.coachInterventionQualification ?? null;
+  const legacyQualification = training?.interventionQualification ?? null;
+  const qualification = coachQualification?.qualified ? coachQualification : legacyQualification;
   if (purpose === "post-intervention-transfer" && !qualification?.qualified) {
     throw new Error("training_incomplete");
   }

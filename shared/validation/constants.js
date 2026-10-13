@@ -11,6 +11,7 @@ export const VALIDATION_SOURCES = new Set([
   "games",
   "transfer",
   "migration",
+  "coach",
 ]);
 
 export const VALIDATION_EVENT_TYPES = new Set([
@@ -26,6 +27,10 @@ export const VALIDATION_EVENT_TYPES = new Set([
   "transfer_cohort_frozen",
   "intervention_qualified",
   "validation_snapshot_created",
+  "coach_session_completed",
+  "coach_holdout_recorded",
+  "coach_retention_recorded",
+  "coach_dose_qualified",
 ]);
 
 export const EVAL_STATUSES = new Set([
