@@ -75,7 +75,7 @@ function mapResponse(data: Record<string, unknown>): EvaluateResult {
     evalInitialStatus: (data.evalInitialStatus as EvaluationStatus | null) ?? null,
     evalFinalStatus: (data.evalFinalStatus as EvaluationStatus) ?? "unverified",
     evalCriterionVersion: String(data.evalCriterionVersion ?? "engine-validated-v2"),
-    evalPipelineVersion: String(data.evalPipelineVersion ?? "eval-pipeline-v0.2.1"),
+    evalPipelineVersion: String(data.evalPipelineVersion ?? "eval-pipeline-v0.2.2"),
     cacheHit: Boolean(data.cacheHit),
     error: (data.error as string | null) ?? null,
   };
@@ -97,7 +97,7 @@ function unverified(error: string): EvaluateResult {
     evalInitialStatus: null,
     evalFinalStatus: "unverified",
     evalCriterionVersion: "engine-validated-v2",
-    evalPipelineVersion: "eval-pipeline-v0.2.1",
+    evalPipelineVersion: "eval-pipeline-v0.2.2",
     cacheHit: false,
     error,
   };

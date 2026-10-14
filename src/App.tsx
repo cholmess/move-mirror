@@ -4,6 +4,8 @@ import { LocaleHtmlSync } from "./components/LocaleHtmlSync";
 import { Layout } from "./components/Layout";
 import { CoachHome } from "./components/CoachHome";
 import { PracticeHome } from "./components/PracticeHome";
+import { PersonalPatterns } from "./components/PersonalPatterns";
+import { PersonalPractice } from "./components/PersonalPractice";
 import { DirectPractice } from "./components/DirectPractice";
 import { CoachSession } from "./components/CoachSession";
 import { Dashboard } from "./components/Dashboard";
@@ -28,6 +30,8 @@ export default function App() {
           <Route element={<Layout />}>
             <Route index element={<PracticeHome />} />
             <Route path="coach" element={<CoachHome />} />
+            <Route path="patterns" element={<PersonalPatterns />} />
+            <Route path="practice/:exerciseId" element={<PersonalPractice />} />
             <Route path="coach/session/:sessionId?" element={<CoachSession />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="lesson" element={<MicroLesson />} />

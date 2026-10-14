@@ -20,6 +20,7 @@ import enAdaptive from "./locales/en/adaptive.json";
 import enDomain from "./locales/en/domain.json";
 import enScoresheet from "./locales/en/scoresheet.json";
 import enSparring from "./locales/en/sparring.json";
+import enPatterns from "./locales/en/patterns.json";
 import enPractice from "./locales/en/practice.json";
 import enCoach from "./locales/en/coach.json";
 
@@ -40,6 +41,7 @@ import esAdaptive from "./locales/es/adaptive.json";
 import esDomain from "./locales/es/domain.json";
 import esScoresheet from "./locales/es/scoresheet.json";
 import esSparring from "./locales/es/sparring.json";
+import esPatterns from "./locales/es/patterns.json";
 import esPractice from "./locales/es/practice.json";
 import esCoach from "./locales/es/coach.json";
 
@@ -60,6 +62,7 @@ import deAdaptive from "./locales/de/adaptive.json";
 import deDomain from "./locales/de/domain.json";
 import deScoresheet from "./locales/de/scoresheet.json";
 import deSparring from "./locales/de/sparring.json";
+import dePatterns from "./locales/de/patterns.json";
 import dePractice from "./locales/de/practice.json";
 import deCoach from "./locales/de/coach.json";
 
@@ -84,6 +87,7 @@ const resources = {
     sparring: enSparring,
     coach: enCoach,
     practice: enPractice,
+    patterns: enPatterns,
   },
   es: {
     common: esCommon,
@@ -105,6 +109,7 @@ const resources = {
     sparring: esSparring,
     coach: esCoach,
     practice: esPractice,
+    patterns: esPatterns,
   },
   de: {
     common: deCommon,
@@ -126,6 +131,7 @@ const resources = {
     sparring: deSparring,
     coach: deCoach,
     practice: dePractice,
+    patterns: dePatterns,
   },
 } as const;
 
@@ -154,6 +160,7 @@ void i18n.use(initReactI18next).init({
     "sparring",
     "coach",
     "practice",
+    "patterns",
   ],
   interpolation: { escapeValue: false },
   returnNull: false,

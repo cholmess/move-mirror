@@ -40,6 +40,11 @@ try {
   const cache = new EvalCache(cacheDir);
   const params = { fen, playedUci: "e2e4", referenceBestUci: null, engine, cache, metrics };
   const evaluation = await runEvaluation(params);
+  if (evaluation.played.pvUci[0] !== "e2e4") throw new Error("played_pv_wrong_root");
+  const replyPosition = new Chess(fen);
+  replyPosition.move("e4");
+  const reply = evaluation.opponentReplyUci;
+  if (!reply || !replyPosition.move({ from: reply.slice(0, 2), to: reply.slice(2, 4), promotion: reply[4] })) throw new Error("opponent_reply_wrong_turn");
   const cached = await runEvaluation(params);
   if (evaluation.cacheHit || !cached.cacheHit || counters.hit < 1) throw new Error("cache_hit_failed");
   if (evaluation.status !== cached.status || evaluation.cpLoss !== cached.cpLoss) throw new Error("non_reproducible_result");

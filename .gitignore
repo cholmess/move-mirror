@@ -23,3 +23,7 @@ data/transfer/cohorts/**/analysis.jsonl
 # Personal coach state and isolated UI fixtures
 data/coach/
 data/test-coach/
+
+# Personal pattern evidence and practice state
+data/patterns/
+data/test-patterns/

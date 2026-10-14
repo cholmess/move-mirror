@@ -215,18 +215,8 @@ export class StockfishEngine {
   }
 
   async evaluatePair(fen, playedUci, budget, signal) {
-    const best = await this.analyse(fen, {
-      nodes: budget.nodes,
-      signal,
-    });
-    const played = await this.analyse(fen, {
-      rootMoves: [playedUci],
-      nodes: budget.nodes,
-      signal,
-    });
-    const cpLoss = best.score.numeric - played.score.numeric;
-    const opponentReplyUci = played.pvUci[1] ?? null;
-    return { best, played, cpLoss, opponentReplyUci };
+    // Both scores and PVs must describe the mover's decision at the same root.
+    return this.analyseDecision(fen, playedUci, budget.nodes, signal);
   }
 
   /**

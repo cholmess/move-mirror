@@ -1,0 +1,91 @@
+{
+  "title": "Tu entrenamiento actualizado",
+  "intro": "Tus partidas nuevas actualizan qué conviene practicar. Solo recomendamos patrones repetidos en varias partidas.",
+  "update": "Analizar partidas y actualizar",
+  "import": "Traer partidas nuevas",
+  "all": "Ver mis patrones",
+  "cancel": "Pausar análisis",
+  "coverage": "{{analyzed}} de {{eligible}} partidas válidas analizadas · {{decisions}} decisiones verificadas",
+  "progress": "Analizando: {{done}} de {{total}} decisiones. Puedes seguir usando la app.",
+  "empty": "Todavía no hay un patrón recurrente con evidencia suficiente. Importa tus partidas o actualiza el análisis.",
+  "evidence": "{{errors}} errores en {{games}} partidas · {{opportunities}} decisiones comparables analizadas",
+  "confidence": {
+    "limited": "Evidencia limitada",
+    "moderate": "Evidencia moderada",
+    "insufficient": "Evidencia insuficiente"
+  },
+  "status": {
+    "recurrent": "Patrón recurrente",
+    "watching": "En observación"
+  },
+  "causeUnknown": "Sabemos en qué contexto ocurrieron estos errores; todavía no sabemos por qué.",
+  "example": "Ver partida · jugada {{move}}",
+  "practiceEvidence": "{{successes}} aciertos en {{independent}} primeros intentos sin ayuda · {{attempts}} intentos totales",
+  "transferPending": "Aún falta evidencia en partidas posteriores para comparar la recurrencia.",
+  "transferObserved": "Errores por 100 decisiones comparables: {{before}} antes → {{after}} después. Comparación descriptiva; no demuestra un efecto del entrenamiento.",
+  "practice": "Practicar este patrón",
+  "method": "Actualización por reglas verificables, no reentrenamiento de una red neuronal. Se analizan hasta 200 partidas completas de 10+0 con identidad confirmada; partidas muy cortas y posiciones iniciales especiales quedan fuera. Un patrón requiere errores en al menos tres partidas y tres posiciones distintas. Solo cuentan partidas analizadas por completo.",
+  "loading": "Cargando posición…",
+  "back": "Volver a mis patrones",
+  "checking": "Comprobando tu jugada…",
+  "playNow": "Tu turno. Juega directamente en el tablero.",
+  "source": "De una partida tuya · jugada {{move}}",
+  "feedbackNote": "El tablero muestra tu jugada y la respuesta principal del rival, cuando existe. Una alternativa válida también cuenta.",
+  "assisted": "Este intento sirve para practicar; no cuenta como un primer intento independiente.",
+  "demonstration": "Esta es una jugada de referencia. Vuelve a la posición inicial y juega la idea.",
+  "hint": "Necesito una pista",
+  "showIdea": "Mostrar la idea",
+  "retry": "Volver a intentar",
+  "next": "Otra posición",
+  "continue": "Continuar contra el rival",
+  "errors": {
+    "connection": "No se pudo conectar. Comprueba que la app y el motor estén activos.",
+    "engine_unavailable": "El motor no está disponible. No se añadirá evidencia sin verificar; reintenta cuando esté activo.",
+    "analysis_unverified": "No se pudo verificar el análisis. El avance se conserva; puedes reintentar.",
+    "analysis_failed": "El análisis se interrumpió. Puedes reanudarlo sin perder las decisiones verificadas.",
+    "engine_changed": "El motor cambió durante el análisis. Actualiza para obtener evidencia comparable.",
+    "cancelled": "Análisis pausado. Actualiza para continuar.",
+    "exercise_unavailable": "Esta posición ya no está disponible. Vuelve a mis patrones y elige otra.",
+    "pattern_not_recurrent": "Todavía no hay evidencia suficiente para recomendar este patrón.",
+    "illegal_move": "Esa jugada no es legal. Elige otra."
+  },
+  "catalog": {
+    "piece-loss": {
+      "title": "Pérdidas de piezas",
+      "observation": "Tras estas jugadas, la respuesta principal del rival captura una pieza y la evaluación empeora.",
+      "goal": "Encuentra una jugada que mantenga a salvo tus piezas.",
+      "hint": "Mira las piezas que quedarían sin defensa después de mover y las capturas del rival."
+    },
+    "missed-capture": {
+      "title": "Capturas valiosas que dejaste pasar",
+      "observation": "El motor encontraba una captura de pieza mejor que tu jugada en estas posiciones.",
+      "goal": "Busca una captura útil y comprueba cómo respondería el rival.",
+      "hint": "Revisa piezas rivales atacadas. Antes de capturar, calcula la recaptura."
+    },
+    "missed-mate": {
+      "title": "Oportunidades de mate",
+      "observation": "El motor encontró mate forzado, pero tu jugada no conservaba un mate verificado.",
+      "goal": "Busca una continuación forzante contra el rey.",
+      "hint": "Mira los jaques y las casillas de escape del rey; calcula todas sus respuestas legales."
+    },
+    "forcing-reply": {
+      "title": "Respuestas forzantes del rival",
+      "observation": "La respuesta principal del rival da jaque tras estas decisiones costosas.",
+      "goal": "Elige una jugada teniendo en cuenta los jaques del rival.",
+      "hint": "Antes de jugar, imagina el jaque más incómodo del rival."
+    },
+    "closed-center": {
+      "title": "Decisiones en centros bloqueados",
+      "observation": "Varias decisiones costosas ocurrieron con al menos dos pares de peones bloqueados. No se identificó una causa estratégica.",
+      "goal": "Mejora tus piezas o prepara una ruptura sin debilitar la posición.",
+      "hint": "Observa dónde puedes abrir líneas y qué pieza necesita mejorar. Comprueba las amenazas antes de preparar el plan."
+    },
+    "endgame-decisions": {
+      "title": "Decisiones con pocas piezas",
+      "observation": "Varias decisiones costosas ocurrieron en posiciones con poco material. La causa técnica aún no está identificada.",
+      "goal": "Busca una continuación que conserve tus opciones en el final.",
+      "hint": "Compara la actividad de los reyes, los peones pasados y las amenazas inmediatas antes de mover."
+    }
+  },
+  "howSelected": "Cómo se eligen los patrones"
+}
