@@ -144,6 +144,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         engineVersion,
         engineSha256,
         evalVerified,
+        evalError: evalMeta?.error ?? null,
         observableReason: exercise.observableReason ?? null,
         opponentReplySan,
         reflectionPrompt,

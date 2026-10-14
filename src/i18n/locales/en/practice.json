@@ -40,5 +40,28 @@
   "suggestion": "Consider {{move}}. This is an engine suggestion, not the only valid move.",
   "seePosition": "See position",
   "practicePosition": "Practice from here",
-  "originalMistake": "What happened in your game:"
+  "originalMistake": "What happened in your game:",
+  "referenceMatch": "Matches the exercise solution",
+  "verificationUnavailable": "Evaluation pending",
+  "notJudged": "We could not obtain an engine evaluation. This does not mean your move is bad and does not change your progress.",
+  "played": "Your move: {{move}}",
+  "verifyAgain": "Retry evaluation",
+  "ideaTitle": "The idea behind {{move}}",
+  "replayStep": "Move {{current}} of {{total}}",
+  "previousMove": "Previous move",
+  "nextMove": "Show the continuation",
+  "ideas": {
+    "checkWinQueen": "The check forces a response. In this line the queen blocks the check and can then be captured. Step through the moves to see it on the board.",
+    "forcingCheck": "Start with check: the opponent must attend to their king. Step forward to see their reply and how the idea continues.",
+    "mate": "This move delivers mate: the king is in check and has no legal reply.",
+    "capture": "The idea starts with a capture. Step forward to check the opponent’s reply and the result of the sequence.",
+    "improve": "Compare this move with yours and step forward to see the reference line’s replies."
+  },
+  "verificationErrors": {
+    "engine_unavailable": "The engine is unavailable. Start the app with npm run dev and check that Stockfish is installed.",
+    "network_error": "Could not connect to the evaluation service. Check that the app is running with its engine.",
+    "http_error": "The evaluation service returned an error. You can retry the same move.",
+    "aborted": "The evaluation was interrupted. You can retry the same move.",
+    "unknown": "The engine did not return a valid result. You can retry without changing your move."
+  }
 }

@@ -40,5 +40,28 @@
   "suggestion": "Considera {{move}}. Es una sugerencia del motor, no la única jugada válida.",
   "seePosition": "Ver posición",
   "practicePosition": "Practicar desde aquí",
-  "originalMistake": "Lo que ocurrió en tu partida:"
+  "originalMistake": "Lo que ocurrió en tu partida:",
+  "referenceMatch": "Coincide con la solución del ejercicio",
+  "verificationUnavailable": "Evaluación pendiente",
+  "notJudged": "No pudimos obtener una evaluación del motor. Esto no significa que tu jugada sea mala y no cambia tu progreso.",
+  "played": "Tu jugada: {{move}}",
+  "verifyAgain": "Reintentar evaluación",
+  "ideaTitle": "La idea de {{move}}",
+  "replayStep": "Jugada {{current}} de {{total}}",
+  "previousMove": "Jugada anterior",
+  "nextMove": "Ver la continuación",
+  "ideas": {
+    "checkWinQueen": "El jaque obliga al rival a responder. En esta línea, la dama bloquea el jaque y luego puede ser capturada. Avanza las jugadas para verlo en el tablero.",
+    "forcingCheck": "Empieza con jaque: el rival debe atender a su rey. Avanza para ver su respuesta y cómo continúa la idea.",
+    "mate": "Esta jugada da mate: el rey está en jaque y no existe ninguna respuesta legal.",
+    "capture": "La idea comienza con una captura. Avanza para comprobar la respuesta del rival y el resultado de la secuencia.",
+    "improve": "Compara esta jugada con la que elegiste y avanza para ver las respuestas de la línea de referencia."
+  },
+  "verificationErrors": {
+    "engine_unavailable": "El motor no está disponible. Inicia la app con npm run dev y comprueba que Stockfish esté instalado.",
+    "network_error": "No se pudo conectar con el servicio de evaluación. Comprueba que la app esté ejecutándose con su motor.",
+    "http_error": "El servicio de evaluación devolvió un error. Puedes reintentar la misma jugada.",
+    "aborted": "La evaluación se interrumpió. Puedes reintentar la misma jugada.",
+    "unknown": "El motor no devolvió un resultado válido. Puedes reintentar sin cambiar tu jugada."
+  }
 }
