@@ -40,5 +40,28 @@
   "suggestion": "Prüfe {{move}}. Dies ist ein Vorschlag der Engine, nicht der einzige gültige Zug.",
   "seePosition": "Stellung ansehen",
   "practicePosition": "Ab hier üben",
-  "originalMistake": "Was in deiner Partie geschah:"
+  "originalMistake": "Was in deiner Partie geschah:",
+  "referenceMatch": "Entspricht der Übungslösung",
+  "verificationUnavailable": "Bewertung ausstehend",
+  "notJudged": "Wir konnten keine Engine-Bewertung erhalten. Das bedeutet nicht, dass dein Zug schlecht ist, und ändert deinen Fortschritt nicht.",
+  "played": "Dein Zug: {{move}}",
+  "verifyAgain": "Bewertung erneut versuchen",
+  "ideaTitle": "Die Idee hinter {{move}}",
+  "replayStep": "Zug {{current}} von {{total}}",
+  "previousMove": "Vorheriger Zug",
+  "nextMove": "Fortsetzung ansehen",
+  "ideas": {
+    "checkWinQueen": "Das Schach erzwingt eine Antwort. In dieser Variante blockiert die Dame das Schach und kann anschließend geschlagen werden. Gehe die Züge durch, um es auf dem Brett zu sehen.",
+    "forcingCheck": "Beginne mit Schach: Der Gegner muss seinen König schützen. Gehe weiter, um seine Antwort und die Fortsetzung der Idee zu sehen.",
+    "mate": "Dieser Zug setzt matt: Der König steht im Schach und hat keine legale Antwort.",
+    "capture": "Die Idee beginnt mit einem Schlag. Gehe weiter, um die Antwort des Gegners und das Ergebnis der Zugfolge zu prüfen.",
+    "improve": "Vergleiche diesen Zug mit deinem und gehe weiter, um die Antworten der Referenzvariante zu sehen."
+  },
+  "verificationErrors": {
+    "engine_unavailable": "Die Engine ist nicht verfügbar. Starte die App mit npm run dev und prüfe, ob Stockfish installiert ist.",
+    "network_error": "Keine Verbindung zum Bewertungsdienst. Prüfe, ob die App zusammen mit ihrer Engine läuft.",
+    "http_error": "Der Bewertungsdienst hat einen Fehler zurückgegeben. Du kannst denselben Zug erneut prüfen.",
+    "aborted": "Die Bewertung wurde unterbrochen. Du kannst denselben Zug erneut prüfen.",
+    "unknown": "Die Engine lieferte kein gültiges Ergebnis. Du kannst es erneut versuchen, ohne deinen Zug zu ändern."
+  }
 }

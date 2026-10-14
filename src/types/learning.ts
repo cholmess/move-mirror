@@ -67,6 +67,7 @@ export interface AttemptRecord {
   engineVersion: string | null;
   engineSha256: string | null;
   evalVerified: boolean;
+  evalError?: string | null;
   observableReason: string | null;
   opponentReplySan: string | null;
   reflectionPrompt: string | null;

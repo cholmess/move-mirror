@@ -24,4 +24,12 @@ describe("direct practice evidence", () => {
     expect(after.progress.exercisesCompleted).toEqual(before.progress.exercisesCompleted);
     expect(after.attempts[0].assisted).toBe(true);
   });
+  it("preserves the entire skill profile when the direct evaluation is unavailable", () => {
+    const before=createInitialState();
+    const after=recordAttempt(before,{...attempt(false),evaluationStatus:"unverified",evalVerified:false,evalError:"engine_unavailable"});
+    expect(after.skills).toEqual(before.skills);
+    expect(after.progress.exercisesCompleted).toEqual(before.progress.exercisesCompleted);
+    expect(after.attempts[0].evalError).toBe("engine_unavailable");
+  });
+
 });
