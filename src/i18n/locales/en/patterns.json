@@ -1,0 +1,91 @@
+{
+  "title": "Your updated training",
+  "intro": "New games update what to practice. We recommend only patterns repeated across several games.",
+  "update": "Analyze games and update",
+  "import": "Import new games",
+  "all": "See my patterns",
+  "cancel": "Pause analysis",
+  "coverage": "{{analyzed}} of {{eligible}} eligible games analyzed · {{decisions}} verified decisions",
+  "progress": "Analyzing: {{done}} of {{total}} decisions. You can keep using the app.",
+  "empty": "No recurring pattern has enough evidence yet. Import your games or update the analysis.",
+  "evidence": "{{errors}} errors across {{games}} games · {{opportunities}} comparable decisions analyzed",
+  "confidence": {
+    "limited": "Limited evidence",
+    "moderate": "Moderate evidence",
+    "insufficient": "Insufficient evidence"
+  },
+  "status": {
+    "recurrent": "Recurring pattern",
+    "watching": "Under observation"
+  },
+  "causeUnknown": "We know the context of these errors; we do not yet know their cause.",
+  "example": "See game · move {{move}}",
+  "practiceEvidence": "{{successes}} successes in {{independent}} first attempts without help · {{attempts}} total attempts",
+  "transferPending": "More evidence from later games is needed to compare recurrence.",
+  "transferObserved": "Errors per 100 comparable decisions: {{before}} before → {{after}} after. A descriptive comparison, not proof of a training effect.",
+  "practice": "Practice this pattern",
+  "method": "Updates use verifiable rules, not neural network retraining. Up to 200 completed 10+0 games with confirmed identity are analyzed; very short games and special starting positions are excluded. A pattern requires errors across at least three games and three distinct positions. Only fully analyzed games count.",
+  "loading": "Loading position…",
+  "back": "Back to my patterns",
+  "checking": "Checking your move…",
+  "playNow": "Your turn. Play directly on the board.",
+  "source": "From your game · move {{move}}",
+  "feedbackNote": "The board shows your move and the opponent’s principal reply, when available. A valid alternative also counts.",
+  "assisted": "This attempt is useful practice; it does not count as an independent first attempt.",
+  "demonstration": "This is a reference move. Return to the starting position and play the idea.",
+  "hint": "I need a hint",
+  "showIdea": "Show the idea",
+  "retry": "Try again",
+  "next": "Another position",
+  "continue": "Continue against the opponent",
+  "errors": {
+    "connection": "Could not connect. Check that the app and engine are running.",
+    "engine_unavailable": "The engine is unavailable. Unverified evidence will not be added; retry when it is running.",
+    "analysis_unverified": "The analysis could not be verified. Progress is preserved; you can retry.",
+    "analysis_failed": "Analysis was interrupted. You can resume without losing verified decisions.",
+    "engine_changed": "The engine changed during analysis. Update to obtain comparable evidence.",
+    "cancelled": "Analysis paused. Update to continue.",
+    "exercise_unavailable": "This position is no longer available. Return to your patterns and choose another.",
+    "pattern_not_recurrent": "There is not enough evidence to recommend this pattern yet.",
+    "illegal_move": "That move is illegal. Choose another."
+  },
+  "catalog": {
+    "piece-loss": {
+      "title": "Losing pieces",
+      "observation": "After these moves, the opponent’s principal reply captures a piece and the evaluation worsens.",
+      "goal": "Find a move that keeps your pieces safe.",
+      "hint": "Look at pieces that would be undefended after moving and the opponent’s captures."
+    },
+    "missed-capture": {
+      "title": "Missed valuable captures",
+      "observation": "The engine found a piece capture better than your move in these positions.",
+      "goal": "Look for a useful capture and check the opponent’s reply.",
+      "hint": "Look for attacked enemy pieces. Before capturing, calculate the recapture."
+    },
+    "missed-mate": {
+      "title": "Missed mating opportunities",
+      "observation": "The engine found a forced mate, but your move did not preserve a verified mate.",
+      "goal": "Look for a forcing continuation against the king.",
+      "hint": "Look at checks and the king’s escape squares; calculate all legal replies."
+    },
+    "forcing-reply": {
+      "title": "Forcing replies by the opponent",
+      "observation": "The opponent’s principal reply gives check after these costly decisions.",
+      "goal": "Choose a move accounting for the opponent’s checks.",
+      "hint": "Before playing, imagine the opponent’s most uncomfortable check."
+    },
+    "closed-center": {
+      "title": "Decisions in blocked centers",
+      "observation": "Several costly decisions occurred with at least two locked pawn pairs. No strategic cause was identified.",
+      "goal": "Improve your pieces or prepare a pawn break without weakening the position.",
+      "hint": "Look for lines you can open and a piece that needs improvement. Check threats before preparing your plan."
+    },
+    "endgame-decisions": {
+      "title": "Decisions with few pieces",
+      "observation": "Several costly decisions occurred in low-material positions. The technical cause is not yet identified.",
+      "goal": "Look for a continuation that preserves your endgame options.",
+      "hint": "Compare king activity, passed pawns and immediate threats before moving."
+    }
+  },
+  "howSelected": "How patterns are selected"
+}

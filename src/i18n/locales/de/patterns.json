@@ -1,0 +1,91 @@
+{
+  "title": "Dein aktualisiertes Training",
+  "intro": "Neue Partien aktualisieren deine Übungen. Wir empfehlen nur Muster, die in mehreren Partien auftreten.",
+  "update": "Partien analysieren und aktualisieren",
+  "import": "Neue Partien importieren",
+  "all": "Meine Muster ansehen",
+  "cancel": "Analyse pausieren",
+  "coverage": "{{analyzed}} von {{eligible}} geeigneten Partien analysiert · {{decisions}} geprüfte Entscheidungen",
+  "progress": "Analyse: {{done}} von {{total}} Entscheidungen. Du kannst die App weiter benutzen.",
+  "empty": "Noch hat kein wiederkehrendes Muster genügend Belege. Importiere Partien oder aktualisiere die Analyse.",
+  "evidence": "{{errors}} Fehler in {{games}} Partien · {{opportunities}} vergleichbare Entscheidungen analysiert",
+  "confidence": {
+    "limited": "Begrenzte Belege",
+    "moderate": "Mäßige Belege",
+    "insufficient": "Unzureichende Belege"
+  },
+  "status": {
+    "recurrent": "Wiederkehrendes Muster",
+    "watching": "Unter Beobachtung"
+  },
+  "causeUnknown": "Wir kennen den Kontext dieser Fehler, aber noch nicht ihre Ursache.",
+  "example": "Partie ansehen · Zug {{move}}",
+  "practiceEvidence": "{{successes}} Erfolge in {{independent}} ersten Versuchen ohne Hilfe · {{attempts}} Versuche insgesamt",
+  "transferPending": "Für einen Vergleich der Wiederholung fehlen noch Belege aus späteren Partien.",
+  "transferObserved": "Fehler je 100 vergleichbare Entscheidungen: {{before}} vorher → {{after}} danach. Ein beschreibender Vergleich, kein Nachweis eines Trainingseffekts.",
+  "practice": "Dieses Muster üben",
+  "method": "Aktualisierungen verwenden prüfbare Regeln, kein erneutes Training eines neuronalen Netzes. Bis zu 200 beendete 10+0-Partien mit bestätigter Identität werden analysiert; sehr kurze Partien und besondere Ausgangsstellungen bleiben ausgeschlossen. Ein Muster benötigt Fehler in mindestens drei Partien und drei verschiedenen Stellungen. Nur vollständig analysierte Partien zählen.",
+  "loading": "Stellung wird geladen…",
+  "back": "Zurück zu meinen Mustern",
+  "checking": "Dein Zug wird geprüft…",
+  "playNow": "Du bist am Zug. Spiele direkt auf dem Brett.",
+  "source": "Aus deiner Partie · Zug {{move}}",
+  "feedbackNote": "Das Brett zeigt deinen Zug und die Hauptantwort des Gegners, falls vorhanden. Eine gültige Alternative zählt ebenfalls.",
+  "assisted": "Dieser Versuch dient zum Üben; er zählt nicht als unabhängiger erster Versuch.",
+  "demonstration": "Dies ist ein Referenzzug. Kehre zur Ausgangsstellung zurück und spiele die Idee.",
+  "hint": "Ich brauche einen Hinweis",
+  "showIdea": "Idee zeigen",
+  "retry": "Erneut versuchen",
+  "next": "Andere Stellung",
+  "continue": "Gegen den Gegner weiterspielen",
+  "errors": {
+    "connection": "Verbindung fehlgeschlagen. Prüfe, ob App und Engine laufen.",
+    "engine_unavailable": "Die Engine ist nicht verfügbar. Ungeprüfte Belege werden nicht hinzugefügt; versuche es erneut, sobald sie läuft.",
+    "analysis_unverified": "Die Analyse konnte nicht geprüft werden. Der Fortschritt bleibt erhalten; du kannst es erneut versuchen.",
+    "analysis_failed": "Die Analyse wurde unterbrochen. Du kannst sie ohne Verlust geprüfter Entscheidungen fortsetzen.",
+    "engine_changed": "Die Engine hat sich während der Analyse geändert. Aktualisiere für vergleichbare Belege.",
+    "cancelled": "Analyse pausiert. Aktualisiere zum Fortsetzen.",
+    "exercise_unavailable": "Diese Stellung ist nicht mehr verfügbar. Kehre zu deinen Mustern zurück und wähle eine andere.",
+    "pattern_not_recurrent": "Es gibt noch nicht genügend Belege, um dieses Muster zu empfehlen.",
+    "illegal_move": "Dieser Zug ist nicht legal. Wähle einen anderen."
+  },
+  "catalog": {
+    "piece-loss": {
+      "title": "Figurenverlust",
+      "observation": "Nach diesen Zügen schlägt die Hauptantwort des Gegners eine Figur und die Bewertung verschlechtert sich.",
+      "goal": "Finde einen Zug, der deine Figuren schützt.",
+      "hint": "Achte auf Figuren, die nach deinem Zug ungedeckt wären, und auf Schläge des Gegners."
+    },
+    "missed-capture": {
+      "title": "Verpasste wertvolle Schläge",
+      "observation": "Die Engine fand in diesen Stellungen einen Figurenschlag, der besser war als dein Zug.",
+      "goal": "Suche einen sinnvollen Schlag und prüfe die Antwort des Gegners.",
+      "hint": "Suche angegriffene gegnerische Figuren. Berechne vor dem Schlag das Zurückschlagen."
+    },
+    "missed-mate": {
+      "title": "Verpasste Mattchancen",
+      "observation": "Die Engine fand ein erzwungenes Matt, aber dein Zug erhielt kein bestätigtes Matt.",
+      "goal": "Suche eine zwingende Fortsetzung gegen den König.",
+      "hint": "Prüfe Schachs und Fluchtfelder des Königs; berechne alle legalen Antworten."
+    },
+    "forcing-reply": {
+      "title": "Zwingende Antworten des Gegners",
+      "observation": "Die Hauptantwort des Gegners gibt nach diesen kostspieligen Entscheidungen Schach.",
+      "goal": "Wähle einen Zug unter Berücksichtigung gegnerischer Schachs.",
+      "hint": "Stelle dir vor deinem Zug das unangenehmste Schach des Gegners vor."
+    },
+    "closed-center": {
+      "title": "Entscheidungen im blockierten Zentrum",
+      "observation": "Mehrere kostspielige Entscheidungen traten bei mindestens zwei blockierten Bauernpaaren auf. Eine strategische Ursache wurde nicht bestimmt.",
+      "goal": "Verbessere deine Figuren oder bereite einen Bauernhebel vor, ohne die Stellung zu schwächen.",
+      "hint": "Prüfe, wo du Linien öffnen kannst und welche Figur verbessert werden muss. Prüfe Drohungen, bevor du deinen Plan vorbereitest."
+    },
+    "endgame-decisions": {
+      "title": "Entscheidungen mit wenigen Figuren",
+      "observation": "Mehrere kostspielige Entscheidungen traten in Stellungen mit wenig Material auf. Die technische Ursache ist noch nicht bekannt.",
+      "goal": "Suche eine Fortsetzung, die deine Möglichkeiten im Endspiel erhält.",
+      "hint": "Vergleiche vor deinem Zug die Königsaktivität, Freibauern und unmittelbaren Drohungen."
+    }
+  },
+  "howSelected": "Wie Muster ausgewählt werden"
+}

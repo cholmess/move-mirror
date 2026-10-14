@@ -18,6 +18,7 @@ const navRoutes = [
 const moreRoutes = [
   { to: "/dashboard", key: "legacyHome" as const },
   { to: "/lesson", key: "lesson" as const },
+  { to: "/patterns", key: "patterns" as const },
   { to: "/coach", key: "guidedCoach" as const },
   { to: "/train/guided", key: "guidedTrain" as const },
   { to: "/defense", key: "defense" as const },
