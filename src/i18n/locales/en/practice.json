@@ -63,5 +63,8 @@
     "http_error": "The evaluation service returned an error. You can retry the same move.",
     "aborted": "The evaluation was interrupted. You can retry the same move.",
     "unknown": "The engine did not return a valid result. You can retry without changing your move."
-  }
+  },
+  "patternsTitle": "My patterns",
+  "patternsBody": "See which mistakes recur in your games and choose one to practice.",
+  "patternsStart": "See my patterns"
 }

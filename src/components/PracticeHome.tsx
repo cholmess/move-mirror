@@ -5,6 +5,7 @@ export function PracticeHome() {
   const { t } = useTranslation("practice");
   return <div className="page" data-testid="practice-home"><h1>{t("title")}</h1><p className="lede">{t("intro")}</p>
     <div className="practice-cards">{[
+      ["patternsTitle", "patternsBody", "patternsStart", "/patterns"],
       ["errors", "errorsBody", "start", "/train"],
       ["play", "playBody", "playStart", "/sparring"],
       ["closed", "closedBody", "closedStart", "/sparring?topic=plans"],
