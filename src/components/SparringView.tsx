@@ -1,7 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Chess } from "chess.js";
-import { Chessboard } from "react-chessboard";
+import { useSearchParams } from "react-router-dom";
+import { PlayBoard } from "./PlayBoard";
+import { practicePositions } from "../data/practicePositions";
+import { exercises, getExercise } from "../data/exercises";
+import { selectNextExercise } from "../domain/adaptive";
 import {
   createSparringSession,
   fetchReview,
@@ -41,6 +45,13 @@ function moveSans(session: SparringSessionDto) {
 export function SparringView() {
   const { t } = useTranslation(["sparring", "navigation", "common"]);
   const { state } = useApp();
+  const { t: tp } = useTranslation("practice");
+  const [params] = useSearchParams();
+  const initialTopic = params.get("topic");
+  const [topic, setTopic] = useState<"defense" | "own" | "plans">(initialTopic === "plans" || initialTopic === "own" ? initialTopic : "defense");
+  const [positionId, setPositionId] = useState(practicePositions[0].id);
+  const [ownId, setOwnId] = useState(() => getExercise(params.get("exercise") ?? "")?.id ?? selectNextExercise(state).exercise.id);
+  const [retryStart, setRetryStart] = useState<Record<string, unknown> | null>(null);
   const [screen, setScreen] = useState<Screen>("setup");
   const [mode, setMode] = useState<"targeted_position" | "full_game">("targeted_position");
   const [style, setStyle] = useState<SparringStyle>("balanced");
@@ -51,6 +62,8 @@ export function SparringView() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [hintShown, setHintShown] = useState(false);
+  const [hintMove, setHintMove] = useState<string | null>(null);
+  const [reviewFen, setReviewFen] = useState<string | null>(null);
   const [review, setReview] = useState<Record<string, unknown> | null>(null);
   const [showTechnical, setShowTechnical] = useState(false);
 
@@ -65,6 +78,7 @@ export function SparringView() {
   useEffect(() => {
     void (async () => {
       try {
+        if (initialTopic) return;
         const stored = localStorage.getItem(SESSION_KEY);
         if (!stored) return;
         const existing = await fetchSparringSession(stored);
@@ -75,9 +89,9 @@ export function SparringView() {
         localStorage.removeItem(SESSION_KEY);
       }
     })();
-  }, [syncSession]);
+  }, [syncSession, initialTopic]);
 
-  const startSession = async () => {
+  const startSession = async (retryBody?: Record<string, unknown>) => {
     setBusy(true);
     setError(null);
     try {
@@ -86,14 +100,31 @@ export function SparringView() {
         userColor: color,
         style,
         clockMode,
-        patternId: PATTERN_ID,
+        patternId: topic === "plans" ? "general-practice" : PATTERN_ID,
         maxPlies: mode === "targeted_position" ? 40 : undefined,
       };
-      if (mode === "targeted_position") {
-        const defense = await fetchNextDefense(state.defenseLab.attempts, []);
-        body.defenseExerciseId = defense.exerciseId;
+      if (mode === "targeted_position" && !retryBody) {
+        if (topic === "defense") {
+          const defense = await fetchNextDefense(state.defenseLab.attempts, []);
+          body.defenseExerciseId = defense.exerciseId;
+        } else if (topic === "own") {
+          const exercise = getExercise(ownId)!;
+          body.startingFen = exercise.fen;
+          body.userColor = exercise.sideToMove === "w" ? "white" : "black";
+          body.sourceGameId = exercise.gameUrl;
+        } else {
+          const position = practicePositions.find(p => p.id === positionId)!;
+          body.startingFen = position.fen;
+          body.userColor = position.color;
+        }
       }
-      const created = await createSparringSession(body);
+      const requestBody = retryBody ?? body;
+      setRetryStart(requestBody);
+      setHintShown(false);
+      setHintMove(null);
+      setReviewFen(null);
+      setReview(null);
+      const created = await createSparringSession(requestBody);
       syncSession(created);
       if (!userToMove(created)) {
         await postAgentMove(created.sessionId);
@@ -107,13 +138,15 @@ export function SparringView() {
     }
   };
 
-  const onDrop = (source: string, target: string) => {
-    if (!session || busy || !userToMove(session)) return false;
+  const onDrop = (source: string, target: string, promotion?: string) => {
+    if (!session || busy || clockResumeRequired || session.sessionStatus !== "active" || !userToMove(session)) return false;
     const chess = new Chess(boardFen);
-    const move = chess.move({ from: source, to: target, promotion: "q" });
+    let move;
+    try { move = chess.move({ from: source, to: target, promotion }); } catch { return false; }
     if (!move) return false;
     const uci = `${move.from}${move.to}${move.promotion ?? ""}`;
     setBusy(true);
+    setHintShown(false);
     setError(null);
     void postPlayerMove(session.sessionId, uci)
       .then(({ session: next }) => {
@@ -128,14 +161,21 @@ export function SparringView() {
 
   const handleHint = async () => {
     if (!session) return;
-    await postHint(session.sessionId);
-    setHintShown(true);
+    setBusy(true);
+    try {
+      const help = await postHint(session.sessionId);
+      setHintMove(help.moveSan ?? null);
+      setHintShown(true);
+    } catch { setError(t("loadError")); } finally { setBusy(false); }
   };
 
   const handleResign = async () => {
     if (!session) return;
-    const next = await postResign(session.sessionId);
-    syncSession(next);
+    setBusy(true);
+    try {
+      const next = await postResign(session.sessionId);
+      syncSession(next);
+    } catch { setError(t("loadError")); } finally { setBusy(false); }
   };
 
   const handleRetryEngine = async () => {
@@ -204,6 +244,11 @@ export function SparringView() {
         <h1>{t("title")}</h1>
         <p className="lede">{t("integrity")}</p>
         <div className="form-grid">
+          <label>{tp("topic")}<select data-testid="practice-topic" value={topic} onChange={e => setTopic(e.target.value as typeof topic)}>
+            <option value="defense">{tp("defense")}</option><option value="own">{tp("own")}</option><option value="plans">{tp("plans")}</option>
+          </select></label>
+          {mode === "targeted_position" && topic === "plans" && <label>{tp("position")}<select value={positionId} onChange={e => setPositionId(e.target.value)}>{practicePositions.map(p => <option key={p.id} value={p.id}>{tp(p.id)}</option>)}</select></label>}
+          {mode === "targeted_position" && topic === "own" && <label>{tp("position")}<select value={ownId} onChange={e => setOwnId(e.target.value)}>{exercises.map(p => <option key={p.id} value={p.id}>{p.moveNumber} · {p.playedMoveSan}</option>)}</select></label>}
           <label>
             {t("modes.targeted")} / {t("modes.full")}
             <select value={mode} onChange={(e) => setMode(e.target.value as typeof mode)}>
@@ -241,10 +286,8 @@ export function SparringView() {
         </div>
         <section className="callout">
           <strong>{mode === "targeted_position" ? t("targetedLead") : t("fullLead")}</strong>
-          <p>{mode === "targeted_position" ? t("targetedBody") : t("whySelectedBody")}</p>
-          <p>
-            <strong>{t("whySelected")}</strong>: {t("whySelectedBody")}
-          </p>
+          <p>{mode === "full_game" ? tp("fullGoal") : topic === "plans" ? tp("planGoal") : topic === "own" ? tp("ownGoal") : t("targetedBody")}</p>
+          {topic === "plans" && <p>{tp("general")}</p>}
         </section>
         {error && <p className="error">{error}</p>}
         <button type="button" className="btn primary" disabled={busy} onClick={() => void startSession()}>
@@ -276,14 +319,8 @@ export function SparringView() {
           </div>
         )}
         <div className="train-board-row">
-          <Chessboard
-            position={boardFen}
-            boardOrientation={boardOrientation(session)}
-            onPieceDrop={onDrop}
-            arePiecesDraggable={
-              !busy && !clockResumeRequired && userToMove(session) && session.sessionStatus === "active"
-            }
-          />
+          <PlayBoard fen={boardFen} orientation={boardOrientation(session)} onMove={onDrop}
+            disabled={busy || clockResumeRequired || !userToMove(session) || session.sessionStatus !== "active"} />
           <aside>
             <p>{userToMove(session) ? t("yourTurn") : t("opponentTurn")}</p>
             {clockLabel && <p className="mono">{clockLabel}</p>}
@@ -292,10 +329,11 @@ export function SparringView() {
             <p className="mono" data-testid="sparring-move-history">
               {moveSans(session).join(" ")}
             </p>
-            <button type="button" className="btn" onClick={() => void handleHint()} disabled={busy}>
+            <button type="button" className="btn" onClick={() => void handleHint()} disabled={busy || clockResumeRequired || !userToMove(session) || session.sessionStatus !== "active"}>
               {t("hint")}
             </button>
-            {hintShown && <p className="callout">{t("hintBody")}</p>}
+            {hintShown && hintMove && <p className="callout">{tp("suggestion", { move: hintMove })}</p>}
+            {hintShown && <p className="callout">{session.practicePatternId === "general-practice" ? tp("planGoal") : t("hintBody")}</p>}
             <button type="button" className="btn danger" onClick={() => void handleResign()} disabled={busy}>
               {t("resign")}
             </button>
@@ -322,19 +360,21 @@ export function SparringView() {
         {review && (
           <section data-testid="sparring-review">
             <h2>{t("review.title")}</h2>
-            <p>{t("review.opportunities", { count: Number(review.opportunityCount ?? 0) })}</p>
+            {session.practicePatternId !== "general-practice" && <><p>{t("review.opportunities", { count: Number(review.opportunityCount ?? 0) })}</p>
             <p>{t("review.resolved", { count: Number(review.resolvedCount ?? 0) })}</p>
-            <p>{t("review.needsPractice", { count: Number(review.needsPracticeCount ?? 0) })}</p>
+            <p>{t("review.needsPractice", { count: Number(review.needsPracticeCount ?? 0) })}</p></>}
             <h3>{t("review.moments")}</h3>
             <ul>
-              {(review.keyMoments as Array<{ playedMoveSan?: string; explanationKey?: string }> | undefined)?.map(
+              {(review.keyMoments as Array<{ playedMoveSan?: string; explanationKey?: string; fenBeforeMove?: string; evaluationStatus?: string }> | undefined)?.map(
                 (m, i) => (
                   <li key={i}>
                     {m.playedMoveSan} — {t(m.explanationKey?.replace("sparring.", "review.") ?? "review.neutral")}
+                    {m.fenBeforeMove && <button type="button" className="btn" onClick={() => setReviewFen(m.fenBeforeMove!)}>{tp("seePosition")}</button>}
                   </li>
                 ),
               )}
             </ul>
+            {reviewFen && <section className="board-panel"><PlayBoard fen={reviewFen} orientation={session.userColor} disabled onMove={() => false} /><button type="button" className="btn primary" disabled={busy} onClick={() => void startSession({ mode: "targeted_position", startingFen: reviewFen, userColor: session.userColor, patternId: session.practicePatternId ?? PATTERN_ID, style: session.style, clockMode: "untimed", maxPlies: 40 })}>{tp("practicePosition")}</button></section>}
             <p>{t(review.recommendationKey ? String(review.recommendationKey).replace("sparring.", "review.") : "review.recommend.continue")}</p>
           </section>
         )}
@@ -346,7 +386,8 @@ export function SparringView() {
               localStorage.removeItem(SESSION_KEY);
               setSession(null);
               setReview(null);
-              setScreen("setup");
+              if (retryStart) void startSession(retryStart);
+              else setScreen("setup");
             }}
           >
             {t("retryPosition")}

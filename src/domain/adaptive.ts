@@ -27,18 +27,18 @@ function lastAttemptAt(state: AppState, exerciseId: string): number {
 function successRate(state: AppState, exerciseId: string): number | null {
   const list = attemptsForExercise(state, exerciseId);
   if (list.length === 0) return null;
-  const verified = list.filter((a) => a.evalVerified && a.evaluationStatus !== "unverified");
+  const verified = list.filter((a) => !a.assisted && a.evalVerified && a.evaluationStatus !== "unverified");
   if (verified.length === 0) return null;
   const ok = verified.filter((a) => isSuccessForAdaptive(a.evaluationStatus)).length;
   return ok / verified.length;
 }
 
 /** Heurística transparente — sustituible por AdaptiveModelService en el futuro. */
-export function selectNextExercise(state: AppState): SelectionResult {
+export function selectNextExercise(state: AppState, excludeId?: string): SelectionResult {
   const now = Date.now();
   const reasons: SelectionReason[] = [];
 
-  const scored = exercises.map((ex) => {
+  const scored = exercises.filter(ex => ex.id !== excludeId || exercises.length === 1).map((ex) => {
     let score = 0;
     const localReasons: SelectionReason[] = [];
 

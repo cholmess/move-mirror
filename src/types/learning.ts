@@ -48,6 +48,8 @@ export interface TrainingReasoningV2 {
 }
 
 export interface AttemptRecord {
+  practiceMode?: "direct";
+  assisted?: boolean;
   id: string;
   exerciseId: string;
   patternId: string;

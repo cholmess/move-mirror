@@ -90,6 +90,11 @@ export function chooseAgentMove(context) {
     recentMotifs,
   });
 
+  if (profileSnapshot?.patternId === "general-practice") {
+    const chosen = candidates.find(c => c.qualityEligible && c.rank === 1) ?? candidates.find(c => c.qualityEligible) ?? candidates[0];
+    return { policyVersion: SPARRING_POLICY_VERSION, chosen, candidates, fallbackToBest: true };
+  }
+
   const { chosen, fallback } = selectFromCandidates(candidates, {
     pickTie: (pool) => pickDeterministicTie(pool, seed, turnKey),
   });

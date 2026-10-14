@@ -3,6 +3,8 @@ import { AppProvider } from "./context/AppContext";
 import { LocaleHtmlSync } from "./components/LocaleHtmlSync";
 import { Layout } from "./components/Layout";
 import { CoachHome } from "./components/CoachHome";
+import { PracticeHome } from "./components/PracticeHome";
+import { DirectPractice } from "./components/DirectPractice";
 import { CoachSession } from "./components/CoachSession";
 import { Dashboard } from "./components/Dashboard";
 import { MicroLesson } from "./components/MicroLesson";
@@ -24,11 +26,13 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route element={<Layout />}>
-            <Route index element={<CoachHome />} />
+            <Route index element={<PracticeHome />} />
+            <Route path="coach" element={<CoachHome />} />
             <Route path="coach/session/:sessionId?" element={<CoachSession />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="lesson" element={<MicroLesson />} />
-            <Route path="train" element={<TrainingBoard />} />
+            <Route path="train" element={<DirectPractice />} />
+            <Route path="train/guided" element={<TrainingBoard />} />
             <Route path="sparring" element={<SparringView />} />
             <Route path="profile" element={<ProfileView />} />
             <Route path="transfer" element={<TransferView />} />

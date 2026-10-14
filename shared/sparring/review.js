@@ -33,12 +33,14 @@ export function classifyMomentForReview(evalResult, momentContext) {
 }
 
 export function buildSparringReview(session, evaluatedMoments) {
+  const general = session.profileSnapshot?.patternId === "general-practice";
   const moments = evaluatedMoments.map((m) => ({
     ply: m.ply,
     fenBeforeMove: m.fenBeforeMove,
     playedMoveUci: m.playedMoveUci,
     playedMoveSan: m.playedMoveSan,
     ...classifyMomentForReview(m.evaluation, m),
+    ...(general ? { explanationKey: "sparring.review.neutral" } : {}),
   }));
 
   const agentCreated = moments.filter((m) => m.agentCreated);
@@ -55,11 +57,11 @@ export function buildSparringReview(session, evaluatedMoments) {
     opportunityCount: agentCreated.length,
     resolvedCount: resolved.length,
     needsPracticeCount: needsPractice.length,
-    keyMoments: [...agentCreated]
-      .sort((a, b) => (a.evaluationStatus === "incorrect" ? -1 : 1))
+    keyMoments: [...(general ? moments : agentCreated)]
+      .sort((a, b) => Number(b.evaluationStatus === "incorrect") - Number(a.evaluationStatus === "incorrect"))
       .slice(0, 3),
     moments,
-    recommendationKey: needsPractice.length
+    recommendationKey: !general && needsPractice.length
       ? "sparring.review.recommend.forcingReply"
       : "sparring.review.recommend.continue",
     doseEligible: false,
@@ -71,7 +73,8 @@ export function userDecisionPlies(session) {
   const { san } = rebuildChess(session.startingFen, session.movesUci);
   const plies = [];
   for (let i = 0; i < session.movesUci.length; i += 1) {
-    const isWhite = i % 2 === 0;
+    const startsWhite = session.startingFen.split(" ")[1] === "w";
+    const isWhite = i % 2 === 0 ? startsWhite : !startsWhite;
     const isUser = session.userColor === "white" ? isWhite : !isWhite;
     if (!isUser) continue;
     plies.push({

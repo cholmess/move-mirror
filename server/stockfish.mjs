@@ -53,6 +53,9 @@ export class StockfishEngine {
       }
     });
     attachedProc.stderr.on("data", () => {});
+    attachedProc.on("error", () => {
+      if (this.proc === attachedProc) this._dead = true;
+    });
     attachedProc.on("close", () => {
       if (this.proc !== attachedProc) return;
       this.proc = null;

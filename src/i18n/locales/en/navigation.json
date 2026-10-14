@@ -1,5 +1,5 @@
 {
-  "today": "Today",
+  "today": "Practice",
   "more": "More",
   "legacyHome": "Home (legacy)",
   "home": "Home",
@@ -11,5 +11,7 @@
   "import": "Import",
   "myGames": "My games",
   "progress": "Progress",
-  "ariaMainNav": "Main navigation"
+  "ariaMainNav": "Main navigation",
+  "guidedCoach": "Guided lesson",
+  "guidedTrain": "Record my reasoning"
 }

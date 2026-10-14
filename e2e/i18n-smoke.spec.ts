@@ -4,9 +4,9 @@ import type { UiLocale } from "./helpers/i18n";
 const locales: UiLocale[] = ["es", "en", "de"];
 
 const navHome: Record<UiLocale, RegExp> = {
-  es: /Inicio/i,
-  en: /Home/i,
-  de: /Start/i,
+  es: /^Practicar$/i,
+  en: /^Practice$/i,
+  de: /^Üben$/i,
 };
 
 const forbiddenEnum = /verified_best|verified_acceptable|exposure_unknown|cohort_frozen/;
@@ -96,7 +96,7 @@ for (const locale of locales) {
 
     test("switching locale does not change adaptive exercise id", async ({ page }) => {
       const other: UiLocale = locale === "en" ? "de" : locale === "de" ? "es" : "en";
-      await page.goto("/train");
+      await page.goto("/train/guided");
       await expect(page.getByTestId("train-exercise-select")).toBeVisible();
       const before = await page.getByTestId("train-exercise-select").inputValue();
       await page.getByTestId("language-select").selectOption(other);

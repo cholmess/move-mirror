@@ -9,6 +9,8 @@ import { hasStoredLocalePreference } from "../i18n/localeStorage";
 
 const navRoutes = [
   { to: "/", key: "today" as const, end: true },
+  { to: "/train", key: "train" as const },
+  { to: "/sparring", key: "play" as const },
   { to: "/games", key: "myGames" as const },
   { to: "/profile", key: "progress" as const },
 ];
@@ -16,8 +18,8 @@ const navRoutes = [
 const moreRoutes = [
   { to: "/dashboard", key: "legacyHome" as const },
   { to: "/lesson", key: "lesson" as const },
-  { to: "/train", key: "train" as const },
-  { to: "/sparring", key: "play" as const },
+  { to: "/coach", key: "guidedCoach" as const },
+  { to: "/train/guided", key: "guidedTrain" as const },
   { to: "/defense", key: "defense" as const },
   { to: "/import", key: "import" as const },
   { to: "/transfer", key: "newGames" as const },

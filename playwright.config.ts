@@ -10,6 +10,7 @@ export default defineConfig({
   use: {
     baseURL: `http://127.0.0.1:${E2E_WEB_PORT}`,
     trace: "on-first-retry",
+    launchOptions: process.env.E2E_BROWSER_PATH ? { executablePath: process.env.E2E_BROWSER_PATH, args: ["--no-sandbox", "--disable-dev-shm-usage"] } : undefined,
   },
   webServer: [
     {

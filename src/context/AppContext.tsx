@@ -31,6 +31,8 @@ interface AppContextValue {
   persist: (next: AppState) => void;
   submitExerciseAttempt: (params: {
     exerciseId: string;
+    practiceMode?: "direct";
+    assisted?: boolean;
     cct: CctCapture;
     reasoningV2?: TrainingReasoningV2;
     chosenMoveSan: string;
@@ -73,6 +75,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const submitExerciseAttempt = useCallback(
     async (params: {
       exerciseId: string;
+      practiceMode?: "direct";
+      assisted?: boolean;
       cct: CctCapture;
       reasoningV2?: TrainingReasoningV2;
       chosenMoveSan: string;
@@ -125,6 +129,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
       const next = recordAttempt(state, {
         exerciseId: params.exerciseId,
+        practiceMode: params.practiceMode,
+        assisted: params.assisted,
         patternId: exercise.patternId,
         skillIds: exercise.skillIds,
         fen: exercise.fen,

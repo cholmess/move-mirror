@@ -505,13 +505,24 @@ export function createSparringService({
       }
     },
 
-    hint(sessionId) {
+    async hint(sessionId) {
       const session = loadSession(sessionId);
       if (!session) throw new Error("session_not_found");
+      if (!["active", "created"].includes(session.status)) throw new Error("session_finished");
+      const fen = sessionFen(session);
+      if (sideToMoveIsAgent(fen, session.userColor)) throw new Error("agent_turn");
       session.hintsUsed += 1;
       session.hintUsedPlies.push(session.movesUci.length);
       store.saveSession(session);
-      return { hintUsed: true };
+      if (!engineAvailable || !engine) return { hintUsed: true, moveSan: null };
+      const multi = await queue.enqueue(ctx => engine.analyseMultiPv(fen, {
+        multiPv: 1, nodes: SPARRING_ENGINE_CONFIG.candidateNodes,
+        threads: SPARRING_ENGINE_CONFIG.threads, hashMb: SPARRING_ENGINE_CONFIG.hashMb, signal: ctx.signal,
+      }), {});
+      const uci = multi.lines[0]?.firstMoveUci;
+      if (!uci) return { hintUsed: true, moveSan: null };
+      const moveSan = uciToSan(fen, uci);
+      return { hintUsed: true, fen, moveSan, from: uci.slice(0, 2), to: uci.slice(2, 4) };
     },
 
     resign(sessionId) {
@@ -604,7 +615,7 @@ export function createSparringService({
       store.saveSession(session);
 
       const profile = applyReviewToProfile(store.readProfile(), review, {
-        eligible: !session.fixture && session.status !== "engine_error",
+        eligible: !session.fixture && session.status !== "engine_error" && session.profileSnapshot?.patternId !== "general-practice",
       });
       store.saveProfile(profile);
 
