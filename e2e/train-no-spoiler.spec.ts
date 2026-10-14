@@ -10,14 +10,14 @@ test.describe("guided training reasoning", () => {
   });
 
   test("shows the original silent validation failure as a visible focused error", async ({ page }) => {
-    await page.goto("/train");
+    await page.goto("/train/guided");
     await page.getByRole("button", { name: "Continuar", exact: true }).click();
     await expect(page.getByRole("alert")).toHaveText("Indica si viste algún jaque.");
     await expect(page.locator(".reasoning-category").first()).toBeFocused();
   });
 
   test("accepts a move using keyboard controls without typing SAN", async ({ page }) => {
-    await page.goto("/train");
+    await page.goto("/train/guided");
     const captures = page.locator(".reasoning-category").nth(1);
     await captures.getByRole("button", { name: "Añadir jugada" }).click();
     await page.getByLabel("Casilla de origen").selectOption("f4");
@@ -32,7 +32,7 @@ test.describe("guided training reasoning", () => {
 
   test("opens notation help with hover and keyboard inside a mobile viewport", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto("/train");
+    await page.goto("/train/guided");
     for (const label of ["No vi ningún jaque", "No vi ninguna captura", "No vi ninguna amenaza"]) {
       await page.getByRole("button", { name: label }).click();
     }
@@ -69,7 +69,7 @@ test.describe("guided training reasoning", () => {
       }) });
     });
 
-    await page.goto("/train");
+    await page.goto("/train/guided");
     const board = page.locator(".board-panel");
     const categories = page.locator(".reasoning-category");
     await categories.nth(0).getByRole("button", { name: "No vi ningún jaque" }).click();
@@ -115,7 +115,7 @@ test.describe("guided training reasoning", () => {
   for (const [locale, heading] of [["es", "Antes de decidirte"], ["en", "Before you decide"], ["de", "Prüfe deine Möglichkeiten"]] as const) {
     test(`renders the guided flow in ${locale}`, async ({ page }) => {
       await page.addInitScript((language) => localStorage.setItem("move-mirror-locale-v1", language), locale);
-      await page.goto("/train");
+      await page.goto("/train/guided");
       await expect(page.getByRole("heading", { name: new RegExp(heading) })).toBeVisible();
       await expect(page.locator(".reasoning-category")).toHaveCount(3);
     });

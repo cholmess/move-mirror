@@ -153,10 +153,19 @@ describe("sparring service closure", () => {
     expect(pub).not.toHaveProperty("decisions");
     expect(pub).not.toHaveProperty("profileSnapshot");
   });
+  it("returns a legal position-specific hint and marks assistance", async () => {
+    const created = service.createSession({ mode: "targeted_position", userColor: "black", startingFen: fen, patternId: "general-practice" });
+    const hint = await service.hint(created.sessionId);
+    expect(hint.hintUsed).toBe(true);
+    expect(new Chess(fen).moves()).toContain(hint.moveSan);
+    expect(service.getSessionInternal(created.sessionId).hintUsedPlies).toContain(0);
+  });
 });
 
 describe("clock monotonic view", () => {
   it("untimed has no fictitious timers", () => {
     expect(clockPublicDto({ mode: "untimed" }, TEST_EPOCH)).toEqual({ mode: "untimed" });
   });
+
+
 });

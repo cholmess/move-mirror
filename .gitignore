@@ -19,3 +19,7 @@ data/games-backup-pre-v0.5.0/
 *.traineddata
 data/transfer/baseline/analysis.jsonl
 data/transfer/cohorts/**/analysis.jsonl
+
+# Personal coach state and isolated UI fixtures
+data/coach/
+data/test-coach/

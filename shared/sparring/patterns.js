@@ -2,6 +2,12 @@ export const SPARRING_PATTERN_CATALOG_VERSION = "sparring-patterns-v1";
 
 /** Catálogo versionado — no alterar patrones pedagógicos existentes. */
 export const SPARRING_PATTERN_CATALOG = Object.freeze({
+  "general-practice": {
+    id: "general-practice",
+    modes: Object.freeze(["targeted_position", "full_game"]),
+    priorityPattern: false,
+    goalKey: "sparring.patterns.generalPractice",
+  },
   "allowed-forcing-reply": {
     id: "allowed-forcing-reply",
     modes: Object.freeze(["targeted_position", "full_game"]),

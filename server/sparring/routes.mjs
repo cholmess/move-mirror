@@ -128,7 +128,7 @@ export function createSparringRouter(getService) {
     const hint = matchPath(url, "/api/sparring/sessions/:id/hint");
     if (hint && req.method === "POST") {
       try {
-        const payload = service.hint(hint.id);
+        const payload = await service.hint(hint.id);
         json(res, 200, { ok: true, ...payload });
       } catch (err) {
         json(res, 400, { ok: false, error: String(err.message ?? err) });

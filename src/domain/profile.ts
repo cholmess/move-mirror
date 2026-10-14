@@ -155,6 +155,7 @@ export function rebuildSkillsFromAttempts(
     (a, b) => new Date(a.recordedAt).getTime() - new Date(b.recordedAt).getTime()
   );
   for (const attempt of sorted) {
+    if (attempt.assisted) continue;
     skills = updateSkillsFromAttempt(skills, attempt);
   }
   return skills;
@@ -168,8 +169,8 @@ export function aggregateEvidence(skillId: SkillId, attempts: AttemptRecord[]) {
     practiceAttempts: related.length,
     recentVerifiedSuccess: related.filter(
       (a) =>
-        a.evaluationStatus === "verified_best" ||
-        a.evaluationStatus === "verified_acceptable"
+        !a.assisted && (a.evaluationStatus === "verified_best" ||
+        a.evaluationStatus === "verified_acceptable")
     ).length,
     recentIncorrect: related.filter((a) => a.evaluationStatus === "incorrect")
       .length,

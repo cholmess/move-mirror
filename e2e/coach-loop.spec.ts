@@ -90,7 +90,7 @@ test.describe("Coach Loop v1", () => {
   test("desktop UI full session, reload resume, retention and generalization label", async ({ page }) => {
     await resetCoachSessions();
     await page.setViewportSize({ width: 1280, height: 800 });
-    await page.goto("/");
+    await page.goto("/coach");
     await page.getByTestId("coach-primary-action").click();
     await expect(page.getByTestId("coach-session")).toBeVisible();
     await runCoachUiSegment(page);
@@ -104,7 +104,7 @@ test.describe("Coach Loop v1", () => {
       /novedad no confirmada|unconfirmed novelty|unbestätigter Neuheit/,
     );
 
-    await page.goto("/");
+    await page.goto("/coach");
     await page.getByTestId("coach-primary-action").click();
     await expect(page.getByTestId("coach-session")).toBeVisible();
     const board = coachBoard(page);
@@ -116,7 +116,7 @@ test.describe("Coach Loop v1", () => {
   test("mobile UI smoke walks signal through contrast", async ({ page }) => {
     await resetCoachSessions();
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto("/");
+    await page.goto("/coach");
     await page.getByTestId("coach-primary-action").click();
     await expect(page.getByTestId("coach-session")).toBeVisible();
     await coachContinue(page);

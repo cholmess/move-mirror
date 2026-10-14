@@ -1,5 +1,5 @@
 {
-  "today": "Heute",
+  "today": "Üben",
   "more": "Mehr",
   "legacyHome": "Start (Legacy)",
   "home": "Start",
@@ -11,5 +11,7 @@
   "import": "Importieren",
   "myGames": "Meine Partien",
   "progress": "Fortschritt",
-  "ariaMainNav": "Hauptnavigation"
+  "ariaMainNav": "Hauptnavigation",
+  "guidedCoach": "Geführte Lektion",
+  "guidedTrain": "Gedankengang erfassen"
 }

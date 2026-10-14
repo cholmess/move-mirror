@@ -11,8 +11,8 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      "/api": "http://127.0.0.1:8787",
-      "/health": "http://127.0.0.1:8787",
+      "/api": process.env.VITE_ENGINE_API ?? "http://127.0.0.1:8787",
+      "/health": process.env.VITE_ENGINE_API ?? "http://127.0.0.1:8787",
     },
   },
   test: {
