@@ -63,5 +63,8 @@
     "http_error": "El servicio de evaluación devolvió un error. Puedes reintentar la misma jugada.",
     "aborted": "La evaluación se interrumpió. Puedes reintentar la misma jugada.",
     "unknown": "El motor no devolvió un resultado válido. Puedes reintentar sin cambiar tu jugada."
-  }
+  },
+  "patternsTitle": "Mis patrones",
+  "patternsBody": "Ve qué errores se repiten en tus partidas y elige uno para practicar.",
+  "patternsStart": "Ver mis patrones"
 }

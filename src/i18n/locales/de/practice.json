@@ -63,5 +63,8 @@
     "http_error": "Der Bewertungsdienst hat einen Fehler zurückgegeben. Du kannst denselben Zug erneut prüfen.",
     "aborted": "Die Bewertung wurde unterbrochen. Du kannst denselben Zug erneut prüfen.",
     "unknown": "Die Engine lieferte kein gültiges Ergebnis. Du kannst es erneut versuchen, ohne deinen Zug zu ändern."
-  }
+  },
+  "patternsTitle": "Meine Muster",
+  "patternsBody": "Sieh, welche Fehler in deinen Partien wiederkehren, und wähle einen zum Üben.",
+  "patternsStart": "Meine Muster ansehen"
 }
