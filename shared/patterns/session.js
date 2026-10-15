@@ -50,6 +50,17 @@ export function planSessionPositions(candidates, exposures = []) {
   return layout.guided;
 }
 
+/** Puts a guided position first when the user chose it explicitly; holdout order is unchanged. */
+export function orderGuidedPlan(guided, preferredExerciseId = null) {
+  const plan = [...guided];
+  if (!preferredExerciseId) return plan;
+  const index = plan.findIndex((r) => r.exerciseId === preferredExerciseId);
+  if (index <= 0) return plan;
+  const [preferred] = plan.splice(index, 1);
+  plan.unshift(preferred);
+  return plan;
+}
+
 export function createPracticeSession(patternId, positionRecordIds, { contentVersion, detectorVersion, at, reservedHoldoutRecordId, sessionShortfall = false }) {
   return {
     version: PATTERN_LEARNING_VERSION,

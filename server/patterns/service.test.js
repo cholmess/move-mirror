@@ -5,7 +5,7 @@ import path from "node:path";
 import { Chess } from "chess.js";
 import { createPatternStore } from "./store.mjs";
 import { createPatternService, selectPersonalGames } from "./service.mjs";
-import { planSessionLayout } from "../../shared/patterns/session.js";
+import { orderGuidedPlan, planSessionLayout } from "../../shared/patterns/session.js";
 function game(id, first = "e4") {
   const chess = new Chess(); for (const san of [first, "e5", "Nf3", "Nc6", "Bc4", "Nf6", "d3", "Bc5", "O-O", "d6"]) chess.move(san);
   return { id, fingerprint: id, chess: { variant: "standard", startingFen: new Chess().fen(), movesUci: chess.history({ verbose: true }).map(m=>m.from+m.to+(m.promotion??"")), result: "1-0" },
@@ -102,6 +102,37 @@ describe("personal pattern incremental analysis", () => {
     expect(restarted.activePractice().id).toBe(next.id);
     expect(restarted.activePractice().decisionCount).toBe(1);
   });
+  it("visits every guided slot once when starting from a preferred position not first in the layout", async () => {
+    await activate(2);
+    const candidates = Object.values(store.read().analyses).flatMap(a => a.rows.filter(r => r.patternId === "piece-loss"));
+    const layout = planSessionLayout(candidates, store.read().exposures);
+    expect(layout.ok).toBe(true);
+    expect(layout.guided.length).toBeGreaterThanOrEqual(2);
+    const preferredId = layout.guided[1].exerciseId;
+    const expectedIds = orderGuidedPlan(layout.guided, preferredId).map(r => r.exerciseId);
+
+    let guided = service.startPractice("piece-loss", preferredId);
+    expect(guided.positionId).toBe(preferredId);
+    expect(guided.slotIndex).toBe(0);
+
+    const session = store.read().practiceSessions.find(s => s.id === guided.sessionId);
+    expect(session.positionRecordIds).toEqual(expectedIds);
+
+    const visited = [];
+    while (true) {
+      visited.push(service.exerciseView(guided.id).positionId);
+      const slotView = service.exerciseView(guided.id);
+      const slotChess = new Chess(slotView.fen);
+      const slotLegal = slotChess.moves({ verbose: true })[0];
+      const result = await service.submit(guided.id, slotLegal.from + slotLegal.to + (slotLegal.promotion ?? ""));
+      if (result.trainingStatus === "ready_for_holdout") break;
+      expect(result.trainingStatus).toBe("ready_for_next_slot");
+      guided = service.advanceSlot(guided.id);
+    }
+    expect(visited).toEqual(expectedIds);
+    expect(new Set(visited).size).toBe(expectedIds.length);
+  });
+
   it("runs a multi-position session, then measures an unseen holdout without help", async () => {
     await activate(1);
     let guided = service.startPractice("piece-loss");

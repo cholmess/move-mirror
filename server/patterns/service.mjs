@@ -12,6 +12,7 @@ import {
   createPracticeSession,
   guidedTargetDecisions,
   nextGuidedStatus,
+  orderGuidedPlan,
   planSessionLayout,
 } from "../../shared/patterns/session.js";
 import { evaluateEligibility, STANDARD_FEN, normalizedStartingFen } from "../games/model.mjs";
@@ -183,7 +184,7 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
     const candidates = rows().filter(r => r.patternId === patternId);
     const layout = planSessionLayout(candidates, state.exposures);
     if (!layout.ok) throw new Error(layout.error);
-    const sessionPlan = layout.guided;
+    const sessionPlan = orderGuidedPlan(layout.guided, preferredId);
     const session = createPracticeSession(patternId, sessionPlan.map(r => r.exerciseId), {
       contentVersion: PATTERN_VERSION,
       detectorVersion: signature(),
@@ -193,7 +194,7 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
     });
     session.guidedExerciseIds = [];
     mutate(s => { s.practiceSessions.push(session); });
-    const record = preferredId ? sessionPlan.find(r => r.exerciseId === preferredId) ?? sessionPlan[0] : sessionPlan[0];
+    const record = sessionPlan[0];
     const exercise = createExercise(patternId, record, { sessionId: session.id, slotIndex: 0 });
     mutate(s => {
       const live = s.practiceSessions.find(row => row.id === session.id);

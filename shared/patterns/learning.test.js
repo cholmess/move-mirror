@@ -4,7 +4,7 @@ import { applyDomainEvidence, emptyPatternDomain } from "./mastery.js";
 import { migrateLearningState } from "./migrate-learning.js";
 import { selectNextActivity } from "./next-activity.js";
 import { isReviewDue, reviewIntervalDays, scheduleNextReview } from "./scheduler.js";
-import { completePracticeSession, createPracticeSession, planSessionLayout, planSessionPositions } from "./session.js";
+import { completePracticeSession, createPracticeSession, orderGuidedPlan, planSessionLayout, planSessionPositions } from "./session.js";
 import { positionKey } from "./detect.js";
 
 const at = "2026-10-14T12:00:00Z";
@@ -90,6 +90,16 @@ function rows(n) {
     loss: 100 + i,
   }));
 }
+
+describe("orderGuidedPlan", () => {
+  it("moves a preferred guided position to the front without dropping slots", () => {
+    const guided = rows(4);
+    const ordered = orderGuidedPlan(guided, "e2");
+    expect(ordered.map((r) => r.exerciseId)).toEqual(["e2", "e0", "e1", "e3"]);
+    expect(orderGuidedPlan(guided, "e0").map((r) => r.exerciseId)).toEqual(["e0", "e1", "e2", "e3"]);
+    expect(orderGuidedPlan(guided, "missing").map((r) => r.exerciseId)).toEqual(["e0", "e1", "e2", "e3"]);
+  });
+});
 
 describe("session planning", () => {
   it("avoids duplicate FEN keys in one session", () => {
