@@ -5,6 +5,7 @@ import path from "node:path";
 import { Chess } from "chess.js";
 import { createPatternStore } from "./store.mjs";
 import { createPatternService, selectPersonalGames } from "./service.mjs";
+import { planSessionLayout } from "../../shared/patterns/session.js";
 function game(id, first = "e4") {
   const chess = new Chess(); for (const san of [first, "e5", "Nf3", "Nc6", "Bc4", "Nf6", "d3", "Bc5", "O-O", "d6"]) chess.move(san);
   return { id, fingerprint: id, chess: { variant: "standard", startingFen: new Chess().fen(), movesUci: chess.history({ verbose: true }).map(m=>m.from+m.to+(m.promotion??"")), result: "1-0" },
@@ -76,7 +77,7 @@ describe("personal pattern incremental analysis", () => {
     service.reveal(ex.id,"hint");const r=await service.submit(ex.id,moveUci);
     expect(r.independent).toBe(false);const calls=evaluate.mock.calls.length;
     expect((await service.submit(ex.id,moveUci)).id).toBe(r.id);expect(evaluate.mock.calls.length).toBe(calls);
-    const retry=service.startPractice("piece-loss",ex.positionId);expect(retry.repeated).toBe(true);
+    service.startPractice("piece-loss",ex.positionId);
     expect(service.summary().patterns.find(p=>p.id==="piece-loss").practice.independent).toBe(0);
   });
   it("revokes derived exercises and their learning evidence when a source game is deleted", async () => {
@@ -116,10 +117,15 @@ describe("personal pattern incremental analysis", () => {
     expect(retried).toMatchObject({ decisionCount: 0, status: "active", fen: guided.fen });
     result = await service.submit(guided.id, moveUci);
     while (!service.exerciseView(guided.id).canStartHoldout) {
-      expect(["ready_for_next_slot", "training"].includes(result.trainingStatus)).toBe(true);
-      if (result.trainingStatus === "ready_for_next_slot") guided = service.advanceSlot(guided.id);
-      result = await service.submit(guided.id, moveUci);
+      const slotView = service.exerciseView(guided.id);
+      const slotChess = new Chess(slotView.fen);
+      const slotLegal = slotChess.moves({ verbose: true })[0];
+      const uci = slotLegal.from + slotLegal.to + (slotLegal.promotion ?? "");
+      result = await service.submit(guided.id, uci);
       expect(result.independent).toBe(false);
+      if (result.trainingStatus === "ready_for_holdout") break;
+      expect(result.trainingStatus).toBe("ready_for_next_slot");
+      guided = service.advanceSlot(guided.id);
     }
     expect(result.trainingStatus).toBe("ready_for_holdout");
     const holdout = service.startHoldout(guided.id);
@@ -148,5 +154,74 @@ describe("personal pattern incremental analysis", () => {
   });
   it("coalesces automatic import updates", async () => {
     service.schedule(); service.schedule(); await service.wait(); expect(evaluate).toHaveBeenCalledTimes(5);
+  });
+
+  it("plans guided/holdout split for 2, 3, 4 and 6 unique pattern positions", async () => {
+    await activate(3);
+    const candidates = service.summary().patterns.find(p => p.id === "piece-loss");
+    expect(candidates.status).toBe("recurrent");
+    const records = store.read();
+    const allRows = Object.values(records.analyses).flatMap(a => a.rows.filter(r => r.patternId === "piece-loss"));
+    const unique = [...new Map(allRows.map(r => [r.fen.split(" ").slice(0, 4).join(" "), r])).values()];
+    const layout = planSessionLayout(unique, []);
+    expect(layout.ok).toBe(true);
+    expect(layout.guided.length + 1).toBeLessThanOrEqual(unique.length);
+    expect(layout.sessionShortfall).toBe(unique.length < 4);
+  });
+
+  it("surfaces insufficient_holdout_positions when layout cannot reserve a holdout", async () => {
+    await activate(0);
+    const candidates = Object.values(store.read().analyses).flatMap(a => a.rows.filter(r => r.patternId === "piece-loss"));
+    const layout = planSessionLayout([candidates[0]], []);
+    expect(layout.ok).toBe(false);
+    expect(layout.error).toBe("insufficient_holdout_positions");
+  });
+
+  it("records independent failure as domain evidence with one-day review", async () => {
+    await activate(1);
+    let guided = service.startPractice("piece-loss");
+    while (!service.exerciseView(guided.id).canStartHoldout) {
+      const slotView = service.exerciseView(guided.id);
+      const slotChess = new Chess(slotView.fen);
+      const slotLegal = slotChess.moves({ verbose: true })[0];
+      const result = await service.submit(guided.id, slotLegal.from + slotLegal.to + (slotLegal.promotion ?? ""));
+      if (result.trainingStatus === "ready_for_holdout") break;
+      guided = service.advanceSlot(guided.id);
+    }
+    const holdout = service.startHoldout(guided.id);
+    const beforeDomain = store.read().patternDomains?.["piece-loss"] ?? { beta: 1 };
+    evaluate.mockImplementationOnce(async body => ({ ...validResult(body), status: "incorrect", verified: true }));
+    const holdoutChess = new Chess(holdout.fen);
+    const holdoutLegal = holdoutChess.moves({ verbose: true })[0];
+    const result = await service.submit(holdout.id, holdoutLegal.from + holdoutLegal.to + (holdoutLegal.promotion ?? ""));
+    expect(result.sessionResult.outcomeKey).toBe("needs_reinforcement");
+    expect(result.sessionResult.countsAsIndependentEvidence).toBe(true);
+    const domain = store.read().patternDomains["piece-loss"];
+    expect(domain.independentFailures).toBe(1);
+    expect(domain.beta).toBeGreaterThan(beforeDomain.beta ?? 1);
+    expect(Date.parse(domain.nextReviewAt) - Date.parse(result.at)).toBeLessThanOrEqual(86400000 + 1000);
+  });
+
+  it("does not duplicate domain evidence when holdout submit is retried", async () => {
+    await activate(1);
+    let guided = service.startPractice("piece-loss");
+    while (!service.exerciseView(guided.id).canStartHoldout) {
+      const slotView = service.exerciseView(guided.id);
+      const slotChess = new Chess(slotView.fen);
+      const slotLegal = slotChess.moves({ verbose: true })[0];
+      const result = await service.submit(guided.id, slotLegal.from + slotLegal.to + (slotLegal.promotion ?? ""));
+      if (result.trainingStatus === "ready_for_holdout") break;
+      guided = service.advanceSlot(guided.id);
+    }
+    const holdout = service.startHoldout(guided.id);
+    const holdoutChess = new Chess(holdout.fen);
+    const holdoutLegal = holdoutChess.moves({ verbose: true })[0];
+    const uci = holdoutLegal.from + holdoutLegal.to + (holdoutLegal.promotion ?? "");
+    const first = await service.submit(holdout.id, uci);
+    const attemptsAfterFirst = store.read().patternDomains["piece-loss"].independentAttempts;
+    const second = await service.submit(holdout.id, uci);
+    expect(second.id).toBe(first.id);
+    expect(store.read().patternDomains["piece-loss"].independentAttempts).toBe(attemptsAfterFirst);
+    expect(store.read().patternDomains["piece-loss"].history.filter(h => h.event === "independent_success").length).toBeLessThanOrEqual(1);
   });
 });

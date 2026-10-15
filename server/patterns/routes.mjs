@@ -27,7 +27,7 @@ export function createPatternRouter(service) {
       }
       return respond(404, { error: "not_found" });
     } catch (error) {
-      const safe = ["pattern_unknown", "pattern_not_recurrent", "exercise_unavailable", "illegal_move", "analysis_unverified", "invalid_request", "practice_not_ready"];
+      const safe = ["pattern_unknown", "pattern_not_recurrent", "exercise_unavailable", "insufficient_holdout_positions", "illegal_move", "analysis_unverified", "invalid_request", "practice_not_ready"];
       return respond(400, { error: safe.includes(error.message) ? error.message : "request_failed" });
     }
   };

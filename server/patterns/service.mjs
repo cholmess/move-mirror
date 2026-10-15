@@ -12,7 +12,7 @@ import {
   createPracticeSession,
   guidedTargetDecisions,
   nextGuidedStatus,
-  planSessionPositions,
+  planSessionLayout,
 } from "../../shared/patterns/session.js";
 import { evaluateEligibility, STANDARD_FEN, normalizedStartingFen } from "../games/model.mjs";
 
@@ -153,7 +153,7 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
     const fen = exercise.currentFen ?? record.fen;
     const session = exercise.sessionId ? sessionById(exercise.sessionId) : null;
     const sessionPositionTotal = session?.positionRecordIds?.length ?? null;
-    const sessionShortfall = sessionPositionTotal !== null && sessionPositionTotal < 3;
+    const sessionShortfall = session?.sessionShortfall ?? false;
     return { id: exercise.id, positionId: record.exerciseId, patternId: record.patternId, fen, originalFen: record.fen, color: record.fen.split(" ")[1] === "w" ? "white" : "black",
       gameId: record.gameId, moveNumber: record.moveNumber, assisted: exercise.assisted,
       completed: status === "completed", repeated: exercise.repeated, role: exercise.role ?? "legacy", status,
@@ -181,10 +181,15 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
     if (!summary().recommended.includes(patternId) && summary().patterns.find(p => p.id === patternId)?.status !== "recurrent") throw new Error("pattern_not_recurrent");
     const state = store.read();
     const candidates = rows().filter(r => r.patternId === patternId);
-    const sessionPlan = planSessionPositions(candidates, state.exposures);
-    if (!sessionPlan.length) throw new Error("exercise_unavailable");
+    const layout = planSessionLayout(candidates, state.exposures);
+    if (!layout.ok) throw new Error(layout.error);
+    const sessionPlan = layout.guided;
     const session = createPracticeSession(patternId, sessionPlan.map(r => r.exerciseId), {
-      contentVersion: PATTERN_VERSION, detectorVersion: signature(), at: now(),
+      contentVersion: PATTERN_VERSION,
+      detectorVersion: signature(),
+      at: now(),
+      reservedHoldoutRecordId: layout.holdout.exerciseId,
+      sessionShortfall: layout.sessionShortfall,
     });
     session.guidedExerciseIds = [];
     mutate(s => { s.practiceSessions.push(session); });
@@ -395,17 +400,32 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
     const parent = exerciseById(id), record = assertRecord(parent);
     if (exerciseStatus(parent) !== "ready_for_holdout") throw new Error("practice_not_ready");
     const state = store.read();
-    const usedKeys = new Set(
-      state.exercises
-        .filter(e => e.patternId === parent.patternId && (e.sessionId === parent.sessionId || e.parentId === id || e.id === id))
-        .map(e => assertRecord(e).exerciseId),
-    );
-    const candidates = rows().filter(r => r.patternId === parent.patternId && !usedKeys.has(r.exerciseId));
-    candidates.sort((a, b) => {
-      const exposed = r => state.exposures.some(e => e.positionKey === positionKey(r.fen)) ? 1 : 0;
-      return exposed(a) - exposed(b) || (b.loss ?? 800) - (a.loss ?? 800);
-    });
-    if (!candidates[0]) throw new Error("exercise_unavailable");
+    const session = parent.sessionId ? sessionById(parent.sessionId) : null;
+    let holdoutRecord = null;
+    if (session?.reservedHoldoutRecordId) {
+      holdoutRecord = rows().find(r => r.exerciseId === session.reservedHoldoutRecordId && r.patternId === parent.patternId);
+      const guidedKeys = new Set(
+        session.positionRecordIds
+          .map(rid => rows().find(r => r.exerciseId === rid))
+          .filter(Boolean)
+          .map(r => positionKey(r.fen)),
+      );
+      if (holdoutRecord && guidedKeys.has(positionKey(holdoutRecord.fen))) holdoutRecord = null;
+    }
+    if (!holdoutRecord) {
+      const usedKeys = new Set(
+        state.exercises
+          .filter(e => e.patternId === parent.patternId && (e.sessionId === parent.sessionId || e.parentId === id || e.id === id))
+          .map(e => assertRecord(e).exerciseId),
+      );
+      const candidates = rows().filter(r => r.patternId === parent.patternId && !usedKeys.has(r.exerciseId));
+      candidates.sort((a, b) => {
+        const exposed = r => state.exposures.some(e => e.positionKey === positionKey(r.fen)) ? 1 : 0;
+        return exposed(a) - exposed(b) || (b.loss ?? 800) - (a.loss ?? 800);
+      });
+      holdoutRecord = candidates[0] ?? null;
+    }
+    if (!holdoutRecord) throw new Error("exercise_unavailable");
     mutate(s => {
       const target = s.exercises.find(e => e.id === id);
       target.status = "completed"; target.awaitingNext = false;
@@ -414,15 +434,15 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
         if (session) session.status = "awaiting_holdout";
       }
     });
-    const holdout = createExercise(parent.patternId, candidates[0], {
+    const holdout = createExercise(parent.patternId, holdoutRecord, {
       role: "holdout", parentId: id, sessionId: parent.sessionId ?? null,
     });
     if (parent.sessionId) {
       mutate(s => {
-        const session = s.practiceSessions.find(row => row.id === parent.sessionId);
-        if (session) {
-          session.holdoutExerciseId = holdout.id;
-          session.holdoutRecordId = candidates[0].exerciseId;
+        const live = s.practiceSessions.find(row => row.id === parent.sessionId);
+        if (live) {
+          live.holdoutExerciseId = holdout.id;
+          live.holdoutRecordId = holdoutRecord.exerciseId;
         }
       });
     }

@@ -4,7 +4,8 @@ import { applyDomainEvidence, emptyPatternDomain } from "./mastery.js";
 import { migrateLearningState } from "./migrate-learning.js";
 import { selectNextActivity } from "./next-activity.js";
 import { isReviewDue, reviewIntervalDays, scheduleNextReview } from "./scheduler.js";
-import { completePracticeSession, createPracticeSession, planSessionPositions } from "./session.js";
+import { completePracticeSession, createPracticeSession, planSessionLayout, planSessionPositions } from "./session.js";
+import { positionKey } from "./detect.js";
 
 const at = "2026-10-14T12:00:00Z";
 
@@ -82,16 +83,84 @@ describe("next activity selection", () => {
   });
 });
 
+function rows(n) {
+  return Array.from({ length: n }, (_, i) => ({
+    exerciseId: `e${i}`,
+    fen: `4k${i + 1}/8/8/8/8/8/P7/4K3 w - - 0 1`,
+    loss: 100 + i,
+  }));
+}
+
 describe("session planning", () => {
   it("avoids duplicate FEN keys in one session", () => {
-    const rows = [
+    const list = [
       { exerciseId: "1", fen: "a w - - 0 1", loss: 100 },
       { exerciseId: "2", fen: "a w - - 0 1", loss: 50 },
       { exerciseId: "3", fen: "b w - - 0 1", loss: 80 },
     ];
-    const plan = planSessionPositions(rows, [], { min: 2, max: 5, reserveHoldout: false });
-    expect(plan).toHaveLength(2);
-    expect(plan.map(r => r.exerciseId)).toEqual(["1", "3"]);
+    const plan = planSessionPositions(list, []);
+    expect(plan).toHaveLength(1);
+    expect(plan.map(r => r.exerciseId)).toEqual(["1"]);
+    const layout = planSessionLayout(list, []);
+    expect(layout.ok).toBe(true);
+    expect(layout.guided).toHaveLength(1);
+    expect(layout.holdout.exerciseId).toBe("3");
+  });
+
+  it.each([
+    [1, null, null, false],
+    [2, 1, true, true],
+    [3, 2, true, true],
+    [4, 3, false, true],
+    [6, 5, false, true],
+  ])("%i unique positions → %s guided, shortfall=%s", (count, guidedCount, shortfall, ok) => {
+    const layout = planSessionLayout(rows(count), []);
+    if (!ok) {
+      expect(layout.ok).toBe(false);
+      expect(layout.error).toBe("insufficient_holdout_positions");
+      return;
+    }
+    expect(layout.ok).toBe(true);
+    expect(layout.guided).toHaveLength(guidedCount);
+    expect(layout.sessionShortfall).toBe(shortfall);
+    const guidedKeys = new Set(layout.guided.map((r) => positionKey(r.fen)));
+    expect(guidedKeys.has(positionKey(layout.holdout.fen))).toBe(false);
+  });
+});
+
+describe("independent failure updates domain evidence flag", () => {
+  it("counts failed independent holdout as domain evidence", () => {
+    const session = createPracticeSession("piece-loss", ["a", "b"], {
+      contentVersion: "v1",
+      detectorVersion: "eng",
+      at,
+      reservedHoldoutRecordId: "hold",
+      sessionShortfall: true,
+    });
+    const holdoutAttempt = {
+      id: "att-fail",
+      at,
+      status: "incorrect",
+      assisted: false,
+      repeated: false,
+      verified: true,
+      independent: true,
+    };
+    const completion = completePracticeSession({
+      session,
+      holdoutExercise: { id: "ex-h", recordId: "hold" },
+      holdoutAttempt,
+      patternDomains: {},
+      at,
+      now: Date.parse(at),
+    });
+    expect(completion.result.outcomeKey).toBe("needs_reinforcement");
+    expect(completion.result.countsAsIndependentEvidence).toBe(true);
+    expect(completion.domain.independentFailures).toBe(1);
+    expect(completion.domain.independentAttempts).toBe(1);
+    expect(completion.domain.beta).toBeGreaterThan(1);
+    const next = scheduleNextReview(completion.domain, { kind: "independent_failure" }, at, Date.parse(at));
+    expect(Date.parse(next) - Date.parse(at)).toBe(86400000);
   });
 });
 

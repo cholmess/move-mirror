@@ -46,6 +46,7 @@
     "engine_changed": "The engine changed during analysis. Update to obtain comparable evidence.",
     "cancelled": "Analysis paused. Update to continue.",
     "exercise_unavailable": "This position is no longer available. Return to your patterns and choose another.",
+    "insufficient_holdout_positions": "We need at least two different positions from your games to practice and run an independent check. Import more games or update analysis.",
     "pattern_not_recurrent": "There is not enough evidence to recommend this pattern yet.",
     "illegal_move": "That move is illegal. Choose another."
   },

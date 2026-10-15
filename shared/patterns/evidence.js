@@ -25,7 +25,7 @@ export function classifyPracticeEvidence(attempt) {
   if (attempt.status === "incorrect" || attempt.status === "playable_inexact") {
     return { countsForDomain: true, kind: "independent_failure", reasonKey: "reason.holdoutFailure" };
   }
-  return { countsForDomain: false, kind: "unverified", reasonKey: "learning:reason.unverified" };
+  return { countsForDomain: false, kind: "unverified", reasonKey: "reason.unverified" };
 }
 
 export function sessionOutcomeKey({ holdoutEvidence, sessionAssisted, holdoutAttempt }) {

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { Chess } from "chess.js";
-import { classifyDecision, positionContext } from "./detect.js";
+import { classifyDecision, positionContext, positionKey } from "./detect.js";
 import { buildPatternProfile } from "./profile.js";
 function evaluation(fen, playedUci, bestUci, replyUci, loss = 200) {
   return { verified: true, status: "incorrect", engineVersion: "fixture", engineSha256: "fixture-sha", evalCriterionVersion: "engine-validated-v2", evalFinalBudgetId: "nodes-80k-v1", cpLoss: loss,
@@ -65,6 +65,23 @@ describe("pattern recurrence and learning evidence", () => {
     const after=buildPatternProfile(rows,[{patternId:"piece-loss",independent:true,verified:true,status:"verified_best",at:"2026-09-12T00:00:00Z"}],[],Date.parse("2026-09-12T01:00:00Z")).find(p=>p.id==="piece-loss");
     expect(before.status).toBe("recurrent");expect(after.priority).toBeLessThan(before.priority);
     expect(after.transfer.status).toBe("insufficient");
+  });
+
+  it("keeps transfer descriptive, non-causal, and excludes trained positions after first exposure", () => {
+    const trained = { ...row(0), fen: "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq e6 0 2", gameStartedAt: "2026-09-10T00:00:00Z" };
+    const exposures = [{ patternId: "piece-loss", at: "2026-09-05T00:00:00Z", positionKey: positionKey(trained.fen) }];
+    const afterGame = { ...row(1), gameStartedAt: "2026-09-10T00:00:00Z", datePrecision: "exact" };
+    const profile = buildPatternProfile([trained, afterGame], [], exposures);
+    const transfer = profile.find(p => p.id === "piece-loss").transfer;
+    expect(transfer.causal).toBe(false);
+    expect(transfer.status).toBe("insufficient");
+    expect(transfer.before.decisions).toBeGreaterThanOrEqual(0);
+  });
+
+  it("ignores inexact game dates for transfer cohorts", () => {
+    const vague = { ...row(0), datePrecision: "month", gameStartedAt: "2026-09-01T00:00:00Z" };
+    const profile = buildPatternProfile([vague], [], [{ patternId: "piece-loss", at: "2026-09-02T00:00:00Z", positionKey: "x" }]);
+    expect(profile.find(p => p.id === "piece-loss").transfer.status).toBe("insufficient");
   });
 
 });

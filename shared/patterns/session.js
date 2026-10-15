@@ -11,26 +11,46 @@ import { classifyPracticeEvidence, outcomeHeadlineKey, sessionOutcomeKey } from 
 import { applyDomainEvidence, emptyPatternDomain } from "./mastery.js";
 import { scheduleNextReview } from "./scheduler.js";
 
-export function planSessionPositions(candidates, exposures, { min = SESSION_MIN_POSITIONS, max = SESSION_MAX_POSITIONS, reserveHoldout = true } = {}) {
-  const seenInSession = new Set();
-  const sorted = [...candidates].sort((a, b) => {
+function sortCandidates(candidates, exposures) {
+  return [...candidates].sort((a, b) => {
     const exposed = (r) => (exposures.some((e) => e.positionKey === positionKey(r.fen)) ? 1 : 0);
     return exposed(a) - exposed(b) || (b.loss ?? 0) - (a.loss ?? 0);
   });
-  const picked = [];
-  for (const row of sorted) {
-    const key = positionKey(row.fen);
-    if (seenInSession.has(key)) continue;
-    seenInSession.add(key);
-    picked.push(row);
-    if (picked.length >= max + (reserveHoldout ? 1 : 0)) break;
-  }
-  const holdoutReserve = reserveHoldout && picked.length > min ? 1 : 0;
-  const limit = Math.min(max, Math.max(min, picked.length - holdoutReserve));
-  return picked.slice(0, limit);
 }
 
-export function createPracticeSession(patternId, positionRecordIds, { contentVersion, detectorVersion, at }) {
+function uniqueByPositionKey(sorted) {
+  const seen = new Set();
+  const unique = [];
+  for (const row of sorted) {
+    const key = positionKey(row.fen);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    unique.push(row);
+  }
+  return unique;
+}
+
+/**
+ * @returns {{ ok: true, guided: object[], holdout: object, sessionShortfall: boolean } | { ok: false, error: 'insufficient_holdout_positions' }}
+ */
+export function planSessionLayout(candidates, exposures = []) {
+  const unique = uniqueByPositionKey(sortCandidates(candidates, exposures));
+  const n = unique.length;
+  if (n < 2) return { ok: false, error: "insufficient_holdout_positions" };
+  const guidedCount = Math.min(SESSION_MAX_POSITIONS, n - 1);
+  const guided = unique.slice(0, guidedCount);
+  const holdout = unique[guidedCount];
+  return { ok: true, guided, holdout, sessionShortfall: n < 4 };
+}
+
+/** Guided slots only; holdout is reserved separately via {@link planSessionLayout}. */
+export function planSessionPositions(candidates, exposures = []) {
+  const layout = planSessionLayout(candidates, exposures);
+  if (!layout.ok) return [];
+  return layout.guided;
+}
+
+export function createPracticeSession(patternId, positionRecordIds, { contentVersion, detectorVersion, at, reservedHoldoutRecordId, sessionShortfall = false }) {
   return {
     version: PATTERN_LEARNING_VERSION,
     id: randomUUID(),
@@ -42,6 +62,8 @@ export function createPracticeSession(patternId, positionRecordIds, { contentVer
     contentVersion,
     detectorVersion,
     positionRecordIds,
+    reservedHoldoutRecordId,
+    sessionShortfall: Boolean(sessionShortfall),
     guidedExerciseIds: [],
     holdoutExerciseId: null,
     holdoutRecordId: null,
@@ -123,7 +145,7 @@ export function completePracticeSession({
     holdoutRecordId: holdoutExercise.recordId,
     outcomeKey,
     completionKey,
-    countsAsIndependentEvidence: holdoutEvidence.countsForDomain && holdoutEvidence.kind === "independent_success",
+    countsAsIndependentEvidence: holdoutEvidence.countsForDomain,
     evidenceReasonKey: holdoutEvidence.reasonKey,
   };
   return {

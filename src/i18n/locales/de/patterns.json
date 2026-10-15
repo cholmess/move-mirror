@@ -46,6 +46,7 @@
     "engine_changed": "Die Engine hat sich während der Analyse geändert. Aktualisiere für vergleichbare Belege.",
     "cancelled": "Analyse pausiert. Aktualisiere zum Fortsetzen.",
     "exercise_unavailable": "Diese Stellung ist nicht mehr verfügbar. Kehre zu deinen Mustern zurück und wähle eine andere.",
+    "insufficient_holdout_positions": "Für Übung und unabhängige Kontrolle brauchst du mindestens zwei verschiedene Stellungen aus deinen Partien. Importiere mehr Partien oder aktualisiere die Analyse.",
     "pattern_not_recurrent": "Es gibt noch nicht genügend Belege, um dieses Muster zu empfehlen.",
     "illegal_move": "Dieser Zug ist nicht legal. Wähle einen anderen."
   },
