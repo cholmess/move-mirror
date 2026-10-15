@@ -141,7 +141,7 @@ export function recordAttempt(
 
   if (full.practiceMode === "direct") pedagogyEvents = state.pedagogyEvents;
   const attempts = [...state.attempts, full];
-  const skills = full.assisted ? state.skills : updateSkillsFromAttempt(state.skills, full);
+  const skills = full.assisted || (full.practiceMode === "direct" && !full.evalVerified) ? state.skills : updateSkillsFromAttempt(state.skills, full);
 
   const verifiedSuccess = !full.assisted && isSuccessForAdaptive(full.evaluationStatus);
   const exercisesCompleted =

@@ -96,5 +96,34 @@
   "feedbackExploreMixed": "Registrado: revisa si la candidata deja una captura inmediata.",
   "feedbackPracticeDone": "Práctica registrada. Siguiente: comprobación independiente.",
   "feedbackHoldoutOk": "Primer intento en holdout registrado.",
-  "feedbackHoldoutPartial": "Primer intento registrado; revisa la revelación comparativa."
+  "feedbackHoldoutPartial": "Primer intento registrado; revisa la revelación comparativa.",
+  "plan": {
+    "eyebrow": "Tu entrenador",
+    "title": "Tu plan de entrenamiento",
+    "error": "No pudimos actualizar tu plan. Reintenta para usar la evidencia más reciente.",
+    "reload": "Reintentar",
+    "needs_analysis": "Todavía falta analizar tus partidas. Puedes empezar con fundamentos sin que eso implique una debilidad detectada.",
+    "observing": "Aún no hay evidencia suficiente de un patrón recurrente. Seguimos observando; mientras tanto puedes entrenar fundamentos.",
+    "generalNote": "Lección general sobre cómo comprobar la respuesta del rival. No es un diagnóstico nuevo de tus partidas.",
+    "priorities": "Tus prioridades",
+    "method": "Se priorizan patrones recurrentes por impacto, práctica previa y revisiones pendientes. Acertar un ejercicio no demuestra dominio.",
+    "reviewDate": "Próxima revisión sugerida: {{date}}",
+    "focus": {
+      "foundation": "Comprobar la respuesta del rival",
+      "retention": "Revisar lo aprendido",
+      "resume_lesson": "Retomar tu lección"
+    },
+    "action": {
+      "foundation": "Entrenar fundamentos",
+      "pattern": "Entrenar conmigo",
+      "retention": "Empezar revisión",
+      "resume_lesson": "Continuar lección",
+      "resume_pattern": "Continuar mi práctica"
+    },
+    "reason": {
+      "new": "Sin práctica registrada",
+      "review": "Conviene volver a practicar",
+      "scheduled": "Revisión programada; puedes practicar antes"
+    }
+  }
 }

@@ -15,3 +15,4 @@ if (!target.startsWith(path.resolve(repoRoot, "data") + path.sep)) {
 
 rmSync(target, { recursive: true, force: true });
 mkdirSync(target, { recursive: true });
+rmSync(path.join(repoRoot, "data/test-patterns"), { recursive: true, force: true });

@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Chess } from "chess.js";
 import { useSearchParams } from "react-router-dom";
 import { PlayBoard } from "./PlayBoard";
+import { fetchPersonalExercise } from "../api/patternsClient";
 import { practicePositions } from "../data/practicePositions";
 import { exercises, getExercise } from "../data/exercises";
 import { selectNextExercise } from "../domain/adaptive";
@@ -48,7 +49,7 @@ export function SparringView() {
   const { t: tp } = useTranslation("practice");
   const [params] = useSearchParams();
   const initialTopic = params.get("topic");
-  const [topic, setTopic] = useState<"defense" | "own" | "plans">(initialTopic === "plans" || initialTopic === "own" ? initialTopic : "defense");
+  const [topic, setTopic] = useState<"defense" | "own" | "plans">(initialTopic === "personal" ? "own" : initialTopic === "plans" || initialTopic === "own" ? initialTopic : "defense");
   const [positionId, setPositionId] = useState(practicePositions[0].id);
   const [ownId, setOwnId] = useState(() => getExercise(params.get("exercise") ?? "")?.id ?? selectNextExercise(state).exercise.id);
   const [retryStart, setRetryStart] = useState<Record<string, unknown> | null>(null);
@@ -108,10 +109,18 @@ export function SparringView() {
           const defense = await fetchNextDefense(state.defenseLab.attempts, []);
           body.defenseExerciseId = defense.exerciseId;
         } else if (topic === "own") {
-          const exercise = getExercise(ownId)!;
-          body.startingFen = exercise.fen;
-          body.userColor = exercise.sideToMove === "w" ? "white" : "black";
-          body.sourceGameId = exercise.gameUrl;
+          if (initialTopic === "personal" && params.get("practice")) {
+            const exercise = await fetchPersonalExercise(params.get("practice")!);
+            body.startingFen = exercise.fen;
+            body.userColor = exercise.color;
+            body.sourceGameId = exercise.gameId;
+            body.patternId = "general-practice";
+          } else {
+            const exercise = getExercise(ownId)!;
+            body.startingFen = exercise.fen;
+            body.userColor = exercise.sideToMove === "w" ? "white" : "black";
+            body.sourceGameId = exercise.gameUrl;
+          }
         } else {
           const position = practicePositions.find(p => p.id === positionId)!;
           body.startingFen = position.fen;
@@ -248,7 +257,7 @@ export function SparringView() {
             <option value="defense">{tp("defense")}</option><option value="own">{tp("own")}</option><option value="plans">{tp("plans")}</option>
           </select></label>
           {mode === "targeted_position" && topic === "plans" && <label>{tp("position")}<select value={positionId} onChange={e => setPositionId(e.target.value)}>{practicePositions.map(p => <option key={p.id} value={p.id}>{tp(p.id)}</option>)}</select></label>}
-          {mode === "targeted_position" && topic === "own" && <label>{tp("position")}<select value={ownId} onChange={e => setOwnId(e.target.value)}>{exercises.map(p => <option key={p.id} value={p.id}>{p.moveNumber} · {p.playedMoveSan}</option>)}</select></label>}
+          {mode === "targeted_position" && topic === "own" && initialTopic !== "personal" && <label>{tp("position")}<select value={ownId} onChange={e => setOwnId(e.target.value)}>{exercises.map(p => <option key={p.id} value={p.id}>{p.moveNumber} · {p.playedMoveSan}</option>)}</select></label>}
           <label>
             {t("modes.targeted")} / {t("modes.full")}
             <select value={mode} onChange={(e) => setMode(e.target.value as typeof mode)}>

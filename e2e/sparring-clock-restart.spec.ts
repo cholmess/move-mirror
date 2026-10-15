@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import fs from "node:fs";
 import path from "node:path";
 
-const ENGINE = "http://127.0.0.1:8787";
+const ENGINE = process.env.E2E_ENGINE_URL ?? `http://127.0.0.1:${process.env.E2E_ENGINE_PORT ?? "8791"}`;
 const SPARRING_DIR = path.join(process.cwd(), "data/test-sparring/sessions");
 
 test.describe("Sparring clock after server restart", () => {

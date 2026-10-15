@@ -20,7 +20,11 @@ import { createSparringRouter } from "./sparring/routes.mjs";
 import { createValidationStore } from "./validation/store.mjs";
 import { createValidationService } from "./validation/service.mjs";
 import { createValidationRouter } from "./validation/routes.mjs";
+import { createTrainingPlanService } from "./coach/training-plan.mjs";
 import { createCoachStore } from "./coach/store.mjs";
+import { createPatternStore } from "./patterns/store.mjs";
+import { createPatternService } from "./patterns/service.mjs";
+import { createPatternRouter } from "./patterns/routes.mjs";
 import { createCoachService } from "./coach/service.mjs";
 import { createCoachRouter } from "./coach/routes.mjs";
 
@@ -111,7 +115,7 @@ function unverifiedPayload(error, extra = {}) {
     evalInitialStatus: null,
     evalFinalStatus: "unverified",
     evalCriterionVersion: "engine-validated-v2",
-    evalPipelineVersion: "eval-pipeline-v0.2.1",
+    evalPipelineVersion: "eval-pipeline-v0.2.2",
     nodesUsed: 0,
     cacheHit: false,
     error,
@@ -156,7 +160,7 @@ async function handleEvaluate(body, signal) {
       evalInitialStatus: "illegal",
       evalFinalStatus: "illegal",
       evalCriterionVersion: "engine-validated-v2",
-      evalPipelineVersion: "eval-pipeline-v0.2.1",
+      evalPipelineVersion: "eval-pipeline-v0.2.2",
       nodesUsed: 0,
       cacheHit: false,
       error: null,
@@ -183,7 +187,7 @@ async function handleEvaluate(body, signal) {
       evalInitialStatus: "illegal",
       evalFinalStatus: "illegal",
       evalCriterionVersion: "engine-validated-v2",
-      evalPipelineVersion: "eval-pipeline-v0.2.1",
+      evalPipelineVersion: "eval-pipeline-v0.2.2",
       nodesUsed: 0,
       cacheHit: false,
       error: null,
@@ -258,6 +262,13 @@ const handleTransfer = createTransferRouter({
   username: gamesStore.readIdentity().chessComUsernames[0] ?? "",
   validation: validationHooks,
 });
+const patternService = createPatternService({
+  store: createPatternStore(process.env.PATTERNS_DATA_DIR ? path.resolve(ROOT, process.env.PATTERNS_DATA_DIR) : path.join(ROOT, "data/patterns")),
+  gamesStore,
+  evaluate: (body, signal) => handleEvaluate(body, signal),
+  analyzerSignature: () => engineAvailable && engine ? `${engine.engineVersion}:${engine.engineSha256}:eval-pipeline-v0.2.2` : null,
+});
+const handlePatterns = createPatternRouter(patternService);
 const handleGames = createGamesRouter({
   store: gamesStore,
   onGameImported: (game) => validationService.recordGameImported(game),
@@ -300,7 +311,8 @@ const coachService = createCoachService(coachStore, {
   validation: validationService,
   evaluateMove: (body) => handleEvaluate(body, AbortSignal.timeout(JOB_TIMEOUT_MS)),
 });
-const handleCoach = createCoachRouter(() => coachService);
+const trainingPlan = createTrainingPlanService({ patterns: patternService, coach: coachService, store: coachStore });
+const handleCoach = createCoachRouter(() => coachService, { trainingPlan });
 
 const server = http.createServer(async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -319,12 +331,19 @@ const server = http.createServer(async (req, res) => {
 
   if (req.url?.startsWith("/api/import/scoresheet")) {
     const handled = await handleScoresheet(req, res);
-    if (handled) return;
+    if (handled) { if (req.method === "POST" && res.statusCode < 400) patternService.schedule(); return; }
   }
 
   if (req.url?.startsWith("/api/import") || req.url?.startsWith("/api/games") || req.url?.startsWith("/api/player-identity")) {
     const handled = await handleGames(req, res);
-    if (handled) return;
+    if (handled) {
+      if (["POST", "PATCH", "DELETE"].includes(req.method) && res.statusCode < 400) patternService.schedule();
+      return;
+    }
+  }
+
+  if (req.url?.startsWith("/api/patterns")) {
+    if (await handlePatterns(req, res)) return;
   }
 
   if (req.url?.startsWith("/api/defense")) {
@@ -361,7 +380,8 @@ const server = http.createServer(async (req, res) => {
 
   if (req.url === "/api/evaluate" && req.method === "POST") {
     const abort = new AbortController();
-    req.on("close", () => {
+    req.on("aborted", () => abort.abort());
+    res.on("close", () => {
       if (!res.writableEnded) abort.abort();
     });
 
@@ -395,6 +415,7 @@ async function boot() {
     );
   }
 
+  if (engineAvailable) patternService.schedule();
   server.listen(PORT, () => {
     console.log(`MoveMirror engine service http://127.0.0.1:${PORT}`);
   });
@@ -403,6 +424,7 @@ async function boot() {
 boot();
 
 async function shutdown() {
+  patternService.cancel();
   await engine?.stop();
   server.close();
   process.exit(0);

@@ -1,5 +1,5 @@
 export const EVAL_CRITERION_ID = "engine-validated-v2";
-export const EVAL_PIPELINE_VERSION = "eval-pipeline-v0.2.1";
+export const EVAL_PIPELINE_VERSION = "eval-pipeline-v0.2.2";
 
 export const BUDGET_SHALLOW = Object.freeze({
   id: "nodes-80k-v1",

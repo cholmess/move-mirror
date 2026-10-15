@@ -1,5 +1,7 @@
 import { test, expect } from "@playwright/test";
 
+const ENGINE = process.env.E2E_ENGINE_URL ?? `http://127.0.0.1:${process.env.E2E_ENGINE_PORT ?? "8791"}`;
+
 test.describe("Sparring", () => {
   test.beforeEach(async ({ page }) => {
     await page.addInitScript(() => {
@@ -9,7 +11,7 @@ test.describe("Sparring", () => {
   });
 
   test("no spoilers in agent-move response", async ({ page, request }) => {
-    const health = await request.get("http://127.0.0.1:8787/health");
+    const health = await request.get(`${ENGINE}/health`);
     const engineUp = (await health.json()).engineAvailable;
 
     await page.route("**/api/sparring/sessions/*/agent-move", async (route) => {

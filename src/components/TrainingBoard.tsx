@@ -365,9 +365,10 @@ function KeyboardMovePicker({ from, to, onFrom, onTo, onPlay }: { from: string; 
 function NotationHelp() {
   const { t } = useTranslation("training");
   const [open, setOpen] = useState(false);
+  const [pinned, setPinned] = useState(false);
   const popoverRef = useRef<HTMLDivElement>(null);
   useEffect(() => { if (open) popoverRef.current?.focus(); }, [open]);
-  return <span className="notation-help" onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}><button type="button" className="btn ghost notation-trigger" aria-expanded={open} aria-controls="training-notation-help" onClick={() => setOpen((value) => !value)}>{t("notationHelpButton")}</button>{open && <div id="training-notation-help" ref={popoverRef} className="notation-popover" role="dialog" aria-label={t("notationHelpButton")} tabIndex={-1} onKeyDown={(e) => { if (e.key === "Escape") { setOpen(false); (e.currentTarget.previousElementSibling as HTMLElement | null)?.focus(); } }}><p><strong>{t("notationAuto")}</strong></p><p>{t("notationPieces")}</p><p>{t("notationSymbols")}</p><p>{t("notationExamples")}</p><p className="small">{t("notationInternational")}</p></div>}</span>;
+  return <span className="notation-help" onMouseEnter={() => setOpen(true)} onMouseLeave={() => { if (!pinned) setOpen(false); }}><button type="button" className="btn ghost notation-trigger" aria-expanded={open} aria-controls="training-notation-help" onClick={() => { const next = !pinned; setPinned(next); setOpen(next); }}>{t("notationHelpButton")}</button>{open && <div id="training-notation-help" ref={popoverRef} className="notation-popover" role="dialog" aria-label={t("notationHelpButton")} tabIndex={-1} onKeyDown={(e) => { if (e.key === "Escape") { setPinned(false); setOpen(false); (e.currentTarget.previousElementSibling as HTMLElement | null)?.focus(); } }}><p><strong>{t("notationAuto")}</strong></p><p>{t("notationPieces")}</p><p>{t("notationSymbols")}</p><p>{t("notationExamples")}</p><p className="small">{t("notationInternational")}</p></div>}</span>;
 }
 
 function FeedbackPanel({

@@ -96,5 +96,34 @@
   "feedbackExploreMixed": "Logged: check whether the candidate allows an immediate capture.",
   "feedbackPracticeDone": "Practice logged. Next: independent check.",
   "feedbackHoldoutOk": "First holdout attempt recorded.",
-  "feedbackHoldoutPartial": "First attempt recorded; see comparative reveal."
+  "feedbackHoldoutPartial": "First attempt recorded; see comparative reveal.",
+  "plan": {
+    "eyebrow": "Your coach",
+    "title": "Your training plan",
+    "error": "We could not refresh your plan. Retry to use the latest evidence.",
+    "reload": "Try again",
+    "needs_analysis": "Your games still need analysis. You can start with fundamentals without implying a detected weakness.",
+    "observing": "There is not enough evidence of a recurring pattern yet. While we keep observing, you can train fundamentals.",
+    "generalNote": "A general lesson on checking the opponent’s reply. This is not a new diagnosis of your games.",
+    "priorities": "Your priorities",
+    "method": "Recurring patterns are prioritized by impact, previous practice and pending reviews. Solving one exercise does not demonstrate mastery.",
+    "reviewDate": "Next suggested review: {{date}}",
+    "focus": {
+      "foundation": "Check the opponent’s reply",
+      "retention": "Review what you learned",
+      "resume_lesson": "Resume your lesson"
+    },
+    "action": {
+      "foundation": "Train fundamentals",
+      "pattern": "Train with me",
+      "retention": "Start review",
+      "resume_lesson": "Continue lesson",
+      "resume_pattern": "Continue my practice"
+    },
+    "reason": {
+      "new": "No practice recorded",
+      "review": "Time to practice again",
+      "scheduled": "Review scheduled; you can practice earlier"
+    }
+  }
 }

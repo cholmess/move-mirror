@@ -9,12 +9,24 @@ async function readBody(req) {
   return JSON.parse(Buffer.concat(chunks).toString("utf8") || "{}");
 }
 
-export function createCoachRouter(getService) {
+export function createCoachRouter(getService, { trainingPlan = null } = {}) {
   return async function route(req, res) {
     if (!req.url?.startsWith("/api/coach")) return false;
     const service = getService();
     const url = new URL(req.url, "http://local");
     const path = url.pathname;
+
+    if (trainingPlan && path === "/api/coach/plan" && req.method === "GET") {
+      json(res, 200, trainingPlan.plan()); return true;
+    }
+    if (trainingPlan && path === "/api/coach/plan/start" && req.method === "POST") {
+      try {
+        const body = await readBody(req);
+        if (body.patternId != null && typeof body.patternId !== "string") throw new Error("invalid_request");
+        json(res, 200, trainingPlan.start(body.patternId ?? null));
+      } catch (error) { json(res, 400, { error: error.message }); }
+      return true;
+    }
 
     if (path === "/api/coach/home" && req.method === "GET") {
       json(res, 200, service.home());
