@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-const ENGINE = "http://127.0.0.1:8787";
+const ENGINE = process.env.E2E_ENGINE_URL ?? `http://127.0.0.1:${process.env.E2E_ENGINE_PORT ?? "8791"}`;
 
 test.describe("Sparring isolation", () => {
   test("completing sparring does not change games library or local training state", async ({

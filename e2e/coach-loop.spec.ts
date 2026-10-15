@@ -91,7 +91,7 @@ test.describe("Coach Loop v1", () => {
     await resetCoachSessions();
     await page.setViewportSize({ width: 1280, height: 800 });
     await page.goto("/coach");
-    await page.getByTestId("coach-primary-action").click();
+    await page.getByTestId("plan-start").click();
     await expect(page.getByTestId("coach-session")).toBeVisible();
     await runCoachUiSegment(page);
     await page.reload();
@@ -105,7 +105,7 @@ test.describe("Coach Loop v1", () => {
     );
 
     await page.goto("/coach");
-    await page.getByTestId("coach-primary-action").click();
+    await page.getByTestId("plan-start").click();
     await expect(page.getByTestId("coach-session")).toBeVisible();
     const board = coachBoard(page);
     await coachMove(page, board, "g4", "e3", "white");
@@ -117,7 +117,7 @@ test.describe("Coach Loop v1", () => {
     await resetCoachSessions();
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/coach");
-    await page.getByTestId("coach-primary-action").click();
+    await page.getByTestId("plan-start").click();
     await expect(page.getByTestId("coach-session")).toBeVisible();
     await coachContinue(page);
     await expect(page.getByText("Phase: contrast_safe")).toBeVisible();

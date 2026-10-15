@@ -15,7 +15,7 @@ export default defineConfig({
   webServer: [
     {
       command:
-        `node scripts/prepare-e2e-games.mjs && rm -rf data/test-coach/coach && mkdir -p data/test-coach/coach && ENGINE_PORT=${E2E_ENGINE_PORT} GAMES_DATA_DIR=data/test-games SPARRING_DATA_DIR=data/test-sparring VALIDATION_DATA_DIR=data/test-validation COACH_DATA_DIR=data/test-coach COACH_RETENTION_DELAY_MS=0 COACH_ALLOW_EARLY_RETENTION=1 SCORESHEET_OCR_PROVIDER=fixture node server/index.mjs`,
+        `node scripts/prepare-e2e-games.mjs && rm -rf data/test-coach/coach && mkdir -p data/test-coach/coach && ENGINE_PORT=${E2E_ENGINE_PORT} GAMES_DATA_DIR=data/test-games SPARRING_DATA_DIR=data/test-sparring VALIDATION_DATA_DIR=data/test-validation PATTERNS_DATA_DIR=data/test-patterns COACH_DATA_DIR=data/test-coach COACH_RETENTION_DELAY_MS=0 COACH_ALLOW_EARLY_RETENTION=1 SCORESHEET_OCR_PROVIDER=fixture node server/index.mjs`,
       url: `http://127.0.0.1:${E2E_ENGINE_PORT}/health`,
       timeout: 120_000,
       reuseExistingServer: !process.env.CI,

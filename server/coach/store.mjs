@@ -24,6 +24,16 @@ export function createCoachStore(rootDir) {
 
   return {
     ensure,
+    readPlan() {
+      const file = path.join(dir, "training-plan.json");
+      return fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : null;
+    },
+    savePlan(value) {
+      ensure();
+      const file = path.join(dir, "training-plan.json");
+      fs.writeFileSync(file + ".tmp", JSON.stringify(value, null, 2), "utf8");
+      fs.renameSync(file + ".tmp", file);
+    },
     listSessions() {
       return readAll();
     },

@@ -4,8 +4,8 @@ import { Chessboard } from "react-chessboard";
 import { useTranslation } from "react-i18next";
 
 /** One legal move path for touch, drag, keyboard and all promotions. */
-export function PlayBoard({ fen, orientation, disabled = false, onMove }: {
-  fen: string; orientation: "white" | "black"; disabled?: boolean;
+export function PlayBoard({ fen, orientation, disabled = false, onMove, highlight }: {
+  fen: string; orientation: "white" | "black"; disabled?: boolean; highlight?: { from: string; to: string };
   onMove: (from: string, to: string, promotion?: string) => boolean;
 }) {
   const { t } = useTranslation(["practice", "training"]);
@@ -27,6 +27,7 @@ export function PlayBoard({ fen, orientation, disabled = false, onMove }: {
   }
   return <div data-testid="play-board">
     <Chessboard position={fen} boardOrientation={orientation} arePiecesDraggable={!disabled && !promotion}
+      customArrows={highlight ? [[highlight.from as Square, highlight.to as Square]] : []}
       onPieceDrop={play} onSquareClick={square => {
         if (disabled || promotion) return;
         if (selected && play(selected, square)) return;

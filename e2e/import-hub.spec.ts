@@ -1,6 +1,8 @@
 import { expect, test } from "@playwright/test";
 import { dragChessMove } from "./helpers/chessboard";
 
+const ENGINE = process.env.E2E_ENGINE_URL ?? `http://127.0.0.1:${process.env.E2E_ENGINE_PORT ?? "8791"}`;
+
 const PGN = `[Event "Import Hub E2E"]
 [Site "Local"]
 [Date "2026.10.10"]
@@ -93,7 +95,7 @@ test("entrada manual con tablero real: mover, deshacer y corregir continuación"
   await expect(card).toBeVisible();
   const pgnHref = await card.getByRole("link", { name: /Exportar PGN|Export PGN/i }).getAttribute("href");
   expect(pgnHref).toMatch(/\/api\/games\/.+\/pgn/);
-  const pgnResponse = await request.get(`http://127.0.0.1:8787${pgnHref}`);
+  const pgnResponse = await request.get(`${ENGINE}${pgnHref}`);
   const pgnText = await pgnResponse.text();
   expect(pgnText).toMatch(/1\. e4 c5/);
   expect(pgnText).not.toMatch(/1\. e4 e5/);

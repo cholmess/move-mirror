@@ -96,5 +96,34 @@
   "feedbackExploreMixed": "Protokolliert: prüfe, ob der Kandidat sofort schlagbar ist.",
   "feedbackPracticeDone": "Übung protokolliert. Als Nächstes: unabhängige Prüfung.",
   "feedbackHoldoutOk": "Erster Holdout-Versuch protokolliert.",
-  "feedbackHoldoutPartial": "Erster Versuch protokolliert; siehe Vergleich."
+  "feedbackHoldoutPartial": "Erster Versuch protokolliert; siehe Vergleich.",
+  "plan": {
+    "eyebrow": "Dein Trainer",
+    "title": "Dein Trainingsplan",
+    "error": "Dein Plan konnte nicht aktualisiert werden. Versuche es erneut, um die neuesten Ergebnisse zu nutzen.",
+    "reload": "Erneut versuchen",
+    "needs_analysis": "Deine Partien müssen noch analysiert werden. Du kannst mit Grundlagen beginnen, ohne dass eine Schwäche festgestellt wurde.",
+    "observing": "Es gibt noch nicht genügend Belege für ein wiederkehrendes Muster. Bis dahin kannst du Grundlagen trainieren.",
+    "generalNote": "Eine allgemeine Lektion zum Prüfen der gegnerischen Antwort. Dies ist keine neue Diagnose deiner Partien.",
+    "priorities": "Deine Prioritäten",
+    "method": "Wiederkehrende Muster werden nach Auswirkung, bisherigem Training und anstehenden Wiederholungen priorisiert. Eine gelöste Aufgabe belegt noch keine Beherrschung.",
+    "reviewDate": "Nächste vorgeschlagene Wiederholung: {{date}}",
+    "focus": {
+      "foundation": "Die gegnerische Antwort prüfen",
+      "retention": "Das Gelernte wiederholen",
+      "resume_lesson": "Deine Lektion fortsetzen"
+    },
+    "action": {
+      "foundation": "Grundlagen trainieren",
+      "pattern": "Mit mir trainieren",
+      "retention": "Wiederholung starten",
+      "resume_lesson": "Lektion fortsetzen",
+      "resume_pattern": "Mein Training fortsetzen"
+    },
+    "reason": {
+      "new": "Noch kein Training erfasst",
+      "review": "Erneutes Üben empfohlen",
+      "scheduled": "Wiederholung geplant; früheres Üben ist möglich"
+    }
+  }
 }
