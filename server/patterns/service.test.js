@@ -59,8 +59,10 @@ describe("personal pattern incremental analysis", () => {
     const unknown=game("g4"); unknown.players.playerResolution.confidence="unknown";
     expect(selectPersonalGames([valid,short,blitz,unknown])).toEqual([valid]);
   });
-  async function activate() {
-    games=[game("g1"),game("g2"),game("g3")]; await service.update();
+  async function activate(extraGames = 0) {
+    games=[game("g1"),game("g2"),game("g3")];
+    for (let i = 0; i < extraGames; i++) games.push(game(`gx${i}`));
+    await service.update();
     const state=store.read();
     const keys=Object.keys(state.analyses);
     keys.forEach((key,index)=> { const a=state.analyses[key]; state.analyses[key]={...a,rows:a.rows.map((r,i)=>({...r,patternId:i===index?"piece-loss":null,loss:i===index?300:0}))}; });
@@ -69,14 +71,18 @@ describe("personal pattern incremental analysis", () => {
   it("keeps solutions private until asked and counts assisted repeats separately", async () => {
     await activate();const ex=service.startPractice("piece-loss");
     expect(service.exerciseView(ex.id).referenceSan).toBeUndefined();
-    service.reveal(ex.id,"hint");const r=await service.submit(ex.id,"a2a3");
+    const view=service.exerciseView(ex.id); const chess=new Chess(view.fen); const legal=chess.moves({verbose:true})[0];
+    const moveUci=legal.from+legal.to+(legal.promotion??"");
+    service.reveal(ex.id,"hint");const r=await service.submit(ex.id,moveUci);
     expect(r.independent).toBe(false);const calls=evaluate.mock.calls.length;
-    expect((await service.submit(ex.id,"a2a4")).id).toBe(r.id);expect(evaluate.mock.calls.length).toBe(calls);
+    expect((await service.submit(ex.id,moveUci)).id).toBe(r.id);expect(evaluate.mock.calls.length).toBe(calls);
     const retry=service.startPractice("piece-loss",ex.positionId);expect(retry.repeated).toBe(true);
     expect(service.summary().patterns.find(p=>p.id==="piece-loss").practice.independent).toBe(0);
   });
   it("revokes derived exercises and their learning evidence when a source game is deleted", async () => {
-    await activate();const ex=service.startPractice("piece-loss");await service.submit(ex.id,"a2a3");
+    await activate();const ex=service.startPractice("piece-loss");
+    const v0=service.exerciseView(ex.id); const c0=new Chess(v0.fen); const m0=c0.moves({verbose:true})[0];
+    await service.submit(ex.id,m0.from+m0.to+(m0.promotion??""));
     games=games.filter(g=>g.id!==ex.gameId);service.summary();
     expect(()=>service.exerciseView(ex.id)).toThrow("exercise_unavailable");
     expect(store.read().exposures).toHaveLength(0);expect(store.read().attempts).toHaveLength(0);
@@ -90,35 +96,46 @@ describe("personal pattern incremental analysis", () => {
     state.exercises.find(e=>e.id===next.id).startedAt="2026-10-02T00:00:00Z"; store.write(state);
     const restarted=createPatternService({store:createPatternStore(dir),gamesStore:{listGames:()=>games},evaluate,analyzerSignature:()=>signature});
     expect(restarted.activePractice().id).toBe(next.id);
-    await restarted.submit(next.id,"a2a3");
+    const rv=restarted.exerciseView(next.id); const ch=new Chess(rv.fen); const mv=ch.moves({verbose:true})[0];
+    await restarted.submit(next.id,mv.from+mv.to+(mv.promotion??""));
     expect(restarted.activePractice().id).toBe(next.id);
     expect(restarted.activePractice().decisionCount).toBe(1);
   });
-  it("trains several decisions, then measures an unseen holdout without help", async () => {
-    await activate();
-    const guided=service.startPractice("piece-loss");
-    expect(guided).toMatchObject({role:"guided",targetDecisions:3,decisionCount:0});
-    for (let decision=1;decision<=3;decision++) {
-      const view=service.exerciseView(guided.id); const chess=new Chess(view.fen); const legal=chess.moves({verbose:true})[0];
-      let result=await service.submit(guided.id,legal.from+legal.to+(legal.promotion??""));
+  it("runs a multi-position session, then measures an unseen holdout without help", async () => {
+    await activate(1);
+    let guided = service.startPractice("piece-loss");
+    expect(guided).toMatchObject({ role: "guided", targetDecisions: 1, decisionCount: 0 });
+    expect(guided.sessionPositionTotal).toBeGreaterThanOrEqual(3);
+    const view = service.exerciseView(guided.id);
+    const chess = new Chess(view.fen);
+    const legal = chess.moves({ verbose: true })[0];
+    const moveUci = legal.from + legal.to + (legal.promotion ?? "");
+    let result = await service.submit(guided.id, moveUci);
+    expect(result.independent).toBe(false);
+    const retried = service.retryDecision(guided.id);
+    expect(retried).toMatchObject({ decisionCount: 0, status: "active", fen: guided.fen });
+    result = await service.submit(guided.id, moveUci);
+    while (!service.exerciseView(guided.id).canStartHoldout) {
+      expect(["ready_for_next_slot", "training"].includes(result.trainingStatus)).toBe(true);
+      if (result.trainingStatus === "ready_for_next_slot") guided = service.advanceSlot(guided.id);
+      result = await service.submit(guided.id, moveUci);
       expect(result.independent).toBe(false);
-      if (decision===1) {
-        const retried=service.retryDecision(guided.id);
-        expect(retried).toMatchObject({decisionCount:0,status:"active",fen:guided.fen});
-        result=await service.submit(guided.id,legal.from+legal.to+(legal.promotion??""));
-        expect(result.decisionNumber).toBe(1);
-      }
-      if (decision<3) { expect(result.canContinue).toBe(true); service.advance(guided.id); }
     }
-    expect(service.exerciseView(guided.id)).toMatchObject({status:"ready_for_holdout",canStartHoldout:true});
-    const holdout=service.startHoldout(guided.id);
-    expect(holdout).toMatchObject({role:"holdout",targetDecisions:1});
+    expect(result.trainingStatus).toBe("ready_for_holdout");
+    const holdout = service.startHoldout(guided.id);
+    expect(holdout).toMatchObject({ role: "holdout", targetDecisions: 1 });
     expect(holdout.positionId).not.toBe(guided.positionId);
-    const chess=new Chess(holdout.fen); const legal=chess.moves({verbose:true})[0];
-    const result=await service.submit(holdout.id,legal.from+legal.to+(legal.promotion??""));
-    expect(result).toMatchObject({independent:true,trainingStatus:"completed"});
+    const holdoutChess = new Chess(holdout.fen);
+    const holdoutLegal = holdoutChess.moves({ verbose: true })[0];
+    result = await service.submit(holdout.id, holdoutLegal.from + holdoutLegal.to + (holdoutLegal.promotion ?? ""));
+    expect(result).toMatchObject({ independent: true, trainingStatus: "completed" });
+    expect(result.sessionResult?.countsAsIndependentEvidence).toBe(true);
+    expect(result.nextActivity?.kind).toBeTruthy();
     expect(service.activePractice()).toBeNull();
-    expect(service.summary().patterns.find(p=>p.id==="piece-loss").practice.independent).toBe(1);
+    expect(service.summary().patterns.find(p => p.id === "piece-loss").practice.independent).toBe(1);
+    const domains = store.read().patternDomains["piece-loss"];
+    expect(domains.independentSuccesses).toBe(1);
+    expect(domains.nextReviewAt).toBeTruthy();
   });
   it("resumes the last created exercise when timestamps tie", async () => {
     await activate();

@@ -1,7 +1,7 @@
 import { PATTERNS, MIN_PATTERN_GAMES } from "./catalog.js";
 import { positionKey } from "./detect.js";
 /** Rates use verified opportunities from complete games, never the puzzle bank. */
-export function buildPatternProfile(records, attempts = [], exposures = [], now = Date.now()) {
+export function buildPatternProfile(records, attempts = [], exposures = [], now = Date.now(), patternDomains = {}) {
   return PATTERNS.map(pattern => {
     const relevant = records.filter(r => r.opportunities.includes(pattern.id));
     const errors = relevant.filter(r => r.patternId === pattern.id);
@@ -22,10 +22,17 @@ export function buildPatternProfile(records, attempts = [], exposures = [], now 
     const b = stats(before), a = stats(after);
     const sufficient = b.games >= 5 && a.games >= 5 && b.decisions >= 30 && a.decisions >= 30;
     const rate = relevant.length ? 100 * errors.length / relevant.length : null;
-    const estimate = (1 + successes) / (2 + successes + failures);
-    const lastIndependent = independent.map(a => a.at).filter(Boolean).sort().at(-1) ?? null;
-    const reviewDelayDays = estimate >= 0.75 ? 3 : 1;
-    const nextReviewAt = lastIndependent ? new Date(Date.parse(lastIndependent) + reviewDelayDays * 86400000).toISOString() : null;
+    const domain = patternDomains[pattern.id];
+    const estimate = domain
+      ? domain.masteryEstimate
+      : independent.length
+        ? (1 + successes) / (2 + successes + failures)
+        : null;
+    const nextReviewAt = domain?.nextReviewAt ?? (() => {
+      const lastIndependent = independent.map(a => a.at).filter(Boolean).sort().at(-1) ?? null;
+      const reviewDelayDays = estimate !== null && estimate >= 0.75 ? 3 : 1;
+      return lastIndependent ? new Date(Date.parse(lastIndependent) + reviewDelayDays * 86400000).toISOString() : null;
+    })();
     const dueFactor = nextReviewAt && Date.parse(nextReviewAt) > now ? 0.5 : 1;
     const severity = errors.reduce((n, r) => n + Math.min(r.loss ?? 800, 800), 0);
 
@@ -34,7 +41,17 @@ export function buildPatternProfile(records, attempts = [], exposures = [], now 
       confidence: recurrent ? (games.size >= 6 ? "moderate" : "limited") : "insufficient", exerciseCount: usable.length,
       priority: recurrent ? severity * (1 - estimate) * (1 + 1 / Math.sqrt(2 + independent.length)) * dueFactor : 0,
       examples: usable.slice(0, 3).map(r => ({ gameId: r.gameId, moveNumber: r.moveNumber, exerciseId: r.exerciseId })),
-      practice: { attempts: ownAttempts.length, independent: independent.length, successes, failures, estimate: independent.length ? estimate : null, nextReviewAt },
+      practice: {
+        attempts: ownAttempts.length,
+        independent: domain?.independentAttempts ?? independent.length,
+        successes: domain?.independentSuccesses ?? successes,
+        failures: domain?.independentFailures ?? failures,
+        estimate: domain ? domain.masteryEstimate : independent.length ? estimate : null,
+        nextReviewAt,
+        lifecycle: domain?.lifecycle ?? (independent.length ? "learning" : "new"),
+        confidence: domain?.confidence ?? null,
+        assistedAttempts: domain?.assistedAttempts ?? ownAttempts.filter(a => a.assisted).length,
+      },
       transfer: { status: sufficient ? "descriptive_comparison" : "insufficient", before: b, after: a, firstPracticeAt: firstPractice,
         differencePer100: sufficient ? a.ratePer100 - b.ratePer100 : null, causal: false },
     };

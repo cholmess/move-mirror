@@ -123,7 +123,15 @@
     "reason": {
       "new": "Sin práctica registrada",
       "review": "Conviene volver a practicar",
-      "scheduled": "Revisión programada; puedes practicar antes"
+      "scheduled": "Revisión programada; puedes practicar antes",
+      "stable": "Estable; revisión de mantenimiento más adelante"
+    },
+    "reasonKey": {
+      "new": "Aún no hay práctica registrada para este patrón.",
+      "review": "Toca revisar según tu última comprobación independiente.",
+      "scheduled": "La próxima revisión es posterior; puedes practicar antes.",
+      "stable": "Varios aciertos independientes; seguimos con intervalo más largo.",
+      "lowEvidence": "Aún se construye evidencia independiente para este patrón."
     }
   }
 }

@@ -1,0 +1,51 @@
+{
+  "outcome": {
+    "holdoutCorrect": {
+      "headline": "Independent check correct: this increases evidence of mastery.",
+      "detail": "You solved a different position from your games without hints or revealed answers."
+    },
+    "learnedWithHelp": {
+      "headline": "Learned with help: this does not yet show independent mastery.",
+      "detail": "Guided practice or assistance on the check does not count as independent evidence."
+    },
+    "needsReinforcement": {
+      "headline": "Needs reinforcement: this pattern will come back sooner.",
+      "detail": "The independent check failed, but it still counts as real evidence."
+    },
+    "notVerifiable": {
+      "headline": "Not verifiable without the engine: domain is unchanged.",
+      "detail": "Without a verified engine analysis we cannot update mastery or transfer metrics."
+    },
+    "incomplete": {
+      "headline": "Session not finished yet.",
+      "detail": "Complete the independent check to record a session result."
+    }
+  },
+  "reason": {
+    "unverified": "Engine analysis was not verifiable.",
+    "guidedNoDomain": "Guided practice teaches the idea; it does not prove mastery.",
+    "holdoutNotIndependent": "The check used help, repeated the taught position, or was otherwise not independent.",
+    "holdoutSuccess": "Independent holdout answered correctly with verified analysis.",
+    "holdoutFailure": "Independent holdout failed with verified analysis."
+  },
+  "session": {
+    "title": "How this session went",
+    "nextReview": "Next review: {{date}}",
+    "positions": "Positions practiced: {{current}} of {{total}}",
+    "shortfall": "Only {{count}} suitable positions were available from your games (we aim for 3–5).",
+    "duration": "Duration: {{minutes}} min",
+    "nextTitle": "What to do next",
+    "finish": "Finish for now"
+  },
+  "nextActivity": {
+    "dueReview": "A scheduled review for {{patternId}} is due.",
+    "continueSession": "Continue your current session on {{patternId}}.",
+    "planPriority": "Your plan still prioritizes {{patternId}}.",
+    "lowConfidence": "{{patternId}} still has low confidence from few independent checks.",
+    "none": "No urgent practice right now. You can return to your plan."
+  },
+  "practice": {
+    "nextPosition": "Next position in this session ({{current}}/{{total}})",
+    "sessionProgress": "Session position {{current}} of {{total}}"
+  }
+}
