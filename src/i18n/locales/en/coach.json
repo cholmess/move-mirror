@@ -123,7 +123,15 @@
     "reason": {
       "new": "No practice recorded",
       "review": "Time to practice again",
-      "scheduled": "Review scheduled; you can practice earlier"
+      "scheduled": "Review scheduled; you can practice earlier",
+      "stable": "Stable enough to leave focus; maintenance review later"
+    },
+    "reasonKey": {
+      "new": "No practice recorded yet for this pattern.",
+      "review": "A review is due based on your last independent check.",
+      "scheduled": "Next review is still in the future; you may practice early.",
+      "stable": "Several independent successes; we keep it on the list with a longer interval.",
+      "lowEvidence": "Still building independent evidence for this pattern."
     }
   }
 }

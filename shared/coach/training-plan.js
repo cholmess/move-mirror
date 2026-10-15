@@ -1,13 +1,33 @@
+import { isReviewDue } from '../patterns/scheduler.js';
+import { MAX_PLAN_PRIORITIES } from '../patterns/learning-config.js';
+
 /** A transparent plan from current evidence; never a mastery or causal claim. */
-export const TRAINING_PLAN_VERSION = 'personal-training-plan-v1';
+export const TRAINING_PLAN_VERSION = 'personal-training-plan-v2';
 export function buildTrainingPlan({ summary, activePractice = null, coachHome, now = Date.now() }) {
   const priorities = summary.patterns.filter(p => p.status === 'recurrent')
-    .sort((a, b) => b.priority - a.priority || a.id.localeCompare(b.id)).slice(0, 3)
-    .map(p => ({ patternId: p.id, kind: p.kind, confidence: p.confidence,
+    .sort((a, b) => b.priority - a.priority || a.id.localeCompare(b.id)).slice(0, MAX_PLAN_PRIORITIES)
+    .map(p => {
+      const due = isReviewDue(p.practice.nextReviewAt, now);
+      let reason = 'review';
+      let reasonKey = 'coach:plan.reasonKey.review';
+      if (!p.practice.attempts) {
+        reason = 'new';
+        reasonKey = 'coach:plan.reasonKey.new';
+      } else if (p.practice.lifecycle === 'stable' && !due) {
+        reason = 'stable';
+        reasonKey = 'coach:plan.reasonKey.stable';
+      } else if (!due) {
+        reason = 'scheduled';
+        reasonKey = 'coach:plan.reasonKey.scheduled';
+      } else if (p.practice.lifecycle === 'learning') {
+        reasonKey = 'coach:plan.reasonKey.lowEvidence';
+      }
+      return { patternId: p.id, kind: p.kind, confidence: p.confidence,
       evidence: { errors: p.errors, games: p.games, opportunities: p.opportunities },
       nextReviewAt: p.practice.nextReviewAt ?? null,
-      reason: !p.practice.attempts ? 'new' : p.practice.nextReviewAt && Date.parse(p.practice.nextReviewAt) > now ? 'scheduled' : 'review',
-      practice: p.practice, transfer: p.transfer }));
+      reason, reasonKey,
+      practice: p.practice, transfer: p.transfer };
+    });
   const next = priorities.find(p => p.reason !== 'scheduled');
   let primary = { kind: 'foundation', href: '/coach/session', patternId: null, sessionId: null };
   if (next) primary = { kind: 'pattern', patternId: next.patternId, sessionId: null, href: null };

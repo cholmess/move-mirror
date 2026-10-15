@@ -123,7 +123,15 @@
     "reason": {
       "new": "Noch kein Training erfasst",
       "review": "Erneutes Üben empfohlen",
-      "scheduled": "Wiederholung geplant; früheres Üben ist möglich"
+      "scheduled": "Wiederholung geplant; früheres Üben ist möglich",
+      "stable": "Stabil genug; spätere Erhaltungswiederholung"
+    },
+    "reasonKey": {
+      "new": "Für dieses Muster ist noch kein Training erfasst.",
+      "review": "Wiederholung fällig nach deiner letzten unabhängigen Kontrolle.",
+      "scheduled": "Nächste Wiederholung liegt in der Zukunft; früheres Üben ist möglich.",
+      "stable": "Mehrere unabhängige Erfolge; längeres Intervall auf der Liste.",
+      "lowEvidence": "Unabhängige Evidenz für dieses Muster wird noch aufgebaut."
     }
   }
 }

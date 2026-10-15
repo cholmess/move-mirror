@@ -3,6 +3,18 @@ import { randomUUID } from "node:crypto";
 import { PATTERN_VERSION, MAX_PERSONAL_GAMES, patternExists } from "../../shared/patterns/catalog.js";
 import { classifyDecision, hash, positionKey, playUci } from "../../shared/patterns/detect.js";
 import { buildPatternProfile } from "../../shared/patterns/profile.js";
+import { classifyPracticeEvidence } from "../../shared/patterns/evidence.js";
+import { applyDomainEvidence, emptyPatternDomain } from "../../shared/patterns/mastery.js";
+import { scheduleNextReview } from "../../shared/patterns/scheduler.js";
+import { selectNextActivity } from "../../shared/patterns/next-activity.js";
+import {
+  completePracticeSession,
+  createPracticeSession,
+  guidedTargetDecisions,
+  nextGuidedStatus,
+  orderGuidedPlan,
+  planSessionLayout,
+} from "../../shared/patterns/session.js";
 import { evaluateEligibility, STANDARD_FEN, normalizedStartingFen } from "../games/model.mjs";
 
 export function selectPersonalGames(games) {
@@ -59,7 +71,7 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
   function summary() {
     reconcileGames();
     const state = store.read(), games = selectPersonalGames(gamesStore.listGames()), records = rows();
-    const patterns = buildPatternProfile(records, state.attempts, state.exposures, Date.parse(now()));
+    const patterns = buildPatternProfile(records, state.attempts, state.exposures, Date.parse(now()), state.patternDomains ?? {});
     return { version: PATTERN_VERSION, method: "evidence_rules", revision: state.revision, updatedAt: state.updatedAt, job: state.job,
       eligibleGames: games.length, analyzedGames: new Set(records.map(r => r.gameId)).size, verifiedDecisions: records.length,
       patterns, recommended: patterns.filter(p => p.status === "recurrent").slice(0, 3).map(p => p.id) };
@@ -134,37 +146,64 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
     if (exercise.status) return exercise.status;
     return exercise.attemptId ? "completed" : "active";
   }
+  function sessionById(id) {
+    return store.read().practiceSessions?.find(s => s.id === id) ?? null;
+  }
   function practiceDto(exercise, record) {
     const status = exerciseStatus(exercise);
     const fen = exercise.currentFen ?? record.fen;
+    const session = exercise.sessionId ? sessionById(exercise.sessionId) : null;
+    const sessionPositionTotal = session?.positionRecordIds?.length ?? null;
+    const sessionShortfall = session?.sessionShortfall ?? false;
     return { id: exercise.id, positionId: record.exerciseId, patternId: record.patternId, fen, originalFen: record.fen, color: record.fen.split(" ")[1] === "w" ? "white" : "black",
       gameId: record.gameId, moveNumber: record.moveNumber, assisted: exercise.assisted,
       completed: status === "completed", repeated: exercise.repeated, role: exercise.role ?? "legacy", status,
-      decisionCount: exercise.decisionCount ?? (exercise.attemptId ? 1 : 0), targetDecisions: exercise.targetDecisions ?? 1,
-      awaitingNext: Boolean(exercise.awaitingNext), canStartHoldout: status === "ready_for_holdout" };
+      decisionCount: exercise.decisionCount ?? (exercise.attemptId ? 1 : 0),
+      targetDecisions: exercise.targetDecisions ?? guidedTargetDecisions(exercise),
+      awaitingNext: Boolean(exercise.awaitingNext), canStartHoldout: status === "ready_for_holdout",
+      canAdvanceSlot: status === "ready_for_next_slot",
+      sessionId: exercise.sessionId ?? null, slotIndex: exercise.slotIndex ?? null,
+      sessionPositionTotal, sessionPositionCurrent: exercise.slotIndex != null ? exercise.slotIndex + 1 : null,
+      sessionShortfall };
   }
-  function createExercise(patternId, record, { role = "guided", parentId = null } = {}) {
+  function createExercise(patternId, record, { role = "guided", parentId = null, sessionId = null, slotIndex = null } = {}) {
     const state = store.read();
-    const exercise = { id: randomUUID(), patternId, recordId: record.exerciseId, startedAt: now(), gameId: record.gameId,
+    const draft = { id: randomUUID(), patternId, recordId: record.exerciseId, startedAt: now(), gameId: record.gameId,
       playerColor: record.fen.split(" ")[1] === "w" ? "white" : "black", assisted: false,
       repeated: state.exposures.some(e => e.positionKey === positionKey(record.fen)), attemptId: null,
-      role, parentId, status: "active", targetDecisions: role === "holdout" ? 1 : 3, decisionCount: 0,
-      currentFen: record.fen, awaitingNext: false, lastAttemptId: null };
-    mutate(s => { s.revision++; s.updatedAt = now(); s.exercises.push(exercise); s.exposures.push({ exerciseId: exercise.id, patternId, positionKey: positionKey(record.fen), gameId: record.gameId, at: exercise.startedAt }); });
-    return practiceDto(exercise, record);
+      role, parentId, sessionId, slotIndex, status: "active",
+      targetDecisions: role === "holdout" ? 1 : guidedTargetDecisions({ sessionId }),
+      decisionCount: 0, currentFen: record.fen, awaitingNext: false, lastAttemptId: null };
+    mutate(s => { s.revision++; s.updatedAt = now(); s.exercises.push(draft); s.exposures.push({ exerciseId: draft.id, patternId, positionKey: positionKey(record.fen), gameId: record.gameId, at: draft.startedAt }); });
+    return practiceDto(draft, record);
   }
   function startPractice(patternId, preferredId = null) {
     if (!patternExists(patternId)) throw new Error("pattern_unknown");
     if (!summary().recommended.includes(patternId) && summary().patterns.find(p => p.id === patternId)?.status !== "recurrent") throw new Error("pattern_not_recurrent");
     const state = store.read();
     const candidates = rows().filter(r => r.patternId === patternId);
-    candidates.sort((a, b) => {
-      const latest = r => state.exposures.filter(e => e.positionKey === positionKey(r.fen)).at(-1)?.at ?? "";
-      return latest(a).localeCompare(latest(b)) || (b.loss ?? 800) - (a.loss ?? 800);
+    const layout = planSessionLayout(candidates, state.exposures);
+    if (!layout.ok) throw new Error(layout.error);
+    const sessionPlan = orderGuidedPlan(layout.guided, preferredId);
+    const session = createPracticeSession(patternId, sessionPlan.map(r => r.exerciseId), {
+      contentVersion: PATTERN_VERSION,
+      detectorVersion: signature(),
+      at: now(),
+      reservedHoldoutRecordId: layout.holdout.exerciseId,
+      sessionShortfall: layout.sessionShortfall,
     });
-    const record = preferredId ? candidates.find(r => r.exerciseId === preferredId) : candidates[0];
-    if (!record) throw new Error("exercise_unavailable");
-    return createExercise(patternId, record);
+    session.guidedExerciseIds = [];
+    mutate(s => { s.practiceSessions.push(session); });
+    const record = sessionPlan[0];
+    const exercise = createExercise(patternId, record, { sessionId: session.id, slotIndex: 0 });
+    mutate(s => {
+      const live = s.practiceSessions.find(row => row.id === session.id);
+      if (live) {
+        live.guidedExerciseIds.push(exercise.id);
+        live.currentExerciseId = exercise.id;
+      }
+    });
+    return exercise;
   }
   function exerciseById(id) { const e = store.read().exercises.find(e => e.id === id); if (!e) throw new Error("exercise_unavailable"); return e; }
   function exerciseView(id) {
@@ -177,7 +216,17 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
   function reveal(id, kind = "hint") {
     const exercise = exerciseById(id), record = assertRecord(exercise);
     if (!["hint", "solution"].includes(kind)) throw new Error("invalid_request");
-    mutate(s => { s.exercises.find(e => e.id === id).assisted = true; });
+    mutate(s => {
+      const target = s.exercises.find(e => e.id === id);
+      target.assisted = true;
+      if (target.sessionId) {
+        const session = s.practiceSessions.find(row => row.id === target.sessionId);
+        if (session) {
+          if (kind === "hint") session.hintsUsed += 1;
+          if (kind === "solution") session.revealsUsed += 1;
+        }
+      }
+    });
     if (kind === "hint") return { patternId: record.patternId, assisted: true };
     const chess = new Chess(record.fen); playUci(chess, record.referenceUci);
     return { patternId: record.patternId, assisted: true, referenceSan: record.referenceSan, referenceFen: chess.fen() };
@@ -185,7 +234,7 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
   async function submit(id, moveUci) {
     const exercise = exerciseById(id), record = assertRecord(exercise);
     const status = exerciseStatus(exercise);
-    if (["completed", "ready_for_holdout"].includes(status) || exercise.awaitingNext) {
+    if (["completed", "ready_for_holdout", "ready_for_next_slot"].includes(status) || exercise.awaitingNext) {
       const previous = exerciseView(id).feedback;
       if (previous) return previous;
       throw new Error("practice_not_ready");
@@ -196,16 +245,21 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
     const result = await evaluate({ fen: rootFen, moveUci }, AbortSignal.timeout(120000));
     assertRecord(exercise); // Import edits/deletion may have happened while evaluating.
     const latest = exerciseById(id);
-    if (latest.awaitingNext || ["completed", "ready_for_holdout"].includes(exerciseStatus(latest))) return exerciseView(id).feedback;
+    if (latest.awaitingNext || ["completed", "ready_for_holdout", "ready_for_next_slot"].includes(exerciseStatus(latest))) return exerciseView(id).feedback;
     const verified = Boolean(result.verified && !["illegal", "unverified"].includes(result.status));
     if (!verified) throw new Error("analysis_unverified");
     const reply = result.opponentReplyUci ? playUci(chess, result.opponentReplyUci) : null;
     if (result.opponentReplyUci && !reply) throw new Error("analysis_unverified");
     const firstDecision = !latest.attemptId;
     const nextCount = (latest.decisionCount ?? 0) + 1;
-    const target = latest.targetDecisions ?? 1;
+    const target = latest.targetDecisions ?? guidedTargetDecisions(latest);
+    const session = latest.sessionId ? sessionById(latest.sessionId) : null;
     const canContinue = Boolean(result.opponentReplyUci && !chess.isGameOver() && nextCount < target && latest.role !== "holdout");
-    const nextStatus = latest.role === "holdout" ? "completed" : canContinue ? "training" : "ready_for_holdout";
+    const nextStatus = latest.role === "holdout"
+      ? "completed"
+      : canContinue
+        ? "training"
+        : nextGuidedStatus(latest, session);
     const referenceChess = new Chess(rootFen);
     const referenceMove = playUci(referenceChess, result.best?.firstMoveUci);
     const attempt = { id: randomUUID(), exerciseId: id, gameId: record.gameId, patternId: record.patternId, at: now(),
@@ -222,8 +276,106 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
       targetExercise.currentFen = chess.fen(); targetExercise.decisionCount = nextCount;
       targetExercise.lastRootFen = rootFen;
       targetExercise.status = nextStatus; targetExercise.awaitingNext = canContinue; targetExercise.lastAttemptId = attempt.id;
+      if (latest.role === "holdout") {
+        if (latest.sessionId) {
+          const holdoutSession = s.practiceSessions.find(row => row.id === latest.sessionId);
+          if (holdoutSession && holdoutSession.status !== "completed") {
+            const completion = completePracticeSession({
+              session: holdoutSession,
+              holdoutExercise: targetExercise,
+              holdoutAttempt: attempt,
+              patternDomains: s.patternDomains ?? {},
+              at: attempt.at,
+              now: Date.parse(now()),
+            });
+            const idx = s.practiceSessions.findIndex(row => row.id === holdoutSession.id);
+            s.practiceSessions[idx] = completion.session;
+            s.patternDomains[latest.patternId] = completion.domain;
+            if (!completion.duplicate) {
+              attempt.sessionResult = completion.result;
+              attempt.nextActivity = buildNextActivity(s, completion.result);
+            }
+          }
+        } else {
+          const evidence = classifyPracticeEvidence({
+            role: "holdout",
+            assisted: attempt.assisted,
+            repeated: latest.repeated,
+            verified: attempt.verified,
+            status: attempt.status,
+            independent: attempt.independent,
+          });
+          const domain = s.patternDomains[latest.patternId] ?? emptyPatternDomain(latest.patternId, attempt.at);
+          const updated = applyDomainEvidence(domain, evidence, {
+            status: attempt.status,
+            at: attempt.at,
+            role: "holdout",
+            assisted: attempt.assisted,
+          });
+          if (evidence.countsForDomain || evidence.kind === "independent_failure") {
+            updated.nextReviewAt = scheduleNextReview(updated, evidence, attempt.at, Date.parse(now()));
+          }
+          s.patternDomains[latest.patternId] = updated;
+        }
+      }
     });
     return attempt;
+  }
+  function buildNextActivity(state, sessionResult) {
+    const summaryData = summary();
+    const active = state.practiceSessions.find(s => s.status === "in_progress") ?? null;
+    return selectNextActivity({
+      patterns: summaryData.patterns,
+      domains: state.patternDomains ?? {},
+      activeSession: active,
+      planPriorities: summaryData.recommended,
+      sessionPositionsThisPattern: sessionResult?.positionRecordIds?.length ?? 0,
+      now: Date.parse(now()),
+    });
+  }
+  function advanceSlot(id) {
+    const exercise = exerciseById(id);
+    if (exerciseStatus(exercise) !== "ready_for_next_slot" || !exercise.sessionId) throw new Error("practice_not_ready");
+    const session = sessionById(exercise.sessionId);
+    if (!session) throw new Error("practice_not_ready");
+    const nextIndex = (exercise.slotIndex ?? 0) + 1;
+    const recordId = session.positionRecordIds[nextIndex];
+    const record = rows().find(r => r.exerciseId === recordId);
+    if (!record) throw new Error("exercise_unavailable");
+    mutate(s => {
+      const parent = s.exercises.find(e => e.id === id);
+      parent.status = "completed"; parent.awaitingNext = false;
+    });
+    const next = createExercise(exercise.patternId, record, { sessionId: session.id, slotIndex: nextIndex });
+    mutate(s => {
+      const live = s.practiceSessions.find(row => row.id === session.id);
+      live.guidedExerciseIds.push(next.id);
+      live.currentExerciseId = next.id;
+    });
+    return next;
+  }
+  function sessionView(id) {
+    const session = sessionById(id);
+    if (!session) throw new Error("exercise_unavailable");
+    const state = store.read();
+    const domain = state.patternDomains?.[session.patternId] ?? emptyPatternDomain(session.patternId, now());
+    const lastResult = session.status === "completed"
+      ? {
+          sessionId: session.id,
+          patternId: session.patternId,
+          outcomeKey: session.outcomeKey,
+          countsAsIndependentEvidence: session.countsAsIndependentEvidence,
+          evidenceReasonKey: session.evidenceReasonKey,
+          nextReviewAt: domain.nextReviewAt,
+          domain: {
+            masteryEstimate: domain.masteryEstimate,
+            confidence: domain.confidence,
+            lifecycle: domain.lifecycle,
+          },
+          nextActivity: buildNextActivity(state, { positionRecordIds: session.positionRecordIds }),
+        }
+      : null;
+    return { session, lastResult };
   }
   function advance(id) {
     const exercise = exerciseById(id);
@@ -238,6 +390,10 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
       const target = s.exercises.find(e => e.id === id);
       target.currentFen = target.lastRootFen; target.decisionCount = Math.max(0, (target.decisionCount ?? 1) - 1);
       target.status = target.decisionCount ? "training" : "active"; target.awaitingNext = false; target.lastAttemptId = null;
+      if (target.sessionId) {
+        const session = s.practiceSessions.find(row => row.id === target.sessionId);
+        if (session) session.retries += 1;
+      }
     });
     return exerciseView(id);
   }
@@ -245,14 +401,53 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
     const parent = exerciseById(id), record = assertRecord(parent);
     if (exerciseStatus(parent) !== "ready_for_holdout") throw new Error("practice_not_ready");
     const state = store.read();
-    const candidates = rows().filter(r => r.patternId === parent.patternId && r.exerciseId !== record.exerciseId);
-    candidates.sort((a, b) => {
-      const exposed = r => state.exposures.some(e => e.positionKey === positionKey(r.fen)) ? 1 : 0;
-      return exposed(a) - exposed(b) || (b.loss ?? 800) - (a.loss ?? 800);
+    const session = parent.sessionId ? sessionById(parent.sessionId) : null;
+    let holdoutRecord = null;
+    if (session?.reservedHoldoutRecordId) {
+      holdoutRecord = rows().find(r => r.exerciseId === session.reservedHoldoutRecordId && r.patternId === parent.patternId);
+      const guidedKeys = new Set(
+        session.positionRecordIds
+          .map(rid => rows().find(r => r.exerciseId === rid))
+          .filter(Boolean)
+          .map(r => positionKey(r.fen)),
+      );
+      if (holdoutRecord && guidedKeys.has(positionKey(holdoutRecord.fen))) holdoutRecord = null;
+    }
+    if (!holdoutRecord) {
+      const usedKeys = new Set(
+        state.exercises
+          .filter(e => e.patternId === parent.patternId && (e.sessionId === parent.sessionId || e.parentId === id || e.id === id))
+          .map(e => assertRecord(e).exerciseId),
+      );
+      const candidates = rows().filter(r => r.patternId === parent.patternId && !usedKeys.has(r.exerciseId));
+      candidates.sort((a, b) => {
+        const exposed = r => state.exposures.some(e => e.positionKey === positionKey(r.fen)) ? 1 : 0;
+        return exposed(a) - exposed(b) || (b.loss ?? 800) - (a.loss ?? 800);
+      });
+      holdoutRecord = candidates[0] ?? null;
+    }
+    if (!holdoutRecord) throw new Error("exercise_unavailable");
+    mutate(s => {
+      const target = s.exercises.find(e => e.id === id);
+      target.status = "completed"; target.awaitingNext = false;
+      if (parent.sessionId) {
+        const session = s.practiceSessions.find(row => row.id === parent.sessionId);
+        if (session) session.status = "awaiting_holdout";
+      }
     });
-    if (!candidates[0]) throw new Error("exercise_unavailable");
-    mutate(s => { const target = s.exercises.find(e => e.id === id); target.status = "completed"; target.awaitingNext = false; });
-    return createExercise(parent.patternId, candidates[0], { role: "holdout", parentId: id });
+    const holdout = createExercise(parent.patternId, holdoutRecord, {
+      role: "holdout", parentId: id, sessionId: parent.sessionId ?? null,
+    });
+    if (parent.sessionId) {
+      mutate(s => {
+        const live = s.practiceSessions.find(row => row.id === parent.sessionId);
+        if (live) {
+          live.holdoutExerciseId = holdout.id;
+          live.holdoutRecordId = holdoutRecord.exerciseId;
+        }
+      });
+    }
+    return holdout;
   }
   function activePractice(patternId = null) {
     reconcileGames();
@@ -261,7 +456,7 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
       .sort((a, b) => b.startedAt.localeCompare(a.startedAt))[0];
     return exercise ? practiceDto(exercise, available.get(exercise.recordId)) : null;
   }
-  return { summary, update, schedule, startPractice, exerciseView, reveal, submit, advance, retryDecision, startHoldout, activePractice,
+  return { summary, update, schedule, startPractice, exerciseView, reveal, submit, advance, advanceSlot, retryDecision, startHoldout, activePractice, sessionView,
     cancel() { dirty = false; if (timer) { clearTimeout(timer); timer = null; } controller?.abort(); },
     async wait() { if (timer) return update(); return task ?? summary(); } };
 }

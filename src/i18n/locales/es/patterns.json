@@ -46,6 +46,7 @@
     "engine_changed": "El motor cambió durante el análisis. Actualiza para obtener evidencia comparable.",
     "cancelled": "Análisis pausado. Actualiza para continuar.",
     "exercise_unavailable": "Esta posición ya no está disponible. Vuelve a mis patrones y elige otra.",
+    "insufficient_holdout_positions": "Hacen falta al menos dos posiciones distintas de tus partidas para practicar y hacer una comprobación independiente. Importa más partidas o actualiza el análisis.",
     "pattern_not_recurrent": "Todavía no hay evidencia suficiente para recomendar este patrón.",
     "illegal_move": "Esa jugada no es legal. Elige otra."
   },

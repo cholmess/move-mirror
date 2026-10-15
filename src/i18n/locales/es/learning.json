@@ -1,0 +1,51 @@
+{
+  "outcome": {
+    "holdoutCorrect": {
+      "headline": "Comprobación independiente correcta: aumenta la evidencia de dominio.",
+      "detail": "Resolviste otra posición de tus partidas sin pistas ni respuestas reveladas."
+    },
+    "learnedWithHelp": {
+      "headline": "Aprendido con ayuda: todavía no demuestra dominio.",
+      "detail": "La práctica guiada o la ayuda en la comprobación no cuentan como evidencia independiente."
+    },
+    "needsReinforcement": {
+      "headline": "Necesita refuerzo: volverá a aparecer.",
+      "detail": "La comprobación independiente falló, pero sí cuenta como evidencia real."
+    },
+    "notVerifiable": {
+      "headline": "No verificable sin motor: no modifica el dominio.",
+      "detail": "Sin análisis verificado del motor no podemos actualizar dominio ni transferencia."
+    },
+    "incomplete": {
+      "headline": "La sesión aún no terminó.",
+      "detail": "Completa la comprobación independiente para registrar el resultado."
+    }
+  },
+  "reason": {
+    "unverified": "El análisis del motor no fue verificable.",
+    "guidedNoDomain": "La práctica guiada enseña la idea; no demuestra dominio.",
+    "holdoutNotIndependent": "La comprobación usó ayuda, repitió la posición enseñada o no fue independiente.",
+    "holdoutSuccess": "Comprobación independiente correcta con análisis verificado.",
+    "holdoutFailure": "Comprobación independiente fallida con análisis verificado."
+  },
+  "session": {
+    "title": "Cómo te fue esta sesión",
+    "nextReview": "Próxima revisión: {{date}}",
+    "positions": "Posiciones practicadas: {{current}} de {{total}}",
+    "shortfall": "Solo había {{count}} posiciones adecuadas en tus partidas (buscamos 3–5).",
+    "duration": "Duración: {{minutes}} min",
+    "nextTitle": "Qué hacer ahora",
+    "finish": "Terminar por ahora"
+  },
+  "nextActivity": {
+    "dueReview": "Toca revisar {{patternId}} según el calendario.",
+    "continueSession": "Continúa la sesión actual de {{patternId}}.",
+    "planPriority": "Tu plan sigue priorizando {{patternId}}.",
+    "lowConfidence": "{{patternId}} aún tiene poca confianza por pocas comprobaciones independientes.",
+    "none": "No hay práctica urgente ahora. Puedes volver a tu plan."
+  },
+  "practice": {
+    "nextPosition": "Siguiente posición de la sesión ({{current}}/{{total}})",
+    "sessionProgress": "Posición {{current}} de {{total}} en la sesión"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "outcome": {
+    "holdoutCorrect": {
+      "headline": "Unabhängige Kontrolle richtig: das stärkt die Evidenz für Beherrschung.",
+      "detail": "Du hast eine andere Stellung aus deinen Partien ohne Hinweise oder aufgedeckte Lösungen gelöst."
+    },
+    "learnedWithHelp": {
+      "headline": "Mit Hilfe gelernt: zeigt noch keine eigenständige Beherrschung.",
+      "detail": "Geführtes Training oder Hilfe bei der Kontrolle zählt nicht als unabhängige Evidenz."
+    },
+    "needsReinforcement": {
+      "headline": "Braucht Verstärkung: kommt bald wieder.",
+      "detail": "Die unabhängige Kontrolle scheiterte, zählt aber als echte Evidenz."
+    },
+    "notVerifiable": {
+      "headline": "Ohne Engine nicht verifizierbar: Domäne bleibt unverändert.",
+      "detail": "Ohne verifizierte Engine-Analyse können wir Beherrschung und Transfer nicht aktualisieren."
+    },
+    "incomplete": {
+      "headline": "Sitzung noch nicht abgeschlossen.",
+      "detail": "Schließe die unabhängige Kontrolle ab, um ein Sitzungsergebnis zu speichern."
+    }
+  },
+  "reason": {
+    "unverified": "Die Engine-Analyse war nicht verifizierbar.",
+    "guidedNoDomain": "Geführtes Training erklärt die Idee; es beweist keine Beherrschung.",
+    "holdoutNotIndependent": "Die Kontrolle nutzte Hilfe, wiederholte die gezeigte Stellung oder war nicht unabhängig.",
+    "holdoutSuccess": "Unabhängige Kontrolle richtig mit verifizierter Analyse.",
+    "holdoutFailure": "Unabhängige Kontrolle falsch mit verifizierter Analyse."
+  },
+  "session": {
+    "title": "Wie diese Sitzung lief",
+    "nextReview": "Nächste Wiederholung: {{date}}",
+    "positions": "Geübte Stellungen: {{current}} von {{total}}",
+    "shortfall": "Nur {{count}} geeignete Stellungen aus deinen Partien verfügbar (Ziel: 3–5).",
+    "duration": "Dauer: {{minutes}} Min.",
+    "nextTitle": "Was als Nächstes",
+    "finish": "Für jetzt beenden"
+  },
+  "nextActivity": {
+    "dueReview": "Eine geplante Wiederholung für {{patternId}} ist fällig.",
+    "continueSession": "Setze deine laufende Sitzung zu {{patternId}} fort.",
+    "planPriority": "Dein Plan priorisiert weiterhin {{patternId}}.",
+    "lowConfidence": "{{patternId}} hat noch wenig Vertrauen wegen weniger unabhängiger Kontrollen.",
+    "none": "Keine dringende Übung. Du kannst zu deinem Plan zurückkehren."
+  },
+  "practice": {
+    "nextPosition": "Nächste Stellung in dieser Sitzung ({{current}}/{{total}})",
+    "sessionProgress": "Stellung {{current}} von {{total}} in der Sitzung"
+  }
+}
