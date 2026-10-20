@@ -46,6 +46,7 @@ test("real engine: imported games yield a new pattern that can be practiced and 
   await board.locator("select").nth(0).selectOption({index:1});
   await board.locator("select").nth(1).selectOption({index:1});
   await board.getByRole("button",{name:"Jugar movimiento seleccionado"}).click();
+  await page.getByRole("button",{name:"No encuentro una respuesta"}).click();
   await expect(page.getByTestId("personal-feedback")).toBeVisible({timeout:30000});
   await expect(page.getByText("Este intento sirve para practicar; no cuenta como un primer intento independiente.")).toBeVisible();
   await page.getByRole("button",{name:"Volver a intentar"}).click();

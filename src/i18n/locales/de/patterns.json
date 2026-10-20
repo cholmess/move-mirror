@@ -117,5 +117,54 @@
     "retryDecision": "Diese Entscheidung wiederholen",
     "acceptableReference": "Dein Zug ist gültig. {{move}} ist eine weitere geprüfte Referenz.",
     "compareReference": "Vergleiche ihn mit {{move}}, der geprüften Referenz in dieser Stellung."
+  },
+  "decision": {
+    "title": "Verstehen wir deine Entscheidung",
+    "intro": "Entscheide zuerst ohne Hinweise. Danach prüfen wir deine erwartete Antwort und woran du arbeiten kannst.",
+    "choose": "Wähle deinen Zug auf dem Brett.",
+    "replyPrompt": "Du hast {{move}} gewählt. Spiele jetzt mit den gegnerischen Figuren: Was ist die stärkste Antwort?",
+    "prediction": "Deine Erwartung: {{move}} → {{reply}}.",
+    "change": "Entscheidung ändern",
+    "confirm": "Bestätigen und analysieren",
+    "unsure": "Ich finde keine Antwort",
+    "hypothesis": "Das ist eine einzelne Beobachtung, keine bestätigte Ursache deiner Fehler. Wir prüfen sie in weiteren Stellungen.",
+    "afterMine": "Nach meinem Zug",
+    "afterReply": "Nach der gegnerischen Antwort",
+    "reference": "Mit {{move}} vergleichen",
+    "memory": "Wir behalten {{count}} aktuelle Entscheidungen zu diesem Thema, um dein Vorgehen zu vergleichen.",
+    "followup": {
+      "search": "Prüfe diesmal die Möglichkeiten des Gegners.",
+      "compare": "Suche auch nach einer anderen als der ersten Antwort.",
+      "evaluate": "Entscheide am Ende deiner Berechnung, wem die Stellung nützt.",
+      "uncertain": "Deine Erwartung konnte noch nicht geprüft werden.",
+      "reinforce": "Versuche hier ohne Hilfe genauso sorgfältig zu entscheiden."
+    },
+    "intervention": {
+      "search": {
+        "title": "Arbeiten wir an der Suche nach Antworten",
+        "body": "Du hast keine Antwort angegeben und dein Zug verlor an Wert. Der Gegner hat {{actual}}.",
+        "task": "Gehe zu „Nach meinem Zug“. Suche Schachs, Schlagzüge und Drohungen. Prüfe dann die Antwort und versuche deine Entscheidung erneut."
+      },
+      "compare": {
+        "title": "Deine Erwartung ließ eine stärkere Verteidigung aus",
+        "body": "Du hast {{predicted}} erwartet. Laut Engine gibt diese Antwort mehr nach als eine starke Verteidigung; hier schlägt sie {{actual}} vor.",
+        "task": "Vergleiche die Stellung nach deinem Zug mit der gegnerischen Antwort. Was ändert sich? Suche dann einen Kandidaten, der dieser Verteidigung standhält."
+      },
+      "evaluate": {
+        "title": "Du hast eine starke Antwort gesehen; prüfen wir die Folgen",
+        "body": "Dein erwartetes {{predicted}} ist laut Engine eine starke, gültige Antwort, aber dein erster Zug verliert an Wert.",
+        "task": "Rekonstruiere deine Berechnung. Vergleiche am Ende Material, Königssicherheit und Aktivität. Vergleiche deinen Kandidaten mit der Referenz und versuche es erneut: Welche Folge hast du anders bewertet?"
+      },
+      "uncertain": {
+        "title": "Der Unterschied lässt sich noch nicht erklären",
+        "body": "Dein Zug wurde geprüft, aber die Stärke deiner erwarteten Antwort konnte nicht geprüft werden.",
+        "task": "Vergleiche die gegnerische Antwort mit deiner Erwartung. Ohne diese Prüfung schreiben wir dem Fehler keine Ursache zu."
+      },
+      "reinforce": {
+        "title": "Deine Entscheidung erhält eine gültige Fortsetzung",
+        "body": "Diesmal hast du einen gültigen Zug gewählt. Das beweist noch keine Beherrschung des Themas.",
+        "task": "Spiele die Stellung weiter. Berücksichtige die gegnerische Antwort weiterhin sorgfältig, auch wenn sich der Plan ändert."
+      }
+    }
   }
 }

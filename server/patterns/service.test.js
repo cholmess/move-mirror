@@ -69,6 +69,36 @@ describe("personal pattern incremental analysis", () => {
     keys.forEach((key,index)=> { const a=state.analyses[key]; state.analyses[key]={...a,rows:a.rows.map((r,i)=>({...r,patternId:i===index?"piece-loss":null,loss:i===index?300:0}))}; });
     store.write(state,keys);expect(service.summary().patterns.find(p=>p.id==="piece-loss").status).toBe("recurrent");
   }
+  it("persists a pre-feedback prediction and verifies alternative replies from the opponent position", async () => {
+    await activate(); const ex = service.startPractice("piece-loss");
+    const board = new Chess(ex.fen); const move = board.moves({verbose:true})[0];
+    const uci = move.from + move.to + (move.promotion ?? ""); board.move(move);
+    const candidateFen = board.fen(); const reply = board.moves({verbose:true})[1];
+    const replyUci = reply.from + reply.to + (reply.promotion ?? "");
+    evaluate.mockImplementationOnce(async b => ({ ...validResult(b), status: "incorrect", cpLoss: 250 }));
+    const result = await service.submit(ex.id, uci, { replyUci });
+    expect(evaluate.mock.calls.at(-1)[0]).toEqual({ fen: candidateFen, moveUci: replyUci });
+    expect(result.coaching).toMatchObject({ intervention: "evaluate", predictedSan: reply.san, hypothesis: "consequences" });
+    expect(service.exerciseView(ex.id).feedback.coaching).toEqual(result.coaching);
+    const restarted = createPatternService({store:createPatternStore(dir),gamesStore:{listGames:()=>games},evaluate,analyzerSignature:()=>signature});
+    expect(restarted.exerciseView(ex.id).feedback.coaching).toEqual(result.coaching);
+    const calls = evaluate.mock.calls.length;
+    await service.submit(ex.id, uci, { replyUci });
+    expect(evaluate.mock.calls.length).toBe(calls);
+  });
+  it("rejects illegal predictions before any engine call", async () => {
+    await activate(); const ex = service.startPractice("piece-loss"); const b = new Chess(ex.fen); const m = b.moves({verbose:true})[0];
+    const calls = evaluate.mock.calls.length;
+    await expect(service.submit(ex.id, m.from+m.to, {replyUci:"a1a8"})).rejects.toThrow("illegal_move");
+    expect(evaluate.mock.calls.length).toBe(calls);
+  });
+  it("keeps move feedback when prediction verification is unavailable", async () => {
+    await activate(); const ex = service.startPractice("piece-loss"); const b = new Chess(ex.fen); const m = b.moves({verbose:true})[0]; b.move(m); const r = b.moves({verbose:true})[0];
+    evaluate.mockImplementationOnce(async body => ({...validResult(body), status:"incorrect"})).mockRejectedValueOnce(new Error("engine_unavailable"));
+    const result = await service.submit(ex.id, m.from+m.to, {replyUci:r.from+r.to});
+    expect(result.coaching).toMatchObject({intervention:"uncertain", hypothesis:null});
+    expect(result.verified).toBe(true);
+  });
   it("keeps solutions private until asked and counts assisted repeats separately", async () => {
     await activate();const ex=service.startPractice("piece-loss");
     expect(service.exerciseView(ex.id).referenceSan).toBeUndefined();

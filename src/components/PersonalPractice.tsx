@@ -1,3 +1,4 @@
+import { Chess } from "chess.js";
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -96,9 +97,12 @@ export function PersonalPractice() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const lock = useRef(false);
+  const [candidate, setCandidate] = useState<{ uci: string; san: string; fen: string } | null>(null);
+  const [prediction, setPrediction] = useState<{ uci: string; san: string } | null>(null);
   useEffect(() => {
     let live = true;
     setExercise(null);
+    setCandidate(null); setPrediction(null);
     setFeedback(null);
     setHint(false);
     setDemo(false);
@@ -122,24 +126,35 @@ export function PersonalPractice() {
     try { await run(); } catch (err) { setError(err instanceof Error ? err.message : "connection"); }
     finally { lock.current = false; setBusy(false); }
   }
-  function play(from: string, to: string, promotion?: string) {
-    if (!exercise || lock.current || feedback || demo || exercise.completed) return false;
+  function submitDecision(uci: string, expected?: { replyUci: string | null }) {
+    if (!exercise) return;
     void action(async () => {
-      const result = await submitPersonalMove(exercise.id, `${from}${to}${promotion ?? ""}`);
+      const result = await submitPersonalMove(exercise.id, uci, expected);
+      setCandidate(null); setPrediction(null);
       setFeedback(result);
       setFen(result.resultingFen);
       setExercise((current) => current ? {
-        ...current,
-        fen: result.resultingFen,
-        decisionCount: result.decisionNumber,
-        status: result.trainingStatus,
-        awaitingNext: result.canContinue,
+        ...current, fen: result.resultingFen, decisionCount: result.decisionNumber,
+        status: result.trainingStatus, awaitingNext: result.canContinue,
         canStartHoldout: result.trainingStatus === "ready_for_holdout",
         canAdvanceSlot: result.trainingStatus === "ready_for_next_slot",
-        completed: result.trainingStatus === "completed",
-        feedback: result,
+        completed: result.trainingStatus === "completed", feedback: result,
       } : current);
     });
+  }
+  function play(from: string, to: string, promotion?: string) {
+    if (!exercise || lock.current || feedback || demo || exercise.completed || prediction) return false;
+    const uci = `${from}${to}${promotion ?? ""}`;
+    if (exercise.role === "holdout") { submitDecision(uci); return true; }
+    const board = new Chess(fen);
+    let move;
+    try { move = board.move({ from, to, promotion }); } catch { return false; }
+    if (!move) return false;
+    if (candidate) {
+      setPrediction({ uci, san: move.san }); setFen(board.fen());
+    } else {
+      setCandidate({ uci, san: move.san, fen: board.fen() }); setFen(board.fen());
+    }
     return true;
   }
   if (!exercise) {
@@ -153,24 +168,44 @@ export function PersonalPractice() {
   return (
     <div className="page" data-testid="personal-practice">
       <p className="eyebrow">{holdout ? t("path.holdoutEyebrow") : t("path.guidedEyebrow")}</p>
-      <h1>{holdout ? t("path.holdoutTitle") : t(`catalog.${exercise.patternId}.title`)}</h1>
-      <p>{holdout ? t("path.holdoutGoal") : t(`catalog.${exercise.patternId}.goal`)}</p>
-      {!holdout && (
+      <h1>{holdout ? t("path.holdoutTitle") : t("decision.title")}</h1>
+      <p>{holdout ? t("path.holdoutGoal") : t("decision.intro")}</p>
+      {!holdout && (feedback || hint || demo) && (
         <section className="callout" data-testid="pattern-teaching">
           <strong>{t("path.ruleLabel")}</strong>
           <p>{t(`catalog.${exercise.patternId}.rule`)}</p>
           <p className="muted">{t(`catalog.${exercise.patternId}.contrast`)}</p>
         </section>
       )}
+      {!holdout && !!exercise.coachingHistory?.length && <p className="muted" data-testid="coaching-memory">{t("decision.memory", { count: exercise.coachingHistory.length })} {t(`decision.followup.${exercise.coachingHistory.at(-1)!.intervention}`)}</p>}
       {exercise.sessionShortfall && !holdout && (
         <p className="muted" data-testid="session-shortfall">{t("learning:session.shortfall", { count: exercise.sessionPositionTotal ?? 0 })}</p>
       )}
       <p className="muted">{sessionProgress}</p>
       {(!holdout || feedback) && <Link to={`/games/${exercise.gameId}`}>{t("source", { move: exercise.moveNumber })}</Link>}
       <div className="train-grid">
-        <section className="card board-panel"><PlayBoard fen={fen} orientation={exercise.color} disabled={busy || !!feedback || demo || exercise.completed} onMove={play} /></section>
+        <section className="card board-panel"><PlayBoard fen={fen} orientation={exercise.color} disabled={busy || !!feedback || demo || exercise.completed || !!prediction} onMove={play} /></section>
         <aside className="card" aria-live="polite">
-          {!feedback && !demo && <p>{busy ? t("checking") : holdout ? t("path.holdoutPrompt") : t("playNow")}</p>}
+          {!feedback && !demo && <p>{busy ? t("checking") : holdout ? t("path.holdoutPrompt") : candidate ? t("decision.replyPrompt", { move: candidate.san }) : t("decision.choose")}</p>}
+          {candidate && !feedback && <section data-testid="decision-prediction">
+            {prediction && <p>{t("decision.prediction", { move: candidate.san, reply: prediction.san })}</p>}
+            <div className="actions">
+              <button className="btn" disabled={busy} onClick={() => { setFen(exercise.fen); setCandidate(null); setPrediction(null); }}>{t("decision.change")}</button>
+              {(prediction || new Chess(candidate.fen).isGameOver()) && <button className="btn primary" disabled={busy} onClick={() => submitDecision(candidate.uci, { replyUci: prediction?.uci ?? null })}>{t("decision.confirm")}</button>}
+              {!prediction && !new Chess(candidate.fen).isGameOver() && <button className="btn" disabled={busy} onClick={() => submitDecision(candidate.uci, { replyUci: null })}>{t("decision.unsure")}</button>}
+            </div>
+          </section>}
+          {feedback?.coaching && <section className="callout" data-testid="decision-coaching">
+            <h2>{t(`decision.intervention.${feedback.coaching.intervention}.title`)}</h2>
+            <p>{t(`decision.intervention.${feedback.coaching.intervention}.body`, { predicted: feedback.coaching.predictedSan, actual: feedback.replySan })}</p>
+            <p>{t(`decision.intervention.${feedback.coaching.intervention}.task`)}</p>
+            <p className="muted">{t("decision.hypothesis")}</p>
+            <div className="actions">
+              <button className="btn" onClick={() => setFen(feedback.coaching!.candidateFen)}>{t("decision.afterMine")}</button>
+              <button className="btn" onClick={() => setFen(feedback.resultingFen)}>{t("decision.afterReply")}</button>
+              {feedback.coaching.referenceFen && <button className="btn" onClick={() => setFen(feedback.coaching!.referenceFen!)}>{t("decision.reference", { move: feedback.referenceSan })}</button>}
+            </div>
+          </section>}
           {feedback && !sessionResult && (
             <div data-testid="personal-feedback">
               <h2>{formatEvaluationStatus(feedback.status, i18n.language as SupportedLocale)}</h2>
@@ -188,10 +223,10 @@ export function PersonalPractice() {
           {demo && <p className="callout">{t("demonstration")}</p>}
           {error && <p role="alert">{t(`errors.${error}`, { defaultValue: t("errors.connection") })}</p>}
           <div className="actions">
-            {!holdout && !feedback && !demo && (
+            {!holdout && !feedback && !demo && !candidate && (
               <button type="button" className="btn" disabled={busy} onClick={() => void action(async () => { await requestPatternHint(exercise.id); setHint(true); })}>{t("hint")}</button>
             )}
-            {!holdout && exercise.decisionCount === 0 && (
+            {!holdout && exercise.decisionCount === 0 && !candidate && (
               <button type="button" className="btn" disabled={busy} onClick={() => void action(async () => { const result = await revealPatternSolution(exercise.id); setFen(result.referenceFen); setDemo(true); })}>{t("showIdea")}</button>
             )}
             {feedback?.canContinue && (

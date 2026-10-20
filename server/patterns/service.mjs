@@ -1,3 +1,4 @@
+import { decisionCoaching } from "../../shared/patterns/decision-coaching.js";
 import { Chess } from "chess.js";
 import { randomUUID } from "node:crypto";
 import { PATTERN_VERSION, MAX_PERSONAL_GAMES, patternExists } from "../../shared/patterns/catalog.js";
@@ -164,7 +165,9 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
       canAdvanceSlot: status === "ready_for_next_slot",
       sessionId: exercise.sessionId ?? null, slotIndex: exercise.slotIndex ?? null,
       sessionPositionTotal, sessionPositionCurrent: exercise.slotIndex != null ? exercise.slotIndex + 1 : null,
-      sessionShortfall };
+      sessionShortfall,
+      coachingHistory: exercise.role === "holdout" ? [] : store.read().attempts.filter(a => a.patternId === record.patternId && a.coaching && !a.assisted)
+        .slice(-5).map(a => ({ intervention: a.coaching.intervention, at: a.at, gameId: a.gameId })) };
   }
   function createExercise(patternId, record, { role = "guided", parentId = null, sessionId = null, slotIndex = null } = {}) {
     const state = store.read();
@@ -231,7 +234,7 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
     const chess = new Chess(record.fen); playUci(chess, record.referenceUci);
     return { patternId: record.patternId, assisted: true, referenceSan: record.referenceSan, referenceFen: chess.fen() };
   }
-  async function submit(id, moveUci) {
+  async function submit(id, moveUci, prediction = null) {
     const exercise = exerciseById(id), record = assertRecord(exercise);
     const status = exerciseStatus(exercise);
     if (["completed", "ready_for_holdout", "ready_for_next_slot"].includes(status) || exercise.awaitingNext) {
@@ -242,12 +245,33 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
     const rootFen = exercise.currentFen ?? record.fen;
     const chess = new Chess(rootFen), move = playUci(chess, moveUci);
     if (!move) throw new Error("illegal_move");
+    const candidateFen = chess.fen();
+    let predictedSan = null;
+    if (prediction !== null) {
+      if (exercise.role === "holdout" || typeof prediction !== "object" || !Object.hasOwn(prediction, "replyUci")
+        || !(prediction.replyUci === null || typeof prediction.replyUci === "string")) throw new Error("invalid_request");
+      if (prediction.replyUci !== null) {
+        const predicted = playUci(new Chess(candidateFen), prediction.replyUci);
+        if (!predicted) throw new Error("illegal_move");
+        predictedSan = predicted.san;
+      }
+    }
     const result = await evaluate({ fen: rootFen, moveUci }, AbortSignal.timeout(120000));
     assertRecord(exercise); // Import edits/deletion may have happened while evaluating.
     const latest = exerciseById(id);
     if (latest.awaitingNext || ["completed", "ready_for_holdout", "ready_for_next_slot"].includes(exerciseStatus(latest))) return exerciseView(id).feedback;
     const verified = Boolean(result.verified && !["illegal", "unverified"].includes(result.status));
     if (!verified) throw new Error("analysis_unverified");
+    let replyResult = null;
+    // Only a failed decision with a proposed response needs a second local-engine query.
+    // A different reply can be equally strong; never compare only to the principal move.
+    if (prediction?.replyUci && ["incorrect", "playable_inexact"].includes(result.status)) {
+      try { replyResult = await evaluate({ fen: candidateFen, moveUci: prediction.replyUci }, AbortSignal.timeout(120000)); }
+      catch { /* Keep the verified move feedback; the cause stays unknown. */ }
+      assertRecord(exercise);
+      const refreshed = exerciseById(id);
+      if (refreshed.awaitingNext || ["completed", "ready_for_holdout", "ready_for_next_slot"].includes(exerciseStatus(refreshed))) return exerciseView(id).feedback;
+    }
     const reply = result.opponentReplyUci ? playUci(chess, result.opponentReplyUci) : null;
     if (result.opponentReplyUci && !reply) throw new Error("analysis_unverified");
     const firstDecision = !latest.attemptId;
@@ -267,6 +291,7 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
       assisted: latest.assisted || latest.repeated, verified, status: result.status, chosenSan: move.san, replySan: reply?.san ?? null,
       resultingFen: chess.fen(), referenceSan: referenceMove?.san ?? (firstDecision ? record.referenceSan : null),
       engineVersion: result.engineVersion, engineSha256: result.engineSha256,
+      prediction, coaching: decisionCoaching({ result, prediction, replyResult, predictedSan, rootFen, candidateFen, referenceFen: referenceMove ? referenceChess.fen() : null }),
       decisionNumber: nextCount, targetDecisions: target, canContinue, trainingStatus: nextStatus };
     mutate(s => {
       s.revision++; s.updatedAt = now();

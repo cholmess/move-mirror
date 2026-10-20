@@ -18,7 +18,7 @@ export function createPatternRouter(service) {
       const match = url.pathname.match(/^\/api\/patterns\/practice\/([A-Za-z0-9-]+)(?:\/(hint|solution|move|next|retry|holdout|slot))?$/);
       if (match) {
         if (!match[2] && req.method === "GET") return respond(200, service.exerciseView(match[1]));
-        if (req.method === "POST" && match[2] === "move") return respond(200, await service.submit(match[1], (await body()).moveUci));
+        if (req.method === "POST" && match[2] === "move") { const input = await body(); return respond(200, await service.submit(match[1], input.moveUci, input.prediction ?? null)); }
         if (req.method === "POST" && ["hint", "solution"].includes(match[2])) return respond(200, service.reveal(match[1], match[2]));
         if (req.method === "POST" && match[2] === "next") return respond(200, service.advance(match[1]));
         if (req.method === "POST" && match[2] === "slot") return respond(200, service.advanceSlot(match[1]));

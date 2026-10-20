@@ -16,6 +16,7 @@ export interface PersonalExercise {
   assisted: boolean; completed: boolean; repeated: boolean; role: "guided" | "holdout" | "legacy"; status: PersonalExerciseStatus;
   decisionCount: number; targetDecisions: number; awaitingNext: boolean; canStartHoldout: boolean; canAdvanceSlot?: boolean;
   sessionId?: string | null; slotIndex?: number | null; sessionPositionTotal?: number | null; sessionPositionCurrent?: number | null; sessionShortfall?: boolean;
+  coachingHistory?: Array<{ intervention: string; at: string; gameId: string }>;
   feedback?: PersonalFeedback | null;
 }
 export interface SessionDomainSnapshot {
@@ -34,6 +35,7 @@ export interface NextActivity {
 export interface PersonalFeedback {
   status: import("../types/learning").EvaluationStatus; chosenSan: string; replySan: string | null; resultingFen: string; referenceSan: string | null;
   independent: boolean; assisted: boolean; decisionNumber: number; targetDecisions: number; canContinue: boolean; trainingStatus: PersonalExerciseStatus;
+  coaching?: { intervention: string; hypothesis: string | null; predictedSan: string | null; replyVerified: boolean; rootFen: string; candidateFen: string; referenceFen: string | null } | null;
   sessionResult?: SessionResult; nextActivity?: NextActivity;
 }
 async function request<T>(path = "", body?: unknown): Promise<T> {
@@ -47,7 +49,7 @@ export const startPersonalPractice = (patternId: string, exerciseId?: string) =>
 export const fetchPersonalExercise = (id: string) => request<PersonalExercise>(`/practice/${id}`);
 export const requestPatternHint = (id: string) => request<{ assisted: true; patternId: string }>(`/practice/${id}/hint`, {});
 export const revealPatternSolution = (id: string) => request<{ referenceSan: string; referenceFen: string }>(`/practice/${id}/solution`, {});
-export const submitPersonalMove = (id: string, moveUci: string) => request<PersonalFeedback>(`/practice/${id}/move`, { moveUci });
+export const submitPersonalMove = (id: string, moveUci: string, prediction?: { replyUci: string | null }) => request<PersonalFeedback>(`/practice/${id}/move`, { moveUci, prediction });
 export const advancePersonalPractice = (id: string) => request<PersonalExercise>(`/practice/${id}/next`, {});
 export const retryPersonalDecision = (id: string) => request<PersonalExercise>(`/practice/${id}/retry`, {});
 export const startPersonalHoldout = (id: string) => request<PersonalExercise>(`/practice/${id}/holdout`, {});
