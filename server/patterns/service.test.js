@@ -280,6 +280,28 @@ describe("personal pattern incremental analysis", () => {
     expect(layout.sessionShortfall).toBe(unique.length < 4);
   });
 
+  it("turns a tentative hypothesis into an explainable multi-cause probe plan", async () => {
+    await activate(3);
+    const state = store.read();
+    state.hypotheses.push({
+      id:"hypothesis-1", patternId:"piece-loss", category:"reply_search", status:"tentative", confidence:"low",
+      alternatives:[{category:"calculation_depth",statement:"La variante pudo terminar demasiado pronto."},{category:"strategic_planning",statement:"El plan pudo no responder a la estructura."}],
+      observations:[], nextTest:{instruction:"Busca la respuesta rival más exigente."},
+    });
+    store.write(state);
+    const exercise = service.startPractice("piece-loss");
+    const session = store.read().practiceSessions.find(row => row.id === exercise.sessionId);
+    expect(session.probePlan).toMatchObject({hypothesisId:"hypothesis-1",primaryCategory:"reply_search"});
+    expect(session.probePlan.slots.map(row => row.targetCategory)).toEqual(expect.arrayContaining(["reply_search","calculation_depth","strategic_planning"]));
+    expect(exercise.probe).toMatchObject({hypothesisId:"hypothesis-1",targetCategory:"reply_search",measurability:"direct"});
+
+    const board = new Chess(exercise.fen); const move = board.moves({verbose:true})[0];
+    evaluate.mockImplementationOnce(async body => ({...validResult(body),status:"incorrect",cpLoss:250}));
+    const result = await service.submit(exercise.id,move.from+move.to+(move.promotion??""),{replyUci:null},{intention:"Quería desarrollar",evaluation:"Pensé que estaba igualada",confidence:"medium"});
+    expect(result.probeObservation).toMatchObject({observedCategory:"reply_search",direction:"support"});
+    expect(store.read().hypotheses.at(-1).observations.at(-1)).toMatchObject({source:"practice_probe",observedCategory:"reply_search",direction:"support"});
+  });
+
   it("surfaces insufficient_holdout_positions when layout cannot reserve a holdout", async () => {
     await activate(0);
     const candidates = Object.values(store.read().analyses).flatMap(a => a.rows.filter(r => r.patternId === "piece-loss"));

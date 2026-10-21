@@ -152,6 +152,30 @@
     "llmSource": "Aus strukturierter Evidenz zusammengefasst; Züge und Varianten stammen von der Engine.",
     "ruleSource": "Vorläufige regelbasierte Intervention; es wurde keine Modellinferenz erstellt."
   },
+  "probe": {
+    "title": "Warum ich diese Stellung ausgewählt habe",
+    "testing": "Diese Stellung prüft: {{target}}.",
+    "comparing": "Wir vergleichen sie mit diesen alternativen Erklärungen: {{alternatives}}.",
+    "partial": "Mit der aktuellen Interaktion lässt sich diese Ursache nur teilweise beobachten; ohne weitere Evidenz bestätigen wir sie nicht.",
+    "category": {
+      "reply_search": "Suche nach gegnerischen Antworten",
+      "candidate_comparison": "Vergleich von Kandidaten und Verteidigungen",
+      "calculation_depth": "Berechnungstiefe",
+      "consequence_evaluation": "Bewertung der Folgen",
+      "concept_recognition": "Erkennen des Konzepts",
+      "strategic_planning": "strategische Planung",
+      "insufficient_evidence": "unzureichende Evidenz"
+    },
+    "reason": {
+      "novel": "Du hast diese Stellung noch nicht trainiert.",
+      "hasReply": "Es gibt eine geprüfte gegnerische Antwort für den Vergleich mit deiner Erwartung.",
+      "forcingReply": "Die gegnerische Antwort ist forcierend.",
+      "longLine": "Die geprüfte Referenz verlangt mehr als eine Antwort zu betrachten.",
+      "severeLoss": "Die Entscheidung hatte einen erheblichen Einfluss auf die Bewertung.",
+      "closed": "Die geschlossene Struktur zeigt, wie du einen Plan entwickelst.",
+      "endgame": "Die Stellung macht Endspielentscheidungen beobachtbar."
+    }
+  },
   "decision": {
     "title": "Verstehen wir deine Entscheidung",
     "intro": "Entscheide zuerst ohne Hinweise. Danach prüfen wir deine erwartete Antwort und woran du arbeiten kannst.",

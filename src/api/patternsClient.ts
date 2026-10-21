@@ -32,6 +32,10 @@ export interface PersonalExercise {
   coachingHistory?: Array<{ intervention: string; at: string; gameId: string }>;
   evidenceSummary?: { errors: number; games: number; opportunities: number; confidence: string } | null;
   hypothesis?: { category: string; statement: string; confidence: string; status: string; intervention: string; nextTest?: { instruction: string; successSignal: string } } | null;
+  probe?: {
+    version: string; hypothesisId: string; targetCategory: string; comparedCategories: string[];
+    selectionReasons: string[]; measurability: "direct" | "partial";
+  } | null;
   diagnostic?: {
     question: string; status: string; source: string | null; reflection: PedagogyReflection | null;
     llm: { enabled: boolean; configured: boolean; provider: string | null; model: string | null };
@@ -56,6 +60,7 @@ export interface PersonalFeedback {
   independent: boolean; assisted: boolean; decisionNumber: number; targetDecisions: number; canContinue: boolean; trainingStatus: PersonalExerciseStatus;
   coaching?: { intervention: string; hypothesis: string | null; predictedSan: string | null; replyVerified: boolean; rootFen: string; candidateFen: string; referenceFen: string | null } | null;
   preFeedbackReasoning?: PreFeedbackReasoning | null;
+  probeObservation?: { observedCategory: string | null; expectedCategory: string; direction: "support" | "contradict" | "inconclusive"; measurability: "direct" | "partial" } | null;
   diagnostic?: PersonalExercise["diagnostic"];
   sessionResult?: SessionResult; nextActivity?: NextActivity;
 }

@@ -21,10 +21,12 @@ describe("personal pedagogy contract", () => {
     value.teaching.contrast.evidenceIds = ["decision", "decision"];
     expect(() => validatePedagogyOutput(value, facts)).toThrow("invalid_pedagogy_output");
   });
-  it("keeps practice evidence tentative and lowers confidence on contradiction", () => {
+  it("keeps probes tentative, ignores inconclusive transfer for cause confidence, and lowers confidence on contradiction", () => {
     const base = { id: "h1", confidence: "low", status: "tentative", observations: [] };
     const practice = applyHypothesisEvidence(base, { id: "p1", source: "practice", direction: "support", at: "2026-10-20T00:00:00Z" });
-    const holdout = applyHypothesisEvidence(practice, { id: "o1", source: "holdout", direction: "support", at: "2026-10-21T00:00:00Z" });
+    const inconclusive = applyHypothesisEvidence(practice, { id: "o0", source: "holdout", direction: "inconclusive", at: "2026-10-21T00:00:00Z" });
+    expect(inconclusive).toMatchObject({ confidence: "low", status: "tentative" });
+    const holdout = applyHypothesisEvidence(inconclusive, { id: "o1", source: "practice_probe", direction: "support", at: "2026-10-21T01:00:00Z" });
     expect(holdout).toMatchObject({ confidence: "medium", status: "tentative" });
     const contradicted = applyHypothesisEvidence(holdout, { id: "o2", source: "holdout", direction: "contradict", at: "2026-10-22T00:00:00Z" });
     expect(contradicted).toMatchObject({ confidence: "low", status: "tentative" });

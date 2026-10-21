@@ -12,6 +12,8 @@ test('candidate and expected reply precede feedback; observation survives reload
     completed:false, repeated:false, role:'guided', status:feedback ? 'training':'active',
     decisionCount:feedback ? 1:0, targetDecisions:3, awaitingNext:!!feedback, feedback,
     evidenceSummary:{errors:4,games:3,opportunities:20,confidence:'limited'},
+    hypothesis:{category:'reply_search',statement:'Puede que cierres la decisión sin buscar la respuesta más exigente.',confidence:'low',status:'tentative',intervention:'reply_search'},
+    probe:{version:'hypothesis-probe-v1',hypothesisId:'h1',targetCategory:'reply_search',comparedCategories:['consequence_evaluation'],selectionReasons:['novel','forcingReply'],measurability:'direct'},
     diagnostic: feedback?.diagnostic ? {...feedback.diagnostic,reflection} : null,
   }}));
   await page.route('**/api/patterns/practice/demo/move', async route => {
@@ -34,6 +36,8 @@ test('candidate and expected reply precede feedback; observation survives reload
   });
   await page.goto('/practice/demo');
   await expect(page.getByTestId('pattern-teaching')).toHaveCount(0);
+  await expect(page.getByTestId('hypothesis-probe')).toContainText('búsqueda de respuestas rivales');
+  await expect(page.getByTestId('hypothesis-probe')).toContainText('evaluación de las consecuencias');
   async function move(from:string,to:string) {
     const board=page.getByTestId('play-board');
     await board.locator('details').evaluate((el:HTMLDetailsElement)=>el.open=true);

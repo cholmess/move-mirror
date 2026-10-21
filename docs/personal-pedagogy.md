@@ -6,7 +6,15 @@ Guided personal practice now starts from a recurrent pattern found across the pl
 
 The server builds a bounded evidence packet containing the current decision, the predicted reply, verified engine reply/reference, aggregate recurrence, up to two similar errors, and up to two comparable non-errors when available. The pedagogical model may synthesize a working hypothesis, alternatives, a contrast explanation, and the next discriminating test. It cannot add moves or variations to the contract. Every chess-specific teaching claim must cite an evidence ID from the packet.
 
-Hypotheses are stored independently from prose with category, alternatives, confidence, status, intervention, and observations. The first reflection always creates a low-confidence, tentative hypothesis. Guided practice and an unseen holdout can adjust confidence, but cannot mark it supported. That requires later real-game evidence. Holdout responses omit the diagnosis, evidence summary, and hypothesis.
+Hypotheses are stored independently from prose with category, alternatives, confidence, status, intervention, and observations. The first reflection always creates a low-confidence, tentative hypothesis. A guided probe can adjust confidence when it reproduces the primary signature or a named alternative. An unseen holdout measures skill transfer but does not by itself identify the cognitive cause. Only later real-game evidence can mark a cause supported. Holdout responses omit the diagnosis, evidence summary, and hypothesis.
+
+## Hypothesis probes
+
+When a tentative hypothesis already exists, a new session no longer orders every guided position only by exposure and centipawn loss. The deterministic probe planner assigns distinct, still-reserved guided positions to the primary hypothesis and up to two named alternatives. It scores only observable engine-derived features: novelty, verified reply, forcing reply, verified line length, loss severity, closed structure, and endgame context. The reserved holdout is never reordered or labelled by this planner.
+
+Each guided DTO explains the target cause, the alternatives being contrasted, the observable reasons for selection, and whether the current interaction can measure that cause directly or only partially. Reply search, candidate comparison, and consequence evaluation currently have direct interaction signatures. Calculation depth, concept recognition, and strategic planning remain partial until the product captures a calculated line or another cause-specific observation.
+
+After a guided decision, the stored intervention is mapped back to an observable category. Matching the primary category supports the working hypothesis; matching a named alternative contradicts it; a successful move or an unmeasurable signature is inconclusive. Holdout success/failure remains skill-transfer evidence and is no longer treated as proof of a cognitive cause.
 
 ## Cost and failure controls
 
@@ -24,6 +32,6 @@ The stored metadata contains provider, model, prompt version, latency, and repor
 
 ## Current boundary
 
-This slice creates a grounded hypothesis and changes what the next exercise asks the player to test. It does not yet let the model select arbitrary new positions or generate engine lines. Comparable positions come from the existing verified pattern analysis. Real-game observations are already separated from exposed positions by the transfer pipeline, but automatic causal hypothesis updates from those games remain a later experiment: recurrence alone cannot prove a cognitive cause.
+This slice creates a grounded hypothesis and uses it to order the next guided positions as explicit probes. It does not let the model invent arbitrary positions or generate engine lines. The selector is a transparent heuristic over the existing verified personal positions, not learned causal discovery. Real-game observations are already separated from exposed positions by the transfer pipeline, but automatic causal hypothesis updates from those games remain a later experiment: recurrence alone cannot prove a cognitive cause.
 
 All tests use a fake provider. Do not enable the real adapter in test or CI environments.

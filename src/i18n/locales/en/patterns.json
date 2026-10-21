@@ -152,6 +152,30 @@
     "llmSource": "Synthesised from structured evidence; moves and variations come from the engine.",
     "ruleSource": "Provisional rule-based intervention; no model inference was made."
   },
+  "probe": {
+    "title": "Why I selected this position",
+    "testing": "This position tests: {{target}}.",
+    "comparing": "We will contrast it with these alternative explanations: {{alternatives}}.",
+    "partial": "The current interaction can observe this cause only partially; we will not confirm it without additional evidence.",
+    "category": {
+      "reply_search": "searching for opponent replies",
+      "candidate_comparison": "comparing candidates and defences",
+      "calculation_depth": "calculation depth",
+      "consequence_evaluation": "evaluating consequences",
+      "concept_recognition": "concept recognition",
+      "strategic_planning": "strategic planning",
+      "insufficient_evidence": "insufficient evidence"
+    },
+    "reason": {
+      "novel": "You have not trained this position before.",
+      "hasReply": "A verified opponent reply exists to contrast with your prediction.",
+      "forcingReply": "The opponent reply is forcing.",
+      "longLine": "The verified reference requires looking beyond one reply.",
+      "severeLoss": "The decision had a significant evaluation impact.",
+      "closed": "The closed structure lets us observe how you form a plan.",
+      "endgame": "The position lets us observe endgame decisions."
+    }
+  },
   "decision": {
     "title": "Let’s understand your decision",
     "intro": "Decide without hints first. Then we will examine the reply you expected and what to work on.",
