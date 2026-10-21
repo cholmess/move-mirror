@@ -42,11 +42,11 @@ function compactFact(value) {
   return Object.fromEntries(Object.entries(value).filter(([, item]) => item !== null && item !== undefined));
 }
 
-export function buildPedagogyPacket({ record, attempt, records, profile, answer }) {
+export function buildPedagogyPacket({ record, attempt, records, profile }) {
   const facts = [compactFact({
     evidenceId: "current_decision", kind: "player_decision", fen: attempt.coaching.rootFen,
     gameId: record.gameId, moveNumber: record.moveNumber, chosenSan: attempt.chosenSan,
-    resultStatus: attempt.status, playerExplanation: answer,
+    resultStatus: attempt.status, playerExplanation: attempt.preFeedbackReasoning,
   })];
   if (attempt.prediction?.replyUci) facts.push(compactFact({
     evidenceId: "anticipated_reply", kind: "player_prediction", san: attempt.coaching.predictedSan,
@@ -320,7 +320,7 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
     const chess = new Chess(record.fen); playUci(chess, record.referenceUci);
     return { patternId: record.patternId, assisted: true, referenceSan: record.referenceSan, referenceFen: chess.fen() };
   }
-  async function submit(id, moveUci, prediction = null) {
+  async function submit(id, moveUci, prediction = null, reasoningInput = null) {
     const exercise = exerciseById(id), record = assertRecord(exercise);
     const status = exerciseStatus(exercise);
     if (["completed", "ready_for_holdout", "ready_for_next_slot"].includes(status) || exercise.awaitingNext) {
@@ -332,6 +332,16 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
     const chess = new Chess(rootFen), move = playUci(chess, moveUci);
     if (!move) throw new Error("illegal_move");
     const candidateFen = chess.fen();
+    const reasoning = reasoningInput === null ? null : {
+      intention: normalizeReflectionText(reasoningInput?.intention),
+      evaluation: normalizeReflectionText(reasoningInput?.evaluation),
+      confidence: reasoningInput?.confidence,
+    };
+    if (reasoning && (reasoning.intention.length < 2 || reasoning.intention.length > 800
+      || reasoning.evaluation.length < 2 || reasoning.evaluation.length > 800
+      || !["low", "medium", "high"].includes(reasoning.confidence))) throw new Error("invalid_reflection");
+    if (exercise.role === "holdout" && reasoning) throw new Error("invalid_request");
+    const reasoningCapturedAt = reasoning ? now() : null;
     let predictedSan = null;
     if (prediction !== null) {
       if (exercise.role === "holdout" || typeof prediction !== "object" || !Object.hasOwn(prediction, "replyUci")
@@ -377,6 +387,7 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
       assisted: latest.assisted || latest.repeated, verified, status: result.status, chosenSan: move.san, replySan: reply?.san ?? null,
       resultingFen: chess.fen(), referenceSan: referenceMove?.san ?? (firstDecision ? record.referenceSan : null),
       engineVersion: result.engineVersion, engineSha256: result.engineSha256,
+      preFeedbackReasoning: reasoning ? { ...reasoning, capturedAt: reasoningCapturedAt, timing: "before_feedback" } : null,
       prediction, coaching: decisionCoaching({ result, prediction, replyResult, predictedSan, rootFen, candidateFen, referenceFen: referenceMove ? referenceChess.fen() : null }),
       decisionNumber: nextCount, targetDecisions: target, canContinue, trainingStatus: nextStatus };
     mutate(s => {
@@ -463,19 +474,13 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
     return typeof value === "string" ? value.replace(/[\u0000-\u001f\u007f]/g, " ").replace(/\s+/g, " ").trim() : "";
   }
 
-  async function reflect(id, input) {
+  async function reflect(id) {
     const exercise = exerciseById(id);
     const attempt = reflectionAttempt(exercise);
-    const answer = {
-      intention: normalizeReflectionText(input?.intention),
-      evaluation: normalizeReflectionText(input?.evaluation),
-    };
-    if (answer.intention.length < 2 || answer.intention.length > 800 || answer.evaluation.length < 2 || answer.evaluation.length > 800) {
-      throw new Error("invalid_reflection");
-    }
+    const answer = attempt.preFeedbackReasoning;
+    if (!answer || answer.timing !== "before_feedback") throw new Error("reflection_not_available");
     const requestDigest = hash([attempt.id, answer]);
     if (attempt.reflection?.result) {
-      if (attempt.reflection.requestDigest !== requestDigest) throw new Error("reflection_locked");
       return attempt.reflection.result;
     }
     if (reflectionTasks.has(attempt.id)) {
@@ -485,14 +490,14 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
     const work = (async () => {
       const live = reflectionAttempt(exerciseById(id));
       if (live.reflection?.status === "pending") {
-        const packet = buildPedagogyPacket({ record: assertRecord(exercise), attempt: live, records: rows(), profile: summary().patterns.find((row) => row.id === live.patternId), answer });
+        const packet = buildPedagogyPacket({ record: assertRecord(exercise), attempt: live, records: rows(), profile: summary().patterns.find((row) => row.id === live.patternId) });
         return saveReflection(live, packet, fallbackPedagogy({ intervention: live.coaching.intervention, evidenceIds: fallbackEvidenceIds(packet) }), "rules", { reason: "interrupted_request" });
       }
       mutate((state) => {
         const target = [...state.attempts, ...(state.continuationAttempts ?? [])].find((row) => row.id === attempt.id);
         target.reflection = { status: "pending", requestDigest, requestedAt: now() };
       });
-      const packet = buildPedagogyPacket({ record: assertRecord(exercise), attempt, records: rows(), profile: summary().patterns.find((row) => row.id === attempt.patternId), answer });
+      const packet = buildPedagogyPacket({ record: assertRecord(exercise), attempt, records: rows(), profile: summary().patterns.find((row) => row.id === attempt.patternId) });
       let output; let source = "rules"; let meta = { reason: "llm_disabled" };
       if (pedagogicalCoach?.status?.().configured) {
         try {

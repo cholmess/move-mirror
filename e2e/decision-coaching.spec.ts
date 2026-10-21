@@ -18,6 +18,7 @@ test('candidate and expected reply precede feedback; observation survives reload
     submitted = route.request().postDataJSON();
     feedback = { status:'incorrect', chosenSan:'e4', replySan:'e5', resultingFen, referenceSan:'d4', independent:false, assisted:false,
       decisionNumber:1, targetDecisions:3, canContinue:true, trainingStatus:'training',
+      preFeedbackReasoning:{...submitted.reasoning,capturedAt:'2026-10-21T10:00:00Z',timing:'before_feedback'},
       coaching:{intervention:'evaluate', hypothesis:'consequences', predictedSan:'e5',replyVerified:true,rootFen:initialFen,candidateFen,referenceFen:null},
       diagnostic:{question:'¿Cómo evaluabas la posición?',status:'available',source:null,reflection:null,llm:{enabled:true,configured:true,provider:'fake',model:'fixture'}} };
     await route.fulfill({json:feedback});
@@ -45,11 +46,14 @@ test('candidate and expected reply precede feedback; observation survives reload
   expect(submitted).toBeNull();
   await move('e7','e5');
   expect(submitted).toBeNull();
-  await page.getByRole('button',{name:'Confirmar y analizar'}).click();
-  await expect(page.getByTestId('decision-coaching')).toContainText('Viste una respuesta fuerte');
-  expect(submitted).toEqual({moveUci:'e2e4',prediction:{replyUci:'e7e5'}});
+  await expect(page.getByTestId('pre-feedback-reasoning')).toBeVisible();
   await page.getByLabel('¿Qué intentabas conseguir con tu jugada?').fill('Quería ganar espacio en el centro');
   await page.getByLabel('¿Cómo evaluabas la posición después de la respuesta que esperabas?').fill('Pensé que estaba igualada');
+  await page.getByLabel('¿Qué tan seguro estabas de tu decisión?').selectOption('medium');
+  await page.getByRole('button',{name:'Confirmar y analizar'}).click();
+  await expect(page.getByTestId('decision-coaching')).toContainText('Viste una respuesta fuerte');
+  expect(submitted).toEqual({moveUci:'e2e4',prediction:{replyUci:'e7e5'},reasoning:{intention:'Quería ganar espacio en el centro',evaluation:'Pensé que estaba igualada',confidence:'medium'}});
+  await expect(page.getByTestId('captured-reasoning')).toContainText('Quería ganar espacio');
   await page.getByTestId('pedagogy-submit').click();
   await expect(page.getByTestId('pedagogy-result')).toContainText('Calculaste la respuesta');
   await expect(page.getByTestId('pedagogy-result')).toContainText('Otras explicaciones');

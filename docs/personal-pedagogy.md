@@ -2,7 +2,7 @@
 
 ## Product behavior
 
-Guided personal practice now starts from a recurrent pattern found across the player's own games. Before any explanation, the player chooses a move, predicts the opponent's most demanding response, and then explains both the intended plan and the expected evaluation of the resulting position.
+Guided personal practice now starts from a recurrent pattern found across the player's own games. Before any engine result or explanation, the player chooses a move, predicts the opponent's most demanding response, records the intended plan and expected evaluation, and declares decision confidence. The server validates and timestamps this snapshot before invoking the engine. The stored answer is immutable, so later feedback cannot contaminate the observation with hindsight.
 
 The server builds a bounded evidence packet containing the current decision, the predicted reply, verified engine reply/reference, aggregate recurrence, up to two similar errors, and up to two comparable non-errors when available. The pedagogical model may synthesize a working hypothesis, alternatives, a contrast explanation, and the next discriminating test. It cannot add moves or variations to the contract. Every chess-specific teaching claim must cite an evidence ID from the packet.
 
@@ -18,7 +18,7 @@ COACH_LLM_MODEL=<model-with-structured-outputs>
 OPENAI_API_KEY=<secret>
 ```
 
-The API key remains server-side. A call happens only after the player writes a reflection and presses the analysis button. Imports, Stockfish analysis, page loads, and move submissions never trigger it. Repository game IDs are removed from the provider payload; the local result retains the source mapping. Each attempt accepts one immutable answer and one generation. Concurrent identical submissions share the same promise; reloads return the stored result. There are no automatic provider retries. A provider error or invalid schema produces a stored rule-based fallback, preserving the player's answer and avoiding another charge.
+The API key remains server-side. The reasoning snapshot is captured with the move, but a provider call happens only after engine feedback when the player explicitly presses the pedagogical analysis button. Imports, Stockfish analysis, page loads, and move submissions never trigger the LLM. Repository game IDs are removed from the provider payload; the local result retains the source mapping. Each attempt accepts one immutable pre-feedback answer and one generation. Concurrent identical submissions share the same promise; reloads return the stored result. There are no automatic provider retries. A provider error or invalid schema produces a stored rule-based fallback, preserving the player's answer and avoiding another charge.
 
 The stored metadata contains provider, model, prompt version, latency, and reported token use. It does not store a secret or hidden reasoning trace.
 

@@ -21,6 +21,9 @@ export interface PedagogyReflection {
   id: string; source: "llm" | "rules"; question: string; generatedAt: string; output: PedagogyOutput;
   sources: Array<{ evidenceId: string; gameId: string; moveNumber: number }>;
 }
+export interface PreFeedbackReasoning {
+  intention: string; evaluation: string; confidence: "low" | "medium" | "high"; capturedAt?: string;
+}
 export interface PersonalExercise {
   id: string; positionId: string; patternId: string; fen: string; originalFen: string; color: "white" | "black"; gameId: string; moveNumber: number;
   assisted: boolean; completed: boolean; repeated: boolean; role: "guided" | "holdout" | "legacy"; status: PersonalExerciseStatus;
@@ -52,6 +55,7 @@ export interface PersonalFeedback {
   status: import("../types/learning").EvaluationStatus; chosenSan: string; replySan: string | null; resultingFen: string; referenceSan: string | null;
   independent: boolean; assisted: boolean; decisionNumber: number; targetDecisions: number; canContinue: boolean; trainingStatus: PersonalExerciseStatus;
   coaching?: { intervention: string; hypothesis: string | null; predictedSan: string | null; replyVerified: boolean; rootFen: string; candidateFen: string; referenceFen: string | null } | null;
+  preFeedbackReasoning?: PreFeedbackReasoning | null;
   diagnostic?: PersonalExercise["diagnostic"];
   sessionResult?: SessionResult; nextActivity?: NextActivity;
 }
@@ -66,8 +70,8 @@ export const startPersonalPractice = (patternId: string, exerciseId?: string) =>
 export const fetchPersonalExercise = (id: string) => request<PersonalExercise>(`/practice/${id}`);
 export const requestPatternHint = (id: string) => request<{ assisted: true; patternId: string }>(`/practice/${id}/hint`, {});
 export const revealPatternSolution = (id: string) => request<{ referenceSan: string; referenceFen: string }>(`/practice/${id}/solution`, {});
-export const submitPersonalMove = (id: string, moveUci: string, prediction?: { replyUci: string | null }) => request<PersonalFeedback>(`/practice/${id}/move`, { moveUci, prediction });
-export const submitPersonalReflection = (id: string, input: { intention: string; evaluation: string }) => request<PedagogyReflection>(`/practice/${id}/reflection`, input);
+export const submitPersonalMove = (id: string, moveUci: string, prediction?: { replyUci: string | null }, reasoning?: Omit<PreFeedbackReasoning, "capturedAt">) => request<PersonalFeedback>(`/practice/${id}/move`, { moveUci, prediction, reasoning });
+export const submitPersonalReflection = (id: string) => request<PedagogyReflection>(`/practice/${id}/reflection`, {});
 export const advancePersonalPractice = (id: string) => request<PersonalExercise>(`/practice/${id}/next`, {});
 export const retryPersonalDecision = (id: string) => request<PersonalExercise>(`/practice/${id}/retry`, {});
 export const startPersonalHoldout = (id: string) => request<PersonalExercise>(`/practice/${id}/holdout`, {});

@@ -67,6 +67,10 @@ test("guided decisions lead to an unlabeled independent holdout on mobile", asyn
   await page.getByTestId("play-board").locator('[data-square="e2"]').click();
   await page.getByTestId("play-board").locator('[data-square="e4"]').click();
   await page.getByRole("button", {name:"No encuentro una respuesta"}).click();
+  await page.getByLabel("¿Qué intentabas conseguir con tu jugada?").fill("Quería ocupar el centro");
+  await page.getByLabel("¿Cómo evaluabas la posición después de la respuesta que esperabas?").fill("Pensé que estaba igualada");
+  await page.getByLabel("¿Qué tan seguro estabas de tu decisión?").selectOption("medium");
+  await page.getByRole("button", {name:"Confirmar y analizar"}).click();
   await expect(page.getByTestId("personal-feedback")).toBeVisible();
   await page.getByTestId("practice-retry-decision").click();
   await expect(page.getByText("Decisión 1 de 3")).toBeVisible();
