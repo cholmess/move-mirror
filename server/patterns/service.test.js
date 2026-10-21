@@ -6,6 +6,7 @@ import { Chess } from "chess.js";
 import { createPatternStore } from "./store.mjs";
 import { createPatternService, selectPersonalGames } from "./service.mjs";
 import { orderGuidedPlan, planSessionLayout } from "../../shared/patterns/session.js";
+import { fallbackPedagogy } from "../../shared/patterns/pedagogy.js";
 function game(id, first = "e4") {
   const chess = new Chess(); for (const san of [first, "e5", "Nf3", "Nc6", "Bc4", "Nf6", "d3", "Bc5", "O-O", "d6"]) chess.move(san);
   return { id, fingerprint: id, chess: { variant: "standard", startingFen: new Chess().fen(), movesUci: chess.history({ verbose: true }).map(m=>m.from+m.to+(m.promotion??"")), result: "1-0" },
@@ -99,6 +100,38 @@ describe("personal pattern incremental analysis", () => {
     expect(result.coaching).toMatchObject({intervention:"uncertain", hypothesis:null});
     expect(result.verified).toBe(true);
   });
+  it("generates one grounded reflection for concurrent identical requests and persists it", async () => {
+    await activate();
+    const generate = vi.fn(async packet => ({
+      output: fallbackPedagogy({ intervention: "reinforce", evidenceIds: ["current_decision", "contrast_1", ...packet.facts.map(f => f.evidenceId).filter(id => !["current_decision", "contrast_1"].includes(id))] }),
+      meta: { provider: "fake", model: "fixture", promptVersion: "test", usage: { totalTokens: 30 } },
+    }));
+    service = createPatternService({
+      store, gamesStore:{listGames:()=>games}, evaluate, analyzerSignature:()=>signature,
+      pedagogicalCoach:{ status:()=>({enabled:true,configured:true,provider:"fake",model:"fixture"}), generate },
+    });
+    const ex = service.startPractice("piece-loss"); const board = new Chess(ex.fen); const move = board.moves({verbose:true})[0];
+    await service.submit(ex.id, move.from+move.to+(move.promotion??""), {replyUci:null});
+    const input = { intention:"Quería desarrollar una pieza", evaluation:"Pensé que la posición seguía igualada" };
+    const [a,b] = await Promise.all([service.reflect(ex.id,input),service.reflect(ex.id,input)]);
+    expect(generate).toHaveBeenCalledTimes(1); expect(a.id).toBe(b.id); expect(a.source).toBe("llm");
+    const evidenceIds = generate.mock.calls[0][0].facts.map(row => row.evidenceId);
+    expect(evidenceIds).toEqual(expect.arrayContaining(["current_decision", "pattern_frequency", "similar_error_1", "similar_error_2", "contrast_1"]));
+    expect(store.read().hypotheses).toHaveLength(1);
+    const restarted = createPatternService({store:createPatternStore(dir),gamesStore:{listGames:()=>games},evaluate,analyzerSignature:()=>signature});
+    expect(restarted.exerciseView(ex.id).diagnostic.reflection.id).toBe(a.id);
+    await expect(restarted.reflect(ex.id,{...input,intention:"Otra explicación"})).rejects.toThrow("reflection_locked");
+  });
+  it("falls back once without retrying or losing the player's explanation when the provider fails", async () => {
+    await activate(); const generate = vi.fn(async()=>{throw new Error("provider_down");});
+    service = createPatternService({store,gamesStore:{listGames:()=>games},evaluate,analyzerSignature:()=>signature,
+      pedagogicalCoach:{status:()=>({enabled:true,configured:true}),generate}});
+    const ex=service.startPractice("piece-loss"); const board=new Chess(ex.fen); const move=board.moves({verbose:true})[0];
+    await service.submit(ex.id,move.from+move.to+(move.promotion??""),{replyUci:null});
+    const input={intention:"Quería atacar el centro",evaluation:"Creí que tenía suficiente actividad"};
+    const result=await service.reflect(ex.id,input); const repeated=await service.reflect(ex.id,input);
+    expect(result).toMatchObject({source:"rules",answer:input}); expect(repeated.id).toBe(result.id); expect(generate).toHaveBeenCalledTimes(1);
+  });
   it("keeps solutions private until asked and counts assisted repeats separately", async () => {
     await activate();const ex=service.startPractice("piece-loss");
     expect(service.exerciseView(ex.id).referenceSan).toBeUndefined();
@@ -191,6 +224,7 @@ describe("personal pattern incremental analysis", () => {
     expect(result.trainingStatus).toBe("ready_for_holdout");
     const holdout = service.startHoldout(guided.id);
     expect(holdout).toMatchObject({ role: "holdout", targetDecisions: 1 });
+    expect(holdout).toMatchObject({ diagnostic: null, hypothesis: null, evidenceSummary: null });
     expect(holdout.positionId).not.toBe(guided.positionId);
     const holdoutChess = new Chess(holdout.fen);
     const holdoutLegal = holdoutChess.moves({ verbose: true })[0];

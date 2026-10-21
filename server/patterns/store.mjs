@@ -5,10 +5,11 @@ import { migrateLearningState } from "../../shared/patterns/migrate-learning.js"
 export function createPatternStore(root) {
   const file = path.join(root, "state.json"), analysesDir = path.join(root, "analyses");
   const initial = () => ({ version: PATTERN_VERSION, revision: 0, analyses: {}, attempts: [], continuationAttempts: [], exposures: [], exercises: [],
-    practiceSessions: [], patternDomains: {}, learningMigrationVersion: null,
+    practiceSessions: [], patternDomains: {}, hypotheses: [], learningMigrationVersion: null,
     job: { status: "idle", completedGames: 0, totalGames: 0, completedDecisions: 0, totalDecisions: 0, error: null }, updatedAt: null });
   let state = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : initial();
   state.continuationAttempts ??= [];
+  state.hypotheses ??= [];
   const embedded = state.analyses;
   state.analyses = embedded ?? Object.fromEntries((state.analysisKeys ?? []).map(key => [key, JSON.parse(fs.readFileSync(path.join(analysesDir, key + ".json"), "utf8"))]));
   delete state.analysisKeys;

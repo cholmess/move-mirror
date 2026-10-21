@@ -12,6 +12,7 @@ import {
   startPersonalHoldout,
   startPersonalPractice,
   submitPersonalMove,
+  submitPersonalReflection,
   type NextActivity,
   type PersonalExercise,
   type PersonalFeedback,
@@ -99,10 +100,13 @@ export function PersonalPractice() {
   const lock = useRef(false);
   const [candidate, setCandidate] = useState<{ uci: string; san: string; fen: string } | null>(null);
   const [prediction, setPrediction] = useState<{ uci: string; san: string } | null>(null);
+  const [intention, setIntention] = useState("");
+  const [positionEvaluation, setPositionEvaluation] = useState("");
   useEffect(() => {
     let live = true;
     setExercise(null);
     setCandidate(null); setPrediction(null);
+    setIntention(""); setPositionEvaluation("");
     setFeedback(null);
     setHint(false);
     setDemo(false);
@@ -139,6 +143,7 @@ export function PersonalPractice() {
         canStartHoldout: result.trainingStatus === "ready_for_holdout",
         canAdvanceSlot: result.trainingStatus === "ready_for_next_slot",
         completed: result.trainingStatus === "completed", feedback: result,
+        diagnostic: result.diagnostic ?? current.diagnostic,
       } : current);
     });
   }
@@ -165,12 +170,26 @@ export function PersonalPractice() {
     ? t("learning:practice.sessionProgress", { current: exercise.sessionPositionCurrent ?? 1, total: exercise.sessionPositionTotal })
     : t("path.progress", { current: feedback ? exercise.decisionCount : Math.min(exercise.decisionCount + 1, exercise.targetDecisions), total: exercise.targetDecisions });
   const sessionResult = feedback?.sessionResult;
+  const reflection = exercise.diagnostic?.reflection;
   return (
     <div className="page" data-testid="personal-practice">
       <p className="eyebrow">{holdout ? t("path.holdoutEyebrow") : t("path.guidedEyebrow")}</p>
       <h1>{holdout ? t("path.holdoutTitle") : t("decision.title")}</h1>
       <p>{holdout ? t("path.holdoutGoal") : t("decision.intro")}</p>
-      {!holdout && (feedback || hint || demo) && (
+      {!holdout && exercise.evidenceSummary && (
+        <p className="muted" data-testid="pedagogy-evidence-summary">
+          {t("pedagogy.observed", exercise.evidenceSummary)} {t("pedagogy.unknown")}
+        </p>
+      )}
+      {!holdout && exercise.hypothesis && !reflection && (
+        <section className="callout" data-testid="pedagogy-memory">
+          <strong>{t("pedagogy.checking")}</strong>
+          <p>{exercise.hypothesis.statement}</p>
+          {exercise.hypothesis.nextTest && <p><strong>{t("pedagogy.nextTest")}:</strong> {exercise.hypothesis.nextTest.instruction}</p>}
+          <p className="muted">{t("pedagogy.stillTentative")}</p>
+        </section>
+      )}
+      {!holdout && (hint || demo || (feedback && !feedback.coaching)) && (
         <section className="callout" data-testid="pattern-teaching">
           <strong>{t("path.ruleLabel")}</strong>
           <p>{t(`catalog.${exercise.patternId}.rule`)}</p>
@@ -206,6 +225,42 @@ export function PersonalPractice() {
               {feedback.coaching.referenceFen && <button className="btn" onClick={() => setFen(feedback.coaching!.referenceFen!)}>{t("decision.reference", { move: feedback.referenceSan })}</button>}
             </div>
           </section>}
+          {!holdout && feedback?.coaching && exercise.diagnostic && !reflection && (
+            <section className="card" data-testid="pedagogy-reflection">
+              <h2>{t("pedagogy.coachQuestion")}</h2>
+              <p>{exercise.diagnostic.question}</p>
+              <label>
+                {t("pedagogy.intentionLabel")}
+                <textarea className="textarea" value={intention} maxLength={800} disabled={busy} onChange={(event) => setIntention(event.target.value)} />
+              </label>
+              <label>
+                {t("pedagogy.evaluationLabel")}
+                <textarea className="textarea" value={positionEvaluation} maxLength={800} disabled={busy} onChange={(event) => setPositionEvaluation(event.target.value)} />
+              </label>
+              <button type="button" className="btn primary" data-testid="pedagogy-submit" disabled={busy || intention.trim().length < 2 || positionEvaluation.trim().length < 2} onClick={() => void action(async () => {
+                const result = await submitPersonalReflection(exercise.id, { intention, evaluation: positionEvaluation });
+                setExercise((current) => current ? { ...current, diagnostic: current.diagnostic ? { ...current.diagnostic, status: "completed", source: result.source, reflection: result } : null } : current);
+              })}>{busy ? t("pedagogy.thinking") : t("pedagogy.submit")}</button>
+              <p className="muted small">{exercise.diagnostic.llm.configured ? t("pedagogy.explicitCost") : t("pedagogy.rulesFallback")}</p>
+            </section>
+          )}
+          {!holdout && reflection && (
+            <section className="callout" data-testid="pedagogy-result">
+              <p className="eyebrow">{t("pedagogy.workingHypothesis")}</p>
+              <h2>{reflection.output.primaryHypothesis.statement}</h2>
+              <p className="muted">{t("pedagogy.confidence", { value: t(`pedagogy.confidenceValue.${reflection.output.primaryHypothesis.confidence}`) })}</p>
+              <p>{reflection.output.teaching.explanation}</p>
+              <h3>{t("pedagogy.contrastTitle")}</h3>
+              <p><strong>{t("pedagogy.worksWhen")}</strong> {reflection.output.teaching.contrast.worksWhen}</p>
+              <p><strong>{t("pedagogy.failsWhen")}</strong> {reflection.output.teaching.contrast.failsWhen}</p>
+              <h3>{t("pedagogy.nextTest")}</h3>
+              <p>{reflection.output.nextTest.instruction}</p>
+              {!!reflection.output.alternativeHypotheses.length && (
+                <details><summary>{t("pedagogy.alternatives")}</summary><ul>{reflection.output.alternativeHypotheses.map((row) => <li key={`${row.category}:${row.statement}`}>{row.statement}</li>)}</ul></details>
+              )}
+              <p className="muted small">{t(reflection.source === "llm" ? "pedagogy.llmSource" : "pedagogy.ruleSource")}</p>
+            </section>
+          )}
           {feedback && !sessionResult && (
             <div data-testid="personal-feedback">
               <h2>{formatEvaluationStatus(feedback.status, i18n.language as SupportedLocale)}</h2>

@@ -48,7 +48,10 @@
     "exercise_unavailable": "Diese Stellung ist nicht mehr verfügbar. Kehre zu deinen Mustern zurück und wähle eine andere.",
     "insufficient_holdout_positions": "Für Übung und unabhängige Kontrolle brauchst du mindestens zwei verschiedene Stellungen aus deinen Partien. Importiere mehr Partien oder aktualisiere die Analyse.",
     "pattern_not_recurrent": "Es gibt noch nicht genügend Belege, um dieses Muster zu empfehlen.",
-    "illegal_move": "Dieser Zug ist nicht legal. Wähle einen anderen."
+    "illegal_move": "Dieser Zug ist nicht legal. Wähle einen anderen.",
+    "invalid_reflection": "Beschreibe kurz, was du erreichen wolltest und wie du die Stellung bewertet hast.",
+    "reflection_not_available": "Schließe zuerst eine geführte Entscheidung ab.",
+    "reflection_locked": "Diese Entscheidung wurde bereits analysiert. Die erste Antwort bleibt als Evidenz erhalten."
   },
   "catalog": {
     "piece-loss": {
@@ -117,6 +120,29 @@
     "retryDecision": "Diese Entscheidung wiederholen",
     "acceptableReference": "Dein Zug ist gültig. {{move}} ist eine weitere geprüfte Referenz.",
     "compareReference": "Vergleiche ihn mit {{move}}, der geprüften Referenz in dieser Stellung."
+  },
+  "pedagogy": {
+    "observed": "Ich sehe {{errors}} Fehler in {{games}} Partien bei {{opportunities}} vergleichbaren Entscheidungen.",
+    "unknown": "Das bestätigt eine beobachtbare Wiederholung, erklärt aber noch nicht ihre Ursache.",
+    "checking": "Ich möchte eine Hypothese aus der vorigen Einheit prüfen",
+    "stillTentative": "Sie bleibt vorläufig, bis unabhängige Evidenz aus anderen Stellungen und Partien vorliegt.",
+    "coachQuestion": "Ich möchte verstehen, wie du gedacht hast",
+    "intentionLabel": "Was wolltest du mit deinem Zug erreichen?",
+    "evaluationLabel": "Wie hast du die Stellung nach der erwarteten Antwort bewertet?",
+    "submit": "Meine Überlegung analysieren",
+    "thinking": "Evidenz wird verglichen…",
+    "explicitCost": "Die pädagogische Analyse nutzt nur nach diesem Klick einen begrenzten Aufruf. Sie wird nicht automatisch wiederholt.",
+    "rulesFallback": "Das pädagogische Modell ist nicht konfiguriert. Deine Antwort wird gespeichert und du erhältst eine regelbasierte Intervention.",
+    "workingHypothesis": "Arbeitshypothese",
+    "confidence": "Konfidenz: {{value}}. Das ist noch keine Diagnose.",
+    "confidenceValue": { "low": "niedrig", "medium": "mittel" },
+    "contrastTitle": "Der Unterschied, den wir prüfen",
+    "worksWhen": "Die Idee funktioniert, wenn:",
+    "failsWhen": "Die Idee scheitert, wenn:",
+    "nextTest": "Nächste Prüfung",
+    "alternatives": "Andere weiterhin mögliche Erklärungen",
+    "llmSource": "Aus strukturierter Evidenz zusammengefasst; Züge und Varianten stammen von der Engine.",
+    "ruleSource": "Vorläufige regelbasierte Intervention; es wurde keine Modellinferenz erstellt."
   },
   "decision": {
     "title": "Verstehen wir deine Entscheidung",

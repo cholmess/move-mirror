@@ -22,6 +22,8 @@ The checked-in historical review (`data/fase-2/review_output/review_summary.json
 
 This is the first implemented intervention, not the full high-level coach. It does not yet collect a calculated multi-ply line or the player's resulting evaluation, generate position-specific strategic explanations, select pedagogical contrast pairs, or establish which teaching intervention produces better transfer. Historical hints/repeated positions can bias observations. The existing holdout and transfer machinery remains responsible for independent evidence; one good exercise never proves real-game improvement.
 
+The next vertical slice is documented in `docs/personal-pedagogy.md`. It adds the player's intended plan and resulting evaluation, a bounded evidence packet across personal games, an optional structured LLM synthesis, persistent hypotheses, explicit alternatives, and a blind holdout update. The LLM is opt-in and never runs during import, engine analysis, or automated tests.
+
 ## Validation
 
 Focused unit/service tests cover alternative strong replies, missing provenance, unavailable verification, legal-move validation before evaluation, persistence across restart and duplicate submission. Browser fixtures test that predictions precede feedback, reload, mobile layout and the blind holdout. Browser fixtures are simulated engine results, not chess-quality validation. Use `playwright.decision.config.ts` for web-only tests with all coaching requests mocked; no production data or engine server is needed.

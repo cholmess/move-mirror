@@ -48,7 +48,10 @@
     "exercise_unavailable": "This position is no longer available. Return to your patterns and choose another.",
     "insufficient_holdout_positions": "We need at least two different positions from your games to practice and run an independent check. Import more games or update analysis.",
     "pattern_not_recurrent": "There is not enough evidence to recommend this pattern yet.",
-    "illegal_move": "That move is illegal. Choose another."
+    "illegal_move": "That move is illegal. Choose another.",
+    "invalid_reflection": "Briefly describe what you were trying to achieve and how you evaluated the position.",
+    "reflection_not_available": "Complete a guided decision before analysing your reasoning.",
+    "reflection_locked": "This decision has already been analysed. We keep the first answer to preserve the evidence."
   },
   "catalog": {
     "piece-loss": {
@@ -117,6 +120,29 @@
     "retryDecision": "Retry this decision",
     "acceptableReference": "Your move is valid. {{move}} is another verified reference.",
     "compareReference": "Compare it with {{move}}, the verified reference in this position."
+  },
+  "pedagogy": {
+    "observed": "I see {{errors}} errors in {{games}} games among {{opportunities}} comparable decisions.",
+    "unknown": "That confirms an observable recurrence; it does not yet explain why it happens.",
+    "checking": "I want to test a hypothesis from the previous session",
+    "stillTentative": "It remains tentative until independent evidence appears in other positions and games.",
+    "coachQuestion": "I want to understand how you were thinking",
+    "intentionLabel": "What were you trying to achieve with your move?",
+    "evaluationLabel": "How did you evaluate the position after the reply you expected?",
+    "submit": "Analyse my reasoning",
+    "thinking": "Comparing the evidence…",
+    "explicitCost": "Pedagogical analysis uses one bounded call only when you press this button. It is not repeated automatically.",
+    "rulesFallback": "The pedagogical model is not configured. Your answer will be saved and you will receive a rule-based intervention.",
+    "workingHypothesis": "Working hypothesis",
+    "confidence": "Confidence: {{value}}. This is not yet a diagnosis.",
+    "confidenceValue": { "low": "low", "medium": "medium" },
+    "contrastTitle": "The difference we will test",
+    "worksWhen": "The idea works when:",
+    "failsWhen": "The idea fails when:",
+    "nextTest": "Next check",
+    "alternatives": "Other explanations that remain possible",
+    "llmSource": "Synthesised from structured evidence; moves and variations come from the engine.",
+    "ruleSource": "Provisional rule-based intervention; no model inference was made."
   },
   "decision": {
     "title": "Let’s understand your decision",

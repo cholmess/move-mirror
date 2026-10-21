@@ -48,7 +48,10 @@
     "exercise_unavailable": "Esta posición ya no está disponible. Vuelve a mis patrones y elige otra.",
     "insufficient_holdout_positions": "Hacen falta al menos dos posiciones distintas de tus partidas para practicar y hacer una comprobación independiente. Importa más partidas o actualiza el análisis.",
     "pattern_not_recurrent": "Todavía no hay evidencia suficiente para recomendar este patrón.",
-    "illegal_move": "Esa jugada no es legal. Elige otra."
+    "illegal_move": "Esa jugada no es legal. Elige otra.",
+    "invalid_reflection": "Escribe brevemente qué intentabas conseguir y cómo evaluabas la posición.",
+    "reflection_not_available": "Primero completa una decisión guiada antes de analizar tu razonamiento.",
+    "reflection_locked": "Esta decisión ya fue analizada. Conservamos la primera respuesta para no alterar la evidencia."
   },
   "catalog": {
     "piece-loss": {
@@ -117,6 +120,29 @@
     "retryDecision": "Reintentar esta decisión",
     "acceptableReference": "Tu jugada es válida. {{move}} es otra referencia verificada.",
     "compareReference": "Compárala con {{move}}, la referencia verificada en esta posición."
+  },
+  "pedagogy": {
+    "observed": "Veo {{errors}} errores en {{games}} partidas entre {{opportunities}} decisiones comparables.",
+    "unknown": "Eso confirma una repetición observable; todavía no explica por qué ocurre.",
+    "checking": "Quiero comprobar una hipótesis de la sesión anterior",
+    "stillTentative": "Sigue siendo provisional hasta que aparezca evidencia independiente en otras posiciones y partidas.",
+    "coachQuestion": "Quiero entender cómo estabas pensando",
+    "intentionLabel": "¿Qué intentabas conseguir con tu jugada?",
+    "evaluationLabel": "¿Cómo evaluabas la posición después de la respuesta que esperabas?",
+    "submit": "Analizar mi razonamiento",
+    "thinking": "Contrastando la evidencia…",
+    "explicitCost": "El análisis pedagógico usa una llamada acotada solo al pulsar este botón. No se repite automáticamente.",
+    "rulesFallback": "El modelo pedagógico no está configurado. Tu respuesta se conservará y recibirás una intervención basada en reglas.",
+    "workingHypothesis": "Hipótesis de trabajo",
+    "confidence": "Confianza: {{value}}. Todavía no es un diagnóstico.",
+    "confidenceValue": { "low": "baja", "medium": "media" },
+    "contrastTitle": "La diferencia que vamos a comprobar",
+    "worksWhen": "La idea funciona cuando:",
+    "failsWhen": "La idea falla cuando:",
+    "nextTest": "Siguiente comprobación",
+    "alternatives": "Otras explicaciones todavía posibles",
+    "llmSource": "Síntesis generada desde evidencia estructurada; las jugadas y variantes provienen del motor.",
+    "ruleSource": "Intervención provisional basada en reglas; no se hizo una inferencia del modelo."
   },
   "decision": {
     "title": "Vamos a entender tu decisión",

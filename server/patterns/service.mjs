@@ -1,4 +1,11 @@
 import { decisionCoaching } from "../../shared/patterns/decision-coaching.js";
+import {
+  applyHypothesisEvidence,
+  diagnosticQuestion,
+  fallbackPedagogy,
+  PEDAGOGY_VERSION,
+  validatePedagogyOutput,
+} from "../../shared/patterns/pedagogy.js";
 import { Chess } from "chess.js";
 import { randomUUID } from "node:crypto";
 import { PATTERN_VERSION, MAX_PERSONAL_GAMES, patternExists } from "../../shared/patterns/catalog.js";
@@ -25,6 +32,68 @@ export function selectPersonalGames(games) {
     .sort((a, b) => String(b.timing.startedAt ?? b.provenance.firstImportedAt).localeCompare(String(a.timing.startedAt ?? a.provenance.firstImportedAt)))
     .slice(0, MAX_PERSONAL_GAMES);
 }
+
+function sanFor(fen, uci) {
+  const move = playUci(new Chess(fen), uci);
+  return move?.san ?? null;
+}
+
+function compactFact(value) {
+  return Object.fromEntries(Object.entries(value).filter(([, item]) => item !== null && item !== undefined));
+}
+
+export function buildPedagogyPacket({ record, attempt, records, profile, answer }) {
+  const facts = [compactFact({
+    evidenceId: "current_decision", kind: "player_decision", fen: attempt.coaching.rootFen,
+    gameId: record.gameId, moveNumber: record.moveNumber, chosenSan: attempt.chosenSan,
+    resultStatus: attempt.status, playerExplanation: answer,
+  })];
+  if (attempt.prediction?.replyUci) facts.push(compactFact({
+    evidenceId: "anticipated_reply", kind: "player_prediction", san: attempt.coaching.predictedSan,
+    verifiedAsStrong: attempt.coaching.replyVerified,
+  }));
+  if (attempt.replySan) facts.push({ evidenceId: "engine_reply", kind: "engine_verified_reply", san: attempt.replySan });
+  if (attempt.referenceSan) facts.push({ evidenceId: "reference_move", kind: "engine_verified_reference", san: attempt.referenceSan });
+  facts.push({
+    evidenceId: "pattern_frequency", kind: "aggregate",
+    errors: profile?.errors ?? 0, games: profile?.games ?? 0, opportunities: profile?.opportunities ?? 0,
+    confidence: profile?.confidence ?? "insufficient",
+  });
+  const seenGames = new Set([record.gameId]);
+  const others = records.filter((row) => {
+    if (row.patternId !== record.patternId || row.exerciseId === record.exerciseId || seenGames.has(row.gameId)) return false;
+    seenGames.add(row.gameId); return true;
+  }).slice(0, 2);
+  others.forEach((row, index) => facts.push(compactFact({
+    evidenceId: `similar_error_${index + 1}`, kind: "similar_error", fen: row.fen,
+    gameId: row.gameId, moveNumber: row.moveNumber, playedSan: sanFor(row.fen, row.moveUci),
+    referenceSan: row.referenceSan, lossCp: row.loss,
+  })));
+  const contrastGames = new Set();
+  const contrasts = records.filter((row) => {
+    if (!row.opportunities.includes(record.patternId) || row.patternId === record.patternId || contrastGames.has(row.gameId)) return false;
+    contrastGames.add(row.gameId); return true;
+  }).slice(0, 2);
+  contrasts.forEach((row, index) => facts.push(compactFact({
+    evidenceId: `contrast_${index + 1}`, kind: "comparable_non_error", fen: row.fen,
+    gameId: row.gameId, moveNumber: row.moveNumber, playedSan: sanFor(row.fen, row.moveUci),
+    referenceSan: row.referenceSan,
+  })));
+  // A contrast needs at least two distinct verified facts. Current decision and reference/reply remain valid when no clean non-error exists.
+  return {
+    version: PEDAGOGY_VERSION,
+    pattern: { id: record.patternId, observableOnly: true },
+    question: diagnosticQuestion(attempt.coaching.intervention),
+    currentIntervention: attempt.coaching.intervention,
+    facts,
+  };
+}
+
+function fallbackEvidenceIds(packet) {
+  const ids = packet.facts.map((fact) => fact.evidenceId);
+  const contrast = packet.facts.find((fact) => fact.kind === "comparable_non_error")?.evidenceId;
+  return contrast ? ["current_decision", contrast, ...ids.filter((id) => !["current_decision", contrast].includes(id))] : ids;
+}
 export function gameDecisions(game) {
   const chess = new Chess(game.chess.startingFen), rows = [];
   const user = game.players.playerResolution.playerColor === "white" ? "w" : "b";
@@ -37,8 +106,9 @@ export function gameDecisions(game) {
   }
   return rows;
 }
-export function createPatternService({ store, gamesStore, evaluate, analyzerSignature, now = () => new Date().toISOString(), scheduleDelay = 500 }) {
+export function createPatternService({ store, gamesStore, evaluate, analyzerSignature, pedagogicalCoach = null, now = () => new Date().toISOString(), scheduleDelay = 500 }) {
   let task = null, timer = null, controller = null, dirty = false;
+  const reflectionTasks = new Map();
   function mutate(fn, changedKeys = []) { const state = store.read(); fn(state); store.write(state, changedKeys); return state; }
   function signature() { return analyzerSignature() ?? store.read().lastAnalyzerSignature ?? null; }
   function key(game, sig = signature()) { return hash([PATTERN_VERSION, sig, game.fingerprint, game.players.playerResolution.playerColor]); }
@@ -156,6 +226,20 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
     const session = exercise.sessionId ? sessionById(exercise.sessionId) : null;
     const sessionPositionTotal = session?.positionRecordIds?.length ?? null;
     const sessionShortfall = session?.sessionShortfall ?? false;
+    const state = store.read();
+    const attempt = exercise.lastAttemptId
+      ? [...state.attempts, ...(state.continuationAttempts ?? [])].find((row) => row.id === exercise.lastAttemptId)
+      : null;
+    const diagnostic = exercise.role !== "holdout" && attempt?.coaching ? {
+      question: diagnosticQuestion(attempt.coaching.intervention),
+      reflection: attempt.reflection?.result ?? null,
+      status: attempt.reflection?.status ?? "available",
+      source: attempt.reflection?.source ?? null,
+      llm: pedagogicalCoach?.status?.() ?? { enabled: false, configured: false, provider: null, model: null },
+    } : null;
+    const hypothesis = exercise.role === "holdout" ? null : [...(state.hypotheses ?? [])].reverse().find((row) => row.patternId === record.patternId) ?? null;
+    const profile = buildPatternProfile(rows(), state.attempts, state.exposures, Date.parse(now()), state.patternDomains ?? {})
+      .find((row) => row.id === record.patternId);
     return { id: exercise.id, positionId: record.exerciseId, patternId: record.patternId, fen, originalFen: record.fen, color: record.fen.split(" ")[1] === "w" ? "white" : "black",
       gameId: record.gameId, moveNumber: record.moveNumber, assisted: exercise.assisted,
       completed: status === "completed", repeated: exercise.repeated, role: exercise.role ?? "legacy", status,
@@ -165,8 +249,9 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
       canAdvanceSlot: status === "ready_for_next_slot",
       sessionId: exercise.sessionId ?? null, slotIndex: exercise.slotIndex ?? null,
       sessionPositionTotal, sessionPositionCurrent: exercise.slotIndex != null ? exercise.slotIndex + 1 : null,
-      sessionShortfall,
-      coachingHistory: exercise.role === "holdout" ? [] : store.read().attempts.filter(a => a.patternId === record.patternId && a.coaching && !a.assisted)
+      sessionShortfall, diagnostic, hypothesis,
+      evidenceSummary: exercise.role === "holdout" ? null : { errors: profile?.errors ?? 0, games: profile?.games ?? 0, opportunities: profile?.opportunities ?? 0, confidence: profile?.confidence ?? "insufficient" },
+      coachingHistory: exercise.role === "holdout" ? [] : state.attempts.filter(a => a.patternId === record.patternId && a.coaching && !a.assisted)
         .slice(-5).map(a => ({ intervention: a.coaching.intervention, at: a.at, gameId: a.gameId })) };
   }
   function createExercise(patternId, record, { role = "guided", parentId = null, sessionId = null, slotIndex = null } = {}) {
@@ -214,7 +299,8 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
     const feedback = exercise.lastAttemptId
       ? [...state.attempts, ...(state.continuationAttempts ?? [])].find(a => a.id === exercise.lastAttemptId)
       : null;
-    return { ...practiceDto(exercise, assertRecord(exercise)), feedback };
+    const dto = practiceDto(exercise, assertRecord(exercise));
+    return { ...dto, feedback: feedback ? { ...feedback, diagnostic: dto.diagnostic } : null };
   }
   function reveal(id, kind = "hint") {
     const exercise = exerciseById(id), record = assertRecord(exercise);
@@ -301,6 +387,17 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
       targetExercise.currentFen = chess.fen(); targetExercise.decisionCount = nextCount;
       targetExercise.lastRootFen = rootFen;
       targetExercise.status = nextStatus; targetExercise.awaitingNext = canContinue; targetExercise.lastAttemptId = attempt.id;
+      if (latest.role !== "holdout" && firstDecision) {
+        const hypothesisIndex = [...(s.hypotheses ?? [])].map((row) => row.patternId).lastIndexOf(latest.patternId);
+        const hypothesis = hypothesisIndex >= 0 ? s.hypotheses[hypothesisIndex] : null;
+        if (hypothesis && hypothesis.sourceAttemptId !== attempt.id) {
+          const success = ["verified_best", "verified_acceptable"].includes(attempt.status);
+          s.hypotheses[hypothesisIndex] = applyHypothesisEvidence(hypothesis, {
+            id: `practice:${attempt.id}`, source: "practice", direction: success ? "support" : "contradict",
+            at: attempt.at, exerciseId: attempt.exerciseId,
+          });
+        }
+      }
       if (latest.role === "holdout") {
         if (latest.sessionId) {
           const holdoutSession = s.practiceSessions.find(row => row.id === latest.sessionId);
@@ -319,6 +416,14 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
             if (!completion.duplicate) {
               attempt.sessionResult = completion.result;
               attempt.nextActivity = buildNextActivity(s, completion.result);
+              const hypothesisIndex = [...(s.hypotheses ?? [])].map((row) => row.patternId).lastIndexOf(latest.patternId);
+              if (hypothesisIndex >= 0) {
+                const success = ["verified_best", "verified_acceptable"].includes(attempt.status);
+                s.hypotheses[hypothesisIndex] = applyHypothesisEvidence(s.hypotheses[hypothesisIndex], {
+                  id: `holdout:${attempt.id}`, source: "holdout", direction: success ? "support" : "contradict",
+                  at: attempt.at, exerciseId: attempt.exerciseId,
+                });
+              }
             }
           }
         } else {
@@ -344,7 +449,90 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
         }
       }
     });
+    return exerciseView(id).feedback;
+  }
+
+  function reflectionAttempt(exercise) {
+    const state = store.read();
+    const attempt = [...state.attempts, ...(state.continuationAttempts ?? [])].find((row) => row.id === exercise.lastAttemptId);
+    if (!attempt?.coaching || exercise.role === "holdout") throw new Error("reflection_not_available");
     return attempt;
+  }
+
+  function normalizeReflectionText(value) {
+    return typeof value === "string" ? value.replace(/[\u0000-\u001f\u007f]/g, " ").replace(/\s+/g, " ").trim() : "";
+  }
+
+  async function reflect(id, input) {
+    const exercise = exerciseById(id);
+    const attempt = reflectionAttempt(exercise);
+    const answer = {
+      intention: normalizeReflectionText(input?.intention),
+      evaluation: normalizeReflectionText(input?.evaluation),
+    };
+    if (answer.intention.length < 2 || answer.intention.length > 800 || answer.evaluation.length < 2 || answer.evaluation.length > 800) {
+      throw new Error("invalid_reflection");
+    }
+    const requestDigest = hash([attempt.id, answer]);
+    if (attempt.reflection?.result) {
+      if (attempt.reflection.requestDigest !== requestDigest) throw new Error("reflection_locked");
+      return attempt.reflection.result;
+    }
+    if (reflectionTasks.has(attempt.id)) {
+      if (attempt.reflection?.requestDigest && attempt.reflection.requestDigest !== requestDigest) throw new Error("reflection_locked");
+      return reflectionTasks.get(attempt.id);
+    }
+    const work = (async () => {
+      const live = reflectionAttempt(exerciseById(id));
+      if (live.reflection?.status === "pending") {
+        const packet = buildPedagogyPacket({ record: assertRecord(exercise), attempt: live, records: rows(), profile: summary().patterns.find((row) => row.id === live.patternId), answer });
+        return saveReflection(live, packet, fallbackPedagogy({ intervention: live.coaching.intervention, evidenceIds: fallbackEvidenceIds(packet) }), "rules", { reason: "interrupted_request" });
+      }
+      mutate((state) => {
+        const target = [...state.attempts, ...(state.continuationAttempts ?? [])].find((row) => row.id === attempt.id);
+        target.reflection = { status: "pending", requestDigest, requestedAt: now() };
+      });
+      const packet = buildPedagogyPacket({ record: assertRecord(exercise), attempt, records: rows(), profile: summary().patterns.find((row) => row.id === attempt.patternId), answer });
+      let output; let source = "rules"; let meta = { reason: "llm_disabled" };
+      if (pedagogicalCoach?.status?.().configured) {
+        try {
+          const generated = await pedagogicalCoach.generate(packet);
+          output = validatePedagogyOutput(generated.output, packet.facts);
+          source = "llm"; meta = generated.meta;
+        } catch {
+          meta = { reason: "coach_llm_failed" };
+        }
+      }
+      output ??= fallbackPedagogy({ intervention: attempt.coaching.intervention, evidenceIds: fallbackEvidenceIds(packet) });
+      return saveReflection(attempt, packet, output, source, meta);
+    })().finally(() => reflectionTasks.delete(attempt.id));
+    reflectionTasks.set(attempt.id, work);
+    return work;
+  }
+
+  function saveReflection(attempt, packet, output, source, meta) {
+    assertRecord(exerciseById(attempt.exerciseId));
+    const result = {
+      id: randomUUID(), version: PEDAGOGY_VERSION, question: packet.question,
+      answer: packet.facts[0].playerExplanation, source, generatedAt: now(), output,
+      sources: packet.facts.filter((fact) => fact.gameId).map((fact) => ({ evidenceId: fact.evidenceId, gameId: fact.gameId, moveNumber: fact.moveNumber })),
+      meta,
+    };
+    mutate((state) => {
+      const target = [...state.attempts, ...(state.continuationAttempts ?? [])].find((row) => row.id === attempt.id);
+      if (!target) throw new Error("exercise_unavailable");
+      target.reflection = { ...target.reflection, status: "completed", source, completedAt: result.generatedAt, result };
+      state.hypotheses ??= [];
+      state.hypotheses.push({
+        id: result.id, patternId: attempt.patternId, category: output.primaryHypothesis.category,
+        statement: output.primaryHypothesis.statement, alternatives: output.alternativeHypotheses,
+        confidence: "low", status: "tentative", createdAt: result.generatedAt, updatedAt: result.generatedAt,
+        sourceAttemptId: attempt.id, intervention: output.nextTest.skill,
+        nextTest: output.nextTest, teachingObjective: output.teaching.objective,
+        observations: [{ id: `reflection:${result.id}`, source: "practice", direction: "support", at: result.generatedAt, exerciseId: attempt.exerciseId }],
+      });
+    });
+    return result;
   }
   function buildNextActivity(state, sessionResult) {
     const summaryData = summary();
@@ -481,7 +669,7 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
       .sort((a, b) => b.startedAt.localeCompare(a.startedAt))[0];
     return exercise ? practiceDto(exercise, available.get(exercise.recordId)) : null;
   }
-  return { summary, update, schedule, startPractice, exerciseView, reveal, submit, advance, advanceSlot, retryDecision, startHoldout, activePractice, sessionView,
+  return { summary, update, schedule, startPractice, exerciseView, reveal, submit, reflect, advance, advanceSlot, retryDecision, startHoldout, activePractice, sessionView,
     cancel() { dirty = false; if (timer) { clearTimeout(timer); timer = null; } controller?.abort(); },
     async wait() { if (timer) return update(); return task ?? summary(); } };
 }
