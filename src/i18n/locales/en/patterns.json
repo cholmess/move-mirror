@@ -48,7 +48,10 @@
     "exercise_unavailable": "This position is no longer available. Return to your patterns and choose another.",
     "insufficient_holdout_positions": "We need at least two different positions from your games to practice and run an independent check. Import more games or update analysis.",
     "pattern_not_recurrent": "There is not enough evidence to recommend this pattern yet.",
-    "illegal_move": "That move is illegal. Choose another."
+    "illegal_move": "That move is illegal. Choose another.",
+    "invalid_reflection": "Briefly describe what you were trying to achieve and how you evaluated the position.",
+    "reflection_not_available": "Complete a guided decision before analysing your reasoning.",
+    "reflection_locked": "This decision has already been analysed. We keep the first answer to preserve the evidence."
   },
   "catalog": {
     "piece-loss": {
@@ -117,5 +120,77 @@
     "retryDecision": "Retry this decision",
     "acceptableReference": "Your move is valid. {{move}} is another verified reference.",
     "compareReference": "Compare it with {{move}}, the verified reference in this position."
+  },
+  "pedagogy": {
+    "observed": "I see {{errors}} errors in {{games}} games among {{opportunities}} comparable decisions.",
+    "unknown": "That confirms an observable recurrence; it does not yet explain why it happens.",
+    "checking": "I want to test a hypothesis from the previous session",
+    "stillTentative": "It remains tentative until independent evidence appears in other positions and games.",
+    "coachQuestion": "I want to understand how you were thinking",
+    "intentionLabel": "What were you trying to achieve with your move?",
+    "evaluationLabel": "How did you evaluate the position after the reply you expected?",
+    "submit": "Analyse my reasoning",
+    "thinking": "Comparing the evidence…",
+    "explicitCost": "Pedagogical analysis uses one bounded call only when you press this button. It is not repeated automatically.",
+    "rulesFallback": "The pedagogical model is not configured. Your answer will be saved and you will receive a rule-based intervention.",
+    "workingHypothesis": "Working hypothesis",
+    "confidence": "Confidence: {{value}}. This is not yet a diagnosis.",
+    "confidenceValue": { "low": "low", "medium": "medium" },
+    "contrastTitle": "The difference we will test",
+    "worksWhen": "The idea works when:",
+    "failsWhen": "The idea fails when:",
+    "nextTest": "Next check",
+    "alternatives": "Other explanations that remain possible",
+    "llmSource": "Synthesised from structured evidence; moves and variations come from the engine.",
+    "ruleSource": "Provisional rule-based intervention; no model inference was made."
+  },
+  "decision": {
+    "title": "Let’s understand your decision",
+    "intro": "Decide without hints first. Then we will examine the reply you expected and what to work on.",
+    "choose": "Choose your move on the board.",
+    "replyPrompt": "You chose {{move}}. Now play the opponent’s pieces: what is their strongest response?",
+    "prediction": "Your prediction: {{move}} → {{reply}}.",
+    "change": "Change my decision",
+    "confirm": "Confirm and analyse",
+    "unsure": "I cannot find a response",
+    "hypothesis": "This is one observation, not a confirmed cause of your mistakes. We will check it in other positions.",
+    "afterMine": "After my move",
+    "afterReply": "After the opponent’s reply",
+    "reference": "Compare with {{move}}",
+    "memory": "We retain {{count}} recent decisions on this topic to compare your approach.",
+    "followup": {
+      "search": "Check what the opponent can do this time.",
+      "compare": "Look beyond the first reply you notice.",
+      "evaluate": "At the end of your calculation, decide who benefits.",
+      "uncertain": "Your prediction has not yet been verified.",
+      "reinforce": "Try to sustain your approach without help here."
+    },
+    "intervention": {
+      "search": {
+        "title": "Let’s work on finding replies",
+        "body": "You proposed no response and your move lost value. The opponent has {{actual}}.",
+        "task": "Return to “After my move”. Look for checks, captures and threats. Then inspect the reply and retry your decision."
+      },
+      "compare": {
+        "title": "Your prediction missed a stronger defence",
+        "body": "You expected {{predicted}}. The engine verified that this reply concedes more than a strong defence; here it suggests {{actual}}.",
+        "task": "Compare the position after your move with the opponent’s reply. Identify what changes and retry with a candidate that withstands that defence."
+      },
+      "evaluate": {
+        "title": "You saw a strong reply; let’s examine its consequences",
+        "body": "Your predicted {{predicted}} is a strong, valid response according to the engine, but your initial move loses value.",
+        "task": "Reconstruct your calculation. Compare material, king safety and activity at the end. Compare your candidate with the reference and retry: which consequence did you value differently?"
+      },
+      "uncertain": {
+        "title": "We cannot yet explain the difference",
+        "body": "Your move was verified, but the strength of your predicted response could not be verified.",
+        "task": "Inspect the opponent’s reply and compare it with your prediction. We will not attribute a cause without that check."
+      },
+      "reinforce": {
+        "title": "Your decision keeps a valid continuation",
+        "body": "This time you chose a valid move. That does not yet demonstrate mastery.",
+        "task": "Continue the position. Keep considering the opponent’s response even when the plan changes."
+      }
+    }
   }
 }

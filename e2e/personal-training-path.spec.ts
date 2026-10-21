@@ -63,9 +63,10 @@ test("guided decisions lead to an unlabeled independent holdout on mobile", asyn
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/practice/guided");
-  await expect(page.getByTestId("pattern-teaching")).toContainText("jaques, capturas y amenazas");
+  await expect(page.getByTestId("pattern-teaching")).toHaveCount(0);
   await page.getByTestId("play-board").locator('[data-square="e2"]').click();
   await page.getByTestId("play-board").locator('[data-square="e4"]').click();
+  await page.getByRole("button", {name:"No encuentro una respuesta"}).click();
   await expect(page.getByTestId("personal-feedback")).toBeVisible();
   await page.getByTestId("practice-retry-decision").click();
   await expect(page.getByText("Decisión 1 de 3")).toBeVisible();

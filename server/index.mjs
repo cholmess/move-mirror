@@ -25,6 +25,7 @@ import { createCoachStore } from "./coach/store.mjs";
 import { createPatternStore } from "./patterns/store.mjs";
 import { createPatternService } from "./patterns/service.mjs";
 import { createPatternRouter } from "./patterns/routes.mjs";
+import { createOpenAIPedagogicalCoach } from "./patterns/pedagogical-coach.mjs";
 import { createCoachService } from "./coach/service.mjs";
 import { createCoachRouter } from "./coach/routes.mjs";
 
@@ -267,6 +268,7 @@ const patternService = createPatternService({
   gamesStore,
   evaluate: (body, signal) => handleEvaluate(body, signal),
   analyzerSignature: () => engineAvailable && engine ? `${engine.engineVersion}:${engine.engineSha256}:eval-pipeline-v0.2.2` : null,
+  pedagogicalCoach: createOpenAIPedagogicalCoach(),
 });
 const handlePatterns = createPatternRouter(patternService);
 const handleGames = createGamesRouter({

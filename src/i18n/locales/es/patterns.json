@@ -48,7 +48,10 @@
     "exercise_unavailable": "Esta posición ya no está disponible. Vuelve a mis patrones y elige otra.",
     "insufficient_holdout_positions": "Hacen falta al menos dos posiciones distintas de tus partidas para practicar y hacer una comprobación independiente. Importa más partidas o actualiza el análisis.",
     "pattern_not_recurrent": "Todavía no hay evidencia suficiente para recomendar este patrón.",
-    "illegal_move": "Esa jugada no es legal. Elige otra."
+    "illegal_move": "Esa jugada no es legal. Elige otra.",
+    "invalid_reflection": "Escribe brevemente qué intentabas conseguir y cómo evaluabas la posición.",
+    "reflection_not_available": "Primero completa una decisión guiada antes de analizar tu razonamiento.",
+    "reflection_locked": "Esta decisión ya fue analizada. Conservamos la primera respuesta para no alterar la evidencia."
   },
   "catalog": {
     "piece-loss": {
@@ -117,5 +120,77 @@
     "retryDecision": "Reintentar esta decisión",
     "acceptableReference": "Tu jugada es válida. {{move}} es otra referencia verificada.",
     "compareReference": "Compárala con {{move}}, la referencia verificada en esta posición."
+  },
+  "pedagogy": {
+    "observed": "Veo {{errors}} errores en {{games}} partidas entre {{opportunities}} decisiones comparables.",
+    "unknown": "Eso confirma una repetición observable; todavía no explica por qué ocurre.",
+    "checking": "Quiero comprobar una hipótesis de la sesión anterior",
+    "stillTentative": "Sigue siendo provisional hasta que aparezca evidencia independiente en otras posiciones y partidas.",
+    "coachQuestion": "Quiero entender cómo estabas pensando",
+    "intentionLabel": "¿Qué intentabas conseguir con tu jugada?",
+    "evaluationLabel": "¿Cómo evaluabas la posición después de la respuesta que esperabas?",
+    "submit": "Analizar mi razonamiento",
+    "thinking": "Contrastando la evidencia…",
+    "explicitCost": "El análisis pedagógico usa una llamada acotada solo al pulsar este botón. No se repite automáticamente.",
+    "rulesFallback": "El modelo pedagógico no está configurado. Tu respuesta se conservará y recibirás una intervención basada en reglas.",
+    "workingHypothesis": "Hipótesis de trabajo",
+    "confidence": "Confianza: {{value}}. Todavía no es un diagnóstico.",
+    "confidenceValue": { "low": "baja", "medium": "media" },
+    "contrastTitle": "La diferencia que vamos a comprobar",
+    "worksWhen": "La idea funciona cuando:",
+    "failsWhen": "La idea falla cuando:",
+    "nextTest": "Siguiente comprobación",
+    "alternatives": "Otras explicaciones todavía posibles",
+    "llmSource": "Síntesis generada desde evidencia estructurada; las jugadas y variantes provienen del motor.",
+    "ruleSource": "Intervención provisional basada en reglas; no se hizo una inferencia del modelo."
+  },
+  "decision": {
+    "title": "Vamos a entender tu decisión",
+    "intro": "Primero decide sin pistas. Después veremos qué esperabas del rival y qué conviene trabajar.",
+    "choose": "Elige tu jugada en el tablero.",
+    "replyPrompt": "Has elegido {{move}}. Ahora juega con las piezas del rival: ¿cuál sería su respuesta más exigente?",
+    "prediction": "Tu previsión: {{move}} → {{reply}}.",
+    "change": "Cambiar mi decisión",
+    "confirm": "Confirmar y analizar",
+    "unsure": "No encuentro una respuesta",
+    "hypothesis": "Es una observación de esta decisión, no una causa confirmada de tus errores. La contrastaremos en otras posiciones.",
+    "afterMine": "Después de mi jugada",
+    "afterReply": "Después de la respuesta rival",
+    "reference": "Comparar con {{move}}",
+    "memory": "Conservamos {{count}} decisiones recientes de este tema para contrastar cómo lo resuelves.",
+    "followup": {
+      "search": "Comprueba esta vez qué puede hacer el rival.",
+      "compare": "Busca también una respuesta distinta de la primera que veas.",
+      "evaluate": "Al terminar tu cálculo, decide a quién favorece la posición.",
+      "uncertain": "Todavía no pudimos verificar tu previsión.",
+      "reinforce": "Intenta sostener el criterio sin ayuda en esta posición."
+    },
+    "intervention": {
+      "search": {
+        "title": "Trabajemos la búsqueda de respuestas",
+        "body": "No propusiste una respuesta y tu jugada perdió valor. El rival dispone de {{actual}}.",
+        "task": "Vuelve a «Después de mi jugada». Busca jaques, capturas y amenazas del rival. Luego mira su respuesta y reintenta la decisión."
+      },
+      "compare": {
+        "title": "Tu previsión dejó fuera una defensa más fuerte",
+        "body": "Esperabas {{predicted}}. El motor verificó que esa respuesta concede más que una defensa fuerte; aquí propone {{actual}}.",
+        "task": "Compara la posición después de tu jugada con la respuesta rival. Identifica qué cambia y reintenta buscando una candidata que resista esa defensa."
+      },
+      "evaluate": {
+        "title": "Viste una respuesta fuerte; revisemos las consecuencias",
+        "body": "Tu previsión {{predicted}} es una respuesta válida y fuerte según el motor, pero tu jugada inicial pierde valor.",
+        "task": "Reconstruye tu cálculo. Al final, compara material, seguridad de los reyes y actividad. Contrasta tu candidata con la referencia y reintenta: ¿qué consecuencia habías valorado distinto?"
+      },
+      "uncertain": {
+        "title": "Aún no podemos explicar la diferencia",
+        "body": "Tu jugada fue verificada, pero no pudimos verificar la fuerza de la respuesta que esperabas.",
+        "task": "Revisa la respuesta rival y compárala con tu previsión. No atribuiremos el error a una causa sin esa comprobación."
+      },
+      "reinforce": {
+        "title": "Tu decisión conserva una continuación válida",
+        "body": "Esta vez elegiste una jugada válida. Eso no demuestra todavía que hayas dominado el tema.",
+        "task": "Continúa la posición. Intenta mantener el mismo cuidado al considerar la respuesta rival, incluso cuando cambie el plan."
+      }
+    }
   }
 }
