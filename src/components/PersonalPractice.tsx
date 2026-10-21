@@ -195,6 +195,15 @@ export function PersonalPractice() {
           <p className="muted">{t("pedagogy.stillTentative")}</p>
         </section>
       )}
+      {!holdout && exercise.probe && (
+        <section className="callout" data-testid="hypothesis-probe">
+          <strong>{t("probe.title")}</strong>
+          <p>{t("probe.testing", { target: t(`probe.category.${exercise.probe.targetCategory}`) })}</p>
+          {!!exercise.probe.comparedCategories.length && <p>{t("probe.comparing", { alternatives: exercise.probe.comparedCategories.map((category) => t(`probe.category.${category}`)).join(", ") })}</p>}
+          {!!exercise.probe.selectionReasons.length && <ul>{exercise.probe.selectionReasons.map((reason) => <li key={reason}>{t(`probe.reason.${reason}`)}</li>)}</ul>}
+          {exercise.probe.measurability === "partial" && <p className="muted">{t("probe.partial")}</p>}
+        </section>
+      )}
       {!holdout && (hint || demo || (feedback && !feedback.coaching)) && (
         <section className="callout" data-testid="pattern-teaching">
           <strong>{t("path.ruleLabel")}</strong>

@@ -152,6 +152,30 @@
     "llmSource": "Síntesis generada desde evidencia estructurada; las jugadas y variantes provienen del motor.",
     "ruleSource": "Intervención provisional basada en reglas; no se hizo una inferencia del modelo."
   },
+  "probe": {
+    "title": "Por qué elegí esta posición",
+    "testing": "Esta posición pone a prueba: {{target}}.",
+    "comparing": "La contrastaremos con estas explicaciones alternativas: {{alternatives}}.",
+    "partial": "Con la interacción actual solo podemos observar esta causa parcialmente; no la confirmaremos sin evidencia adicional.",
+    "category": {
+      "reply_search": "búsqueda de respuestas rivales",
+      "candidate_comparison": "comparación de candidatas y defensas",
+      "calculation_depth": "profundidad de cálculo",
+      "consequence_evaluation": "evaluación de las consecuencias",
+      "concept_recognition": "reconocimiento del concepto",
+      "strategic_planning": "planificación estratégica",
+      "insufficient_evidence": "falta de evidencia suficiente"
+    },
+    "reason": {
+      "novel": "Aún no habías entrenado esta posición.",
+      "hasReply": "Existe una respuesta rival verificada para contrastar tu previsión.",
+      "forcingReply": "La respuesta rival es forzante.",
+      "longLine": "La referencia verificada exige mirar más de una respuesta.",
+      "severeLoss": "La decisión tuvo un impacto relevante en la evaluación.",
+      "closed": "La estructura cerrada permite observar cómo elaboras un plan.",
+      "endgame": "La posición permite observar decisiones de final."
+    }
+  },
   "decision": {
     "title": "Vamos a entender tu decisión",
     "intro": "Primero decide sin pistas. Después veremos qué esperabas del rival y qué conviene trabajar.",

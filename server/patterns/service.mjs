@@ -6,6 +6,7 @@ import {
   PEDAGOGY_VERSION,
   validatePedagogyOutput,
 } from "../../shared/patterns/pedagogy.js";
+import { classifyProbeObservation, planHypothesisProbe } from "../../shared/patterns/probe-selection.js";
 import { Chess } from "chess.js";
 import { randomUUID } from "node:crypto";
 import { PATTERN_VERSION, MAX_PERSONAL_GAMES, patternExists } from "../../shared/patterns/catalog.js";
@@ -238,6 +239,16 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
       llm: pedagogicalCoach?.status?.() ?? { enabled: false, configured: false, provider: null, model: null },
     } : null;
     const hypothesis = exercise.role === "holdout" ? null : [...(state.hypotheses ?? [])].reverse().find((row) => row.patternId === record.patternId) ?? null;
+    const probeSlot = exercise.role === "holdout" ? null : session?.probePlan?.slots?.find((row) => row.recordId === record.exerciseId) ?? null;
+    const probe = probeSlot ? {
+      version: session.probePlan.version,
+      hypothesisId: session.probePlan.hypothesisId,
+      targetCategory: probeSlot.targetCategory,
+      comparedCategories: [session.probePlan.primaryCategory, ...(session.probePlan.alternativeCategories ?? [])]
+        .filter((category, index, list) => category !== probeSlot.targetCategory && list.indexOf(category) === index),
+      selectionReasons: probeSlot.selectionReasons,
+      measurability: probeSlot.measurability,
+    } : null;
     const profile = buildPatternProfile(rows(), state.attempts, state.exposures, Date.parse(now()), state.patternDomains ?? {})
       .find((row) => row.id === record.patternId);
     return { id: exercise.id, positionId: record.exerciseId, patternId: record.patternId, fen, originalFen: record.fen, color: record.fen.split(" ")[1] === "w" ? "white" : "black",
@@ -249,7 +260,7 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
       canAdvanceSlot: status === "ready_for_next_slot",
       sessionId: exercise.sessionId ?? null, slotIndex: exercise.slotIndex ?? null,
       sessionPositionTotal, sessionPositionCurrent: exercise.slotIndex != null ? exercise.slotIndex + 1 : null,
-      sessionShortfall, diagnostic, hypothesis,
+      sessionShortfall, diagnostic, hypothesis, probe,
       evidenceSummary: exercise.role === "holdout" ? null : { errors: profile?.errors ?? 0, games: profile?.games ?? 0, opportunities: profile?.opportunities ?? 0, confidence: profile?.confidence ?? "insufficient" },
       coachingHistory: exercise.role === "holdout" ? [] : state.attempts.filter(a => a.patternId === record.patternId && a.coaching && !a.assisted)
         .slice(-5).map(a => ({ intervention: a.coaching.intervention, at: a.at, gameId: a.gameId })) };
@@ -272,13 +283,16 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
     const candidates = rows().filter(r => r.patternId === patternId);
     const layout = planSessionLayout(candidates, state.exposures);
     if (!layout.ok) throw new Error(layout.error);
-    const sessionPlan = orderGuidedPlan(layout.guided, preferredId);
+    const hypothesis = [...(state.hypotheses ?? [])].reverse().find((row) => row.patternId === patternId) ?? null;
+    const probe = planHypothesisProbe(layout.guided, hypothesis, state.exposures);
+    const sessionPlan = orderGuidedPlan(probe.ordered, preferredId);
     const session = createPracticeSession(patternId, sessionPlan.map(r => r.exerciseId), {
       contentVersion: PATTERN_VERSION,
       detectorVersion: signature(),
       at: now(),
       reservedHoldoutRecordId: layout.holdout.exerciseId,
       sessionShortfall: layout.sessionShortfall,
+      probePlan: probe.plan,
     });
     session.guidedExerciseIds = [];
     mutate(s => { s.practiceSessions.push(session); });
@@ -402,11 +416,16 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
         const hypothesisIndex = [...(s.hypotheses ?? [])].map((row) => row.patternId).lastIndexOf(latest.patternId);
         const hypothesis = hypothesisIndex >= 0 ? s.hypotheses[hypothesisIndex] : null;
         if (hypothesis && hypothesis.sourceAttemptId !== attempt.id) {
-          const success = ["verified_best", "verified_acceptable"].includes(attempt.status);
-          s.hypotheses[hypothesisIndex] = applyHypothesisEvidence(hypothesis, {
-            id: `practice:${attempt.id}`, source: "practice", direction: success ? "support" : "contradict",
-            at: attempt.at, exerciseId: attempt.exerciseId,
-          });
+          const probeSlot = session?.probePlan?.slots?.find((row) => row.recordId === record.exerciseId) ?? null;
+          const observation = classifyProbeObservation(attempt, hypothesis, probeSlot);
+          attempt.probeObservation = observation;
+          if (observation) {
+            s.hypotheses[hypothesisIndex] = applyHypothesisEvidence(hypothesis, {
+              id: `practice-probe:${attempt.id}`, source: "practice_probe", direction: observation.direction,
+              at: attempt.at, exerciseId: attempt.exerciseId, expectedCategory: observation.expectedCategory,
+              observedCategory: observation.observedCategory, measurability: observation.measurability,
+            });
+          }
         }
       }
       if (latest.role === "holdout") {
@@ -431,8 +450,8 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
               if (hypothesisIndex >= 0) {
                 const success = ["verified_best", "verified_acceptable"].includes(attempt.status);
                 s.hypotheses[hypothesisIndex] = applyHypothesisEvidence(s.hypotheses[hypothesisIndex], {
-                  id: `holdout:${attempt.id}`, source: "holdout", direction: success ? "support" : "contradict",
-                  at: attempt.at, exerciseId: attempt.exerciseId,
+                  id: `holdout:${attempt.id}`, source: "holdout", direction: "inconclusive",
+                  at: attempt.at, exerciseId: attempt.exerciseId, skillOutcome: success ? "success" : "failure",
                 });
               }
             }
