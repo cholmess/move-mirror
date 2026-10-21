@@ -100,13 +100,16 @@ export function PersonalPractice() {
   const lock = useRef(false);
   const [candidate, setCandidate] = useState<{ uci: string; san: string; fen: string } | null>(null);
   const [prediction, setPrediction] = useState<{ uci: string; san: string } | null>(null);
+  const [noReply, setNoReply] = useState(false);
   const [intention, setIntention] = useState("");
   const [positionEvaluation, setPositionEvaluation] = useState("");
+  const [decisionConfidence, setDecisionConfidence] = useState<"" | "low" | "medium" | "high">("");
   useEffect(() => {
     let live = true;
     setExercise(null);
-    setCandidate(null); setPrediction(null);
+    setCandidate(null); setPrediction(null); setNoReply(false);
     setIntention(""); setPositionEvaluation("");
+    setDecisionConfidence("");
     setFeedback(null);
     setHint(false);
     setDemo(false);
@@ -133,8 +136,11 @@ export function PersonalPractice() {
   function submitDecision(uci: string, expected?: { replyUci: string | null }) {
     if (!exercise) return;
     void action(async () => {
-      const result = await submitPersonalMove(exercise.id, uci, expected);
-      setCandidate(null); setPrediction(null);
+      const reasoning = exercise.role === "holdout" ? undefined : {
+        intention: intention.trim(), evaluation: positionEvaluation.trim(), confidence: decisionConfidence as "low" | "medium" | "high",
+      };
+      const result = await submitPersonalMove(exercise.id, uci, expected, reasoning);
+      setCandidate(null); setPrediction(null); setNoReply(false);
       setFeedback(result);
       setFen(result.resultingFen);
       setExercise((current) => current ? {
@@ -148,7 +154,7 @@ export function PersonalPractice() {
     });
   }
   function play(from: string, to: string, promotion?: string) {
-    if (!exercise || lock.current || feedback || demo || exercise.completed || prediction) return false;
+    if (!exercise || lock.current || feedback || demo || exercise.completed || prediction || noReply) return false;
     const uci = `${from}${to}${promotion ?? ""}`;
     if (exercise.role === "holdout") { submitDecision(uci); return true; }
     const board = new Chess(fen);
@@ -203,15 +209,37 @@ export function PersonalPractice() {
       <p className="muted">{sessionProgress}</p>
       {(!holdout || feedback) && <Link to={`/games/${exercise.gameId}`}>{t("source", { move: exercise.moveNumber })}</Link>}
       <div className="train-grid">
-        <section className="card board-panel"><PlayBoard fen={fen} orientation={exercise.color} disabled={busy || !!feedback || demo || exercise.completed || !!prediction} onMove={play} /></section>
+        <section className="card board-panel"><PlayBoard fen={fen} orientation={exercise.color} disabled={busy || !!feedback || demo || exercise.completed || !!prediction || noReply} onMove={play} /></section>
         <aside className="card" aria-live="polite">
           {!feedback && !demo && <p>{busy ? t("checking") : holdout ? t("path.holdoutPrompt") : candidate ? t("decision.replyPrompt", { move: candidate.san }) : t("decision.choose")}</p>}
           {candidate && !feedback && <section data-testid="decision-prediction">
             {prediction && <p>{t("decision.prediction", { move: candidate.san, reply: prediction.san })}</p>}
+            {noReply && <p>{t("pedagogy.noReplyRecorded")}</p>}
+            {(prediction || noReply || new Chess(candidate.fen).isGameOver()) && !holdout && <div data-testid="pre-feedback-reasoning">
+              <p><strong>{t("pedagogy.beforeFeedbackTitle")}</strong></p>
+              <p className="muted">{t("pedagogy.beforeFeedbackNote")}</p>
+              <label>
+                {t("pedagogy.intentionLabel")}
+                <textarea className="textarea" value={intention} maxLength={800} disabled={busy} onChange={(event) => setIntention(event.target.value)} />
+              </label>
+              <label>
+                {t("pedagogy.evaluationLabel")}
+                <textarea className="textarea" value={positionEvaluation} maxLength={800} disabled={busy} onChange={(event) => setPositionEvaluation(event.target.value)} />
+              </label>
+              <label>
+                {t("pedagogy.decisionConfidenceLabel")}
+                <select value={decisionConfidence} disabled={busy} onChange={(event) => setDecisionConfidence(event.target.value as typeof decisionConfidence)}>
+                  <option value="">{t("pedagogy.selectConfidence")}</option>
+                  <option value="low">{t("pedagogy.decisionConfidence.low")}</option>
+                  <option value="medium">{t("pedagogy.decisionConfidence.medium")}</option>
+                  <option value="high">{t("pedagogy.decisionConfidence.high")}</option>
+                </select>
+              </label>
+            </div>}
             <div className="actions">
-              <button className="btn" disabled={busy} onClick={() => { setFen(exercise.fen); setCandidate(null); setPrediction(null); }}>{t("decision.change")}</button>
-              {(prediction || new Chess(candidate.fen).isGameOver()) && <button className="btn primary" disabled={busy} onClick={() => submitDecision(candidate.uci, { replyUci: prediction?.uci ?? null })}>{t("decision.confirm")}</button>}
-              {!prediction && !new Chess(candidate.fen).isGameOver() && <button className="btn" disabled={busy} onClick={() => submitDecision(candidate.uci, { replyUci: null })}>{t("decision.unsure")}</button>}
+              <button className="btn" disabled={busy} onClick={() => { setFen(exercise.fen); setCandidate(null); setPrediction(null); setNoReply(false); setIntention(""); setPositionEvaluation(""); setDecisionConfidence(""); }}>{t("decision.change")}</button>
+              {(prediction || noReply || new Chess(candidate.fen).isGameOver()) && <button className="btn primary" disabled={busy || intention.trim().length < 2 || positionEvaluation.trim().length < 2 || !decisionConfidence} onClick={() => submitDecision(candidate.uci, { replyUci: prediction?.uci ?? null })}>{t("decision.confirm")}</button>}
+              {!prediction && !noReply && !new Chess(candidate.fen).isGameOver() && <button className="btn" disabled={busy} onClick={() => setNoReply(true)}>{t("decision.unsure")}</button>}
             </div>
           </section>}
           {feedback?.coaching && <section className="callout" data-testid="decision-coaching">
@@ -229,16 +257,14 @@ export function PersonalPractice() {
             <section className="card" data-testid="pedagogy-reflection">
               <h2>{t("pedagogy.coachQuestion")}</h2>
               <p>{exercise.diagnostic.question}</p>
-              <label>
-                {t("pedagogy.intentionLabel")}
-                <textarea className="textarea" value={intention} maxLength={800} disabled={busy} onChange={(event) => setIntention(event.target.value)} />
-              </label>
-              <label>
-                {t("pedagogy.evaluationLabel")}
-                <textarea className="textarea" value={positionEvaluation} maxLength={800} disabled={busy} onChange={(event) => setPositionEvaluation(event.target.value)} />
-              </label>
-              <button type="button" className="btn primary" data-testid="pedagogy-submit" disabled={busy || intention.trim().length < 2 || positionEvaluation.trim().length < 2} onClick={() => void action(async () => {
-                const result = await submitPersonalReflection(exercise.id, { intention, evaluation: positionEvaluation });
+              {feedback.preFeedbackReasoning && <div className="callout" data-testid="captured-reasoning">
+                <p><strong>{t("pedagogy.capturedBeforeFeedback")}</strong></p>
+                <p>{feedback.preFeedbackReasoning.intention}</p>
+                <p>{feedback.preFeedbackReasoning.evaluation}</p>
+                <p className="muted">{t("pedagogy.recordedConfidence", { value: t(`pedagogy.decisionConfidence.${feedback.preFeedbackReasoning.confidence}`) })}</p>
+              </div>}
+              <button type="button" className="btn primary" data-testid="pedagogy-submit" disabled={busy || !feedback.preFeedbackReasoning} onClick={() => void action(async () => {
+                const result = await submitPersonalReflection(exercise.id);
                 setExercise((current) => current ? { ...current, diagnostic: current.diagnostic ? { ...current.diagnostic, status: "completed", source: result.source, reflection: result } : null } : current);
               })}>{busy ? t("pedagogy.thinking") : t("pedagogy.submit")}</button>
               <p className="muted small">{exercise.diagnostic.llm.configured ? t("pedagogy.explicitCost") : t("pedagogy.rulesFallback")}</p>
