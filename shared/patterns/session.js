@@ -61,7 +61,7 @@ export function orderGuidedPlan(guided, preferredExerciseId = null) {
   return plan;
 }
 
-export function createPracticeSession(patternId, positionRecordIds, { contentVersion, detectorVersion, at, reservedHoldoutRecordId, sessionShortfall = false, probePlan = null, curriculumDecision = null }) {
+export function createPracticeSession(patternId, positionRecordIds, { contentVersion, detectorVersion, at, reservedHoldoutRecordId, sessionShortfall = false, probePlan = null, curriculumDecision = null, lesson = null }) {
   return {
     version: PATTERN_LEARNING_VERSION,
     id: randomUUID(),
@@ -76,6 +76,7 @@ export function createPracticeSession(patternId, positionRecordIds, { contentVer
     reservedHoldoutRecordId,
     probePlan,
     curriculumDecision,
+    lesson,
     sessionShortfall: Boolean(sessionShortfall),
     guidedExerciseIds: [],
     holdoutExerciseId: null,
@@ -197,6 +198,12 @@ export function buildSessionResultDto(session, holdoutAttempt, holdoutEvidence, 
     outcomeHeadlineKey: outcomeHeadlineKey(session.outcomeKey),
     countsAsIndependentEvidence: session.countsAsIndependentEvidence,
     evidenceReasonKey: session.evidenceReasonKey ?? holdoutEvidence?.reasonKey ?? null,
+    lesson: session.lesson ? {
+      version: session.lesson.version,
+      action: session.lesson.action,
+      method: session.lesson.method,
+      targetCategory: session.lesson.targetCategory,
+    } : null,
     domain: {
       masteryEstimate: domain.masteryEstimate,
       confidence: domain.confidence,

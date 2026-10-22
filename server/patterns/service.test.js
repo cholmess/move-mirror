@@ -134,6 +134,15 @@ describe("personal pattern incremental analysis", () => {
     const evidenceIds = generate.mock.calls[0][0].facts.map(row => row.evidenceId);
     expect(evidenceIds).toEqual(expect.arrayContaining(["current_decision", "pattern_frequency", "similar_error_1", "similar_error_2", "contrast_1"]));
     expect(store.read().hypotheses).toHaveLength(1);
+    const nextLesson = service.startPractice("piece-loss");
+    expect(nextLesson.lesson).toMatchObject({
+      version:"personal-lesson-v1", action:"diagnose",
+      narrative:{source:"llm",sourceReflectionId:a.id,explanation:expect.any(String)},
+    });
+    expect(nextLesson.lesson.narrative.citations.map(row => row.evidenceId))
+      .toEqual(expect.arrayContaining(["current_decision", "contrast_1"]));
+    expect(JSON.stringify(nextLesson.lesson.narrative.citations)).not.toContain("fen");
+    expect(generate).toHaveBeenCalledTimes(1);
     const restarted = createPatternService({store:createPatternStore(dir),gamesStore:{listGames:()=>games},evaluate,analyzerSignature:()=>signature});
     expect(restarted.exerciseView(ex.id).diagnostic.reflection.id).toBe(a.id);
     expect((await restarted.reflect(ex.id)).id).toBe(a.id);
@@ -216,6 +225,10 @@ describe("personal pattern incremental analysis", () => {
     await activate(1);
     let guided = service.startPractice("piece-loss");
     expect(guided).toMatchObject({ role: "guided", targetDecisions: 1, decisionCount: 0 });
+    expect(guided.lesson).toMatchObject({ version:"personal-lesson-v1", patternId:"piece-loss", method:"discriminating_probe",
+      sequence:{blindHoldout:true}, success:{causal:false} });
+    expect(JSON.stringify(guided.lesson)).not.toContain("fen");
+    expect(store.read().practiceSessions.find(row=>row.id===guided.sessionId).lesson).toEqual(guided.lesson);
     expect(guided.sessionPositionTotal).toBeGreaterThanOrEqual(3);
     const view = service.exerciseView(guided.id);
     const chess = new Chess(view.fen);
@@ -240,7 +253,7 @@ describe("personal pattern incremental analysis", () => {
     expect(result.trainingStatus).toBe("ready_for_holdout");
     const holdout = service.startHoldout(guided.id);
     expect(holdout).toMatchObject({ role: "holdout", targetDecisions: 1 });
-    expect(holdout).toMatchObject({ diagnostic: null, hypothesis: null, evidenceSummary: null });
+    expect(holdout).toMatchObject({ diagnostic: null, hypothesis: null, evidenceSummary: null, lesson: null });
     expect(holdout.positionId).not.toBe(guided.positionId);
     const holdoutChess = new Chess(holdout.fen);
     const holdoutLegal = holdoutChess.moves({ verbose: true })[0];

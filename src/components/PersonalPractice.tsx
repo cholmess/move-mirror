@@ -16,6 +16,7 @@ import {
   type NextActivity,
   type PersonalExercise,
   type PersonalFeedback,
+  type PersonalLesson,
   type SessionResult,
 } from "../api/patternsClient";
 import { PlayBoard } from "./PlayBoard";
@@ -42,6 +43,43 @@ function outcomeDetail(outcomeKey: string) {
   return map[outcomeKey] ?? "learning:outcome.incomplete.detail";
 }
 
+function PersonalLessonCard({ lesson }: { lesson: PersonalLesson }) {
+  const { t } = useTranslation("patterns");
+  const gameLike = lesson.spoilerPolicy === "game_like_hidden";
+  return (
+    <section className="card personal-lesson" data-testid="personal-lesson">
+      <p className="eyebrow">{t("lesson.eyebrow")}</p>
+      <h2>{t(`lesson.action.${lesson.action}`)}</h2>
+      <p>{t(`lesson.method.${lesson.method}`)}</p>
+      {!gameLike && lesson.narrative && <div data-testid="lesson-narrative">
+        <p><strong>{t("lesson.hypothesis")}</strong> {lesson.narrative.statement}</p>
+        {lesson.narrative.objective && <p><strong>{t("lesson.objective")}</strong> {lesson.narrative.objective}</p>}
+        {lesson.narrative.explanation && <p>{lesson.narrative.explanation}</p>}
+        {lesson.narrative.nextTest?.instruction && <p><strong>{t("lesson.nextTest")}</strong> {lesson.narrative.nextTest.instruction}</p>}
+        <p className="small muted">{t(lesson.narrative.source === "llm" ? "lesson.groundedSynthesis" : "lesson.rulesSynthesis")}</p>
+        {!!lesson.narrative.citations?.length && <details data-testid="lesson-citations"><summary>{t("lesson.citations")}</summary><ul>
+          {lesson.narrative.citations.map((citation) => <li key={citation.evidenceId}><Link to={`/games/${citation.gameId}`}>{t("lesson.citation", { move: citation.moveNumber })}</Link></li>)}
+        </ul></details>}
+      </div>}
+      {!gameLike && !lesson.narrative?.explanation && <div data-testid="lesson-rule">
+        <p><strong>{t("lesson.rule")}</strong> {t(`catalog.${lesson.patternId}.rule`)}</p>
+        <p className="muted">{t(`catalog.${lesson.patternId}.contrast`)}</p>
+      </div>}
+      {!gameLike && <details data-testid="lesson-evidence">
+        <summary>{t("lesson.evidence", lesson.evidence)}</summary>
+        <ul>{lesson.evidence.examples.map((example) => <li key={example.evidenceId}>
+          <Link to={`/games/${example.gameId}`}>{t("lesson.example", { move: example.moveNumber })}</Link>
+        </li>)}</ul>
+        {lesson.evidence.contrast
+          ? <p><Link to={`/games/${lesson.evidence.contrast.gameId}`}>{t("lesson.contrast", { move: lesson.evidence.contrast.moveNumber })}</Link></p>
+          : <p className="muted">{t("lesson.noContrast")}</p>}
+      </details>}
+      <p>{t("lesson.sequence", { guided: lesson.sequence.guidedPositions })}</p>
+      <p className="small muted">{t("lesson.boundary")}</p>
+    </section>
+  );
+}
+
 function SessionSummary({ result, nextActivity, patternId }: { result: SessionResult; nextActivity?: NextActivity; patternId: string }) {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation(["learning", "patterns", "coach"]);
@@ -52,6 +90,7 @@ function SessionSummary({ result, nextActivity, patternId }: { result: SessionRe
       <h2>{t("learning:session.title")}</h2>
       <p><strong>{t(outcomeHeadline(result.outcomeKey))}</strong></p>
       <p className="muted">{t(outcomeDetail(result.outcomeKey))}</p>
+      {result.lesson && result.countsAsIndependentEvidence && <p data-testid="lesson-evidence-update">{t("patterns:lesson.completed")}</p>}
       {result.evidenceReasonKey && <p className="muted">{t(`learning:${result.evidenceReasonKey}`)}</p>}
       {result.domain.nextReviewAt && (
         <p data-testid="practice-next-review">
@@ -172,7 +211,7 @@ export function PersonalPractice() {
     return <section className="card"><p>{error ? t(`errors.${error}`) : t("loading")}</p><Link to="/patterns">{t("back")}</Link></section>;
   }
   const holdout = exercise.role === "holdout";
-  const gameLike = !holdout && exercise.curriculum?.action === "bridge_transfer";
+  const gameLike = !holdout && (exercise.lesson?.spoilerPolicy === "game_like_hidden" || exercise.curriculum?.action === "bridge_transfer");
   const sessionProgress = exercise.sessionPositionTotal
     ? t("learning:practice.sessionProgress", { current: exercise.sessionPositionCurrent ?? 1, total: exercise.sessionPositionTotal })
     : t("path.progress", { current: feedback ? exercise.decisionCount : Math.min(exercise.decisionCount + 1, exercise.targetDecisions), total: exercise.targetDecisions });
@@ -183,19 +222,20 @@ export function PersonalPractice() {
       <p className="eyebrow">{holdout ? t("path.holdoutEyebrow") : t("path.guidedEyebrow")}</p>
       <h1>{holdout ? t("path.holdoutTitle") : t("decision.title")}</h1>
       <p>{holdout ? t("path.holdoutGoal") : t("decision.intro")}</p>
-      {!holdout && !gameLike && exercise.evidenceSummary && (
+      {!holdout && exercise.lesson && <PersonalLessonCard lesson={exercise.lesson} />}
+      {!holdout && !exercise.lesson && !gameLike && exercise.evidenceSummary && (
         <p className="muted" data-testid="pedagogy-evidence-summary">
           {t("pedagogy.observed", exercise.evidenceSummary)} {t("pedagogy.unknown")}
         </p>
       )}
-      {!holdout && exercise.curriculum && (
+      {!holdout && !exercise.lesson && exercise.curriculum && (
         <section className="callout" data-testid="curriculum-decision">
           <strong>{t("curriculum.title")}</strong>
           <p>{t(`curriculum.action.${exercise.curriculum.action}`)}</p>
           <p className="small muted">{t(`curriculum.reason.${exercise.curriculum.reasonKey}`)}</p>
         </section>
       )}
-      {!holdout && !gameLike && exercise.hypothesis && !reflection && (
+      {!holdout && !exercise.lesson && !gameLike && exercise.hypothesis && !reflection && (
         <section className="callout" data-testid="pedagogy-memory">
           <strong>{t("pedagogy.checking")}</strong>
           <p>{exercise.hypothesis.statement}</p>
@@ -208,7 +248,7 @@ export function PersonalPractice() {
           })}</p>}
         </section>
       )}
-      {!holdout && !gameLike && exercise.probe && (
+      {!holdout && !exercise.lesson && !gameLike && exercise.probe && (
         <section className="callout" data-testid="hypothesis-probe">
           <strong>{t("probe.title")}</strong>
           <p>{t("probe.testing", { target: t(`probe.category.${exercise.probe.targetCategory}`) })}</p>

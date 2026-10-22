@@ -13,6 +13,20 @@ export interface CurriculumDecision {
   previousCategory: string | null; targetCategory: string;
   evidence: { hypothesisStatus: string; holdoutOutcome: string; holdoutAt: string | null; transferStatus: string; differencePer100: number | null; causal: false };
 }
+export interface PersonalLesson {
+  version: string; patternId: string; createdAt: string; action: CurriculumAction;
+  method: "discriminating_probe" | "worked_contrast" | "alternative_probe" | "game_like_retrieval" | "spaced_retrieval";
+  targetCategory: string;
+  narrative: { hypothesisId: string; category: string; status: string; statement: string; objective: string | null; explanation: string | null;
+    nextTest: { skill?: string; instruction: string; successSignal?: string } | null; source: "llm" | "rules"; sourceReflectionId: string | null;
+    citations: Array<{ evidenceId: string; kind: string; gameId: string; moveNumber: number }> } | null;
+  evidence: { errors: number; games: number; opportunities: number; confidence: string;
+    examples: Array<{ evidenceId: string; kind: "personal_error"; gameId: string; moveNumber: number; recordId: string; severity: "low" | "medium" | "high" }>;
+    contrast: { evidenceId: string; kind: "comparable_non_error"; gameId: string; moveNumber: number; recordId: string; severity: null } | null };
+  sequence: { guidedPositions: number; blindHoldout: boolean; positionRecordIds: string[] };
+  success: { practice: "process_observed"; generalization: "independent_blind_holdout"; transfer: "later_unexposed_games"; causal: false };
+  spoilerPolicy: "game_like_hidden" | "teaching_visible";
+}
 export interface HypothesisEvidenceSummary {
   status: "tentative" | "supported" | "contradicted"; confidence: "low" | "medium";
   directProbeSupports: number; realGameSupports: number; realGameContradictions: number; realGameInconclusive: number;
@@ -54,6 +68,7 @@ export interface PersonalExercise {
     selectionReasons: string[]; measurability: "direct" | "partial";
   } | null;
   curriculum?: CurriculumDecision | null;
+  lesson?: PersonalLesson | null;
   diagnostic?: {
     question: string; status: string; source: string | null; reflection: PedagogyReflection | null;
     llm: { enabled: boolean; configured: boolean; provider: string | null; model: string | null };
@@ -68,6 +83,7 @@ export interface SessionResult {
   sessionId: string; patternId: string; startedAt: string; endedAt: string | null; durationMs: number | null;
   outcomeKey: string; outcomeHeadlineKey: string; countsAsIndependentEvidence: boolean; evidenceReasonKey: string | null;
   domain: SessionDomainSnapshot; positionRecordIds: string[];
+  lesson?: Pick<PersonalLesson, "version" | "action" | "method" | "targetCategory"> | null;
 }
 export interface NextActivity {
   kind: "pattern" | "continue_session" | "finish"; patternId: string | null; href: string | null;
