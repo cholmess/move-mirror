@@ -113,7 +113,12 @@ export function createHypothesisRevision(hypothesis, decision, { id, at }) {
     createdAt: at,
     updatedAt: at,
     intervention: decision.targetCategory,
-    nextTest: retargeted.nextTest ? { ...retargeted.nextTest, skill: decision.targetCategory } : null,
+    nextTest: null,
+    teaching: null,
+    teachingObjective: null,
+    synthesisSource: "rules",
+    sourceReflectionId: null,
+    grounding: [],
     observations: [],
   };
 }

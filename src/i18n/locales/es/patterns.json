@@ -171,6 +171,38 @@
     "llmSource": "Síntesis generada desde evidencia estructurada; las jugadas y variantes provienen del motor.",
     "ruleSource": "Intervención provisional basada en reglas; no se hizo una inferencia del modelo."
   },
+  "lesson": {
+    "eyebrow": "Lección creada desde tus partidas",
+    "action": {
+      "diagnose": "Primero entendamos qué está fallando",
+      "reteach": "Vamos a enseñarlo de otra manera",
+      "revise_hypothesis": "La evidencia cambió nuestra explicación",
+      "bridge_transfer": "Ahora llévalo a una decisión de partida",
+      "maintenance": "Comprueba que todavía puedes hacerlo"
+    },
+    "method": {
+      "discriminating_probe": "Compararemos explicaciones posibles antes de atribuir una causa.",
+      "worked_contrast": "Usaremos un contraste trabajado para cambiar la forma de resolver este tipo de posición.",
+      "alternative_probe": "La explicación anterior fue contradicha; esta sesión pone a prueba la alternativa mejor respaldada.",
+      "game_like_retrieval": "Resolverás sin etiquetas, pistas ni acceso a la partida de origen antes del feedback.",
+      "spaced_retrieval": "La práctica será breve y espaciada para comprobar retención."
+    },
+    "hypothesis": "Hipótesis de trabajo:",
+    "objective": "Objetivo:",
+    "nextTest": "Qué comprobaremos:",
+    "rule": "Regla práctica:",
+    "groundedSynthesis": "Esta explicación proviene de una reflexión que solicitaste y está limitada a evidencia verificada.",
+    "rulesSynthesis": "Explicación provisional basada en reglas transparentes; no es un diagnóstico.",
+    "citations": "Evidencia citada por la explicación",
+    "citation": "Partida personal · jugada {{move}}",
+    "evidence": "Por qué esta lección: {{errors}} errores en {{games}} partidas entre {{opportunities}} decisiones comparables",
+    "example": "Ejemplo personal · jugada {{move}}",
+    "contrast": "Contraste personal sin este error · jugada {{move}}",
+    "noContrast": "Aún no existe un contraste personal limpio; no inventaremos uno.",
+    "sequence": "Plan: {{guided}} posiciones guiadas y una comprobación ciega reservada.",
+    "boundary": "La práctica mide proceso y generalización. Solo partidas posteriores no expuestas pueden aportar evidencia de transferencia.",
+    "completed": "El resultado independiente actualizó la evidencia de esta lección; el próximo plan se recalculará con ese resultado."
+  },
   "curriculum": {
     "title": "Cómo cambia ahora tu entrenamiento",
     "action": {

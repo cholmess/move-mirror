@@ -171,6 +171,38 @@
     "llmSource": "Aus strukturierter Evidenz zusammengefasst; Züge und Varianten stammen von der Engine.",
     "ruleSource": "Vorläufige regelbasierte Intervention; es wurde keine Modellinferenz erstellt."
   },
+  "lesson": {
+    "eyebrow": "Lektion aus deinen Partien",
+    "action": {
+      "diagnose": "Zuerst verstehen wir, was nicht funktioniert",
+      "reteach": "Wir vermitteln das auf eine andere Weise",
+      "revise_hypothesis": "Die Evidenz hat unsere Erklärung verändert",
+      "bridge_transfer": "Übertrage es jetzt auf eine Partieentscheidung",
+      "maintenance": "Prüfe, ob du es weiterhin kannst"
+    },
+    "method": {
+      "discriminating_probe": "Wir vergleichen mögliche Erklärungen, bevor wir eine Ursache zuschreiben.",
+      "worked_contrast": "Ein ausgearbeiteter Kontrast verändert, wie du diesen Stellungstyp löst.",
+      "alternative_probe": "Die bisherige Erklärung wurde widerlegt; diese Sitzung prüft die am besten gestützte Alternative.",
+      "game_like_retrieval": "Du löst vor dem Feedback ohne Etiketten, Hinweise oder Zugriff auf die Ursprungspartie.",
+      "spaced_retrieval": "Die Übung ist kurz und zeitlich verteilt, um die Behaltensleistung zu prüfen."
+    },
+    "hypothesis": "Arbeitshypothese:",
+    "objective": "Ziel:",
+    "nextTest": "Was wir prüfen:",
+    "rule": "Praktische Regel:",
+    "groundedSynthesis": "Diese Erklärung stammt aus einer ausdrücklich angeforderten Reflexion und ist auf verifizierte Evidenz begrenzt.",
+    "rulesSynthesis": "Vorläufige Erklärung nach transparenten Regeln; dies ist keine Diagnose.",
+    "citations": "Von der Erklärung zitierte Evidenz",
+    "citation": "Eigene Partie · Zug {{move}}",
+    "evidence": "Warum diese Lektion: {{errors}} Fehler in {{games}} Partien bei {{opportunities}} vergleichbaren Entscheidungen",
+    "example": "Persönliches Beispiel · Zug {{move}}",
+    "contrast": "Persönlicher Kontrast ohne diesen Fehler · Zug {{move}}",
+    "noContrast": "Noch fehlt ein sauberer persönlicher Kontrast; wir erfinden keinen.",
+    "sequence": "Plan: {{guided}} geführte Stellungen und eine reservierte verdeckte Prüfung.",
+    "boundary": "Die Übung misst Prozess und Generalisierung. Nur spätere, nicht gezeigte Partien können Transferevidenz liefern.",
+    "completed": "Das unabhängige Ergebnis hat die Evidenz dieser Lektion aktualisiert; der nächste Plan wird damit neu berechnet."
+  },
   "curriculum": {
     "title": "So ändert sich dein Training jetzt",
     "action": {

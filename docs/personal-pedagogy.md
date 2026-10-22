@@ -38,6 +38,16 @@ The curriculum planner selects at most one primary item, one support item, and o
 
 The decision and its evidence snapshot are stored on the practice session. When a hypothesis is contradicted, the next probe is planned against the new revision's category rather than silently continuing the rejected cause. This changes exercise selection behavior while preserving the complete hypothesis lineage.
 
+## P4: personal lesson composer
+
+Every new personal-practice session now persists a bounded lesson compiled from the selected curriculum action and the current verified corpus. The lesson contains the teaching method, working hypothesis when one exists, up to three examples from distinct personal games, at most one comparable personal non-error, the actual guided-position count, a reserved blind holdout, and explicit practice/generalization/transfer success channels.
+
+The lesson DTO is spoiler-free by construction: it never contains FENs, played moves, engine references, or principal variations. Exact source games remain optional evidence links, while hints and reference moves continue through the existing assisted-feedback controls. A transfer-bridge lesson additionally hides evidence, hypothesis labels, source links, hints, and solution reveal until feedback.
+
+The composer is fully functional without an LLM. If the player previously and explicitly requested a pedagogical reflection, its schema-validated, evidence-grounded teaching synthesis and spoiler-safe citation map are stored with the hypothesis and can be reused in the next lesson. Starting, resuming, or rendering a lesson never calls a provider. A contradicted hypothesis clears the old teaching explanation before compiling the alternative lesson, so refuted prose cannot silently survive a causal revision.
+
+Lesson evidence is frozen on the session for audit and resume behavior. The independent holdout result is linked back to the lesson summary; the following plan is recalculated from the newly persisted evidence rather than mutating the completed lesson.
+
 ## Cost and failure controls
 
 LLM use is disabled by default. Set all of the following to enable the OpenAI adapter:
@@ -54,6 +64,6 @@ The stored metadata contains provider, model, prompt version, latency, and repor
 
 ## Current boundary
 
-This slice creates a grounded hypothesis, orders explicit probes, challenges directly observable causes against later real games, and adapts the next curriculum action. It does not let the model invent arbitrary positions or generate engine lines. The selectors are transparent heuristics over verified personal positions, not learned causal discovery. Real-game recurrence alone cannot prove a cognitive cause: the temporal gate, discriminating probe, blind holdout, distinct-game threshold, and explicit alternatives are all required before the product uses the word supported.
+This slice creates a grounded hypothesis, orders explicit probes, challenges directly observable causes against later real games, adapts the next curriculum action, and compiles it into a personal lesson. It does not yet retrieve master-game examples or capture full calculated lines and time usage. It does not let the model invent arbitrary positions or generate engine lines. The selectors are transparent heuristics over verified personal positions, not learned causal discovery. Real-game recurrence alone cannot prove a cognitive cause: the temporal gate, discriminating probe, blind holdout, distinct-game threshold, and explicit alternatives are all required before the product uses the word supported.
 
 All tests use a fake provider. Do not enable the real adapter in test or CI environments.

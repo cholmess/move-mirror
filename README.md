@@ -107,6 +107,14 @@ Modo offline, sin red: en `/transfer`, «Modo offline (fixtures)».
 - The planner reserves primary, support, and maintenance slots so stable work cannot displace an unresolved learning need.
 - Decision rules and boundaries: [docs/personal-pedagogy.md](docs/personal-pedagogy.md#p3-adaptive-curriculum)
 
+## Personal coach — P4 lesson composer
+
+- Each curriculum decision becomes a persisted lesson with a distinct teaching method, personal examples, a comparable contrast when available, guided practice, and a reserved blind holdout.
+- Lesson payloads are spoiler-free: no FEN, played move, engine reference, or principal variation is exposed before the decision.
+- An explicitly requested grounded reflection can shape the next lesson; opening or resuming a lesson never calls an LLM.
+- Completed independent holdouts update evidence for the next plan without rewriting the completed lesson.
+- Contract and boundaries: [docs/personal-pedagogy.md](docs/personal-pedagogy.md#p4-personal-lesson-composer)
+
 ## MoveMirror v0.2.1 — Evaluation Hardening
 
 - Escalamiento automático 80k → 500k cerca de umbrales (35–65 cp, 105–135 cp), mates inestables e información incompleta.

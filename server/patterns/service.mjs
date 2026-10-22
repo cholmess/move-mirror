@@ -9,6 +9,7 @@ import {
 import { classifyProbeObservation, planHypothesisProbe } from "../../shared/patterns/probe-selection.js";
 import { hypothesisEvidenceSummary, reconcileRealGameHypotheses } from "../../shared/patterns/real-game-evidence.js";
 import { buildCurriculumPlan, createHypothesisRevision, decideCurriculum } from "../../shared/patterns/curriculum.js";
+import { composePersonalLesson } from "../../shared/patterns/lesson-composer.js";
 import { Chess } from "chess.js";
 import { randomUUID } from "node:crypto";
 import { PATTERN_VERSION, MAX_PERSONAL_GAMES, patternExists } from "../../shared/patterns/catalog.js";
@@ -280,7 +281,9 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
       canAdvanceSlot: status === "ready_for_next_slot",
       sessionId: exercise.sessionId ?? null, slotIndex: exercise.slotIndex ?? null,
       sessionPositionTotal, sessionPositionCurrent: exercise.slotIndex != null ? exercise.slotIndex + 1 : null,
-      sessionShortfall, diagnostic, hypothesis, probe, curriculum: exercise.role === "holdout" ? null : session?.curriculumDecision ?? null,
+      sessionShortfall, diagnostic, hypothesis, probe,
+      curriculum: exercise.role === "holdout" ? null : session?.curriculumDecision ?? null,
+      lesson: exercise.role === "holdout" ? null : session?.lesson ?? null,
       evidenceSummary: exercise.role === "holdout" ? null : { errors: profile?.errors ?? 0, games: profile?.games ?? 0, opportunities: profile?.opportunities ?? 0, confidence: profile?.confidence ?? "insufficient" },
       coachingHistory: exercise.role === "holdout" ? [] : state.attempts.filter(a => a.patternId === record.patternId && a.coaching && !a.assisted)
         .slice(-5).map(a => ({ intervention: a.coaching.intervention, at: a.at, gameId: a.gameId })) };
@@ -300,27 +303,32 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
     if (!patternExists(patternId)) throw new Error("pattern_unknown");
     if (!summary().recommended.includes(patternId) && summary().patterns.find(p => p.id === patternId)?.status !== "recurrent") throw new Error("pattern_not_recurrent");
     const state = store.read();
-    const candidates = rows().filter(r => r.patternId === patternId);
+    const allRecords = rows();
+    const candidates = allRecords.filter(r => r.patternId === patternId);
     const layout = planSessionLayout(candidates, state.exposures);
     if (!layout.ok) throw new Error(layout.error);
     let hypothesis = [...(state.hypotheses ?? [])].reverse().find((row) => row.patternId === patternId) ?? null;
     const pattern = summary().patterns.find((row) => row.id === patternId);
     const curriculumDecision = pattern?.curriculum ?? decideCurriculum(pattern, hypothesis);
-    const revised = createHypothesisRevision(hypothesis, curriculumDecision, { id: randomUUID(), at: now() });
+    const startedAt = now();
+    const revised = createHypothesisRevision(hypothesis, curriculumDecision, { id: randomUUID(), at: startedAt });
     if (revised) {
       mutate(s => { s.hypotheses.push(revised); });
       hypothesis = revised;
     }
     const probe = planHypothesisProbe(layout.guided, hypothesis, state.exposures);
     const sessionPlan = orderGuidedPlan(probe.ordered, preferredId);
+    const lesson = composePersonalLesson({ pattern, hypothesis, curriculum: curriculumDecision, records: allRecords,
+      guided: sessionPlan, holdout: layout.holdout, at: startedAt });
     const session = createPracticeSession(patternId, sessionPlan.map(r => r.exerciseId), {
       contentVersion: PATTERN_VERSION,
       detectorVersion: signature(),
-      at: now(),
+      at: startedAt,
       reservedHoldoutRecordId: layout.holdout.exerciseId,
       sessionShortfall: layout.sessionShortfall,
       probePlan: probe.plan,
       curriculumDecision,
+      lesson,
     });
     session.guidedExerciseIds = [];
     mutate(s => { s.practiceSessions.push(session); });
@@ -580,7 +588,9 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
         statement: output.primaryHypothesis.statement, alternatives: output.alternativeHypotheses,
         confidence: "low", status: "tentative", createdAt: result.generatedAt, updatedAt: result.generatedAt,
         sourceAttemptId: attempt.id, intervention: output.nextTest.skill,
-        nextTest: output.nextTest, teachingObjective: output.teaching.objective,
+        nextTest: output.nextTest, teachingObjective: output.teaching.objective, teaching: output.teaching,
+        synthesisSource: source, sourceReflectionId: result.id,
+        grounding: packet.facts.map((fact) => compactFact({ evidenceId: fact.evidenceId, kind: fact.kind, gameId: fact.gameId, moveNumber: fact.moveNumber })),
         observations: [{ id: `reflection:${result.id}`, source: "practice", direction: "support", at: result.generatedAt, exerciseId: attempt.exerciseId }],
       });
     });

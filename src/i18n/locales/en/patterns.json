@@ -171,6 +171,38 @@
     "llmSource": "Synthesised from structured evidence; moves and variations come from the engine.",
     "ruleSource": "Provisional rule-based intervention; no model inference was made."
   },
+  "lesson": {
+    "eyebrow": "Lesson built from your games",
+    "action": {
+      "diagnose": "First, let’s understand what is breaking down",
+      "reteach": "Let’s teach this in a different way",
+      "revise_hypothesis": "The evidence changed our explanation",
+      "bridge_transfer": "Now carry it into a game decision",
+      "maintenance": "Check that you can still do it"
+    },
+    "method": {
+      "discriminating_probe": "We will compare possible explanations before attributing a cause.",
+      "worked_contrast": "We will use a worked contrast to change how you solve this type of position.",
+      "alternative_probe": "The previous explanation was contradicted; this session tests the best-supported alternative.",
+      "game_like_retrieval": "You will solve without labels, hints, or source-game access before feedback.",
+      "spaced_retrieval": "Practice will be brief and spaced to check retention."
+    },
+    "hypothesis": "Working hypothesis:",
+    "objective": "Objective:",
+    "nextTest": "What we will test:",
+    "rule": "Practical rule:",
+    "groundedSynthesis": "This explanation comes from a reflection you explicitly requested and is limited to verified evidence.",
+    "rulesSynthesis": "Provisional explanation based on transparent rules; this is not a diagnosis.",
+    "citations": "Evidence cited by the explanation",
+    "citation": "Personal game · move {{move}}",
+    "evidence": "Why this lesson: {{errors}} errors in {{games}} games across {{opportunities}} comparable decisions",
+    "example": "Personal example · move {{move}}",
+    "contrast": "Personal contrast without this error · move {{move}}",
+    "noContrast": "There is no clean personal contrast yet; we will not invent one.",
+    "sequence": "Plan: {{guided}} guided positions and one reserved blind check.",
+    "boundary": "Practice measures process and generalization. Only later unexposed games can add transfer evidence.",
+    "completed": "The independent result updated this lesson’s evidence; the next plan will be recalculated from it."
+  },
   "curriculum": {
     "title": "How your training changes now",
     "action": {
