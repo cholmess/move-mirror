@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
-const base = { version: 'personal-training-plan-v1', evidenceRevision: 1, state: 'personalized', coverage: { analyzed: 12, eligible: 15, decisions: 240 }, job: { status: 'completed' },
-  primary: { kind: 'pattern', patternId: 'closed-center' }, priorities: [{ patternId: 'closed-center', kind: 'context', confidence: 'limited', reason: 'new', evidence: { errors: 4, games: 3, opportunities: 30 }, practice: { attempts: 0 }, transfer: { status: 'insufficient' } }] };
+const curriculum = { version: 'adaptive-curriculum-v1', patternId: 'closed-center', slot: 'primary', action: 'diagnose', reasonKey: 'hypothesis_required', previousCategory: null, targetCategory: 'insufficient_evidence', evidence: { hypothesisStatus: 'missing', holdoutOutcome: 'missing', holdoutAt: null, transferStatus: 'insufficient', differencePer100: null, causal: false } };
+const base = { version: 'personal-training-plan-v3', evidenceRevision: 1, state: 'personalized', coverage: { analyzed: 12, eligible: 15, decisions: 240 }, job: { status: 'completed' }, curriculum: [curriculum],
+  primary: { kind: 'pattern', patternId: 'closed-center' }, priorities: [{ patternId: 'closed-center', kind: 'context', confidence: 'limited', reason: 'new', evidence: { errors: 4, games: 3, opportunities: 30 }, practice: { attempts: 0 }, transfer: { status: 'insufficient' }, curriculum }] };
 test.beforeEach(async ({ page }) => { await page.addInitScript(() => localStorage.setItem('move-mirror-locale-v1', 'es')); });
 test('current plan, recovery, practice start and mobile layout', async ({ page }) => {
   let updated = false;
@@ -10,6 +11,7 @@ test('current plan, recovery, practice start and mobile layout', async ({ page }
   await page.setViewportSize({ width: 390, height: 844 }); await page.goto('/');
   await expect(page.getByTestId('plan-coverage')).toContainText('12 de 15');
   await expect(page.getByTestId('plan-closed-center')).toContainText('todavía no sabemos por qué');
+  await expect(page.getByTestId('curriculum-closed-center')).toContainText('Foco principal');
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.getByTestId('plan-start').click(); await expect(page.getByTestId('personal-practice')).toBeVisible();
   await page.goto('/'); await expect(page.getByTestId('plan-start')).toHaveText('Continuar mi práctica');

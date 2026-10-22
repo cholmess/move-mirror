@@ -48,7 +48,9 @@ export function TrainingPlan() {
       {plan.state !== 'personalized' && <p>{t(`coach:plan.${plan.state}`)}</p>}
       <div className="callout">
         <h2 data-testid="plan-focus">{plan.primary.patternId ? t(`patterns:catalog.${plan.primary.patternId}.title`) : t(`coach:plan.focus.${plan.primary.kind}`)}</h2>
-        <p>{plan.primary.patternId ? t(`patterns:catalog.${plan.primary.patternId}.goal`) : t('coach:plan.generalNote')}</p>
+        <p>{plan.primary.patternId
+          ? t(`coach:plan.curriculum.action.${plan.priorities.find(p => p.patternId === plan.primary.patternId)?.curriculum.action ?? 'diagnose'}`)
+          : t('coach:plan.generalNote')}</p>
         <button className="btn primary" data-testid="plan-start" disabled={busy || error} onClick={() => void act(() => start())}>{t(`coach:plan.action.${plan.primary.kind}`)}</button>
       </div>
       {plan.priorities.length > 0 && <>
@@ -58,6 +60,8 @@ export function TrainingPlan() {
           <h3>{t(`patterns:catalog.${p.patternId}.title`)}</h3>
           <p>{t('patterns:evidence', p.evidence)}</p>
           <p>{t(`patterns:confidence.${p.confidence}`)} · {t(`coach:plan.reason.${p.reason}`)}</p>
+          <p data-testid={`curriculum-${p.patternId}`}><strong>{t(`coach:plan.curriculum.slot.${p.curriculum.slot ?? 'support'}`)}:</strong> {t(`coach:plan.curriculum.action.${p.curriculum.action}`)}</p>
+          <p className="small muted">{t(`coach:plan.curriculum.reason.${p.curriculum.reasonKey}`)}</p>
           {p.nextReviewAt && <p>{t('coach:plan.reviewDate', { date: new Date(p.nextReviewAt).toLocaleDateString(i18n.language) })}</p>}
           {p.kind === 'context' && <p>{t('patterns:causeUnknown')}</p>}
           {p.practice.attempts > 0 && <p>{t('patterns:practiceEvidence', p.practice)}</p>}

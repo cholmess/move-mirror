@@ -132,6 +132,25 @@
       "scheduled": "Next review is still in the future; you may practice early.",
       "stable": "Several independent successes; we keep it on the list with a longer interval.",
       "lowEvidence": "Still building independent evidence for this pattern."
+    },
+    "curriculum": {
+      "slot": { "primary": "Primary focus", "support": "Support", "maintenance": "Maintenance" },
+      "action": {
+        "diagnose": "Collect discriminating evidence before attributing a cause.",
+        "reteach": "Change the explanation and reteach before repeating the check.",
+        "revise_hypothesis": "Stop insisting on the previous cause and test the best-supported alternative.",
+        "bridge_transfer": "Increase realism so the signal can be recognized under game conditions.",
+        "maintenance": "Space practice and check that learning holds."
+      },
+      "reason": {
+        "contradicted_hypothesis": "Evidence contradicted the working hypothesis, so the next probe changes target.",
+        "holdout_failed": "The skill did not generalize to the blind position.",
+        "generalized_and_transfer_improved": "Generalization occurred and later recurrence is lower; this is descriptive, not causal.",
+        "generalized_without_transfer": "Generalization occurred, but later recurrence did not decrease.",
+        "generalized_transfer_pending": "Generalization occurred; there are not enough later games yet.",
+        "holdout_required": "The hypothesis remains open until a blind check is completed.",
+        "hypothesis_required": "We first need a testable hypothesis grounded in your reasoning."
+      }
     }
   }
 }

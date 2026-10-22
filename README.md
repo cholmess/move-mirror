@@ -99,6 +99,14 @@ Modo offline, sin red: en `/transfer`, «Modo offline (fixtures)».
 - The channel is rebuilt from the valid corpus, so removed or ineligible games cannot leave stale support behind.
 - Details and limits: [docs/personal-pedagogy.md](docs/personal-pedagogy.md)
 
+## Adaptive coach — P3 curriculum decisions
+
+- The plan chooses a visible action for each recurrent pattern: diagnose, reteach, revise the hypothesis, bridge to real-game transfer, or maintain.
+- A contradicted hypothesis creates an auditable tentative revision and retargets the next probe to the strongest named alternative.
+- Blind generalization and descriptive real-game transfer remain separate; a lower later recurrence never becomes a causal claim.
+- The planner reserves primary, support, and maintenance slots so stable work cannot displace an unresolved learning need.
+- Decision rules and boundaries: [docs/personal-pedagogy.md](docs/personal-pedagogy.md#p3-adaptive-curriculum)
+
 ## MoveMirror v0.2.1 — Evaluation Hardening
 
 - Escalamiento automático 80k → 500k cerca de umbrales (35–65 cp, 105–135 cp), mates inestables e información incompleta.

@@ -302,6 +302,29 @@ describe("personal pattern incremental analysis", () => {
     expect(store.read().hypotheses.at(-1).observations.at(-1)).toMatchObject({source:"practice_probe",observedCategory:"reply_search",direction:"support"});
   });
 
+  it("revises a contradicted hypothesis and makes the alternative the next probe target", async () => {
+    await activate(3);
+    const state = store.read();
+    state.hypotheses.push({
+      id:"hypothesis-old", patternId:"piece-loss", category:"reply_search", statement:"No busca la respuesta rival.",
+      status:"contradicted", confidence:"low", createdAt:"2026-10-20T08:00:00Z", updatedAt:"2026-10-21T08:00:00Z",
+      alternatives:[{category:"candidate_comparison",statement:"Cierra la comparación demasiado pronto."}],
+      observations:[
+        {id:"c1",source:"real_game",direction:"contradict",observedCategory:"candidate_comparison",gameId:"later-1",at:"2026-10-21T10:00:00Z"},
+        {id:"c2",source:"real_game",direction:"contradict",observedCategory:"candidate_comparison",gameId:"later-2",at:"2026-10-22T10:00:00Z"},
+      ],
+    });
+    store.write(state);
+    const exercise = service.startPractice("piece-loss");
+    const saved = store.read();
+    const revision = saved.hypotheses.at(-1);
+    const session = saved.practiceSessions.find(row => row.id === exercise.sessionId);
+    expect(revision).toMatchObject({parentHypothesisId:"hypothesis-old",category:"candidate_comparison",status:"tentative",observations:[]});
+    expect(session.curriculumDecision).toMatchObject({action:"revise_hypothesis",targetCategory:"candidate_comparison"});
+    expect(session.probePlan).toMatchObject({hypothesisId:revision.id,primaryCategory:"candidate_comparison"});
+    expect(exercise).toMatchObject({curriculum:{action:"revise_hypothesis"},probe:{targetCategory:"candidate_comparison"}});
+  });
+
   it("reconciles a probed hypothesis against distinct later real games", async () => {
     await activate();
     const state = store.read();

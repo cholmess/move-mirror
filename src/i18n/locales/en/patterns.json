@@ -171,6 +171,25 @@
     "llmSource": "Synthesised from structured evidence; moves and variations come from the engine.",
     "ruleSource": "Provisional rule-based intervention; no model inference was made."
   },
+  "curriculum": {
+    "title": "How your training changes now",
+    "action": {
+      "diagnose": "First we will distinguish between possible causes.",
+      "reteach": "We will change the explanation and practice method.",
+      "revise_hypothesis": "The next exercise will test a different explanation.",
+      "bridge_transfer": "The next practice will more closely resemble a game decision.",
+      "maintenance": "This skill moves to spaced maintenance."
+    },
+    "reason": {
+      "contradicted_hypothesis": "The previous hypothesis was contradicted; its history is preserved while the target changes.",
+      "holdout_failed": "The blind check did not show generalization.",
+      "generalized_and_transfer_improved": "The blind check was favorable and the later comparison improved, without claiming causality.",
+      "generalized_without_transfer": "The blind check was favorable, but recurrence in games did not improve.",
+      "generalized_transfer_pending": "The blind check was favorable; more later games are still needed.",
+      "holdout_required": "The hypothesis still needs a check in an unlabeled position.",
+      "hypothesis_required": "A testable hypothesis still needs to be formed."
+    }
+  },
   "probe": {
     "title": "Why I selected this position",
     "testing": "This position tests: {{target}}.",
