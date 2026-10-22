@@ -16,6 +16,14 @@ Each guided DTO explains the target cause, the alternatives being contrasted, th
 
 After a guided decision, the stored intervention is mapped back to an observable category. Matching the primary category supports the working hypothesis; matching a named alternative contradicts it; a successful move or an unmeasurable signature is inconclusive. Holdout success/failure remains skill-transfer evidence and is no longer treated as proof of a cognitive cause.
 
+## P2: later real-game challenge
+
+The latest hypothesis for a pattern can now be challenged by newly analyzed 10+0 games, but only after a directly measurable guided probe and its blind holdout. The holdout timestamp is the preregistered cutoff: a game must start strictly later, have exact timing, use an unexposed position, remain coaching-eligible, and contain verified engine provenance. At most one observation per game enters the causal channel, preventing a single game with several errors from dominating confidence.
+
+The rule-based matcher covers only the three causes that the current interaction can observe directly: reply search, candidate comparison, and consequence evaluation. A record supports the primary hypothesis only when its observable signature distinguishes it from the named alternatives; ambiguous signatures are stored as inconclusive. Strategic planning, concept recognition, and calculation depth remain pending until the product captures a cause-specific signal rather than inferring intent from PGN alone.
+
+One later game never confirms a cause. A hypothesis becomes provisionally supported only with a direct supporting probe and the same discriminating signature in at least two distinct later games. Two contradictions favor a named alternative and mark the hypothesis contradicted. The real-game channel is rebuilt from the current valid corpus, so deleting, reclassifying, or excluding a source game withdraws its evidence. The UI shows the gate and counts instead of presenting a hidden confidence score as fact.
+
 ## Cost and failure controls
 
 LLM use is disabled by default. Set all of the following to enable the OpenAI adapter:
@@ -32,6 +40,6 @@ The stored metadata contains provider, model, prompt version, latency, and repor
 
 ## Current boundary
 
-This slice creates a grounded hypothesis and uses it to order the next guided positions as explicit probes. It does not let the model invent arbitrary positions or generate engine lines. The selector is a transparent heuristic over the existing verified personal positions, not learned causal discovery. Real-game observations are already separated from exposed positions by the transfer pipeline, but automatic causal hypothesis updates from those games remain a later experiment: recurrence alone cannot prove a cognitive cause.
+This slice creates a grounded hypothesis, orders explicit probes, and challenges directly observable causes against later real games. It does not let the model invent arbitrary positions or generate engine lines. The selectors are transparent heuristics over verified personal positions, not learned causal discovery. Real-game recurrence alone cannot prove a cognitive cause: the temporal gate, discriminating probe, blind holdout, distinct-game threshold, and explicit alternatives are all required before the product uses the word supported.
 
 All tests use a fake provider. Do not enable the real adapter in test or CI environments.

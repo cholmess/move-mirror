@@ -7,6 +7,7 @@ import {
   validatePedagogyOutput,
 } from "../../shared/patterns/pedagogy.js";
 import { classifyProbeObservation, planHypothesisProbe } from "../../shared/patterns/probe-selection.js";
+import { hypothesisEvidenceSummary, reconcileRealGameHypotheses } from "../../shared/patterns/real-game-evidence.js";
 import { Chess } from "chess.js";
 import { randomUUID } from "node:crypto";
 import { PATTERN_VERSION, MAX_PERSONAL_GAMES, patternExists } from "../../shared/patterns/catalog.js";
@@ -138,12 +139,25 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
       s.continuationAttempts = (s.continuationAttempts ?? []).filter(a => !invalid.has(a.exerciseId));
       s.exposures = s.exposures.filter(e => !invalid.has(e.exerciseId));
       for (const k of invalidAnalyses) delete s.analyses[k];
+      const completeRecords = Object.values(s.analyses).filter((analysis) => analysis.complete).flatMap((analysis) => analysis.rows);
+      s.hypotheses = reconcileRealGameHypotheses(s.hypotheses ?? [], completeRecords, s.exposures ?? []);
     });
   }
   function summary() {
     reconcileGames();
     const state = store.read(), games = selectPersonalGames(gamesStore.listGames()), records = rows();
-    const patterns = buildPatternProfile(records, state.attempts, state.exposures, Date.parse(now()), state.patternDomains ?? {});
+    const latestHypotheses = new Map((state.hypotheses ?? []).map((row) => [row.patternId, row]));
+    const patterns = buildPatternProfile(records, state.attempts, state.exposures, Date.parse(now()), state.patternDomains ?? {})
+      .map((pattern) => {
+        const hypothesis = latestHypotheses.get(pattern.id) ?? null;
+        return { ...pattern, hypothesis: hypothesis ? {
+          category: hypothesis.category,
+          statement: hypothesis.statement,
+          status: hypothesis.status,
+          confidence: hypothesis.confidence,
+          evidence: hypothesisEvidenceSummary(hypothesis),
+        } : null };
+      });
     return { version: PATTERN_VERSION, method: "evidence_rules", revision: state.revision, updatedAt: state.updatedAt, job: state.job,
       eligibleGames: games.length, analyzedGames: new Set(records.map(r => r.gameId)).size, verifiedDecisions: records.length,
       patterns, recommended: patterns.filter(p => p.status === "recurrent").slice(0, 3).map(p => p.id) };
@@ -186,6 +200,8 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
         // Obsolete analysis is reproducible; prune it, retaining exposure/attempt history.
         const retained = new Set(all.map(g => g.key));
         s.analyses = Object.fromEntries(Object.entries(s.analyses).filter(([k]) => retained.has(k)));
+        const completeRecords = Object.values(s.analyses).filter((analysis) => analysis.complete).flatMap((analysis) => analysis.rows);
+        s.hypotheses = reconcileRealGameHypotheses(s.hypotheses ?? [], completeRecords, s.exposures ?? []);
       });
     } catch (error) {
       mutate(s => { s.job.status = controller.signal.aborted ? "cancelled" : "failed";
@@ -238,7 +254,8 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
       source: attempt.reflection?.source ?? null,
       llm: pedagogicalCoach?.status?.() ?? { enabled: false, configured: false, provider: null, model: null },
     } : null;
-    const hypothesis = exercise.role === "holdout" ? null : [...(state.hypotheses ?? [])].reverse().find((row) => row.patternId === record.patternId) ?? null;
+    const storedHypothesis = exercise.role === "holdout" ? null : [...(state.hypotheses ?? [])].reverse().find((row) => row.patternId === record.patternId) ?? null;
+    const hypothesis = storedHypothesis ? { ...storedHypothesis, evidence: hypothesisEvidenceSummary(storedHypothesis) } : null;
     const probeSlot = exercise.role === "holdout" ? null : session?.probePlan?.slots?.find((row) => row.recordId === record.exerciseId) ?? null;
     const probe = probeSlot ? {
       version: session.probePlan.version,

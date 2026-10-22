@@ -4,6 +4,16 @@ export interface PersonalPattern {
   exerciseCount: number; examples: Array<{ gameId: string; moveNumber: number; exerciseId: string }>;
   practice: { attempts: number; independent: number; successes: number; failures: number; estimate: number | null };
   transfer: { status: "descriptive_comparison" | "insufficient"; before: { games: number; decisions: number; ratePer100: number | null }; after: { games: number; decisions: number; ratePer100: number | null }; differencePer100: number | null; causal: false };
+  hypothesis?: PersonalHypothesisSummary | null;
+}
+export interface HypothesisEvidenceSummary {
+  status: "tentative" | "supported" | "contradicted"; confidence: "low" | "medium";
+  directProbeSupports: number; realGameSupports: number; realGameContradictions: number; realGameInconclusive: number;
+  gate: { eligible: boolean; reason: "cause_not_directly_observable" | "direct_probe_required" | "blind_holdout_required" | null; cutoffAt: string | null };
+}
+export interface PersonalHypothesisSummary {
+  category: string; statement: string; confidence: "low" | "medium"; status: "tentative" | "supported" | "contradicted";
+  evidence: HypothesisEvidenceSummary;
 }
 export interface PatternSummary {
   revision: number; method: "evidence_rules"; eligibleGames: number; analyzedGames: number; verifiedDecisions: number;
@@ -31,7 +41,7 @@ export interface PersonalExercise {
   sessionId?: string | null; slotIndex?: number | null; sessionPositionTotal?: number | null; sessionPositionCurrent?: number | null; sessionShortfall?: boolean;
   coachingHistory?: Array<{ intervention: string; at: string; gameId: string }>;
   evidenceSummary?: { errors: number; games: number; opportunities: number; confidence: string } | null;
-  hypothesis?: { category: string; statement: string; confidence: string; status: string; intervention: string; nextTest?: { instruction: string; successSignal: string } } | null;
+  hypothesis?: { category: string; statement: string; confidence: string; status: string; intervention: string; nextTest?: { instruction: string; successSignal: string }; evidence?: HypothesisEvidenceSummary } | null;
   probe?: {
     version: string; hypothesisId: string; targetCategory: string; comparedCategories: string[];
     selectionReasons: string[]; measurability: "direct" | "partial";

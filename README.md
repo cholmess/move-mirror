@@ -91,6 +91,14 @@ Modo offline, sin red: en `/transfer`, «Modo offline (fixtures)».
 - Dose math is unchanged: `shared/transfer/intervention.js` (`cct-refutation-dose-v1`); the ledger does not duplicate rules.
 - Integrity: `npm run validation:verify` · export: `npm run validation:export` · docs: [docs/personal-validation-ledger.md](docs/personal-validation-ledger.md)
 
+## Evidence-driven coach — P2 real-game challenge
+
+- A working cause hypothesis enters the real-game channel only after a directly measurable probe and a blind holdout.
+- Only exact-dated, later 10+0 games and unexposed positions count; each game contributes at most one causal observation.
+- Support requires the same discriminating signature in two distinct later games. One game or recurrence alone remains tentative.
+- The channel is rebuilt from the valid corpus, so removed or ineligible games cannot leave stale support behind.
+- Details and limits: [docs/personal-pedagogy.md](docs/personal-pedagogy.md)
+
 ## MoveMirror v0.2.1 — Evaluation Hardening
 
 - Escalamiento automático 80k → 500k cerca de umbrales (35–65 cp, 105–135 cp), mates inestables e información incompleta.

@@ -151,13 +151,23 @@ export function applyHypothesisEvidence(hypothesis, evidence) {
   next.observations ??= [];
   if (next.observations.some((row) => row.id === evidence.id)) return next;
   next.observations.push(evidence);
+  const derived = deriveHypothesisEvidenceState(next);
+  derived.updatedAt = evidence.at;
+  return derived;
+}
+
+export function deriveHypothesisEvidenceState(hypothesis) {
+  const next = structuredClone(hypothesis);
+  next.observations ??= [];
   const support = next.observations.filter((row) => row.direction === "support").length;
   const contradict = next.observations.filter((row) => row.direction === "contradict").length;
+  const directProbeSupport = next.observations.some((row) => row.source === "practice_probe" && row.direction === "support" && row.measurability === "direct");
+  const realGameSupport = new Set(next.observations.filter((row) => row.source === "real_game" && row.direction === "support").map((row) => row.gameId)).size;
   next.confidence = contradict ? "low" : support >= 2 ? "medium" : "low";
-  // Practice and holdout can adjust confidence, but only a later real game can support a causal hypothesis.
-  next.status = support >= 2 && next.observations.some((row) => row.source === "real_game")
+  // Recurrence alone is insufficient: support needs a discriminating probe and
+  // the same signature in two later, distinct real games.
+  next.status = directProbeSupport && realGameSupport >= 2 && contradict === 0
     ? "supported"
     : contradict >= 2 ? "contradicted" : "tentative";
-  next.updatedAt = evidence.at;
   return next;
 }
