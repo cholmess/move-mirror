@@ -8,6 +8,7 @@ import {
 } from "../../shared/patterns/pedagogy.js";
 import { classifyProbeObservation, planHypothesisProbe } from "../../shared/patterns/probe-selection.js";
 import { hypothesisEvidenceSummary, reconcileRealGameHypotheses } from "../../shared/patterns/real-game-evidence.js";
+import { buildCurriculumPlan, createHypothesisRevision, decideCurriculum } from "../../shared/patterns/curriculum.js";
 import { Chess } from "chess.js";
 import { randomUUID } from "node:crypto";
 import { PATTERN_VERSION, MAX_PERSONAL_GAMES, patternExists } from "../../shared/patterns/catalog.js";
@@ -150,7 +151,8 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
     const patterns = buildPatternProfile(records, state.attempts, state.exposures, Date.parse(now()), state.patternDomains ?? {})
       .map((pattern) => {
         const hypothesis = latestHypotheses.get(pattern.id) ?? null;
-        return { ...pattern, hypothesis: hypothesis ? {
+        const curriculum = decideCurriculum(pattern, hypothesis);
+        return { ...pattern, curriculum, hypothesis: hypothesis ? {
           category: hypothesis.category,
           statement: hypothesis.statement,
           status: hypothesis.status,
@@ -158,9 +160,10 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
           evidence: hypothesisEvidenceSummary(hypothesis),
         } : null };
       });
+    const curriculum = buildCurriculumPlan(patterns);
     return { version: PATTERN_VERSION, method: "evidence_rules", revision: state.revision, updatedAt: state.updatedAt, job: state.job,
       eligibleGames: games.length, analyzedGames: new Set(records.map(r => r.gameId)).size, verifiedDecisions: records.length,
-      patterns, recommended: patterns.filter(p => p.status === "recurrent").slice(0, 3).map(p => p.id) };
+      patterns, curriculum, recommended: curriculum.map(row => row.patternId) };
   }
   async function run() {
     const sig = analyzerSignature();
@@ -277,7 +280,7 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
       canAdvanceSlot: status === "ready_for_next_slot",
       sessionId: exercise.sessionId ?? null, slotIndex: exercise.slotIndex ?? null,
       sessionPositionTotal, sessionPositionCurrent: exercise.slotIndex != null ? exercise.slotIndex + 1 : null,
-      sessionShortfall, diagnostic, hypothesis, probe,
+      sessionShortfall, diagnostic, hypothesis, probe, curriculum: exercise.role === "holdout" ? null : session?.curriculumDecision ?? null,
       evidenceSummary: exercise.role === "holdout" ? null : { errors: profile?.errors ?? 0, games: profile?.games ?? 0, opportunities: profile?.opportunities ?? 0, confidence: profile?.confidence ?? "insufficient" },
       coachingHistory: exercise.role === "holdout" ? [] : state.attempts.filter(a => a.patternId === record.patternId && a.coaching && !a.assisted)
         .slice(-5).map(a => ({ intervention: a.coaching.intervention, at: a.at, gameId: a.gameId })) };
@@ -300,7 +303,14 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
     const candidates = rows().filter(r => r.patternId === patternId);
     const layout = planSessionLayout(candidates, state.exposures);
     if (!layout.ok) throw new Error(layout.error);
-    const hypothesis = [...(state.hypotheses ?? [])].reverse().find((row) => row.patternId === patternId) ?? null;
+    let hypothesis = [...(state.hypotheses ?? [])].reverse().find((row) => row.patternId === patternId) ?? null;
+    const pattern = summary().patterns.find((row) => row.id === patternId);
+    const curriculumDecision = pattern?.curriculum ?? decideCurriculum(pattern, hypothesis);
+    const revised = createHypothesisRevision(hypothesis, curriculumDecision, { id: randomUUID(), at: now() });
+    if (revised) {
+      mutate(s => { s.hypotheses.push(revised); });
+      hypothesis = revised;
+    }
     const probe = planHypothesisProbe(layout.guided, hypothesis, state.exposures);
     const sessionPlan = orderGuidedPlan(probe.ordered, preferredId);
     const session = createPracticeSession(patternId, sessionPlan.map(r => r.exerciseId), {
@@ -310,6 +320,7 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
       reservedHoldoutRecordId: layout.holdout.exerciseId,
       sessionShortfall: layout.sessionShortfall,
       probePlan: probe.plan,
+      curriculumDecision,
     });
     session.guidedExerciseIds = [];
     mutate(s => { s.practiceSessions.push(session); });

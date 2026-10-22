@@ -61,7 +61,7 @@ export function orderGuidedPlan(guided, preferredExerciseId = null) {
   return plan;
 }
 
-export function createPracticeSession(patternId, positionRecordIds, { contentVersion, detectorVersion, at, reservedHoldoutRecordId, sessionShortfall = false, probePlan = null }) {
+export function createPracticeSession(patternId, positionRecordIds, { contentVersion, detectorVersion, at, reservedHoldoutRecordId, sessionShortfall = false, probePlan = null, curriculumDecision = null }) {
   return {
     version: PATTERN_LEARNING_VERSION,
     id: randomUUID(),
@@ -75,6 +75,7 @@ export function createPracticeSession(patternId, positionRecordIds, { contentVer
     positionRecordIds,
     reservedHoldoutRecordId,
     probePlan,
+    curriculumDecision,
     sessionShortfall: Boolean(sessionShortfall),
     guidedExerciseIds: [],
     holdoutExerciseId: null,

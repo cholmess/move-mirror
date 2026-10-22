@@ -5,6 +5,13 @@ export interface PersonalPattern {
   practice: { attempts: number; independent: number; successes: number; failures: number; estimate: number | null };
   transfer: { status: "descriptive_comparison" | "insufficient"; before: { games: number; decisions: number; ratePer100: number | null }; after: { games: number; decisions: number; ratePer100: number | null }; differencePer100: number | null; causal: false };
   hypothesis?: PersonalHypothesisSummary | null;
+  curriculum?: CurriculumDecision;
+}
+export type CurriculumAction = "diagnose" | "reteach" | "revise_hypothesis" | "bridge_transfer" | "maintenance";
+export interface CurriculumDecision {
+  version: string; action: CurriculumAction; reasonKey: string; slot?: "primary" | "support" | "maintenance";
+  previousCategory: string | null; targetCategory: string;
+  evidence: { hypothesisStatus: string; holdoutOutcome: string; holdoutAt: string | null; transferStatus: string; differencePer100: number | null; causal: false };
 }
 export interface HypothesisEvidenceSummary {
   status: "tentative" | "supported" | "contradicted"; confidence: "low" | "medium";
@@ -17,7 +24,7 @@ export interface PersonalHypothesisSummary {
 }
 export interface PatternSummary {
   revision: number; method: "evidence_rules"; eligibleGames: number; analyzedGames: number; verifiedDecisions: number;
-  updatedAt: string | null; recommended: string[]; patterns: PersonalPattern[];
+  updatedAt: string | null; recommended: string[]; patterns: PersonalPattern[]; curriculum: Array<CurriculumDecision & { patternId: string }>;
   job: { status: string; error: string | null; completedGames: number; totalGames: number; completedDecisions: number; totalDecisions: number };
 }
 export type PersonalExerciseStatus = "active" | "training" | "ready_for_holdout" | "ready_for_next_slot" | "completed";
@@ -46,6 +53,7 @@ export interface PersonalExercise {
     version: string; hypothesisId: string; targetCategory: string; comparedCategories: string[];
     selectionReasons: string[]; measurability: "direct" | "partial";
   } | null;
+  curriculum?: CurriculumDecision | null;
   diagnostic?: {
     question: string; status: string; source: string | null; reflection: PedagogyReflection | null;
     llm: { enabled: boolean; configured: boolean; provider: string | null; model: string | null };

@@ -171,6 +171,25 @@
     "llmSource": "Síntesis generada desde evidencia estructurada; las jugadas y variantes provienen del motor.",
     "ruleSource": "Intervención provisional basada en reglas; no se hizo una inferencia del modelo."
   },
+  "curriculum": {
+    "title": "Cómo cambia ahora tu entrenamiento",
+    "action": {
+      "diagnose": "Primero distinguiremos entre causas posibles.",
+      "reteach": "Cambiaremos la explicación y la forma de practicar.",
+      "revise_hypothesis": "El próximo ejercicio comprobará otra explicación.",
+      "bridge_transfer": "La siguiente práctica se acercará más a una decisión de partida.",
+      "maintenance": "Esta habilidad pasa a práctica espaciada."
+    },
+    "reason": {
+      "contradicted_hypothesis": "La hipótesis anterior fue contradicha; conservamos el historial y cambiamos el objetivo.",
+      "holdout_failed": "La comprobación ciega no mostró generalización.",
+      "generalized_and_transfer_improved": "La comprobación ciega fue favorable y la comparación posterior mejoró, sin atribuir causalidad.",
+      "generalized_without_transfer": "La comprobación ciega fue favorable, pero no mejoró la recurrencia en partidas.",
+      "generalized_transfer_pending": "La comprobación ciega fue favorable; todavía faltan partidas posteriores.",
+      "holdout_required": "Aún falta comprobar la hipótesis en una posición sin etiqueta.",
+      "hypothesis_required": "Aún falta formular una hipótesis contrastable."
+    }
+  },
   "probe": {
     "title": "Por qué elegí esta posición",
     "testing": "Esta posición pone a prueba: {{target}}.",

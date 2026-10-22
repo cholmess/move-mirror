@@ -171,6 +171,25 @@
     "llmSource": "Aus strukturierter Evidenz zusammengefasst; Züge und Varianten stammen von der Engine.",
     "ruleSource": "Vorläufige regelbasierte Intervention; es wurde keine Modellinferenz erstellt."
   },
+  "curriculum": {
+    "title": "So ändert sich dein Training jetzt",
+    "action": {
+      "diagnose": "Zuerst unterscheiden wir mögliche Ursachen.",
+      "reteach": "Wir ändern Erklärung und Übungsform.",
+      "revise_hypothesis": "Die nächste Aufgabe prüft eine andere Erklärung.",
+      "bridge_transfer": "Die nächste Übung ähnelt stärker einer Partieentscheidung.",
+      "maintenance": "Diese Fähigkeit wechselt in die zeitlich verteilte Erhaltung."
+    },
+    "reason": {
+      "contradicted_hypothesis": "Die bisherige Hypothese wurde widerlegt; ihr Verlauf bleibt erhalten, während sich das Ziel ändert.",
+      "holdout_failed": "Die verdeckte Prüfung zeigte keine Generalisierung.",
+      "generalized_and_transfer_improved": "Die verdeckte Prüfung war günstig und der spätere Vergleich besser, ohne Kausalität zu behaupten.",
+      "generalized_without_transfer": "Die verdeckte Prüfung war günstig, aber die Häufigkeit in Partien sank nicht.",
+      "generalized_transfer_pending": "Die verdeckte Prüfung war günstig; weitere spätere Partien fehlen noch.",
+      "holdout_required": "Die Hypothese muss noch in einer unbeschrifteten Position geprüft werden.",
+      "hypothesis_required": "Eine prüfbare Hypothese muss noch formuliert werden."
+    }
+  },
   "probe": {
     "title": "Warum ich diese Stellung ausgewählt habe",
     "testing": "Diese Stellung prüft: {{target}}.",

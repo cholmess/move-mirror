@@ -24,6 +24,20 @@ The rule-based matcher covers only the three causes that the current interaction
 
 One later game never confirms a cause. A hypothesis becomes provisionally supported only with a direct supporting probe and the same discriminating signature in at least two distinct later games. Two contradictions favor a named alternative and mark the hypothesis contradicted. The real-game channel is rebuilt from the current valid corpus, so deleting, reclassifying, or excluding a source game withdraws its evidence. The UI shows the gate and counts instead of presenting a hidden confidence score as fact.
 
+## P3: adaptive curriculum
+
+The training plan now turns the separated evidence channels into a transparent intervention decision. Every recurrent pattern receives one of five actions:
+
+- `diagnose`: no blind generalization result exists yet, so the coach gathers discriminating evidence instead of asserting a cause.
+- `reteach`: the latest blind holdout failed, so the coach changes the explanation and teaching approach before testing again.
+- `revise_hypothesis`: later evidence contradicted the working cause. The strongest named alternative becomes a new tentative hypothesis linked to the contradicted parent; the old record remains immutable for audit.
+- `bridge_transfer`: the skill generalized in holdout, but real-game transfer is pending or the descriptive recurrence rate did not fall. The intervention moves toward recognition under game-like conditions: before feedback, the guided screen hides the pattern evidence, hypothesis/probe labels, source-game link, hints, and solution reveal.
+- `maintenance`: the skill generalized and the sufficiently powered descriptive comparison shows lower later recurrence. This schedules maintenance; it still does not claim the training caused the change.
+
+The curriculum planner selects at most one primary item, one support item, and one maintenance item. Active learning outranks maintenance even when the maintained pattern had greater raw engine-loss severity. Existing review dates, active sessions, lesson retention, and owner-scoped persistence remain authoritative.
+
+The decision and its evidence snapshot are stored on the practice session. When a hypothesis is contradicted, the next probe is planned against the new revision's category rather than silently continuing the rejected cause. This changes exercise selection behavior while preserving the complete hypothesis lineage.
+
 ## Cost and failure controls
 
 LLM use is disabled by default. Set all of the following to enable the OpenAI adapter:
@@ -40,6 +54,6 @@ The stored metadata contains provider, model, prompt version, latency, and repor
 
 ## Current boundary
 
-This slice creates a grounded hypothesis, orders explicit probes, and challenges directly observable causes against later real games. It does not let the model invent arbitrary positions or generate engine lines. The selectors are transparent heuristics over verified personal positions, not learned causal discovery. Real-game recurrence alone cannot prove a cognitive cause: the temporal gate, discriminating probe, blind holdout, distinct-game threshold, and explicit alternatives are all required before the product uses the word supported.
+This slice creates a grounded hypothesis, orders explicit probes, challenges directly observable causes against later real games, and adapts the next curriculum action. It does not let the model invent arbitrary positions or generate engine lines. The selectors are transparent heuristics over verified personal positions, not learned causal discovery. Real-game recurrence alone cannot prove a cognitive cause: the temporal gate, discriminating probe, blind holdout, distinct-game threshold, and explicit alternatives are all required before the product uses the word supported.
 
 All tests use a fake provider. Do not enable the real adapter in test or CI environments.

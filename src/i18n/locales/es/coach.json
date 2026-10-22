@@ -132,6 +132,25 @@
       "scheduled": "La próxima revisión es posterior; puedes practicar antes.",
       "stable": "Varios aciertos independientes; seguimos con intervalo más largo.",
       "lowEvidence": "Aún se construye evidencia independiente para este patrón."
+    },
+    "curriculum": {
+      "slot": { "primary": "Foco principal", "support": "Apoyo", "maintenance": "Mantenimiento" },
+      "action": {
+        "diagnose": "Recoger evidencia discriminante antes de atribuir una causa.",
+        "reteach": "Cambiar la explicación y volver a enseñar antes de repetir la prueba.",
+        "revise_hypothesis": "Dejar de insistir en la causa anterior y comprobar la alternativa mejor respaldada.",
+        "bridge_transfer": "Aumentar el realismo para reconocer la señal bajo condiciones de partida.",
+        "maintenance": "Espaciar la práctica y comprobar que el aprendizaje se mantiene."
+      },
+      "reason": {
+        "contradicted_hypothesis": "La evidencia contradijo la hipótesis de trabajo; el siguiente probe cambia de objetivo.",
+        "holdout_failed": "La habilidad no se generalizó a la posición ciega.",
+        "generalized_and_transfer_improved": "Hubo generalización y la recurrencia posterior es menor; es una comparación descriptiva, no causal.",
+        "generalized_without_transfer": "Hubo generalización, pero la recurrencia posterior no disminuyó.",
+        "generalized_transfer_pending": "Hubo generalización; aún falta volumen suficiente en partidas posteriores.",
+        "holdout_required": "La hipótesis sigue abierta hasta una comprobación ciega.",
+        "hypothesis_required": "Primero necesitamos una hipótesis contrastable basada en tu razonamiento."
+      }
     }
   }
 }

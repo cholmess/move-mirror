@@ -172,6 +172,7 @@ export function PersonalPractice() {
     return <section className="card"><p>{error ? t(`errors.${error}`) : t("loading")}</p><Link to="/patterns">{t("back")}</Link></section>;
   }
   const holdout = exercise.role === "holdout";
+  const gameLike = !holdout && exercise.curriculum?.action === "bridge_transfer";
   const sessionProgress = exercise.sessionPositionTotal
     ? t("learning:practice.sessionProgress", { current: exercise.sessionPositionCurrent ?? 1, total: exercise.sessionPositionTotal })
     : t("path.progress", { current: feedback ? exercise.decisionCount : Math.min(exercise.decisionCount + 1, exercise.targetDecisions), total: exercise.targetDecisions });
@@ -182,12 +183,19 @@ export function PersonalPractice() {
       <p className="eyebrow">{holdout ? t("path.holdoutEyebrow") : t("path.guidedEyebrow")}</p>
       <h1>{holdout ? t("path.holdoutTitle") : t("decision.title")}</h1>
       <p>{holdout ? t("path.holdoutGoal") : t("decision.intro")}</p>
-      {!holdout && exercise.evidenceSummary && (
+      {!holdout && !gameLike && exercise.evidenceSummary && (
         <p className="muted" data-testid="pedagogy-evidence-summary">
           {t("pedagogy.observed", exercise.evidenceSummary)} {t("pedagogy.unknown")}
         </p>
       )}
-      {!holdout && exercise.hypothesis && !reflection && (
+      {!holdout && exercise.curriculum && (
+        <section className="callout" data-testid="curriculum-decision">
+          <strong>{t("curriculum.title")}</strong>
+          <p>{t(`curriculum.action.${exercise.curriculum.action}`)}</p>
+          <p className="small muted">{t(`curriculum.reason.${exercise.curriculum.reasonKey}`)}</p>
+        </section>
+      )}
+      {!holdout && !gameLike && exercise.hypothesis && !reflection && (
         <section className="callout" data-testid="pedagogy-memory">
           <strong>{t("pedagogy.checking")}</strong>
           <p>{exercise.hypothesis.statement}</p>
@@ -200,7 +208,7 @@ export function PersonalPractice() {
           })}</p>}
         </section>
       )}
-      {!holdout && exercise.probe && (
+      {!holdout && !gameLike && exercise.probe && (
         <section className="callout" data-testid="hypothesis-probe">
           <strong>{t("probe.title")}</strong>
           <p>{t("probe.testing", { target: t(`probe.category.${exercise.probe.targetCategory}`) })}</p>
@@ -216,12 +224,12 @@ export function PersonalPractice() {
           <p className="muted">{t(`catalog.${exercise.patternId}.contrast`)}</p>
         </section>
       )}
-      {!holdout && !!exercise.coachingHistory?.length && <p className="muted" data-testid="coaching-memory">{t("decision.memory", { count: exercise.coachingHistory.length })} {t(`decision.followup.${exercise.coachingHistory.at(-1)!.intervention}`)}</p>}
+      {!holdout && !gameLike && !!exercise.coachingHistory?.length && <p className="muted" data-testid="coaching-memory">{t("decision.memory", { count: exercise.coachingHistory.length })} {t(`decision.followup.${exercise.coachingHistory.at(-1)!.intervention}`)}</p>}
       {exercise.sessionShortfall && !holdout && (
         <p className="muted" data-testid="session-shortfall">{t("learning:session.shortfall", { count: exercise.sessionPositionTotal ?? 0 })}</p>
       )}
       <p className="muted">{sessionProgress}</p>
-      {(!holdout || feedback) && <Link to={`/games/${exercise.gameId}`}>{t("source", { move: exercise.moveNumber })}</Link>}
+      {((!holdout && !gameLike) || feedback) && <Link to={`/games/${exercise.gameId}`}>{t("source", { move: exercise.moveNumber })}</Link>}
       <div className="train-grid">
         <section className="card board-panel"><PlayBoard fen={fen} orientation={exercise.color} disabled={busy || !!feedback || demo || exercise.completed || !!prediction || noReply} onMove={play} /></section>
         <aside className="card" aria-live="polite">
@@ -318,10 +326,10 @@ export function PersonalPractice() {
           {demo && <p className="callout">{t("demonstration")}</p>}
           {error && <p role="alert">{t(`errors.${error}`, { defaultValue: t("errors.connection") })}</p>}
           <div className="actions">
-            {!holdout && !feedback && !demo && !candidate && (
+            {!holdout && !gameLike && !feedback && !demo && !candidate && (
               <button type="button" className="btn" disabled={busy} onClick={() => void action(async () => { await requestPatternHint(exercise.id); setHint(true); })}>{t("hint")}</button>
             )}
-            {!holdout && exercise.decisionCount === 0 && !candidate && (
+            {!holdout && !gameLike && exercise.decisionCount === 0 && !candidate && (
               <button type="button" className="btn" disabled={busy} onClick={() => void action(async () => { const result = await revealPatternSolution(exercise.id); setFen(result.referenceFen); setDemo(true); })}>{t("showIdea")}</button>
             )}
             {feedback?.canContinue && (
