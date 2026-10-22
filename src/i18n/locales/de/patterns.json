@@ -23,6 +23,20 @@
   "practiceEvidence": "{{successes}} Erfolge in {{independent}} ersten Versuchen ohne Hilfe · {{attempts}} Versuche insgesamt",
   "transferPending": "Für einen Vergleich der Wiederholung fehlen noch Belege aus späteren Partien.",
   "transferObserved": "Fehler je 100 vergleichbare Entscheidungen: {{before}} vorher → {{after}} danach. Ein beschreibender Vergleich, kein Nachweis eines Trainingseffekts.",
+  "hypothesisTracking": {
+    "title": "Hypothese, die wir prüfen",
+    "status": {
+      "tentative": "Noch offen: Es gibt nicht genug unabhängige Evidenz, um die Ursache zuzuschreiben.",
+      "supported": "Vorläufig gestützt durch einen unterscheidenden Probe und mindestens zwei verschiedene spätere Partien.",
+      "contradicted": "Spätere Evidenz spricht für eine andere Erklärung; der Coach sollte die Intervention ändern."
+    },
+    "counts": "Direkte Probes: {{probes}} · stützende Partien: {{support}} · widersprechende Partien: {{contradict}}",
+    "gate": {
+      "cause_not_directly_observable": "Mit der aktuellen Interaktion lässt sich diese Ursache noch nicht direkt messen.",
+      "direct_probe_required": "Zuerst muss ein geführter Probe diese Ursache von Alternativen unterscheiden.",
+      "blind_holdout_required": "Schließe zuerst die blinde Prüfung ab; erst danach werden neue Partien berücksichtigt."
+    }
+  },
   "practice": "Dieses Muster üben",
   "method": "Aktualisierungen verwenden prüfbare Regeln, kein erneutes Training eines neuronalen Netzes. Bis zu 200 beendete 10+0-Partien mit bestätigter Identität werden analysiert; sehr kurze Partien und besondere Ausgangsstellungen bleiben ausgeschlossen. Ein Muster benötigt Fehler in mindestens drei Partien und drei verschiedenen Stellungen. Nur vollständig analysierte Partien zählen.",
   "loading": "Stellung wird geladen…",
@@ -126,6 +140,11 @@
     "unknown": "Das bestätigt eine beobachtbare Wiederholung, erklärt aber noch nicht ihre Ursache.",
     "checking": "Ich möchte eine Hypothese aus der vorigen Einheit prüfen",
     "stillTentative": "Sie bleibt vorläufig, bis unabhängige Evidenz aus anderen Stellungen und Partien vorliegt.",
+    "hypothesisStatus": {
+      "tentative": "Sie bleibt vorläufig, bis unabhängige Evidenz aus anderen Stellungen und Partien vorliegt.",
+      "supported": "Dieselbe Signatur erschien nach einem Probe und einer blinden Prüfung in mindestens zwei verschiedenen späteren Partien. Es bleibt eine Arbeitserklärung, keine Diagnose.",
+      "contradicted": "Spätere Partien sprechen für eine andere Erklärung. Die nächste Intervention wird angepasst, statt auf dieser Ursache zu bestehen."
+    },
     "coachQuestion": "Ich möchte verstehen, wie du gedacht hast",
     "beforeFeedbackTitle": "Halte deine Einschätzung fest, bevor du die Engine siehst",
     "beforeFeedbackNote": "Diese Antwort wird gesperrt. So rekonstruierst du deine Überlegung nicht erst nach dem Ergebnis.",

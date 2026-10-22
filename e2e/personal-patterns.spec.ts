@@ -7,11 +7,14 @@ test.beforeEach(async ({ page }) => {
 });
 test("patterns panel provides update, evidence and no unsupported diagnosis", async ({ page }) => {
   await page.route("**/api/patterns", route=>route.fulfill({json:{revision:1,eligibleGames:3,analyzedGames:3,verifiedDecisions:30,recommended:["closed-center"],job:{status:"completed"},patterns:[{
-    id:"closed-center",kind:"context",errors:3,games:3,opportunities:12,status:"recurrent",confidence:"limited",examples:[],practice:{attempts:0},transfer:{status:"insufficient"}
+    id:"closed-center",kind:"context",errors:3,games:3,opportunities:12,status:"recurrent",confidence:"limited",examples:[],practice:{attempts:0},transfer:{status:"insufficient"},
+    hypothesis:{category:"strategic_planning",statement:"El plan podría no responder a la estructura.",confidence:"low",status:"tentative",evidence:{status:"tentative",confidence:"low",directProbeSupports:0,realGameSupports:0,realGameContradictions:0,realGameInconclusive:0,gate:{eligible:false,reason:"cause_not_directly_observable",cutoffAt:null}}}
   }]}}));
   await page.goto("/patterns");
   await expect(page.getByTestId("pattern-closed-center")).toContainText("3 errores en 3 partidas");
   await expect(page.getByText("Sabemos en qué contexto ocurrieron estos errores; todavía no sabemos por qué.")).toBeVisible();
+  await expect(page.getByTestId("hypothesis-evidence-closed-center")).toContainText("Sigue abierta");
+  await expect(page.getByTestId("hypothesis-evidence-closed-center")).toContainText("aún no puede medirse directamente");
   await expect(page.getByRole("button",{name:"Practicar este patrón"})).toBeEnabled();
 });
 test("real engine: imported games yield a new pattern that can be practiced and updated", async ({ page, request }) => {

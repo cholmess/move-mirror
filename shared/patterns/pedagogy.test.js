@@ -31,4 +31,17 @@ describe("personal pedagogy contract", () => {
     const contradicted = applyHypothesisEvidence(holdout, { id: "o2", source: "holdout", direction: "contradict", at: "2026-10-22T00:00:00Z" });
     expect(contradicted).toMatchObject({ confidence: "low", status: "tentative" });
   });
+  it("does not support a cause from one later game or recurrence without a direct probe", () => {
+    const base = { id: "h1", confidence: "low", status: "tentative", observations: [] };
+    const probe = applyHypothesisEvidence(base, { id: "p1", source: "practice_probe", direction: "support", measurability: "direct", at: "2026-10-20T00:00:00Z" });
+    const oneGame = applyHypothesisEvidence(probe, { id: "g1", source: "real_game", direction: "support", gameId: "g1", at: "2026-10-21T00:00:00Z" });
+    expect(oneGame.status).toBe("tentative");
+    const twoGames = applyHypothesisEvidence(oneGame, { id: "g2", source: "real_game", direction: "support", gameId: "g2", at: "2026-10-22T00:00:00Z" });
+    expect(twoGames.status).toBe("supported");
+    const recurrenceOnly = applyHypothesisEvidence(
+      applyHypothesisEvidence(base, { id: "r1", source: "real_game", direction: "support", gameId: "r1", at: "2026-10-21T00:00:00Z" }),
+      { id: "r2", source: "real_game", direction: "support", gameId: "r2", at: "2026-10-22T00:00:00Z" },
+    );
+    expect(recurrenceOnly.status).toBe("tentative");
+  });
 });

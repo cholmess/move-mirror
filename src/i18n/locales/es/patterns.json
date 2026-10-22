@@ -23,6 +23,20 @@
   "practiceEvidence": "{{successes}} aciertos en {{independent}} primeros intentos sin ayuda · {{attempts}} intentos totales",
   "transferPending": "Aún falta evidencia en partidas posteriores para comparar la recurrencia.",
   "transferObserved": "Errores por 100 decisiones comparables: {{before}} antes → {{after}} después. Comparación descriptiva; no demuestra un efecto del entrenamiento.",
+  "hypothesisTracking": {
+    "title": "Hipótesis que estamos comprobando",
+    "status": {
+      "tentative": "Sigue abierta: todavía no hay evidencia independiente suficiente para atribuir la causa.",
+      "supported": "Respaldada provisionalmente por un probe discriminante y al menos dos partidas posteriores distintas.",
+      "contradicted": "La evidencia posterior favorece otra explicación; el coach debe cambiar la intervención."
+    },
+    "counts": "Probes directos: {{probes}} · partidas que apoyan: {{support}} · partidas que contradicen: {{contradict}}",
+    "gate": {
+      "cause_not_directly_observable": "Esta causa aún no puede medirse directamente con la interacción actual.",
+      "direct_probe_required": "Primero hace falta un probe guiado que distinga esta causa de sus alternativas.",
+      "blind_holdout_required": "Primero completa la comprobación ciega; solo después miraremos partidas nuevas."
+    }
+  },
   "practice": "Practicar este patrón",
   "method": "Actualización por reglas verificables, no reentrenamiento de una red neuronal. Se analizan hasta 200 partidas completas de 10+0 con identidad confirmada; partidas muy cortas y posiciones iniciales especiales quedan fuera. Un patrón requiere errores en al menos tres partidas y tres posiciones distintas. Solo cuentan partidas analizadas por completo.",
   "loading": "Cargando posición…",
@@ -126,6 +140,11 @@
     "unknown": "Eso confirma una repetición observable; todavía no explica por qué ocurre.",
     "checking": "Quiero comprobar una hipótesis de la sesión anterior",
     "stillTentative": "Sigue siendo provisional hasta que aparezca evidencia independiente en otras posiciones y partidas.",
+    "hypothesisStatus": {
+      "tentative": "Sigue siendo provisional hasta que aparezca evidencia independiente en otras posiciones y partidas.",
+      "supported": "La misma firma apareció en al menos dos partidas posteriores distintas, después de un probe y una comprobación ciega. Sigue siendo una explicación de trabajo, no un diagnóstico.",
+      "contradicted": "Las partidas posteriores favorecen otra explicación. Ajustaremos la siguiente intervención en vez de insistir con esta causa."
+    },
     "coachQuestion": "Quiero entender cómo estabas pensando",
     "beforeFeedbackTitle": "Registra tu lectura antes de ver el motor",
     "beforeFeedbackNote": "Esta respuesta quedará bloqueada. Así evitamos reconstruir tu razonamiento después de conocer el resultado.",

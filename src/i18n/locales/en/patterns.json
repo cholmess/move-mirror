@@ -23,6 +23,20 @@
   "practiceEvidence": "{{successes}} successes in {{independent}} first attempts without help · {{attempts}} total attempts",
   "transferPending": "More evidence from later games is needed to compare recurrence.",
   "transferObserved": "Errors per 100 comparable decisions: {{before}} before → {{after}} after. A descriptive comparison, not proof of a training effect.",
+  "hypothesisTracking": {
+    "title": "Hypothesis we are testing",
+    "status": {
+      "tentative": "Still open: there is not enough independent evidence to attribute the cause.",
+      "supported": "Provisionally supported by a discriminating probe and at least two distinct later games.",
+      "contradicted": "Later evidence favors another explanation; the coach should change the intervention."
+    },
+    "counts": "Direct probes: {{probes}} · supporting games: {{support}} · contradicting games: {{contradict}}",
+    "gate": {
+      "cause_not_directly_observable": "The current interaction cannot measure this cause directly yet.",
+      "direct_probe_required": "A guided probe must first distinguish this cause from its alternatives.",
+      "blind_holdout_required": "Complete the blind check first; only then will new games be considered."
+    }
+  },
   "practice": "Practice this pattern",
   "method": "Updates use verifiable rules, not neural network retraining. Up to 200 completed 10+0 games with confirmed identity are analyzed; very short games and special starting positions are excluded. A pattern requires errors across at least three games and three distinct positions. Only fully analyzed games count.",
   "loading": "Loading position…",
@@ -126,6 +140,11 @@
     "unknown": "That confirms an observable recurrence; it does not yet explain why it happens.",
     "checking": "I want to test a hypothesis from the previous session",
     "stillTentative": "It remains tentative until independent evidence appears in other positions and games.",
+    "hypothesisStatus": {
+      "tentative": "It remains tentative until independent evidence appears in other positions and games.",
+      "supported": "The same signature appeared in at least two distinct later games after a probe and blind check. It remains a working explanation, not a diagnosis.",
+      "contradicted": "Later games favor another explanation. The next intervention will adapt instead of insisting on this cause."
+    },
     "coachQuestion": "I want to understand how you were thinking",
     "beforeFeedbackTitle": "Record your reading before seeing the engine",
     "beforeFeedbackNote": "This answer will be locked. That prevents reconstructing your reasoning after learning the result.",

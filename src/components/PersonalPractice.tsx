@@ -192,7 +192,12 @@ export function PersonalPractice() {
           <strong>{t("pedagogy.checking")}</strong>
           <p>{exercise.hypothesis.statement}</p>
           {exercise.hypothesis.nextTest && <p><strong>{t("pedagogy.nextTest")}:</strong> {exercise.hypothesis.nextTest.instruction}</p>}
-          <p className="muted">{t("pedagogy.stillTentative")}</p>
+          <p className="muted">{t(`pedagogy.hypothesisStatus.${exercise.hypothesis.status}`, { defaultValue: t("pedagogy.stillTentative") })}</p>
+          {exercise.hypothesis.evidence && <p className="small muted">{t("hypothesisTracking.counts", {
+            probes: exercise.hypothesis.evidence.directProbeSupports,
+            support: exercise.hypothesis.evidence.realGameSupports,
+            contradict: exercise.hypothesis.evidence.realGameContradictions,
+          })}</p>}
         </section>
       )}
       {!holdout && exercise.probe && (

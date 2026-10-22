@@ -302,6 +302,35 @@ describe("personal pattern incremental analysis", () => {
     expect(store.read().hypotheses.at(-1).observations.at(-1)).toMatchObject({source:"practice_probe",observedCategory:"reply_search",direction:"support"});
   });
 
+  it("reconciles a probed hypothesis against distinct later real games", async () => {
+    await activate();
+    const state = store.read();
+    const keys = Object.keys(state.analyses).slice(0, 2);
+    for (const key of keys) {
+      state.analyses[key].rows = state.analyses[key].rows.map((row) => row.patternId === "piece-loss" ? {
+        ...row, loss:260, replyUci:"d8d4", replySan:"Qxd4+", referencePv:["g1f3","b8c6","f1b5"],
+      } : row);
+    }
+    state.analyses[Object.keys(state.analyses)[2]].rows = state.analyses[Object.keys(state.analyses)[2]].rows
+      .map((row) => row.patternId === "piece-loss" ? { ...row, patternId:null } : row);
+    state.hypotheses.push({
+      id:"real-game-hypothesis", patternId:"piece-loss", category:"reply_search", status:"tentative", confidence:"low",
+      alternatives:[{category:"consequence_evaluation",statement:"La consecuencia pudo evaluarse mal."}],
+      createdAt:"2026-08-01T08:00:00Z", updatedAt:"2026-08-01T08:00:00Z",
+      observations:[
+        {id:"reflection",source:"practice",direction:"support",at:"2026-08-01T08:00:00Z"},
+        {id:"probe",source:"practice_probe",direction:"support",measurability:"direct",at:"2026-08-01T09:00:00Z"},
+        {id:"holdout",source:"holdout",direction:"inconclusive",at:"2026-08-01T10:00:00Z"},
+      ],
+    });
+    store.write(state, keys);
+    await service.update();
+    expect(store.read().hypotheses.at(-1).status).toBe("supported");
+    expect(service.summary().patterns.find(p=>p.id==="piece-loss").hypothesis).toMatchObject({
+      status:"supported", evidence:{directProbeSupports:1,realGameSupports:2,realGameContradictions:0},
+    });
+  });
+
   it("surfaces insufficient_holdout_positions when layout cannot reserve a holdout", async () => {
     await activate(0);
     const candidates = Object.values(store.read().analyses).flatMap(a => a.rows.filter(r => r.patternId === "piece-loss"));
