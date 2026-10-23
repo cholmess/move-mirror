@@ -48,6 +48,16 @@ The composer is fully functional without an LLM. If the player previously and ex
 
 Lesson evidence is frozen on the session for audit and resume behavior. The independent holdout result is linked back to the lesson summary; the following plan is recalculated from the newly persisted evidence rather than mutating the completed lesson.
 
+## P5: second real focus
+
+P5 tests that the coach architecture is not a CCT-specific pipeline. Each catalog pattern now resolves to a versioned skill definition containing a stable skill ID, decision family, observable teaching objective, diagnostic categories, and an explicit `pattern:<id>` evidence scope. `closed-center-planning` is the first non-tactical second focus: it can be selected only when verified personal decisions show costly errors in at least three distinct games and positions with the existing blocked-center opportunity definition. Its rules fallback asks about the intended pawn break, the piece that must improve, and opposing counterplay rather than recycling the CCT explanation. This is evidence of a recurring context, not proof of a strategic cause.
+
+The curriculum portfolio now contains one primary focus, at most one support focus, and at most one maintenance item. When more than one equally urgent active candidate is valid, support selection prefers a different decision family before a lower-ranked overlapping pattern. A more urgent intervention such as reteaching or hypothesis revision is never displaced for diversity. This prevents several equivalent variants of candidate/refutation work from occupying the entire visible plan while preserving pedagogical urgency.
+
+Evidence never crosses skill boundaries. Lesson compilation rejects guided or holdout records from another pattern; session creation rejects a lesson whose pattern or evidence scope does not match the session. Hypotheses, independent holdout outcomes, learning domains, and real-game comparisons remain keyed by pattern. A result for blocked-center planning cannot raise or lower material-safety evidence, and a maintained CCT skill can coexist with a newly taught strategic focus.
+
+This remains a transparent rules baseline, not learned ranking or causal diagnosis. P5 demonstrates extensibility and evidence isolation. It does not yet prove that the blocked-center detector captures the correct strategic concept, and it does not enable a lesson unless the player's real corpus passes the recurrence gates.
+
 ## Cost and failure controls
 
 LLM use is disabled by default. Set all of the following to enable the OpenAI adapter:

@@ -8,7 +8,8 @@ const guided = {
   role: "guided", status: "active", decisionCount: 0, targetDecisions: 3, awaitingNext: false,
   canStartHoldout: false, feedback: null,
   curriculum: { version: "adaptive-curriculum-v1", action: "diagnose", reasonKey: "hypothesis_required", previousCategory: null, targetCategory: "insufficient_evidence", evidence: {} },
-  lesson: { version: "personal-lesson-v1", patternId: "piece-loss", createdAt: "2026-10-22T10:00:00Z", action: "diagnose", method: "discriminating_probe", targetCategory: "insufficient_evidence", narrative: null,
+  lesson: { version: "personal-lesson-v2", patternId: "piece-loss", createdAt: "2026-10-22T10:00:00Z", action: "diagnose", method: "discriminating_probe", targetCategory: "insufficient_evidence", narrative: null,
+    skill: { version: "personal-skill-definitions-v1", patternId: "piece-loss", id: "material-safety", familyId: "candidate-refutation", kind: "tactical_process", evidenceScope: "pattern:piece-loss", observableOnly: true, objectiveKey: "catalog.piece-loss.goal", observableKey: "catalog.piece-loss.observation", diagnosticCategories: ["reply_search"] },
     evidence: { errors: 3, games: 3, opportunities: 24, confidence: "limited", examples: [{ evidenceId: "personal_error:old", kind: "personal_error", gameId: "old-game", moveNumber: 18, recordId: "old", severity: "medium" }], contrast: null },
     sequence: { guidedPositions: 3, blindHoldout: true, positionRecordIds: ["source-a"] },
     success: { practice: "process_observed", generalization: "independent_blind_holdout", transfer: "later_unexposed_games", causal: false }, spoilerPolicy: "teaching_visible" },
@@ -69,6 +70,8 @@ test("guided decisions lead to an unlabeled independent holdout on mobile", asyn
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/practice/guided");
   await expect(page.getByTestId("personal-lesson")).toContainText("Lección creada desde tus partidas");
+  await expect(page.getByTestId("lesson-skill")).toContainText("mantenga a salvo tus piezas");
+  await expect(page.getByTestId("personal-lesson")).toContainText("actualiza solo esta habilidad");
   await expect(page.getByTestId("lesson-evidence")).toContainText("3 errores en 3 partidas");
   await expect(page.getByTestId("pattern-teaching")).toHaveCount(0);
   await page.getByTestId("play-board").locator('[data-square="e2"]').click();

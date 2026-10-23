@@ -21,6 +21,13 @@ describe("personal pedagogy contract", () => {
     value.teaching.contrast.evidenceIds = ["decision", "decision"];
     expect(() => validatePedagogyOutput(value, facts)).toThrow("invalid_pedagogy_output");
   });
+  it("changes the rule-based teaching for the blocked-center second focus without claiming a cause", () => {
+    const value = fallbackPedagogy({ intervention: "reinforce", evidenceIds: ids, patternId: "closed-center" });
+    expect(value.primaryHypothesis.category).toBe("insufficient_evidence");
+    expect(value.teaching.objective).toContain("ruptura de peones");
+    expect(value.alternativeHypotheses.map((row) => row.category)).toEqual(["strategic_planning", "concept_recognition"]);
+    expect(validatePedagogyOutput(value, ids)).toEqual(value);
+  });
   it("keeps probes tentative, ignores inconclusive transfer for cause confidence, and lowers confidence on contradiction", () => {
     const base = { id: "h1", confidence: "low", status: "tentative", observations: [] };
     const practice = applyHypothesisEvidence(base, { id: "p1", source: "practice", direction: "support", at: "2026-10-20T00:00:00Z" });

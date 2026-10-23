@@ -1,9 +1,10 @@
 import { isReviewDue } from '../patterns/scheduler.js';
 import { MAX_PLAN_PRIORITIES } from '../patterns/learning-config.js';
 import { buildCurriculumPlan } from '../patterns/curriculum.js';
+import { SKILL_DEFINITION_VERSION, skillDefinitionFor } from '../patterns/skill-definitions.js';
 
 /** A transparent plan from current evidence; never a mastery or causal claim. */
-export const TRAINING_PLAN_VERSION = 'personal-training-plan-v3';
+export const TRAINING_PLAN_VERSION = 'personal-training-plan-v4';
 export function buildTrainingPlan({ summary, activePractice = null, coachHome, now = Date.now() }) {
   const curriculum = buildCurriculumPlan(summary.patterns).slice(0, MAX_PLAN_PRIORITIES);
   const byPattern = new Map(summary.patterns.map((pattern) => [pattern.id, pattern]));
@@ -25,7 +26,7 @@ export function buildTrainingPlan({ summary, activePractice = null, coachHome, n
       } else if (p.practice.lifecycle === 'learning') {
         reasonKey = 'coach:plan.reasonKey.lowEvidence';
       }
-      return { patternId: p.id, kind: p.kind, confidence: p.confidence,
+      return { patternId: p.id, kind: p.kind, confidence: p.confidence, skill: p.skill ?? skillDefinitionFor(p.id),
       evidence: { errors: p.errors, games: p.games, opportunities: p.opportunities },
       nextReviewAt: p.practice.nextReviewAt ?? null,
       reason, reasonKey,
@@ -38,8 +39,11 @@ export function buildTrainingPlan({ summary, activePractice = null, coachHome, n
   if (coachHome?.primaryAction === 'start_retention') primary = { kind: 'retention', patternId: null, sessionId: coachHome.sessionId, href: `/coach/session/${coachHome.sessionId}` };
   if (coachHome?.primaryAction === 'resume_session') primary = { kind: 'resume_lesson', patternId: null, sessionId: coachHome.sessionId, href: `/coach/session/${coachHome.sessionId}` };
   if (activePractice) primary = { kind: 'resume_pattern', patternId: activePractice.patternId, sessionId: activePractice.id, href: `/practice/${activePractice.id}` };
+  const bySlot = (slot) => curriculum.find((row) => row.slot === slot)?.patternId ?? null;
   return { version: TRAINING_PLAN_VERSION, evidenceRevision: summary.revision, updatedAt: summary.updatedAt,
     coverage: { analyzed: summary.analyzedGames, eligible: summary.eligibleGames, decisions: summary.verifiedDecisions },
     job: summary.job, priorities, curriculum, primary, method: 'evidence_rules',
+    portfolio: { version: SKILL_DEFINITION_VERSION, evidencePolicy: 'pattern_isolated',
+      primaryPatternId: bySlot('primary'), supportPatternId: bySlot('support'), maintenancePatternId: bySlot('maintenance') },
     state: summary.analyzedGames === 0 ? 'needs_analysis' : priorities.length ? 'personalized' : 'observing' };
 }

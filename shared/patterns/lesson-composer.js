@@ -1,4 +1,6 @@
-export const PERSONAL_LESSON_VERSION = "personal-lesson-v1";
+import { skillDefinitionFor } from "./skill-definitions.js";
+
+export const PERSONAL_LESSON_VERSION = "personal-lesson-v2";
 
 const METHOD_BY_ACTION = {
   diagnose: "discriminating_probe",
@@ -42,6 +44,11 @@ function evidenceReference(record, kind) {
  * Engine moves, FENs and reference lines deliberately never enter this DTO.
  */
 export function composePersonalLesson({ pattern, hypothesis, curriculum, records, guided, holdout, at }) {
+  const skill = skillDefinitionFor(pattern.id);
+  const sessionRecords = [...guided, holdout].filter(Boolean);
+  if (sessionRecords.some((row) => row.patternId !== pattern.id)) {
+    throw new Error("lesson_evidence_scope_mismatch");
+  }
   const sessionIds = new Set([...guided, holdout].filter(Boolean).map((row) => row.exerciseId));
   const errors = records
     .filter((row) => row.patternId === pattern.id)
@@ -75,6 +82,7 @@ export function composePersonalLesson({ pattern, hypothesis, curriculum, records
   return {
     version: PERSONAL_LESSON_VERSION,
     patternId: pattern.id,
+    skill,
     createdAt: at,
     action: curriculum.action,
     method: METHOD_BY_ACTION[curriculum.action],

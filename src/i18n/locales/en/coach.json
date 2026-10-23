@@ -107,6 +107,7 @@
     "generalNote": "A general lesson on checking the opponent’s reply. This is not a new diagnosis of your games.",
     "priorities": "Your priorities",
     "method": "Recurring patterns are prioritized by impact, previous practice and pending reviews. Solving one exercise does not demonstrate mastery.",
+    "portfolio": "The coach keeps one main focus, at most one complementary skill from a different decision family, and one maintenance review. Evidence remains separate for each skill.",
     "reviewDate": "Next suggested review: {{date}}",
     "focus": {
       "foundation": "Check the opponent’s reply",

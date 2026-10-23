@@ -45,12 +45,36 @@ describe("adaptive curriculum decisions", () => {
 
   it("assigns primary, support and maintenance deterministically", () => {
     const rows = [
-      pattern("maintain", { priority: 99, curriculum: { ...decideCurriculum(pattern(), hypothesis({ observations: [{ source: "holdout", skillOutcome: "success", at: "2026-10-21" }] })), action: "maintenance" } }),
-      pattern("diagnose", { priority: 5 }),
-      pattern("reteach", { priority: 1, curriculum: { ...decideCurriculum(pattern(), hypothesis()), action: "reteach" } }),
+      pattern("piece-loss", { priority: 99, curriculum: { ...decideCurriculum(pattern(), hypothesis({ observations: [{ source: "holdout", skillOutcome: "success", at: "2026-10-21" }] })), action: "maintenance" } }),
+      pattern("closed-center", { priority: 5 }),
+      pattern("endgame-decisions", { priority: 1, curriculum: { ...decideCurriculum(pattern(), hypothesis()), action: "reteach" } }),
     ];
     expect(buildCurriculumPlan(rows).map((row) => [row.patternId, row.slot])).toEqual([
-      ["reteach", "primary"], ["diagnose", "support"], ["maintain", "maintenance"],
+      ["endgame-decisions", "primary"], ["closed-center", "support"], ["piece-loss", "maintenance"],
     ]);
+  });
+
+  it("caps active work at primary plus support and prefers a different skill family", () => {
+    const plan = buildCurriculumPlan([
+      pattern("piece-loss", { priority: 9 }),
+      pattern("forcing-reply", { priority: 8 }),
+      pattern("closed-center", { priority: 7 }),
+      pattern("endgame-decisions", { priority: 6 }),
+    ]);
+    expect(plan.map((row) => [row.patternId, row.slot])).toEqual([
+      ["piece-loss", "primary"], ["closed-center", "support"],
+    ]);
+    expect(plan[0].skillFamilyId).toBe("candidate-refutation");
+    expect(plan[1]).toMatchObject({
+      skillDefinitionId: "closed-center-planning",
+      skillFamilyId: "strategic-planning",
+      evidenceScope: "pattern:closed-center",
+    });
+    const urgentOverlap = buildCurriculumPlan([
+      pattern("piece-loss", { priority: 9, curriculum: { ...decideCurriculum(pattern()), action: "reteach" } }),
+      pattern("forcing-reply", { priority: 8, curriculum: { ...decideCurriculum(pattern()), action: "reteach" } }),
+      pattern("closed-center", { priority: 7 }),
+    ]);
+    expect(urgentOverlap.map((row) => row.patternId)).toEqual(["piece-loss", "forcing-reply"]);
   });
 });

@@ -103,7 +103,10 @@ export function validatePedagogyOutput(value, evidence) {
   return structuredClone(value);
 }
 
-export function diagnosticQuestion(intervention) {
+export function diagnosticQuestion(intervention, patternId = null) {
+  if (patternId === "closed-center") {
+    return "¿Qué ruptura de peones querías preparar, qué pieza necesitaba mejorar y qué contrajuego del rival revisaste antes de decidir?";
+  }
   if (intervention === "search") return "¿Qué intentabas conseguir con tu jugada y qué respuestas del rival alcanzaste a revisar antes de decidir?";
   if (intervention === "compare") return "¿Por qué esperabas esa respuesta del rival y qué otras defensas llegaste a comparar?";
   if (intervention === "evaluate") return "Viste una respuesta fuerte. ¿Cómo evaluabas la posición al final de esa variante y qué consecuencia considerabas favorable para ti?";
@@ -111,7 +114,7 @@ export function diagnosticQuestion(intervention) {
   return "¿Qué intentabas conseguir, qué respuesta esperabas del rival y cómo evaluabas la posición resultante?";
 }
 
-export function fallbackPedagogy({ intervention, evidenceIds: ids }) {
+export function fallbackPedagogy({ intervention, evidenceIds: ids, patternId = null }) {
   const first = ids[0];
   const contrast = ids.slice(0, 2);
   while (contrast.length < 2) contrast.push(first);
@@ -122,7 +125,20 @@ export function fallbackPedagogy({ intervention, evidenceIds: ids }) {
     reinforce: ["insufficient_evidence", "Comprobar si el mismo criterio se mantiene en otra posición.", "Explica qué señal reconociste y vuelve a buscar la respuesta más exigente del rival."],
     uncertain: ["insufficient_evidence", "Recoger evidencia verificable antes de atribuir una causa.", "Repite el proceso en otra posición y explica la variante que calculaste."],
   };
-  const [category, objective, instruction] = byIntervention[intervention] ?? byIntervention.uncertain;
+  let [category, objective, instruction] = byIntervention[intervention] ?? byIntervention.uncertain;
+  let alternatives = [{ category: "insufficient_evidence", statement: "Las posiciones agrupadas podrían no compartir la misma causa." }];
+  let worksWhen = "La candidata resiste la respuesta más exigente que pudiste verificar.";
+  let failsWhen = "La candidata depende de que el rival responda de una forma menos exigente.";
+  if (patternId === "closed-center") {
+    objective = "Comprobar si construyes el plan desde la ruptura de peones, la peor pieza y el contrajuego rival.";
+    instruction = "Antes de elegir una jugada, nombra la ruptura que buscas, mejora la pieza que debe apoyarla y verifica la ruptura o amenaza inmediata del rival.";
+    alternatives = [
+      { category: "strategic_planning", statement: "El plan puede no estar conectado con una ruptura viable y las piezas que deben apoyarla." },
+      { category: "concept_recognition", statement: "Puede faltar reconocer qué rasgos del centro bloqueado determinan el plan." },
+    ];
+    worksWhen = "La jugada mejora una pieza relevante o prepara una ruptura viable sin ceder contrajuego inmediato.";
+    failsWhen = "La jugada inicia actividad sin una ruptura concreta, deja una pieza fuera del plan o permite al rival abrir primero.";
+  }
   return {
     primaryHypothesis: {
       category,
@@ -131,14 +147,14 @@ export function fallbackPedagogy({ intervention, evidenceIds: ids }) {
       supportingEvidenceIds: [first],
       contradictingEvidenceIds: [],
     },
-    alternativeHypotheses: [{ category: "insufficient_evidence", statement: "Las posiciones agrupadas podrían no compartir la misma causa." }],
+    alternativeHypotheses: alternatives,
     teaching: {
       objective,
       explanation: instruction,
       evidenceIds: [first],
       contrast: {
-        worksWhen: "La candidata resiste la respuesta más exigente que pudiste verificar.",
-        failsWhen: "La candidata depende de que el rival responda de una forma menos exigente.",
+        worksWhen,
+        failsWhen,
         evidenceIds: contrast,
       },
     },

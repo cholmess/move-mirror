@@ -107,6 +107,7 @@
     "generalNote": "Lección general sobre cómo comprobar la respuesta del rival. No es un diagnóstico nuevo de tus partidas.",
     "priorities": "Tus prioridades",
     "method": "Se priorizan patrones recurrentes por impacto, práctica previa y revisiones pendientes. Acertar un ejercicio no demuestra dominio.",
+    "portfolio": "El coach mantiene un foco principal, como máximo una habilidad complementaria de otra familia de decisión y un repaso de mantenimiento. La evidencia permanece separada por habilidad.",
     "reviewDate": "Próxima revisión sugerida: {{date}}",
     "focus": {
       "foundation": "Comprobar la respuesta del rival",

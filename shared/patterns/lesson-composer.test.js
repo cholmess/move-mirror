@@ -15,7 +15,9 @@ describe("personal lesson composer", () => {
       records: [record("a", "g1"), record("b", "g1"), record("c", "g2"), record("d", "g3"), record("ok", "g4", null)],
       guided: [record("a", "g1")], holdout: record("d", "g3"),
     });
-    expect(lesson).toMatchObject({ method: "discriminating_probe", evidence: { errors: 4, games: 3 }, sequence: { guidedPositions: 1, blindHoldout: true } });
+    expect(lesson).toMatchObject({ version: "personal-lesson-v2", method: "discriminating_probe",
+      skill: { id: "material-safety", evidenceScope: "pattern:piece-loss" },
+      evidence: { errors: 4, games: 3 }, sequence: { guidedPositions: 1, blindHoldout: true } });
     expect(lesson.evidence.examples.map((row) => row.gameId)).toEqual(["g1", "g2", "g3"]);
     expect(lesson.evidence.contrast).toMatchObject({ gameId: "g4", kind: "comparable_non_error" });
     expect(JSON.stringify(lesson)).not.toContain("secret");
@@ -46,5 +48,23 @@ describe("personal lesson composer", () => {
     expect(lesson.narrative).toMatchObject({ source: "llm", sourceReflectionId: "r1", explanation: "Explicación" });
     expect(lesson.narrative.citations.map((row) => row.evidenceId)).toEqual(["current_decision", "contrast_1"]);
     expect(JSON.stringify(lesson.narrative.citations)).not.toContain("fen");
+  });
+
+  it("builds the strategic second focus without borrowing positions from another skill", () => {
+    const closedPattern = { ...pattern, id: "closed-center" };
+    const closed = record("closed", "g5", "closed-center");
+    const lesson = composePersonalLesson({
+      pattern: closedPattern, curriculum: curriculum("diagnose"), hypothesis: null,
+      records: [closed, record("piece", "g1")], guided: [closed], holdout: null, at: "now",
+    });
+    expect(lesson.skill).toMatchObject({
+      id: "closed-center-planning", familyId: "strategic-planning",
+      kind: "strategic_process", evidenceScope: "pattern:closed-center",
+    });
+    expect(lesson.evidence.examples.map((row) => row.recordId)).toEqual(["closed"]);
+    expect(() => composePersonalLesson({
+      pattern: closedPattern, curriculum: curriculum("diagnose"), hypothesis: null,
+      records: [closed], guided: [record("foreign", "g6")], holdout: null, at: "now",
+    })).toThrow("lesson_evidence_scope_mismatch");
   });
 });

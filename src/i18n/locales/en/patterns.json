@@ -173,6 +173,8 @@
   },
   "lesson": {
     "eyebrow": "Lesson built from your games",
+    "skillTarget": "Skill target:",
+    "evidenceIsolated": "This lesson updates only this skill. Results from another focus are not reused as evidence here.",
     "action": {
       "diagnose": "First, let’s understand what is breaking down",
       "reteach": "Let’s teach this in a different way",
