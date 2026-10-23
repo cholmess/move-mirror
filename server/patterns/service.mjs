@@ -10,6 +10,7 @@ import { classifyProbeObservation, planHypothesisProbe } from "../../shared/patt
 import { hypothesisEvidenceSummary, reconcileRealGameHypotheses } from "../../shared/patterns/real-game-evidence.js";
 import { buildCurriculumPlan, createHypothesisRevision, decideCurriculum } from "../../shared/patterns/curriculum.js";
 import { composePersonalLesson } from "../../shared/patterns/lesson-composer.js";
+import { skillDefinitionFor } from "../../shared/patterns/skill-definitions.js";
 import { Chess } from "chess.js";
 import { randomUUID } from "node:crypto";
 import { PATTERN_VERSION, MAX_PERSONAL_GAMES, patternExists } from "../../shared/patterns/catalog.js";
@@ -86,8 +87,8 @@ export function buildPedagogyPacket({ record, attempt, records, profile }) {
   // A contrast needs at least two distinct verified facts. Current decision and reference/reply remain valid when no clean non-error exists.
   return {
     version: PEDAGOGY_VERSION,
-    pattern: { id: record.patternId, observableOnly: true },
-    question: diagnosticQuestion(attempt.coaching.intervention),
+    pattern: { id: record.patternId, observableOnly: true, skill: skillDefinitionFor(record.patternId) },
+    question: diagnosticQuestion(attempt.coaching.intervention, record.patternId),
     currentIntervention: attempt.coaching.intervention,
     facts,
   };
@@ -252,7 +253,7 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
       ? [...state.attempts, ...(state.continuationAttempts ?? [])].find((row) => row.id === exercise.lastAttemptId)
       : null;
     const diagnostic = exercise.role !== "holdout" && attempt?.coaching ? {
-      question: diagnosticQuestion(attempt.coaching.intervention),
+      question: diagnosticQuestion(attempt.coaching.intervention, record.patternId),
       reflection: attempt.reflection?.result ?? null,
       status: attempt.reflection?.status ?? "available",
       source: attempt.reflection?.source ?? null,
@@ -546,7 +547,7 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
       const live = reflectionAttempt(exerciseById(id));
       if (live.reflection?.status === "pending") {
         const packet = buildPedagogyPacket({ record: assertRecord(exercise), attempt: live, records: rows(), profile: summary().patterns.find((row) => row.id === live.patternId) });
-        return saveReflection(live, packet, fallbackPedagogy({ intervention: live.coaching.intervention, evidenceIds: fallbackEvidenceIds(packet) }), "rules", { reason: "interrupted_request" });
+        return saveReflection(live, packet, fallbackPedagogy({ intervention: live.coaching.intervention, evidenceIds: fallbackEvidenceIds(packet), patternId: live.patternId }), "rules", { reason: "interrupted_request" });
       }
       mutate((state) => {
         const target = [...state.attempts, ...(state.continuationAttempts ?? [])].find((row) => row.id === attempt.id);
@@ -563,7 +564,7 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
           meta = { reason: "coach_llm_failed" };
         }
       }
-      output ??= fallbackPedagogy({ intervention: attempt.coaching.intervention, evidenceIds: fallbackEvidenceIds(packet) });
+      output ??= fallbackPedagogy({ intervention: attempt.coaching.intervention, evidenceIds: fallbackEvidenceIds(packet), patternId: attempt.patternId });
       return saveReflection(attempt, packet, output, source, meta);
     })().finally(() => reflectionTasks.delete(attempt.id));
     reflectionTasks.set(attempt.id, work);

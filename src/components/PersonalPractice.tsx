@@ -51,6 +51,7 @@ function PersonalLessonCard({ lesson }: { lesson: PersonalLesson }) {
       <p className="eyebrow">{t("lesson.eyebrow")}</p>
       <h2>{t(`lesson.action.${lesson.action}`)}</h2>
       <p>{t(`lesson.method.${lesson.method}`)}</p>
+      {!gameLike && lesson.skill && <p data-testid="lesson-skill"><strong>{t("lesson.skillTarget")}</strong> {t(lesson.skill.objectiveKey)}</p>}
       {!gameLike && lesson.narrative && <div data-testid="lesson-narrative">
         <p><strong>{t("lesson.hypothesis")}</strong> {lesson.narrative.statement}</p>
         {lesson.narrative.objective && <p><strong>{t("lesson.objective")}</strong> {lesson.narrative.objective}</p>}
@@ -75,6 +76,7 @@ function PersonalLessonCard({ lesson }: { lesson: PersonalLesson }) {
           : <p className="muted">{t("lesson.noContrast")}</p>}
       </details>}
       <p>{t("lesson.sequence", { guided: lesson.sequence.guidedPositions })}</p>
+      <p className="small muted">{t("lesson.evidenceIsolated")}</p>
       <p className="small muted">{t("lesson.boundary")}</p>
     </section>
   );

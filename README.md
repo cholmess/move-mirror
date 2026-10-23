@@ -115,6 +115,14 @@ Modo offline, sin red: en `/transfer`, «Modo offline (fixtures)».
 - Completed independent holdouts update evidence for the next plan without rewriting the completed lesson.
 - Contract and boundaries: [docs/personal-pedagogy.md](docs/personal-pedagogy.md#p4-personal-lesson-composer)
 
+## Personal coach — P5 second real focus
+
+- Every detectable pattern now maps to a versioned skill definition with its own objective, diagnostic categories, decision family, and evidence scope.
+- `closed-center` is the first non-tactical second focus. It is recommended only when verified personal games meet the existing recurrence gate; the application does not seed or invent evidence.
+- The portfolio contains one primary focus, at most one family-diverse support focus, and one maintenance item. Closely overlapping CCT patterns cannot consume every active slot.
+- Lesson, hypothesis, holdout, domain, and transfer evidence remain isolated by pattern. A mismatched lesson/session fails closed.
+- Contract and boundaries: [docs/personal-pedagogy.md](docs/personal-pedagogy.md#p5-second-real-focus)
+
 ## MoveMirror v0.2.1 — Evaluation Hardening
 
 - Escalamiento automático 80k → 500k cerca de umbrales (35–65 cp, 105–135 cp), mates inestables e información incompleta.

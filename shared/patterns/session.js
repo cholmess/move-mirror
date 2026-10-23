@@ -62,6 +62,10 @@ export function orderGuidedPlan(guided, preferredExerciseId = null) {
 }
 
 export function createPracticeSession(patternId, positionRecordIds, { contentVersion, detectorVersion, at, reservedHoldoutRecordId, sessionShortfall = false, probePlan = null, curriculumDecision = null, lesson = null }) {
+  if (lesson && (lesson.patternId !== patternId
+    || (lesson.skill && (lesson.skill.patternId !== patternId || lesson.skill.evidenceScope !== `pattern:${patternId}`)))) {
+    throw new Error("session_evidence_scope_mismatch");
+  }
   return {
     version: PATTERN_LEARNING_VERSION,
     id: randomUUID(),
@@ -203,6 +207,7 @@ export function buildSessionResultDto(session, holdoutAttempt, holdoutEvidence, 
       action: session.lesson.action,
       method: session.lesson.method,
       targetCategory: session.lesson.targetCategory,
+      skill: session.lesson.skill,
     } : null,
     domain: {
       masteryEstimate: domain.masteryEstimate,

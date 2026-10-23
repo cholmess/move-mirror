@@ -107,6 +107,7 @@
     "generalNote": "Eine allgemeine Lektion zum Prüfen der gegnerischen Antwort. Dies ist keine neue Diagnose deiner Partien.",
     "priorities": "Deine Prioritäten",
     "method": "Wiederkehrende Muster werden nach Auswirkung, bisherigem Training und anstehenden Wiederholungen priorisiert. Eine gelöste Aufgabe belegt noch keine Beherrschung.",
+    "portfolio": "Der Coach führt einen Hauptfokus, höchstens eine ergänzende Fähigkeit aus einer anderen Entscheidungsfamilie und eine Erhaltungswiederholung. Die Evidenz bleibt für jede Fähigkeit getrennt.",
     "reviewDate": "Nächste vorgeschlagene Wiederholung: {{date}}",
     "focus": {
       "foundation": "Die gegnerische Antwort prüfen",

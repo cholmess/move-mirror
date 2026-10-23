@@ -136,7 +136,7 @@ describe("personal pattern incremental analysis", () => {
     expect(store.read().hypotheses).toHaveLength(1);
     const nextLesson = service.startPractice("piece-loss");
     expect(nextLesson.lesson).toMatchObject({
-      version:"personal-lesson-v1", action:"diagnose",
+      version:"personal-lesson-v2", action:"diagnose",
       narrative:{source:"llm",sourceReflectionId:a.id,explanation:expect.any(String)},
     });
     expect(nextLesson.lesson.narrative.citations.map(row => row.evidenceId))
@@ -225,7 +225,7 @@ describe("personal pattern incremental analysis", () => {
     await activate(1);
     let guided = service.startPractice("piece-loss");
     expect(guided).toMatchObject({ role: "guided", targetDecisions: 1, decisionCount: 0 });
-    expect(guided.lesson).toMatchObject({ version:"personal-lesson-v1", patternId:"piece-loss", method:"discriminating_probe",
+    expect(guided.lesson).toMatchObject({ version:"personal-lesson-v2", patternId:"piece-loss", method:"discriminating_probe",
       sequence:{blindHoldout:true}, success:{causal:false} });
     expect(JSON.stringify(guided.lesson)).not.toContain("fen");
     expect(store.read().practiceSessions.find(row=>row.id===guided.sessionId).lesson).toEqual(guided.lesson);
@@ -291,6 +291,38 @@ describe("personal pattern incremental analysis", () => {
     expect(layout.ok).toBe(true);
     expect(layout.guided.length + 1).toBeLessThanOrEqual(unique.length);
     expect(layout.sessionShortfall).toBe(unique.length < 4);
+  });
+
+  it("starts a real blocked-center focus without borrowing CCT lesson evidence", async () => {
+    await activate(3);
+    const state = store.read();
+    const keys = Object.keys(state.analyses);
+    keys.slice(3, 6).forEach((key, index) => {
+      state.analyses[key].rows = state.analyses[key].rows.map((row, rowIndex) => rowIndex === index + 1
+        ? { ...row, patternId: "closed-center", opportunities: [...new Set([...row.opportunities, "closed-center"])],
+            context: { ...row.context, closed: true, lockedPairs: 2 }, loss: 240 }
+        : row.patternId === "piece-loss" ? { ...row, patternId: null, loss: 0 } : row);
+    });
+    store.write(state, keys.slice(3, 6));
+    const patterns = service.summary().patterns;
+    expect(patterns.find((row) => row.id === "piece-loss").status).toBe("recurrent");
+    expect(patterns.find((row) => row.id === "closed-center").status).toBe("recurrent");
+
+    const tactical = service.startPractice("piece-loss");
+    const strategic = service.startPractice("closed-center");
+    expect(tactical.lesson.skill).toMatchObject({ familyId: "candidate-refutation", evidenceScope: "pattern:piece-loss" });
+    expect(strategic.lesson).toMatchObject({
+      patternId: "closed-center",
+      skill: { id: "closed-center-planning", familyId: "strategic-planning", evidenceScope: "pattern:closed-center" },
+    });
+    const sessions = store.read().practiceSessions;
+    const tacticalSession = sessions.find((row) => row.id === tactical.sessionId);
+    const strategicSession = sessions.find((row) => row.id === strategic.sessionId);
+    expect(new Set(tacticalSession.lesson.evidence.examples.map((row) => row.recordId)))
+      .not.toEqual(new Set(strategicSession.lesson.evidence.examples.map((row) => row.recordId)));
+    expect(strategicSession.positionRecordIds.every((id) => Object.values(store.read().analyses)
+      .some((analysis) => analysis.rows.some((row) => row.exerciseId === id && row.patternId === "closed-center")))).toBe(true);
+    expect(store.read().patternDomains).toEqual({});
   });
 
   it("turns a tentative hypothesis into an explainable multi-cause probe plan", async () => {

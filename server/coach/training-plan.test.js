@@ -13,8 +13,10 @@ describe('personal training plan', () => {
   it('uses current recurring evidence, adds an explicit intervention and caps priorities', () => {
     const plan = buildTrainingPlan({ summary: summary([pattern('closed-center', 2), pattern('piece-loss', 5), pattern('missed-mate', 9, { status: 'watching' }), pattern('forcing-reply', 3), pattern('endgame-decisions', 1)]), coachHome, now });
     expect(plan.primary.patternId).toBe('piece-loss');
-    expect(plan.priorities.map(p => p.patternId)).toEqual(['piece-loss', 'forcing-reply', 'closed-center']);
+    expect(plan.priorities.map(p => p.patternId)).toEqual(['piece-loss', 'closed-center']);
     expect(plan.priorities[0].curriculum).toMatchObject({ slot: 'primary', action: 'diagnose' });
+    expect(plan.priorities[1].skill).toMatchObject({ id: 'closed-center-planning', evidenceScope: 'pattern:closed-center' });
+    expect(plan.portfolio).toMatchObject({ primaryPatternId: 'piece-loss', supportPatternId: 'closed-center', evidencePolicy: 'pattern_isolated' });
     expect(plan.coverage).toEqual({ analyzed: 3, eligible: 4, decisions: 100 });
   });
   it('offers general teaching without fabricating a diagnosis when evidence disappears', () => {
@@ -42,6 +44,8 @@ describe('personal training plan', () => {
     expect(plan.priorities.map(p => [p.patternId, p.curriculum.slot])).toEqual([
       ['closed-center', 'primary'], ['piece-loss', 'maintenance'],
     ]);
+    expect(plan.portfolio).toMatchObject({ primaryPatternId: 'closed-center', maintenancePatternId: 'piece-loss' });
+    expect(plan.priorities[0].skill.evidenceScope).not.toBe(plan.priorities[1].skill.evidenceScope);
   });
 });
 describe('plan orchestration and persistence', () => {

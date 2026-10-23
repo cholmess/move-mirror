@@ -173,6 +173,8 @@
   },
   "lesson": {
     "eyebrow": "Lección creada desde tus partidas",
+    "skillTarget": "Habilidad objetivo:",
+    "evidenceIsolated": "Esta lección actualiza solo esta habilidad. Los resultados de otro foco no se reutilizan aquí como evidencia.",
     "action": {
       "diagnose": "Primero entendamos qué está fallando",
       "reteach": "Vamos a enseñarlo de otra manera",

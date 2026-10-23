@@ -173,6 +173,8 @@
   },
   "lesson": {
     "eyebrow": "Lektion aus deinen Partien",
+    "skillTarget": "Zielfähigkeit:",
+    "evidenceIsolated": "Diese Lektion aktualisiert nur diese Fähigkeit. Ergebnisse eines anderen Fokus werden hier nicht als Evidenz wiederverwendet.",
     "action": {
       "diagnose": "Zuerst verstehen wir, was nicht funktioniert",
       "reteach": "Wir vermitteln das auf eine andere Weise",

@@ -2,6 +2,7 @@ export interface PersonalPattern {
   id: string; kind: "tactical" | "context"; cause: "unknown"; errors: number; games: number; opportunities: number;
   ratePer100: number | null; status: "recurrent" | "watching" | "no_evidence"; confidence: "moderate" | "limited" | "insufficient";
   exerciseCount: number; examples: Array<{ gameId: string; moveNumber: number; exerciseId: string }>;
+  skill?: PersonalSkillDefinition;
   practice: { attempts: number; independent: number; successes: number; failures: number; estimate: number | null };
   transfer: { status: "descriptive_comparison" | "insufficient"; before: { games: number; decisions: number; ratePer100: number | null }; after: { games: number; decisions: number; ratePer100: number | null }; differencePer100: number | null; causal: false };
   hypothesis?: PersonalHypothesisSummary | null;
@@ -10,11 +11,19 @@ export interface PersonalPattern {
 export type CurriculumAction = "diagnose" | "reteach" | "revise_hypothesis" | "bridge_transfer" | "maintenance";
 export interface CurriculumDecision {
   version: string; action: CurriculumAction; reasonKey: string; slot?: "primary" | "support" | "maintenance";
+  skillDefinitionId?: string; skillDefinitionVersion?: string; skillFamilyId?: string; evidenceScope?: string;
   previousCategory: string | null; targetCategory: string;
   evidence: { hypothesisStatus: string; holdoutOutcome: string; holdoutAt: string | null; transferStatus: string; differencePer100: number | null; causal: false };
 }
+export interface PersonalSkillDefinition {
+  version: string; patternId: string; id: string; familyId: string;
+  kind: "tactical_process" | "strategic_process" | "technical_process";
+  evidenceScope: string; observableOnly: true; objectiveKey: string; observableKey: string;
+  diagnosticCategories: string[];
+}
 export interface PersonalLesson {
   version: string; patternId: string; createdAt: string; action: CurriculumAction;
+  skill: PersonalSkillDefinition;
   method: "discriminating_probe" | "worked_contrast" | "alternative_probe" | "game_like_retrieval" | "spaced_retrieval";
   targetCategory: string;
   narrative: { hypothesisId: string; category: string; status: string; statement: string; objective: string | null; explanation: string | null;
@@ -83,7 +92,7 @@ export interface SessionResult {
   sessionId: string; patternId: string; startedAt: string; endedAt: string | null; durationMs: number | null;
   outcomeKey: string; outcomeHeadlineKey: string; countsAsIndependentEvidence: boolean; evidenceReasonKey: string | null;
   domain: SessionDomainSnapshot; positionRecordIds: string[];
-  lesson?: Pick<PersonalLesson, "version" | "action" | "method" | "targetCategory"> | null;
+  lesson?: Pick<PersonalLesson, "version" | "action" | "method" | "targetCategory" | "skill"> | null;
 }
 export interface NextActivity {
   kind: "pattern" | "continue_session" | "finish"; patternId: string | null; href: string | null;

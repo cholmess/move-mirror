@@ -56,6 +56,7 @@ export function TrainingPlan() {
       {plan.priorities.length > 0 && <>
         <h2>{t('coach:plan.priorities')}</h2>
         <p>{t('coach:plan.method')}</p>
+        <p data-testid="focus-portfolio">{t('coach:plan.portfolio')}</p>
         <div className="practice-cards">{plan.priorities.map(p => <article className="card" key={p.patternId} data-testid={`plan-${p.patternId}`}>
           <h3>{t(`patterns:catalog.${p.patternId}.title`)}</h3>
           <p>{t('patterns:evidence', p.evidence)}</p>

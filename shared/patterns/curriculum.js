@@ -1,3 +1,5 @@
+import { skillDefinitionFor } from "./skill-definitions.js";
+
 export const CURRICULUM_VERSION = "adaptive-curriculum-v1";
 
 const ACTION_RANK = {
@@ -72,7 +74,19 @@ function compareEntries(a, b) {
     || a.pattern.id.localeCompare(b.pattern.id);
 }
 
-/** Returns at most two active learning priorities plus one maintenance item. */
+function diverseSupport(active, primary) {
+  if (!primary) return null;
+  const remaining = active.filter((row) => row.pattern.id !== primary.pattern.id);
+  const strongest = remaining[0] ?? null;
+  if (!strongest) return null;
+  const family = skillDefinitionFor(primary.pattern.id).familyId;
+  const strongestAction = ACTION_RANK[strongest.decision.action];
+  return remaining.find((row) => ACTION_RANK[row.decision.action] === strongestAction
+    && skillDefinitionFor(row.pattern.id).familyId !== family)
+    ?? strongest;
+}
+
+/** Returns one primary focus, at most one family-diverse support, and one maintenance item. */
 export function buildCurriculumPlan(patterns) {
   const entries = patterns.filter((pattern) => pattern.status === "recurrent").map((pattern) => ({
     pattern,
@@ -80,12 +94,18 @@ export function buildCurriculumPlan(patterns) {
   }));
   const active = entries.filter((row) => row.decision.action !== "maintenance").sort(compareEntries);
   const maintenance = entries.filter((row) => row.decision.action === "maintenance").sort(compareEntries);
-  const selected = active.slice(0, maintenance.length ? 2 : 3).map((row, index) => ({ ...row, slot: index ? "support" : "primary" }));
-  if (maintenance.length) selected.push({ ...maintenance[0], slot: "maintenance" });
-  while (selected.length < 3 && active[selected.length]) {
-    selected.push({ ...active[selected.length], slot: selected.length ? "support" : "primary" });
-  }
-  return selected.map(({ pattern, decision, slot }) => ({ patternId: pattern.id, slot, ...decision }));
+  const primary = active[0] ?? null;
+  const support = diverseSupport(active, primary);
+  const selected = [
+    primary && { ...primary, slot: "primary" },
+    support && { ...support, slot: "support" },
+    maintenance[0] && { ...maintenance[0], slot: "maintenance" },
+  ].filter(Boolean);
+  return selected.map(({ pattern, decision, slot }) => {
+    const skill = skillDefinitionFor(pattern.id);
+    return { patternId: pattern.id, slot, skillDefinitionId: skill.id, skillDefinitionVersion: skill.version,
+      skillFamilyId: skill.familyId, evidenceScope: skill.evidenceScope, ...decision };
+  });
 }
 
 /** Re-targets the next discriminating probe without rewriting stored history. */
