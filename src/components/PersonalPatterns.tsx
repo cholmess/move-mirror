@@ -38,6 +38,17 @@ export function PersonalPatterns({ compact = false }: { compact?: boolean }) {
         {p.kind === "context" && <p className="muted">{t("causeUnknown")}</p>}
         <ul>{p.examples.map(ex => <li key={ex.exerciseId}><Link to={`/games/${ex.gameId}`}>{t("example", { move: ex.moveNumber })}</Link></li>)}</ul>
         {p.practice.attempts > 0 && <p>{t("practiceEvidence", { independent: p.practice.independent, successes: p.practice.successes, attempts: p.practice.attempts })}</p>}
+        {p.hypothesis && <section className="callout" data-testid={`hypothesis-evidence-${p.id}`}>
+          <strong>{t("hypothesisTracking.title")}</strong>
+          <p>{p.hypothesis.statement}</p>
+          <p>{t(`hypothesisTracking.status.${p.hypothesis.status}`)}</p>
+          <p className="small muted">{t("hypothesisTracking.counts", {
+            probes: p.hypothesis.evidence.directProbeSupports,
+            support: p.hypothesis.evidence.realGameSupports,
+            contradict: p.hypothesis.evidence.realGameContradictions,
+          })}</p>
+          {!p.hypothesis.evidence.gate.eligible && p.hypothesis.evidence.gate.reason && <p className="small muted">{t(`hypothesisTracking.gate.${p.hypothesis.evidence.gate.reason}`)}</p>}
+        </section>}
         <p className="small">{p.transfer.status === "insufficient" ? t("transferPending") : t("transferObserved", { before: p.transfer.before.ratePer100?.toFixed(1), after: p.transfer.after.ratePer100?.toFixed(1) })}</p>
         <button type="button" className="btn primary" disabled={busy || p.status !== "recurrent"} onClick={() => void practice(p.id)}>{t("practice")}</button>
       </article>)}</div>

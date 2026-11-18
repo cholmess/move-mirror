@@ -23,6 +23,20 @@
   "practiceEvidence": "{{successes}} successes in {{independent}} first attempts without help · {{attempts}} total attempts",
   "transferPending": "More evidence from later games is needed to compare recurrence.",
   "transferObserved": "Errors per 100 comparable decisions: {{before}} before → {{after}} after. A descriptive comparison, not proof of a training effect.",
+  "hypothesisTracking": {
+    "title": "Hypothesis we are testing",
+    "status": {
+      "tentative": "Still open: there is not enough independent evidence to attribute the cause.",
+      "supported": "Provisionally supported by a discriminating probe and at least two distinct later games.",
+      "contradicted": "Later evidence favors another explanation; the coach should change the intervention."
+    },
+    "counts": "Direct probes: {{probes}} · supporting games: {{support}} · contradicting games: {{contradict}}",
+    "gate": {
+      "cause_not_directly_observable": "The current interaction cannot measure this cause directly yet.",
+      "direct_probe_required": "A guided probe must first distinguish this cause from its alternatives.",
+      "blind_holdout_required": "Complete the blind check first; only then will new games be considered."
+    }
+  },
   "practice": "Practice this pattern",
   "method": "Updates use verifiable rules, not neural network retraining. Up to 200 completed 10+0 or 15+10 games with confirmed identity are analyzed; very short games and special starting positions are excluded. A pattern requires errors across at least three games and three distinct positions. Only fully analyzed games count.",
   "loading": "Loading position…",
@@ -48,7 +62,10 @@
     "exercise_unavailable": "This position is no longer available. Return to your patterns and choose another.",
     "insufficient_holdout_positions": "We need at least two different positions from your games to practice and run an independent check. Import more games or update analysis.",
     "pattern_not_recurrent": "There is not enough evidence to recommend this pattern yet.",
-    "illegal_move": "That move is illegal. Choose another."
+    "illegal_move": "That move is illegal. Choose another.",
+    "invalid_reflection": "Briefly describe what you were trying to achieve and how you evaluated the position.",
+    "reflection_not_available": "Complete a guided decision before analysing your reasoning.",
+    "reflection_locked": "This decision has already been analysed. We keep the first answer to preserve the evidence."
   },
   "catalog": {
     "piece-loss": {
@@ -117,5 +134,167 @@
     "retryDecision": "Retry this decision",
     "acceptableReference": "Your move is valid. {{move}} is another verified reference.",
     "compareReference": "Compare it with {{move}}, the verified reference in this position."
+  },
+  "pedagogy": {
+    "observed": "I see {{errors}} errors in {{games}} games among {{opportunities}} comparable decisions.",
+    "unknown": "That confirms an observable recurrence; it does not yet explain why it happens.",
+    "checking": "I want to test a hypothesis from the previous session",
+    "stillTentative": "It remains tentative until independent evidence appears in other positions and games.",
+    "hypothesisStatus": {
+      "tentative": "It remains tentative until independent evidence appears in other positions and games.",
+      "supported": "The same signature appeared in at least two distinct later games after a probe and blind check. It remains a working explanation, not a diagnosis.",
+      "contradicted": "Later games favor another explanation. The next intervention will adapt instead of insisting on this cause."
+    },
+    "coachQuestion": "I want to understand how you were thinking",
+    "beforeFeedbackTitle": "Record your reading before seeing the engine",
+    "beforeFeedbackNote": "This answer will be locked. That prevents reconstructing your reasoning after learning the result.",
+    "noReplyRecorded": "You indicated that you could not find an opponent reply.",
+    "intentionLabel": "What were you trying to achieve with your move?",
+    "evaluationLabel": "How did you evaluate the position after the reply you expected?",
+    "decisionConfidenceLabel": "How confident were you in your decision?",
+    "selectConfidence": "Select an option",
+    "decisionConfidence": { "low": "Not very confident", "medium": "Moderately confident", "high": "Very confident" },
+    "capturedBeforeFeedback": "Your reasoning recorded before feedback",
+    "recordedConfidence": "Declared confidence: {{value}}.",
+    "submit": "Analyse my reasoning",
+    "thinking": "Comparing the evidence…",
+    "explicitCost": "Pedagogical analysis uses one bounded call only when you press this button. It is not repeated automatically.",
+    "rulesFallback": "The pedagogical model is not configured. Your answer will be saved and you will receive a rule-based intervention.",
+    "workingHypothesis": "Working hypothesis",
+    "confidence": "Confidence: {{value}}. This is not yet a diagnosis.",
+    "confidenceValue": { "low": "low", "medium": "medium" },
+    "contrastTitle": "The difference we will test",
+    "worksWhen": "The idea works when:",
+    "failsWhen": "The idea fails when:",
+    "nextTest": "Next check",
+    "alternatives": "Other explanations that remain possible",
+    "llmSource": "Synthesised from structured evidence; moves and variations come from the engine.",
+    "ruleSource": "Provisional rule-based intervention; no model inference was made."
+  },
+  "lesson": {
+    "eyebrow": "Lesson built from your games",
+    "skillTarget": "Skill target:",
+    "evidenceIsolated": "This lesson updates only this skill. Results from another focus are not reused as evidence here.",
+    "action": {
+      "diagnose": "First, let’s understand what is breaking down",
+      "reteach": "Let’s teach this in a different way",
+      "revise_hypothesis": "The evidence changed our explanation",
+      "bridge_transfer": "Now carry it into a game decision",
+      "maintenance": "Check that you can still do it"
+    },
+    "method": {
+      "discriminating_probe": "We will compare possible explanations before attributing a cause.",
+      "worked_contrast": "We will use a worked contrast to change how you solve this type of position.",
+      "alternative_probe": "The previous explanation was contradicted; this session tests the best-supported alternative.",
+      "game_like_retrieval": "You will solve without labels, hints, or source-game access before feedback.",
+      "spaced_retrieval": "Practice will be brief and spaced to check retention."
+    },
+    "hypothesis": "Working hypothesis:",
+    "objective": "Objective:",
+    "nextTest": "What we will test:",
+    "rule": "Practical rule:",
+    "groundedSynthesis": "This explanation comes from a reflection you explicitly requested and is limited to verified evidence.",
+    "rulesSynthesis": "Provisional explanation based on transparent rules; this is not a diagnosis.",
+    "citations": "Evidence cited by the explanation",
+    "citation": "Personal game · move {{move}}",
+    "evidence": "Why this lesson: {{errors}} errors in {{games}} games across {{opportunities}} comparable decisions",
+    "example": "Personal example · move {{move}}",
+    "contrast": "Personal contrast without this error · move {{move}}",
+    "noContrast": "There is no clean personal contrast yet; we will not invent one.",
+    "sequence": "Plan: {{guided}} guided positions and one reserved blind check.",
+    "boundary": "Practice measures process and generalization. Only later unexposed games can add transfer evidence.",
+    "completed": "The independent result updated this lesson’s evidence; the next plan will be recalculated from it."
+  },
+  "curriculum": {
+    "title": "How your training changes now",
+    "action": {
+      "diagnose": "First we will distinguish between possible causes.",
+      "reteach": "We will change the explanation and practice method.",
+      "revise_hypothesis": "The next exercise will test a different explanation.",
+      "bridge_transfer": "The next practice will more closely resemble a game decision.",
+      "maintenance": "This skill moves to spaced maintenance."
+    },
+    "reason": {
+      "contradicted_hypothesis": "The previous hypothesis was contradicted; its history is preserved while the target changes.",
+      "holdout_failed": "The blind check did not show generalization.",
+      "generalized_and_transfer_improved": "The blind check was favorable and the later comparison improved, without claiming causality.",
+      "generalized_without_transfer": "The blind check was favorable, but recurrence in games did not improve.",
+      "generalized_transfer_pending": "The blind check was favorable; more later games are still needed.",
+      "holdout_required": "The hypothesis still needs a check in an unlabeled position.",
+      "hypothesis_required": "A testable hypothesis still needs to be formed."
+    }
+  },
+  "probe": {
+    "title": "Why I selected this position",
+    "testing": "This position tests: {{target}}.",
+    "comparing": "We will contrast it with these alternative explanations: {{alternatives}}.",
+    "partial": "The current interaction can observe this cause only partially; we will not confirm it without additional evidence.",
+    "category": {
+      "reply_search": "searching for opponent replies",
+      "candidate_comparison": "comparing candidates and defences",
+      "calculation_depth": "calculation depth",
+      "consequence_evaluation": "evaluating consequences",
+      "concept_recognition": "concept recognition",
+      "strategic_planning": "strategic planning",
+      "insufficient_evidence": "insufficient evidence"
+    },
+    "reason": {
+      "novel": "You have not trained this position before.",
+      "hasReply": "A verified opponent reply exists to contrast with your prediction.",
+      "forcingReply": "The opponent reply is forcing.",
+      "longLine": "The verified reference requires looking beyond one reply.",
+      "severeLoss": "The decision had a significant evaluation impact.",
+      "closed": "The closed structure lets us observe how you form a plan.",
+      "endgame": "The position lets us observe endgame decisions."
+    }
+  },
+  "decision": {
+    "title": "Let’s understand your decision",
+    "intro": "Decide without hints first. Then we will examine the reply you expected and what to work on.",
+    "choose": "Choose your move on the board.",
+    "replyPrompt": "You chose {{move}}. Now play the opponent’s pieces: what is their strongest response?",
+    "prediction": "Your prediction: {{move}} → {{reply}}.",
+    "change": "Change my decision",
+    "confirm": "Confirm and analyse",
+    "unsure": "I cannot find a response",
+    "hypothesis": "This is one observation, not a confirmed cause of your mistakes. We will check it in other positions.",
+    "afterMine": "After my move",
+    "afterReply": "After the opponent’s reply",
+    "reference": "Compare with {{move}}",
+    "memory": "We retain {{count}} recent decisions on this topic to compare your approach.",
+    "followup": {
+      "search": "Check what the opponent can do this time.",
+      "compare": "Look beyond the first reply you notice.",
+      "evaluate": "At the end of your calculation, decide who benefits.",
+      "uncertain": "Your prediction has not yet been verified.",
+      "reinforce": "Try to sustain your approach without help here."
+    },
+    "intervention": {
+      "search": {
+        "title": "Let’s work on finding replies",
+        "body": "You proposed no response and your move lost value. The opponent has {{actual}}.",
+        "task": "Return to “After my move”. Look for checks, captures and threats. Then inspect the reply and retry your decision."
+      },
+      "compare": {
+        "title": "Your prediction missed a stronger defence",
+        "body": "You expected {{predicted}}. The engine verified that this reply concedes more than a strong defence; here it suggests {{actual}}.",
+        "task": "Compare the position after your move with the opponent’s reply. Identify what changes and retry with a candidate that withstands that defence."
+      },
+      "evaluate": {
+        "title": "You saw a strong reply; let’s examine its consequences",
+        "body": "Your predicted {{predicted}} is a strong, valid response according to the engine, but your initial move loses value.",
+        "task": "Reconstruct your calculation. Compare material, king safety and activity at the end. Compare your candidate with the reference and retry: which consequence did you value differently?"
+      },
+      "uncertain": {
+        "title": "We cannot yet explain the difference",
+        "body": "Your move was verified, but the strength of your predicted response could not be verified.",
+        "task": "Inspect the opponent’s reply and compare it with your prediction. We will not attribute a cause without that check."
+      },
+      "reinforce": {
+        "title": "Your decision keeps a valid continuation",
+        "body": "This time you chose a valid move. That does not yet demonstrate mastery.",
+        "task": "Continue the position. Keep considering the opponent’s response even when the plan changes."
+      }
+    }
   }
 }

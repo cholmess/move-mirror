@@ -99,6 +99,38 @@ Modo offline, sin red: en `/transfer`, «Modo offline (fixtures)».
 - Dose math is unchanged: `shared/transfer/intervention.js` (`cct-refutation-dose-v1`); the ledger does not duplicate rules.
 - Integrity: `npm run validation:verify` · export: `npm run validation:export` · docs: [docs/personal-validation-ledger.md](docs/personal-validation-ledger.md)
 
+## Evidence-driven coach — P2 real-game challenge
+
+- A working cause hypothesis enters the real-game channel only after a directly measurable probe and a blind holdout.
+- Only exact-dated, later 10+0 games and unexposed positions count; each game contributes at most one causal observation.
+- Support requires the same discriminating signature in two distinct later games. One game or recurrence alone remains tentative.
+- The channel is rebuilt from the valid corpus, so removed or ineligible games cannot leave stale support behind.
+- Details and limits: [docs/personal-pedagogy.md](docs/personal-pedagogy.md)
+
+## Adaptive coach — P3 curriculum decisions
+
+- The plan chooses a visible action for each recurrent pattern: diagnose, reteach, revise the hypothesis, bridge to real-game transfer, or maintain.
+- A contradicted hypothesis creates an auditable tentative revision and retargets the next probe to the strongest named alternative.
+- Blind generalization and descriptive real-game transfer remain separate; a lower later recurrence never becomes a causal claim.
+- The planner reserves primary, support, and maintenance slots so stable work cannot displace an unresolved learning need.
+- Decision rules and boundaries: [docs/personal-pedagogy.md](docs/personal-pedagogy.md#p3-adaptive-curriculum)
+
+## Personal coach — P4 lesson composer
+
+- Each curriculum decision becomes a persisted lesson with a distinct teaching method, personal examples, a comparable contrast when available, guided practice, and a reserved blind holdout.
+- Lesson payloads are spoiler-free: no FEN, played move, engine reference, or principal variation is exposed before the decision.
+- An explicitly requested grounded reflection can shape the next lesson; opening or resuming a lesson never calls an LLM.
+- Completed independent holdouts update evidence for the next plan without rewriting the completed lesson.
+- Contract and boundaries: [docs/personal-pedagogy.md](docs/personal-pedagogy.md#p4-personal-lesson-composer)
+
+## Personal coach — P5 second real focus
+
+- Every detectable pattern now maps to a versioned skill definition with its own objective, diagnostic categories, decision family, and evidence scope.
+- `closed-center` is the first non-tactical second focus. It is recommended only when verified personal games meet the existing recurrence gate; the application does not seed or invent evidence.
+- The portfolio contains one primary focus, at most one family-diverse support focus, and one maintenance item. Closely overlapping CCT patterns cannot consume every active slot.
+- Lesson, hypothesis, holdout, domain, and transfer evidence remain isolated by pattern. A mismatched lesson/session fails closed.
+- Contract and boundaries: [docs/personal-pedagogy.md](docs/personal-pedagogy.md#p5-second-real-focus)
+
 ## MoveMirror v0.2.1 — Evaluation Hardening
 
 - Escalamiento automático 80k → 500k cerca de umbrales (35–65 cp, 105–135 cp), mates inestables e información incompleta.

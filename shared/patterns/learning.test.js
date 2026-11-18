@@ -70,6 +70,27 @@ describe("session completion idempotency", () => {
     expect(second.duplicate).toBe(true);
     expect(second.domain.independentAttempts).toBe(first.domain.independentAttempts);
   });
+
+  it("keeps independent outcomes isolated when a second skill is trained", () => {
+    const evidence = classifyPracticeEvidence({ role: "holdout", verified: true, status: "verified_best", independent: true, assisted: false });
+    const cct = applyDomainEvidence(emptyPatternDomain("piece-loss", at), evidence, { status: "verified_best", at, role: "holdout" });
+    const session = createPracticeSession("closed-center", ["strategic-a"], {
+      contentVersion: "v2", detectorVersion: "eng", at,
+      lesson: { patternId: "closed-center", skill: { patternId: "closed-center", evidenceScope: "pattern:closed-center" } },
+    });
+    const completion = completePracticeSession({
+      session,
+      holdoutExercise: { id: "closed-holdout", recordId: "strategic-holdout" },
+      holdoutAttempt: { id: "closed-attempt", at, status: "incorrect", assisted: false, repeated: false, verified: true, independent: true },
+      patternDomains: { "piece-loss": cct }, at, now: Date.parse(at),
+    });
+    expect(completion.domain).toMatchObject({ patternId: "closed-center", independentFailures: 1 });
+    expect(cct).toMatchObject({ patternId: "piece-loss", independentSuccesses: 1, independentFailures: 0 });
+    expect(() => createPracticeSession("closed-center", ["x"], {
+      contentVersion: "v2", detectorVersion: "eng", at,
+      lesson: { patternId: "piece-loss", skill: { patternId: "piece-loss", evidenceScope: "pattern:piece-loss" } },
+    })).toThrow("session_evidence_scope_mismatch");
+  });
 });
 
 describe("next activity selection", () => {

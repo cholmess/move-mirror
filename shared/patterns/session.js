@@ -61,7 +61,11 @@ export function orderGuidedPlan(guided, preferredExerciseId = null) {
   return plan;
 }
 
-export function createPracticeSession(patternId, positionRecordIds, { contentVersion, detectorVersion, at, reservedHoldoutRecordId, sessionShortfall = false }) {
+export function createPracticeSession(patternId, positionRecordIds, { contentVersion, detectorVersion, at, reservedHoldoutRecordId, sessionShortfall = false, probePlan = null, curriculumDecision = null, lesson = null }) {
+  if (lesson && (lesson.patternId !== patternId
+    || (lesson.skill && (lesson.skill.patternId !== patternId || lesson.skill.evidenceScope !== `pattern:${patternId}`)))) {
+    throw new Error("session_evidence_scope_mismatch");
+  }
   return {
     version: PATTERN_LEARNING_VERSION,
     id: randomUUID(),
@@ -74,6 +78,9 @@ export function createPracticeSession(patternId, positionRecordIds, { contentVer
     detectorVersion,
     positionRecordIds,
     reservedHoldoutRecordId,
+    probePlan,
+    curriculumDecision,
+    lesson,
     sessionShortfall: Boolean(sessionShortfall),
     guidedExerciseIds: [],
     holdoutExerciseId: null,
@@ -195,6 +202,13 @@ export function buildSessionResultDto(session, holdoutAttempt, holdoutEvidence, 
     outcomeHeadlineKey: outcomeHeadlineKey(session.outcomeKey),
     countsAsIndependentEvidence: session.countsAsIndependentEvidence,
     evidenceReasonKey: session.evidenceReasonKey ?? holdoutEvidence?.reasonKey ?? null,
+    lesson: session.lesson ? {
+      version: session.lesson.version,
+      action: session.lesson.action,
+      method: session.lesson.method,
+      targetCategory: session.lesson.targetCategory,
+      skill: session.lesson.skill,
+    } : null,
     domain: {
       masteryEstimate: domain.masteryEstimate,
       confidence: domain.confidence,

@@ -6,6 +6,7 @@ import { Chess } from "chess.js";
 import { createPatternStore } from "./store.mjs";
 import { createPatternService, selectPersonalGames } from "./service.mjs";
 import { orderGuidedPlan, planSessionLayout } from "../../shared/patterns/session.js";
+import { fallbackPedagogy } from "../../shared/patterns/pedagogy.js";
 function game(id, first = "e4") {
   const chess = new Chess(); for (const san of [first, "e5", "Nf3", "Nc6", "Bc4", "Nf6", "d3", "Bc5", "O-O", "d6"]) chess.move(san);
   return { id, fingerprint: id, chess: { variant: "standard", startingFen: new Chess().fen(), movesUci: chess.history({ verbose: true }).map(m=>m.from+m.to+(m.promotion??"")), result: "1-0" },
@@ -69,6 +70,93 @@ describe("personal pattern incremental analysis", () => {
     keys.forEach((key,index)=> { const a=state.analyses[key]; state.analyses[key]={...a,rows:a.rows.map((r,i)=>({...r,patternId:i===index?"piece-loss":null,loss:i===index?300:0}))}; });
     store.write(state,keys);expect(service.summary().patterns.find(p=>p.id==="piece-loss").status).toBe("recurrent");
   }
+  it("persists a pre-feedback prediction and verifies alternative replies from the opponent position", async () => {
+    await activate(); const ex = service.startPractice("piece-loss");
+    const board = new Chess(ex.fen); const move = board.moves({verbose:true})[0];
+    const uci = move.from + move.to + (move.promotion ?? ""); board.move(move);
+    const candidateFen = board.fen(); const reply = board.moves({verbose:true})[1];
+    const replyUci = reply.from + reply.to + (reply.promotion ?? "");
+    evaluate.mockImplementationOnce(async b => ({ ...validResult(b), status: "incorrect", cpLoss: 250 }));
+    const result = await service.submit(ex.id, uci, { replyUci });
+    expect(evaluate.mock.calls.at(-1)[0]).toEqual({ fen: candidateFen, moveUci: replyUci });
+    expect(result.coaching).toMatchObject({ intervention: "evaluate", predictedSan: reply.san, hypothesis: "consequences" });
+    expect(service.exerciseView(ex.id).feedback.coaching).toEqual(result.coaching);
+    const restarted = createPatternService({store:createPatternStore(dir),gamesStore:{listGames:()=>games},evaluate,analyzerSignature:()=>signature});
+    expect(restarted.exerciseView(ex.id).feedback.coaching).toEqual(result.coaching);
+    const calls = evaluate.mock.calls.length;
+    await service.submit(ex.id, uci, { replyUci });
+    expect(evaluate.mock.calls.length).toBe(calls);
+  });
+  it("rejects illegal predictions before any engine call", async () => {
+    await activate(); const ex = service.startPractice("piece-loss"); const b = new Chess(ex.fen); const m = b.moves({verbose:true})[0];
+    const calls = evaluate.mock.calls.length;
+    await expect(service.submit(ex.id, m.from+m.to, {replyUci:"a1a8"})).rejects.toThrow("illegal_move");
+    expect(evaluate.mock.calls.length).toBe(calls);
+  });
+  it("locks valid reasoning before engine feedback and refuses post-feedback reconstruction", async () => {
+    await activate();
+    const ex = service.startPractice("piece-loss"); const board = new Chess(ex.fen); const move = board.moves({verbose:true})[0];
+    const uci = move.from+move.to+(move.promotion??""); const calls = evaluate.mock.calls.length;
+    await expect(service.submit(ex.id, uci, {replyUci:null}, {intention:"x",evaluation:"Igualada",confidence:"certain"}))
+      .rejects.toThrow("invalid_reflection");
+    expect(evaluate.mock.calls.length).toBe(calls);
+    const reasoning = {intention:"Quería ocupar el centro",evaluation:"Esperaba una posición igualada",confidence:"medium"};
+    const result = await service.submit(ex.id, uci, {replyUci:null}, reasoning);
+    reasoning.intention = "Explicación reconstruida después";
+    expect(result.preFeedbackReasoning).toMatchObject({intention:"Quería ocupar el centro",confidence:"medium",timing:"before_feedback"});
+
+    const exWithoutReasoning = service.startPractice("piece-loss"); const secondBoard = new Chess(exWithoutReasoning.fen); const second = secondBoard.moves({verbose:true})[0];
+    await service.submit(exWithoutReasoning.id, second.from+second.to+(second.promotion??""), {replyUci:null});
+    await expect(service.reflect(exWithoutReasoning.id)).rejects.toThrow("reflection_not_available");
+  });
+  it("keeps move feedback when prediction verification is unavailable", async () => {
+    await activate(); const ex = service.startPractice("piece-loss"); const b = new Chess(ex.fen); const m = b.moves({verbose:true})[0]; b.move(m); const r = b.moves({verbose:true})[0];
+    evaluate.mockImplementationOnce(async body => ({...validResult(body), status:"incorrect"})).mockRejectedValueOnce(new Error("engine_unavailable"));
+    const result = await service.submit(ex.id, m.from+m.to, {replyUci:r.from+r.to});
+    expect(result.coaching).toMatchObject({intervention:"uncertain", hypothesis:null});
+    expect(result.verified).toBe(true);
+  });
+  it("generates one grounded reflection for concurrent identical requests and persists it", async () => {
+    await activate();
+    const generate = vi.fn(async packet => ({
+      output: fallbackPedagogy({ intervention: "reinforce", evidenceIds: ["current_decision", "contrast_1", ...packet.facts.map(f => f.evidenceId).filter(id => !["current_decision", "contrast_1"].includes(id))] }),
+      meta: { provider: "fake", model: "fixture", promptVersion: "test", usage: { totalTokens: 30 } },
+    }));
+    service = createPatternService({
+      store, gamesStore:{listGames:()=>games}, evaluate, analyzerSignature:()=>signature,
+      pedagogicalCoach:{ status:()=>({enabled:true,configured:true,provider:"fake",model:"fixture"}), generate },
+    });
+    const ex = service.startPractice("piece-loss"); const board = new Chess(ex.fen); const move = board.moves({verbose:true})[0];
+    const input = { intention:"Quería desarrollar una pieza", evaluation:"Pensé que la posición seguía igualada" };
+    await service.submit(ex.id, move.from+move.to+(move.promotion??""), {replyUci:null}, {...input,confidence:"medium"});
+    const [a,b] = await Promise.all([service.reflect(ex.id),service.reflect(ex.id)]);
+    expect(generate).toHaveBeenCalledTimes(1); expect(a.id).toBe(b.id); expect(a.source).toBe("llm");
+    const evidenceIds = generate.mock.calls[0][0].facts.map(row => row.evidenceId);
+    expect(evidenceIds).toEqual(expect.arrayContaining(["current_decision", "pattern_frequency", "similar_error_1", "similar_error_2", "contrast_1"]));
+    expect(store.read().hypotheses).toHaveLength(1);
+    const nextLesson = service.startPractice("piece-loss");
+    expect(nextLesson.lesson).toMatchObject({
+      version:"personal-lesson-v2", action:"diagnose",
+      narrative:{source:"llm",sourceReflectionId:a.id,explanation:expect.any(String)},
+    });
+    expect(nextLesson.lesson.narrative.citations.map(row => row.evidenceId))
+      .toEqual(expect.arrayContaining(["current_decision", "contrast_1"]));
+    expect(JSON.stringify(nextLesson.lesson.narrative.citations)).not.toContain("fen");
+    expect(generate).toHaveBeenCalledTimes(1);
+    const restarted = createPatternService({store:createPatternStore(dir),gamesStore:{listGames:()=>games},evaluate,analyzerSignature:()=>signature});
+    expect(restarted.exerciseView(ex.id).diagnostic.reflection.id).toBe(a.id);
+    expect((await restarted.reflect(ex.id)).id).toBe(a.id);
+  });
+  it("falls back once without retrying or losing the player's explanation when the provider fails", async () => {
+    await activate(); const generate = vi.fn(async()=>{throw new Error("provider_down");});
+    service = createPatternService({store,gamesStore:{listGames:()=>games},evaluate,analyzerSignature:()=>signature,
+      pedagogicalCoach:{status:()=>({enabled:true,configured:true}),generate}});
+    const ex=service.startPractice("piece-loss"); const board=new Chess(ex.fen); const move=board.moves({verbose:true})[0];
+    const input={intention:"Quería atacar el centro",evaluation:"Creí que tenía suficiente actividad"};
+    await service.submit(ex.id,move.from+move.to+(move.promotion??""),{replyUci:null},{...input,confidence:"high"});
+    const result=await service.reflect(ex.id); const repeated=await service.reflect(ex.id);
+    expect(result).toMatchObject({source:"rules",answer:{...input,confidence:"high",timing:"before_feedback"}}); expect(repeated.id).toBe(result.id); expect(generate).toHaveBeenCalledTimes(1);
+  });
   it("keeps solutions private until asked and counts assisted repeats separately", async () => {
     await activate();const ex=service.startPractice("piece-loss");
     expect(service.exerciseView(ex.id).referenceSan).toBeUndefined();
@@ -137,6 +225,10 @@ describe("personal pattern incremental analysis", () => {
     await activate(1);
     let guided = service.startPractice("piece-loss");
     expect(guided).toMatchObject({ role: "guided", targetDecisions: 1, decisionCount: 0 });
+    expect(guided.lesson).toMatchObject({ version:"personal-lesson-v2", patternId:"piece-loss", method:"discriminating_probe",
+      sequence:{blindHoldout:true}, success:{causal:false} });
+    expect(JSON.stringify(guided.lesson)).not.toContain("fen");
+    expect(store.read().practiceSessions.find(row=>row.id===guided.sessionId).lesson).toEqual(guided.lesson);
     expect(guided.sessionPositionTotal).toBeGreaterThanOrEqual(3);
     const view = service.exerciseView(guided.id);
     const chess = new Chess(view.fen);
@@ -161,6 +253,7 @@ describe("personal pattern incremental analysis", () => {
     expect(result.trainingStatus).toBe("ready_for_holdout");
     const holdout = service.startHoldout(guided.id);
     expect(holdout).toMatchObject({ role: "holdout", targetDecisions: 1 });
+    expect(holdout).toMatchObject({ diagnostic: null, hypothesis: null, evidenceSummary: null, lesson: null });
     expect(holdout.positionId).not.toBe(guided.positionId);
     const holdoutChess = new Chess(holdout.fen);
     const holdoutLegal = holdoutChess.moves({ verbose: true })[0];
@@ -198,6 +291,112 @@ describe("personal pattern incremental analysis", () => {
     expect(layout.ok).toBe(true);
     expect(layout.guided.length + 1).toBeLessThanOrEqual(unique.length);
     expect(layout.sessionShortfall).toBe(unique.length < 4);
+  });
+
+  it("starts a real blocked-center focus without borrowing CCT lesson evidence", async () => {
+    await activate(3);
+    const state = store.read();
+    const keys = Object.keys(state.analyses);
+    keys.slice(3, 6).forEach((key, index) => {
+      state.analyses[key].rows = state.analyses[key].rows.map((row, rowIndex) => rowIndex === index + 1
+        ? { ...row, patternId: "closed-center", opportunities: [...new Set([...row.opportunities, "closed-center"])],
+            context: { ...row.context, closed: true, lockedPairs: 2 }, loss: 240 }
+        : row.patternId === "piece-loss" ? { ...row, patternId: null, loss: 0 } : row);
+    });
+    store.write(state, keys.slice(3, 6));
+    const patterns = service.summary().patterns;
+    expect(patterns.find((row) => row.id === "piece-loss").status).toBe("recurrent");
+    expect(patterns.find((row) => row.id === "closed-center").status).toBe("recurrent");
+
+    const tactical = service.startPractice("piece-loss");
+    const strategic = service.startPractice("closed-center");
+    expect(tactical.lesson.skill).toMatchObject({ familyId: "candidate-refutation", evidenceScope: "pattern:piece-loss" });
+    expect(strategic.lesson).toMatchObject({
+      patternId: "closed-center",
+      skill: { id: "closed-center-planning", familyId: "strategic-planning", evidenceScope: "pattern:closed-center" },
+    });
+    const sessions = store.read().practiceSessions;
+    const tacticalSession = sessions.find((row) => row.id === tactical.sessionId);
+    const strategicSession = sessions.find((row) => row.id === strategic.sessionId);
+    expect(new Set(tacticalSession.lesson.evidence.examples.map((row) => row.recordId)))
+      .not.toEqual(new Set(strategicSession.lesson.evidence.examples.map((row) => row.recordId)));
+    expect(strategicSession.positionRecordIds.every((id) => Object.values(store.read().analyses)
+      .some((analysis) => analysis.rows.some((row) => row.exerciseId === id && row.patternId === "closed-center")))).toBe(true);
+    expect(store.read().patternDomains).toEqual({});
+  });
+
+  it("turns a tentative hypothesis into an explainable multi-cause probe plan", async () => {
+    await activate(3);
+    const state = store.read();
+    state.hypotheses.push({
+      id:"hypothesis-1", patternId:"piece-loss", category:"reply_search", status:"tentative", confidence:"low",
+      alternatives:[{category:"calculation_depth",statement:"La variante pudo terminar demasiado pronto."},{category:"strategic_planning",statement:"El plan pudo no responder a la estructura."}],
+      observations:[], nextTest:{instruction:"Busca la respuesta rival más exigente."},
+    });
+    store.write(state);
+    const exercise = service.startPractice("piece-loss");
+    const session = store.read().practiceSessions.find(row => row.id === exercise.sessionId);
+    expect(session.probePlan).toMatchObject({hypothesisId:"hypothesis-1",primaryCategory:"reply_search"});
+    expect(session.probePlan.slots.map(row => row.targetCategory)).toEqual(expect.arrayContaining(["reply_search","calculation_depth","strategic_planning"]));
+    expect(exercise.probe).toMatchObject({hypothesisId:"hypothesis-1",targetCategory:"reply_search",measurability:"direct"});
+
+    const board = new Chess(exercise.fen); const move = board.moves({verbose:true})[0];
+    evaluate.mockImplementationOnce(async body => ({...validResult(body),status:"incorrect",cpLoss:250}));
+    const result = await service.submit(exercise.id,move.from+move.to+(move.promotion??""),{replyUci:null},{intention:"Quería desarrollar",evaluation:"Pensé que estaba igualada",confidence:"medium"});
+    expect(result.probeObservation).toMatchObject({observedCategory:"reply_search",direction:"support"});
+    expect(store.read().hypotheses.at(-1).observations.at(-1)).toMatchObject({source:"practice_probe",observedCategory:"reply_search",direction:"support"});
+  });
+
+  it("revises a contradicted hypothesis and makes the alternative the next probe target", async () => {
+    await activate(3);
+    const state = store.read();
+    state.hypotheses.push({
+      id:"hypothesis-old", patternId:"piece-loss", category:"reply_search", statement:"No busca la respuesta rival.",
+      status:"contradicted", confidence:"low", createdAt:"2026-10-20T08:00:00Z", updatedAt:"2026-10-21T08:00:00Z",
+      alternatives:[{category:"candidate_comparison",statement:"Cierra la comparación demasiado pronto."}],
+      observations:[
+        {id:"c1",source:"real_game",direction:"contradict",observedCategory:"candidate_comparison",gameId:"later-1",at:"2026-10-21T10:00:00Z"},
+        {id:"c2",source:"real_game",direction:"contradict",observedCategory:"candidate_comparison",gameId:"later-2",at:"2026-10-22T10:00:00Z"},
+      ],
+    });
+    store.write(state);
+    const exercise = service.startPractice("piece-loss");
+    const saved = store.read();
+    const revision = saved.hypotheses.at(-1);
+    const session = saved.practiceSessions.find(row => row.id === exercise.sessionId);
+    expect(revision).toMatchObject({parentHypothesisId:"hypothesis-old",category:"candidate_comparison",status:"tentative",observations:[]});
+    expect(session.curriculumDecision).toMatchObject({action:"revise_hypothesis",targetCategory:"candidate_comparison"});
+    expect(session.probePlan).toMatchObject({hypothesisId:revision.id,primaryCategory:"candidate_comparison"});
+    expect(exercise).toMatchObject({curriculum:{action:"revise_hypothesis"},probe:{targetCategory:"candidate_comparison"}});
+  });
+
+  it("reconciles a probed hypothesis against distinct later real games", async () => {
+    await activate();
+    const state = store.read();
+    const keys = Object.keys(state.analyses).slice(0, 2);
+    for (const key of keys) {
+      state.analyses[key].rows = state.analyses[key].rows.map((row) => row.patternId === "piece-loss" ? {
+        ...row, loss:260, replyUci:"d8d4", replySan:"Qxd4+", referencePv:["g1f3","b8c6","f1b5"],
+      } : row);
+    }
+    state.analyses[Object.keys(state.analyses)[2]].rows = state.analyses[Object.keys(state.analyses)[2]].rows
+      .map((row) => row.patternId === "piece-loss" ? { ...row, patternId:null } : row);
+    state.hypotheses.push({
+      id:"real-game-hypothesis", patternId:"piece-loss", category:"reply_search", status:"tentative", confidence:"low",
+      alternatives:[{category:"consequence_evaluation",statement:"La consecuencia pudo evaluarse mal."}],
+      createdAt:"2026-08-01T08:00:00Z", updatedAt:"2026-08-01T08:00:00Z",
+      observations:[
+        {id:"reflection",source:"practice",direction:"support",at:"2026-08-01T08:00:00Z"},
+        {id:"probe",source:"practice_probe",direction:"support",measurability:"direct",at:"2026-08-01T09:00:00Z"},
+        {id:"holdout",source:"holdout",direction:"inconclusive",at:"2026-08-01T10:00:00Z"},
+      ],
+    });
+    store.write(state, keys);
+    await service.update();
+    expect(store.read().hypotheses.at(-1).status).toBe("supported");
+    expect(service.summary().patterns.find(p=>p.id==="piece-loss").hypothesis).toMatchObject({
+      status:"supported", evidence:{directProbeSupports:1,realGameSupports:2,realGameContradictions:0},
+    });
   });
 
   it("surfaces insufficient_holdout_positions when layout cannot reserve a holdout", async () => {

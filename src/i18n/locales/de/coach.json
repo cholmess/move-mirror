@@ -107,6 +107,7 @@
     "generalNote": "Eine allgemeine Lektion zum Prüfen der gegnerischen Antwort. Dies ist keine neue Diagnose deiner Partien.",
     "priorities": "Deine Prioritäten",
     "method": "Wiederkehrende Muster werden nach Auswirkung, bisherigem Training und anstehenden Wiederholungen priorisiert. Eine gelöste Aufgabe belegt noch keine Beherrschung.",
+    "portfolio": "Der Coach führt einen Hauptfokus, höchstens eine ergänzende Fähigkeit aus einer anderen Entscheidungsfamilie und eine Erhaltungswiederholung. Die Evidenz bleibt für jede Fähigkeit getrennt.",
     "reviewDate": "Nächste vorgeschlagene Wiederholung: {{date}}",
     "focus": {
       "foundation": "Die gegnerische Antwort prüfen",
@@ -132,6 +133,25 @@
       "scheduled": "Nächste Wiederholung liegt in der Zukunft; früheres Üben ist möglich.",
       "stable": "Mehrere unabhängige Erfolge; längeres Intervall auf der Liste.",
       "lowEvidence": "Unabhängige Evidenz für dieses Muster wird noch aufgebaut."
+    },
+    "curriculum": {
+      "slot": { "primary": "Hauptfokus", "support": "Unterstützung", "maintenance": "Erhaltung" },
+      "action": {
+        "diagnose": "Trennscharfe Evidenz sammeln, bevor eine Ursache zugeschrieben wird.",
+        "reteach": "Die Erklärung ändern und neu vermitteln, bevor erneut geprüft wird.",
+        "revise_hypothesis": "Nicht an der bisherigen Ursache festhalten, sondern die am besten gestützte Alternative prüfen.",
+        "bridge_transfer": "Den Realismus erhöhen, damit das Signal unter Partiebedingungen erkannt wird.",
+        "maintenance": "Übungen zeitlich verteilen und prüfen, ob das Gelernte erhalten bleibt."
+      },
+      "reason": {
+        "contradicted_hypothesis": "Die Evidenz widerspricht der Arbeitshypothese; der nächste Probe erhält ein neues Ziel.",
+        "holdout_failed": "Die Fähigkeit wurde nicht auf die verdeckte Position übertragen.",
+        "generalized_and_transfer_improved": "Generalisierung trat auf und die spätere Häufigkeit ist niedriger; der Vergleich ist deskriptiv, nicht kausal.",
+        "generalized_without_transfer": "Generalisierung trat auf, aber die spätere Häufigkeit sank nicht.",
+        "generalized_transfer_pending": "Generalisierung trat auf; es fehlen noch genügend spätere Partien.",
+        "holdout_required": "Die Hypothese bleibt offen, bis eine verdeckte Prüfung abgeschlossen ist.",
+        "hypothesis_required": "Zuerst brauchen wir eine prüfbare, auf deiner Begründung basierende Hypothese."
+      }
     }
   }
 }

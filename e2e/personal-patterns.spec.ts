@@ -7,11 +7,14 @@ test.beforeEach(async ({ page }) => {
 });
 test("patterns panel provides update, evidence and no unsupported diagnosis", async ({ page }) => {
   await page.route("**/api/patterns", route=>route.fulfill({json:{revision:1,eligibleGames:3,analyzedGames:3,verifiedDecisions:30,recommended:["closed-center"],job:{status:"completed"},patterns:[{
-    id:"closed-center",kind:"context",errors:3,games:3,opportunities:12,status:"recurrent",confidence:"limited",examples:[],practice:{attempts:0},transfer:{status:"insufficient"}
+    id:"closed-center",kind:"context",errors:3,games:3,opportunities:12,status:"recurrent",confidence:"limited",examples:[],practice:{attempts:0},transfer:{status:"insufficient"},
+    hypothesis:{category:"strategic_planning",statement:"El plan podría no responder a la estructura.",confidence:"low",status:"tentative",evidence:{status:"tentative",confidence:"low",directProbeSupports:0,realGameSupports:0,realGameContradictions:0,realGameInconclusive:0,gate:{eligible:false,reason:"cause_not_directly_observable",cutoffAt:null}}}
   }]}}));
   await page.goto("/patterns");
   await expect(page.getByTestId("pattern-closed-center")).toContainText("3 errores en 3 partidas");
   await expect(page.getByText("Sabemos en qué contexto ocurrieron estos errores; todavía no sabemos por qué.")).toBeVisible();
+  await expect(page.getByTestId("hypothesis-evidence-closed-center")).toContainText("Sigue abierta");
+  await expect(page.getByTestId("hypothesis-evidence-closed-center")).toContainText("aún no puede medirse directamente");
   await expect(page.getByRole("button",{name:"Practicar este patrón"})).toBeEnabled();
 });
 test("real engine: imported games yield a new pattern that can be practiced and updated", async ({ page, request }) => {
@@ -46,6 +49,11 @@ test("real engine: imported games yield a new pattern that can be practiced and 
   await board.locator("select").nth(0).selectOption({index:1});
   await board.locator("select").nth(1).selectOption({index:1});
   await board.getByRole("button",{name:"Jugar movimiento seleccionado"}).click();
+  await page.getByRole("button",{name:"No encuentro una respuesta"}).click();
+  await page.getByLabel("¿Qué intentabas conseguir con tu jugada?").fill("Quería mejorar mi posición");
+  await page.getByLabel("¿Cómo evaluabas la posición después de la respuesta que esperabas?").fill("Pensé que estaba igualada");
+  await page.getByLabel("¿Qué tan seguro estabas de tu decisión?").selectOption("medium");
+  await page.getByRole("button",{name:"Confirmar y analizar"}).click();
   await expect(page.getByTestId("personal-feedback")).toBeVisible({timeout:30000});
   await expect(page.getByText("Este intento sirve para practicar; no cuenta como un primer intento independiente.")).toBeVisible();
   await page.getByRole("button",{name:"Volver a intentar"}).click();

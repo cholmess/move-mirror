@@ -1,5 +1,6 @@
 import { PATTERNS, MIN_PATTERN_GAMES } from "./catalog.js";
 import { positionKey } from "./detect.js";
+import { skillDefinitionFor } from "./skill-definitions.js";
 /** Rates use verified opportunities from complete games, never the puzzle bank. */
 export function buildPatternProfile(records, attempts = [], exposures = [], now = Date.now(), patternDomains = {}) {
   return PATTERNS.map(pattern => {
@@ -36,7 +37,7 @@ export function buildPatternProfile(records, attempts = [], exposures = [], now 
     const dueFactor = nextReviewAt && Date.parse(nextReviewAt) > now ? 0.5 : 1;
     const severity = errors.reduce((n, r) => n + Math.min(r.loss ?? 800, 800), 0);
 
-    return { ...pattern, errors: errors.length, games: games.size, analyzedGames: new Set(relevant.map(r => r.gameId)).size,
+    return { ...pattern, skill: skillDefinitionFor(pattern.id), errors: errors.length, games: games.size, analyzedGames: new Set(relevant.map(r => r.gameId)).size,
       opportunities: relevant.length, ratePer100: rate, status: recurrent ? "recurrent" : errors.length ? "watching" : "no_evidence",
       confidence: recurrent ? (games.size >= 6 ? "moderate" : "limited") : "insufficient", exerciseCount: usable.length,
       priority: recurrent ? severity * (1 - estimate) * (1 + 1 / Math.sqrt(2 + independent.length)) * dueFactor : 0,
