@@ -27,3 +27,9 @@ data/test-coach/
 # Personal pattern evidence and practice state
 data/patterns/
 data/test-patterns/
+
+# Daily training state, puzzle bank and explanation cache (personal / regenerable)
+data/daily/
+data/test-daily/
+data/puzzles/
+data/explain/

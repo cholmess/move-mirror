@@ -94,6 +94,13 @@ describe("games store", () => {
     expect(imported.game.eligibility.transferEligible).toBe(false);
   });
 
+  it("makes a verified 15+10 game coaching eligible under its own policy", () => {
+    const pgn = PGN.replace('[TimeControl "600"]', '[TimeControl "900+10"]');
+    const imported = store.importParsed({ parsed: parsePgnGame(pgn), raw: pgn, sourceType: "chess_com", importJobId: "one", overrides: { sourceUsername: "cholmess21" } });
+    expect(imported.game.eligibility.coachingEligible).toBe(true);
+    expect(imported.game.eligibility.coachingPolicyId).toBe("rapid-15p10-coaching-v1");
+  });
+
   it("merges Lichess and PGN copies of the same game", () => {
     const parsed = parsePgnGame(PGN);
     const first = store.importParsed({ parsed, raw: PGN, sourceType: "lichess", importJobId: "one", externalId: "abc" });

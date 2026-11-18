@@ -14,5 +14,7 @@
   "ariaMainNav": "Main navigation",
   "guidedCoach": "Guided lesson",
   "guidedTrain": "Record my reasoning",
-  "patterns": "My patterns"
+  "patterns": "My patterns",
+  "daily": "Today's training",
+  "review": "Game review"
 }

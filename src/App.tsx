@@ -20,6 +20,9 @@ import { ScoresheetImport } from "./components/ScoresheetImport";
 import { GamesLibrary } from "./components/GamesLibrary";
 import { GameDetail } from "./components/GameDetail";
 import { SparringView } from "./components/SparringView";
+import { DailyHome } from "./components/DailyHome";
+import { DailySessionView } from "./components/DailySessionView";
+import { GameReview, ReviewList } from "./components/GameReview";
 
 export default function App() {
   return (
@@ -29,6 +32,10 @@ export default function App() {
         <Routes>
           <Route element={<Layout />}>
             <Route index element={<PracticeHome />} />
+            <Route path="daily" element={<DailyHome />} />
+            <Route path="daily/session/:sessionId" element={<DailySessionView />} />
+            <Route path="review" element={<ReviewList />} />
+            <Route path="review/:gameId" element={<GameReview />} />
             <Route path="coach" element={<CoachHome />} />
             <Route path="patterns" element={<PersonalPatterns />} />
             <Route path="practice/:exerciseId" element={<PersonalPractice />} />

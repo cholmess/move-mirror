@@ -24,6 +24,7 @@ import enPatterns from "./locales/en/patterns.json";
 import enPractice from "./locales/en/practice.json";
 import enCoach from "./locales/en/coach.json";
 import enLearning from "./locales/en/learning.json";
+import enDaily from "./locales/en/daily.json";
 
 import esCommon from "./locales/es/common.json";
 import esNavigation from "./locales/es/navigation.json";
@@ -46,6 +47,7 @@ import esPatterns from "./locales/es/patterns.json";
 import esPractice from "./locales/es/practice.json";
 import esCoach from "./locales/es/coach.json";
 import esLearning from "./locales/es/learning.json";
+import esDaily from "./locales/es/daily.json";
 
 import deCommon from "./locales/de/common.json";
 import deNavigation from "./locales/de/navigation.json";
@@ -68,6 +70,7 @@ import dePatterns from "./locales/de/patterns.json";
 import dePractice from "./locales/de/practice.json";
 import deCoach from "./locales/de/coach.json";
 import deLearning from "./locales/de/learning.json";
+import deDaily from "./locales/de/daily.json";
 
 const resources = {
   en: {
@@ -92,6 +95,7 @@ const resources = {
     practice: enPractice,
     patterns: enPatterns,
     learning: enLearning,
+    daily: enDaily,
   },
   es: {
     common: esCommon,
@@ -115,6 +119,7 @@ const resources = {
     practice: esPractice,
     patterns: esPatterns,
     learning: esLearning,
+    daily: esDaily,
   },
   de: {
     common: deCommon,
@@ -138,6 +143,7 @@ const resources = {
     practice: dePractice,
     patterns: dePatterns,
     learning: deLearning,
+    daily: deDaily,
   },
 } as const;
 
@@ -168,6 +174,7 @@ void i18n.use(initReactI18next).init({
     "practice",
     "patterns",
     "learning",
+    "daily",
   ],
   interpolation: { escapeValue: false },
   returnNull: false,

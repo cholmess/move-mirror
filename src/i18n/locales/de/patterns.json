@@ -38,7 +38,7 @@
     }
   },
   "practice": "Dieses Muster üben",
-  "method": "Aktualisierungen verwenden prüfbare Regeln, kein erneutes Training eines neuronalen Netzes. Bis zu 200 beendete 10+0-Partien mit bestätigter Identität werden analysiert; sehr kurze Partien und besondere Ausgangsstellungen bleiben ausgeschlossen. Ein Muster benötigt Fehler in mindestens drei Partien und drei verschiedenen Stellungen. Nur vollständig analysierte Partien zählen.",
+  "method": "Aktualisierungen verwenden prüfbare Regeln, kein erneutes Training eines neuronalen Netzes. Bis zu 200 beendete 10+0- oder 15+10-Partien mit bestätigter Identität werden analysiert; sehr kurze Partien und besondere Ausgangsstellungen bleiben ausgeschlossen. Ein Muster benötigt Fehler in mindestens drei Partien und drei verschiedenen Stellungen. Nur vollständig analysierte Partien zählen.",
   "loading": "Stellung wird geladen…",
   "back": "Zurück zu meinen Mustern",
   "checking": "Dein Zug wird geprüft…",

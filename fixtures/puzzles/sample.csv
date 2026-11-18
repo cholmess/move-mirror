@@ -1,0 +1,6 @@
+PuzzleId,FEN,Moves,Rating,RatingDeviation,Popularity,NbPlays,Themes,GameUrl,OpeningTags
+mmfx01,6k1/p4ppp/8/8/8/8/5PPP/3R2K1 b - - 0 1,a7a6 d1d8,900,75,95,1000,mateIn1 backRankMate mate oneMove endgame,,
+mmfx02,rnbqkb1r/pppp1ppp/5n2/4p3/4P3/2N5/PPPP1PPP/R1BQKBNR w KQkq - 2 3,d1h5 f6h5,800,75,95,1000,hangingPiece advantage oneMove opening,,
+mmfx03,4k3/8/8/3q4/8/8/3R4/4K3 b - - 0 1,e8f8 d2d5,850,75,95,1000,hangingPiece crushing oneMove endgame,,
+mmfx04,6k1/5ppp/8/8/3n4/8/5PPP/2R3K1 w - - 0 1,h2h3 d4e2 g1f1 e2c1,1100,75,95,1000,fork crushing short endgame,,
+mmfx05,6k1/5ppp/8/8/3n4/8/5PPP/2R3K1 w - - 0 1,h2h3 d4e2 g1f1 e2c1,2600,75,95,1000,fork crushing short endgame,,

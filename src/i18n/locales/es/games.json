@@ -49,7 +49,7 @@
   "openFailed": "No se pudo abrir la partida.",
   "identityEligibilityTitle": "Identidad y elegibilidad",
   "coachingLine": "Entrenamiento: {{status}}",
-  "coachingEligibleShort": "elegible (10+0)",
+  "coachingEligibleShort": "elegible (10+0 o 15+10)",
   "coachingIneligibleShort": "fuera de política ({{reasons}})",
   "transferLine": "Seguimiento de partidas nuevas: {{status}}",
   "transferEligibleShort": "elegible",
@@ -80,7 +80,7 @@
     "draft": "borrador",
     "unfinished_game": "partida sin terminar",
     "player_identity_unverified": "identidad pendiente",
-    "outside_rapid_10m_policy": "no es exactamente 10+0",
+    "outside_rapid_10m_policy": "no es 10+0 ni 15+10",
     "no_valid_moves": "sin jugadas válidas"
   },
   "duplicateDisposition": {

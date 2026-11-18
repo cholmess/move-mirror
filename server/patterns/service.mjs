@@ -732,7 +732,9 @@ export function createPatternService({ store, gamesStore, evaluate, analyzerSign
       .sort((a, b) => b.startedAt.localeCompare(a.startedAt))[0];
     return exercise ? practiceDto(exercise, available.get(exercise.recordId)) : null;
   }
-  return { summary, update, schedule, startPractice, exerciseView, reveal, submit, reflect, advance, advanceSlot, retryDecision, startHoldout, activePractice, sessionView,
+  /** Read-only view for the daily trainer: verified decisions of currently eligible games. */
+  function decisionRows() { reconcileGames(); return rows(); }
+  return { summary, update, schedule, decisionRows, personalGames: () => selectPersonalGames(gamesStore.listGames()), startPractice, exerciseView, reveal, submit, reflect, advance, advanceSlot, retryDecision, startHoldout, activePractice, sessionView,
     cancel() { dirty = false; if (timer) { clearTimeout(timer); timer = null; } controller?.abort(); },
     async wait() { if (timer) return update(); return task ?? summary(); } };
 }

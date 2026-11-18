@@ -28,6 +28,11 @@ import { createPatternRouter } from "./patterns/routes.mjs";
 import { createOpenAIPedagogicalCoach } from "./patterns/pedagogical-coach.mjs";
 import { createCoachService } from "./coach/service.mjs";
 import { createCoachRouter } from "./coach/routes.mjs";
+import { createDailyStore } from "./daily/store.mjs";
+import { createDailyService } from "./daily/service.mjs";
+import { createDailyRouter } from "./daily/routes.mjs";
+import { createExplainService } from "./explain/service.mjs";
+import { createImportService } from "./games/import-service.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
@@ -316,6 +321,34 @@ const coachService = createCoachService(coachStore, {
 const trainingPlan = createTrainingPlanService({ patterns: patternService, coach: coachService, store: coachStore });
 const handleCoach = createCoachRouter(() => coachService, { trainingPlan });
 
+const explainService = createExplainService({
+  cacheFile: path.join(ROOT, process.env.EXPLAIN_CACHE_FILE ?? "data/explain/cache.json"),
+});
+const recentImport = createImportService(gamesStore, { onGameImported: (game) => validationService.recordGameImported(game) });
+async function syncRecentGames() {
+  const identity = gamesStore.readIdentity();
+  const month = new Date().toISOString().slice(0, 7);
+  const jobs = [];
+  for (const username of identity.chessComUsernames ?? []) {
+    try { jobs.push({ source: "chess_com", username, status: (await recentImport.importChessCom({ username, from: month, to: month })).status }); }
+    catch (error) { jobs.push({ source: "chess_com", username, status: "failed", error: String(error.message ?? error).slice(0, 80) }); }
+  }
+  for (const username of identity.lichessUsernames ?? []) {
+    try { jobs.push({ source: "lichess", username, status: (await recentImport.importLichess({ username, from: `${month}-01` })).status }); }
+    catch (error) { jobs.push({ source: "lichess", username, status: "failed", error: String(error.message ?? error).slice(0, 80) }); }
+  }
+  return jobs;
+}
+const dailyService = createDailyService({
+  store: createDailyStore(process.env.DAILY_DATA_DIR ? path.resolve(ROOT, process.env.DAILY_DATA_DIR) : path.join(ROOT, "data/daily")),
+  patterns: patternService,
+  puzzleBankFile: path.resolve(ROOT, process.env.PUZZLE_BANK_FILE ?? "data/puzzles/bank.json"),
+  evaluate: (body) => handleEvaluate(body, AbortSignal.timeout(JOB_TIMEOUT_MS)),
+  explain: explainService,
+  syncRecent: syncRecentGames,
+});
+const handleDaily = createDailyRouter(dailyService);
+
 const server = http.createServer(async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS");
@@ -342,6 +375,10 @@ const server = http.createServer(async (req, res) => {
       if (["POST", "PATCH", "DELETE"].includes(req.method) && res.statusCode < 400) patternService.schedule();
       return;
     }
+  }
+
+  if (req.url?.startsWith("/api/daily")) {
+    if (await handleDaily(req, res)) return;
   }
 
   if (req.url?.startsWith("/api/patterns")) {

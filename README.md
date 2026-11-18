@@ -29,6 +29,14 @@ Variable opcional: `POOL_LIMIT=100 npm run sync:fase2`
 - Node.js 18+
 - npm
 
+## MoveMirror v0.7 — Entrenamiento diario
+
+Prioriza el volumen de práctica: **`/daily`** (≈20 min con repetición espaciada de tus errores y puzzles de Lichess, sobre todo drills de refutación), **`/review`** (3 momentos clave tras cada partida, con «¿qué viste?» antes del motor) y el progreso semanal (piezas perdidas por cada 100 decisiones frente a una meta de 1,5). Las explicaciones se basan en el motor y, si hay `ANTHROPIC_API_KEY`, se redactan con Claude y se verifican contra las líneas. Las partidas 15+10 cuentan para el análisis. Detalles: [docs/daily-training.md](docs/daily-training.md).
+
+```bash
+npm run puzzles:import -- --file lichess_db_puzzle.csv.zst   # banco de puzzles (una vez)
+```
+
 ## MoveMirror v0.5 — Import Hub
 
 Desacopla la **adquisición de partidas** del coaching y la transferencia.
