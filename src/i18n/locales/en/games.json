@@ -49,7 +49,7 @@
   "openFailed": "Could not open the game.",
   "identityEligibilityTitle": "Identity and eligibility",
   "coachingLine": "Coaching: {{status}}",
-  "coachingEligibleShort": "eligible (10+0)",
+  "coachingEligibleShort": "eligible (10+0 or 15+10)",
   "coachingIneligibleShort": "outside policy ({{reasons}})",
   "transferLine": "New-game tracking: {{status}}",
   "transferEligibleShort": "eligible",
@@ -80,7 +80,7 @@
     "draft": "draft",
     "unfinished_game": "unfinished game",
     "player_identity_unverified": "identity pending",
-    "outside_rapid_10m_policy": "not exact 10+0",
+    "outside_rapid_10m_policy": "neither 10+0 nor 15+10",
     "no_valid_moves": "no valid moves"
   },
   "duplicateDisposition": {

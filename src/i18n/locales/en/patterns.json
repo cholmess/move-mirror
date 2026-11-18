@@ -24,7 +24,7 @@
   "transferPending": "More evidence from later games is needed to compare recurrence.",
   "transferObserved": "Errors per 100 comparable decisions: {{before}} before → {{after}} after. A descriptive comparison, not proof of a training effect.",
   "practice": "Practice this pattern",
-  "method": "Updates use verifiable rules, not neural network retraining. Up to 200 completed 10+0 games with confirmed identity are analyzed; very short games and special starting positions are excluded. A pattern requires errors across at least three games and three distinct positions. Only fully analyzed games count.",
+  "method": "Updates use verifiable rules, not neural network retraining. Up to 200 completed 10+0 or 15+10 games with confirmed identity are analyzed; very short games and special starting positions are excluded. A pattern requires errors across at least three games and three distinct positions. Only fully analyzed games count.",
   "loading": "Loading position…",
   "back": "Back to my patterns",
   "checking": "Checking your move…",

@@ -8,6 +8,8 @@ import { LanguageWelcome } from "./LanguageWelcome";
 import { hasStoredLocalePreference } from "../i18n/localeStorage";
 
 const navRoutes = [
+  { to: "/daily", key: "daily" as const },
+  { to: "/review", key: "review" as const },
   { to: "/", key: "today" as const, end: true },
   { to: "/patterns", key: "patterns" as const },
   { to: "/train", key: "train" as const },

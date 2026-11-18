@@ -24,7 +24,7 @@
   "transferPending": "Aún falta evidencia en partidas posteriores para comparar la recurrencia.",
   "transferObserved": "Errores por 100 decisiones comparables: {{before}} antes → {{after}} después. Comparación descriptiva; no demuestra un efecto del entrenamiento.",
   "practice": "Practicar este patrón",
-  "method": "Actualización por reglas verificables, no reentrenamiento de una red neuronal. Se analizan hasta 200 partidas completas de 10+0 con identidad confirmada; partidas muy cortas y posiciones iniciales especiales quedan fuera. Un patrón requiere errores en al menos tres partidas y tres posiciones distintas. Solo cuentan partidas analizadas por completo.",
+  "method": "Actualización por reglas verificables, no reentrenamiento de una red neuronal. Se analizan hasta 200 partidas completas de 10+0 o 15+10 con identidad confirmada; partidas muy cortas y posiciones iniciales especiales quedan fuera. Un patrón requiere errores en al menos tres partidas y tres posiciones distintas. Solo cuentan partidas analizadas por completo.",
   "loading": "Cargando posición…",
   "back": "Volver a mis patrones",
   "checking": "Comprobando tu jugada…",

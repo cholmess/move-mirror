@@ -7,6 +7,12 @@ export const CANONICAL_GAME_VERSION = "canonical-game-v1";
 export const FINGERPRINT_VERSION = "game-fingerprint-v1";
 export { METADATA_MERGE_VERSION, METADATA_MERGE_RULES };
 export const COACHING_POLICY_ID = "rapid-10m-coaching-v1";
+/** 15+10 counts too: slower games give room to apply the blunder check until it becomes automatic. */
+export const COACHING_POLICY_15_10_ID = "rapid-15p10-coaching-v1";
+export const COACHING_CONTROLS = [
+  { initialSeconds: 600, incrementSeconds: 0, policyId: COACHING_POLICY_ID },
+  { initialSeconds: 900, incrementSeconds: 10, policyId: COACHING_POLICY_15_10_ID },
+];
 export const TRANSFER_POLICY_ID = "allowed-forcing-reply-transfer-v1";
 export const STANDARD_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 export const DEFAULT_CHESSCOM_ALIAS = "cholmess21";
@@ -233,11 +239,12 @@ export function evaluateEligibility(game, { draft = false } = {}) {
   if (game.chess.result === "*") reasons.push("unfinished_game");
   if (game.players.playerResolution.confidence !== "verified") reasons.push("player_identity_unverified");
   const control = game.timing.timeControl;
-  if (control.initialSeconds !== 600 || control.incrementSeconds !== 0) reasons.push("outside_rapid_10m_policy");
+  const policy = COACHING_CONTROLS.find(c => c.initialSeconds === control.initialSeconds && c.incrementSeconds === control.incrementSeconds);
+  if (!policy) reasons.push("outside_rapid_10m_policy");
   return {
     stored: true,
     coachingEligible: reasons.length === 0,
-    coachingPolicyId: reasons.length === 0 ? COACHING_POLICY_ID : null,
+    coachingPolicyId: reasons.length === 0 ? policy.policyId : null,
     transferEligible: false,
     transferPolicyId: null,
     reasons,
